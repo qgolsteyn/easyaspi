@@ -1,0 +1,23 @@
+{
+    "name": "easyaspi",
+    "private": true,
+    "version": "1.0.0",
+    "author": "Quentin Golsteyn <qgolsteyn@gmail.com>",
+    "license": "MIT",
+    "workspaces": [
+        "easyaspi-client",
+        "easyaspi-server"
+    ],
+    "scripts": {
+        "start": "concurrently \"cd server && yarn start\" \"cd client && yarn start\"",
+        "test": "jest"
+    },
+    "dependencies": {},
+    "devDependencies": {
+        "@types/jest": "^24.0.18",
+        "concurrently": "^4.1.2",
+        "jest": "^24.9.0",
+        "ts-jest": "^24.1.0",
+        "typescript": "^3.6.3"
+    }
+}
