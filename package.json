@@ -5,8 +5,8 @@
     "author": "Quentin Golsteyn <qgolsteyn@gmail.com>",
     "license": "MIT",
     "workspaces": [
-        "easyaspi-client",
-        "easyaspi-server"
+        "client",
+        "server"
     ],
     "scripts": {
         "start": "concurrently \"cd server && yarn start\" \"cd client && yarn start\"",
