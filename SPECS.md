@@ -48,34 +48,28 @@ can be achieved by changing the attributes. We could perhaps use this idea for
 generating mathematical problems of increasing difficulty, by identifying
 attributes of a problem and changing them to create new problems.
 
-For example, for the simple equation `a+b=c`, we can specify a set
-of base attributes:
+For example:
 
-- There are two terms to the left of the equal sign
-- `a` and `b` are both integers
-- `a` and `b` are positive
-- `a` and `b` are joined together by a `+` sign
-- `c` has a value below `10`
+- All values are positive, some values are positive, all values are negative
+- There are two terms at the left of the equal sign, three, four
 
-These attributes could (at least some of them) be represented by a system of linear
-equations. Finding a solution to this system would give us a problem candidate.
+A particular combination of attributes can be assigned a certain difficulty score. We can then
+use an optimization algorithm to find the attributes that match as closely the targetted difficulty
+score.
 
-It becomes interesting when we start changing attributes. For example, there are
-now three terms to the left of the equal sign. Or, `a` is positive and `b` is
-negative. Or, `a` and `b` are joined together by a `-` sign.
+A likely candidate for an optimization algorithm is gradient descent with random restarts or simulated annealing.
+This approach starts with a random solution and greedily attempts to find the best solution (that is a solution with
+the requested difficulty score). A quick implementation has shown good results and performance for two variables.
 
-This approach may not work for more complex problems. For now, we should simply
-focus on those simple problems to avoid scope creep. If the need arises, we
-could look at more complex areas of problems (solving perimeter of shapes
-perhaps?) and see if we need to devise a new approach.
+We might also need to have different categories of problems, with their own rules for difficulty scoring (ie. one set of
+rules for addition, one set of rules for multiplication, etc.).
 
-As a guideline, all functions generating math problems should be pure and accept
-a seed as input and output a `MathProblem`.
+The result of this algorithm is an array of values, which can then be inserted into a string template.
 
 #### Hashing
 
-We need a method to quickly identify a problem, based on its type, attributes
-selected and the variable values generated.
+We will guarrantee some determinism in problem generation by using a seed. By using the same seed and
+the same difficulty score, we can guarrantee we can arrive to the same result.
 
 ## Adapt to the student's learning
 
