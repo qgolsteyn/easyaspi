@@ -5,29 +5,27 @@
 const WebpackShellPlugin = require('webpack-shell-plugin');
 
 module.exports = {
-    entry: [
-        './src/index.ts'
-    ],
+    entry: ['./src/index.ts'],
     mode: 'development',
     target: 'node',
     output: {
         path: __dirname + '/dist',
-        filename: "index.js"
+        filename: 'index.js',
     },
     resolve: {
         extensions: ['.ts', '.js'],
     },
     module: {
-        rules:[
+        rules: [
             {
                 test: /\.ts$/,
-                use: [
-                    'ts-loader',
-                ]
-            }
-        ]
+                use: ['ts-loader'],
+            },
+        ],
     },
     plugins: [
-        new WebpackShellPlugin({onBuildEnd: ['nodemon dist/index.js --watch dist']})
-    ]
+        new WebpackShellPlugin({
+            onBuildEnd: ['nodemon dist/index.js --watch dist'],
+        }),
+    ],
 };

@@ -3,11 +3,8 @@
  */
 
 module.exports = {
-    roots: [
-        "<rootDir>/client",
-        "<rootDir>/server"
-    ],
+    roots: ['<rootDir>/client', '<rootDir>/server'],
     transform: {
-        "^.+\\.tsx?$": "ts-jest"
-    }
-}
+        '^.+\\.tsx?$': 'ts-jest',
+    },
+};

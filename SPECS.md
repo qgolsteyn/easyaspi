@@ -2,14 +2,14 @@
 
 ## Summary
 
-The best way to learn new mathematical concepts is through practice. To this 
-end, students may work on exercises in their textbook, through in-class 
+The best way to learn new mathematical concepts is through practice. To this
+end, students may work on exercises in their textbook, through in-class
 assignments, or online. We believe these resources are lacking in that they
 provide a finite number of exercises which may not be sufficient for a student
 to fully understand a mathematical concept. Computer-generated mathematical
-problems, problems following a particular template with generated numbers, 
-could an interesting area for innovation in this field. Combined with a 
-learning method known as spaced repetition, we think we have the ingredients 
+problems, problems following a particular template with generated numbers,
+could an interesting area for innovation in this field. Combined with a
+learning method known as spaced repetition, we think we have the ingredients
 for an improved platform to teach mathematics.
 
 ## Goals
@@ -50,8 +50,8 @@ attributes of a problem and changing them to create new problems.
 
 For example:
 
-- All values are positive, some values are positive, all values are negative
-- There are two terms at the left of the equal sign, three, four
+-   All values are positive, some values are positive, all values are negative
+-   There are two terms at the left of the equal sign, three, four
 
 A particular combination of attributes can be assigned a certain difficulty score. We can then
 use an optimization algorithm to find the attributes that match as closely the targetted difficulty
@@ -90,9 +90,9 @@ fundamental learning items.
 
 Action required for a chat system:
 
-- Create a new conversation
-- Access conversations
-- Append a new message to a conversation (which would include images)
+-   Create a new conversation
+-   Access conversations
+-   Append a new message to a conversation (which would include images)
 
 ## Communicate between the mobile app and the server
 
@@ -108,4 +108,3 @@ following:
 In addition, we need to provide real-time communication between two users.
 
 Communication on most points can be achieved via a series of REST endpoints.
-
