@@ -13,3 +13,17 @@ jobs:
                   project: Backlog
                   column: Triage
                   repo-token: ${{ secrets.GITHUB_TOKEN }}
+            - name: Move assigned issues into Assigned
+              if: github.event_name == 'issues' && github.event.action == 'assigned'
+              uses: alex-page/github-project-automation-plus@v0.0.3
+              with:
+                  project: Backlog
+                  column: Assigned
+                  repo-token: ${{ secrets.GITHUB_TOKEN }}
+            - name: Move frozen issues into Frozen
+              if: github.event_name == 'issues' && github.event.action == 'labeled' && github.event.label.name == 'frozen'
+              uses: alex-page/github-project-automation-plus@v0.0.3
+              with:
+                  project: Backlog
+                  column: Freeze
+                  repo-token: ${{ secrets.GITHUB_TOKEN }}
