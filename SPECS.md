@@ -57,9 +57,12 @@ A particular combination of attributes can be assigned a certain difficulty scor
 use an optimization algorithm to find the attributes that match as closely the targetted difficulty
 score.
 
-A likely candidate for an optimization algorithm is gradient descent with random restarts or simulated annealing.
+A likely candidate for an optimization algorithm is gradient descent with simulated annealing.
 This approach starts with a random solution and greedily attempts to find the best solution (that is a solution with
 the requested difficulty score). A quick implementation has shown good results and performance for two variables.
+
+http://www.cs.cmu.edu/afs/cs.cmu.edu/project/learn-43/lib/photoz/.g/web/glossary/anneal.html
+http://www.cleveralgorithms.com/nature-inspired/physical/simulated_annealing.html
 
 We might also need to have different categories of problems, with their own rules for difficulty scoring (ie. one set of
 rules for addition, one set of rules for multiplication, etc.).

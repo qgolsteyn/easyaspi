@@ -9,9 +9,7 @@
         "clean": "rimraf dist"
     },
     "dependencies": {
-        "assert": "^2.0.0",
         "express": "^4.17.1",
-        "kiwi.js": "^1.1.2",
         "seedrandom": "^3.0.5"
     },
     "devDependencies": {

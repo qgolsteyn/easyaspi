@@ -1,113 +1,194 @@
-import seedrandom from "seedrandom";
+import seedrandom from 'seedrandom';
 
-interface Definition {
+/**
+ * Defines the variables and the difficulty function for
+ * the math problem generation algorithm
+ */
+export interface Definition {
     variables: Variable[];
-    result: {
-        value: (values: number[]) => number;
-        weight: (result: number) => number;
-    };
+    difficulty: (values: number[]) => number;
 }
 
+/**
+ * A variable is specified by its domain
+ */
 interface Variable {
-    min: number,
-    max: number,
-    weight: (value: number, result: number) => number
+    min: number;
+    max: number;
 }
 
-interface Result {
-    values: number[],
-    result: number,
-    difficulty: number,
+/**
+ * Output of math problem generation algorithm, resulting values and corresponding difficulty
+ */
+export interface Result {
+    values: number[];
+    difficulty: number;
 }
 
-const solve = (definition: Definition, targetDifficulty: number, seed = "hello world") => {
-    seedrandom(seed, { global: true })
+/**
+ * Math problem generation algorithm. Accepts a list of variables with a defined domain and a difficulty
+ * function, and assigns values to variables to match the specified difficulty value.
+ * @param definition specifies the variables to solve for and the difficulty function to use
+ * @param targetDifficulty the target difficulty to optimize for
+ * @param seed optional - seed used when requiring random values
+ * @return a Result object with values for each variable and the resulting difficulty
+ */
+export const generateMathProblem = (
+    definition: Definition,
+    targetDifficulty: number,
+    seed = 'seed'
+) => {
+    seedrandom(seed, { global: true });
 
+    // Initial values are randomly assigned inside the domain space
     const initialValues = generateInitialValues(definition.variables);
-    const initialResult = definition.result.value(initialValues);
 
-    return gradientDescent(
-        definition, targetDifficulty, getResult(definition, targetDifficulty, initialValues, initialResult));
-}
+    // Use gradient descent to find the optimal solution
+    return gradientDescent(definition, targetDifficulty, initialValues);
+};
 
-const gradientDescent = (definition: Definition, targetDifficulty: number, initialNode: Result) => {
-    let currentNode = initialNode;
-    for (let i = 0; i < 100; i++) {
-        const candidateNode = getBestNeighbour(definition, targetDifficulty, currentNode, 2);
+const gradientDescent = (
+    variables: Definition,
+    targetDifficulty: number,
+    initialValues: number[]
+) => {
+    // How fast should we converge to a solution
+    // Higher values reduce the runtime, but could lead to lower accuracy
+    const learningRate = 3;
 
-        if (candidateNode) {
-            currentNode = candidateNode;
+    // Number of iterations before we return the best set of values we found so far
+    const count = 10000;
+
+    // Prime the successor and result generator function with the provided parameters
+    const successor = generateSuccessor(variables, learningRate);
+    const generateNode = getResult(variables, targetDifficulty);
+
+    // We will be keeping the best set of values we found so far here
+    let bestNode = generateNode(initialValues);
+
+    let currentNode = bestNode;
+    for (let i = 0; i < count; i++) {
+        // Get a random neighbour to our current node
+        const candidateValues = successor(currentNode.values);
+
+        // Determine the difficulty delta of our candidate
+        const candidateNode = generateNode(candidateValues);
+
+        // Select which node to accept next as our current node
+        currentNode = selectSuccessor(count - i, currentNode, candidateNode);
+
+        // Check if our current node has a lower difficulty delta than the best node so far
+        if (bestNode.difficulty > currentNode.difficulty) {
+            bestNode = currentNode;
+
+            // If the delta is 0, then return it, we can't do better than that
+            if (bestNode.difficulty === 0) {
+                return bestNode;
+            }
+        }
+    }
+    return bestNode;
+};
+
+/**
+ * Generate a random set of values, used as a starting point for gradient descent
+ * @param variables an array of variables and their domains
+ */
+const generateInitialValues = (variables: Variable[]) =>
+    variables.map(variable =>
+        Math.round(variable.min + (variable.max - variable.min) * Math.random())
+    );
+
+/**
+ * Generate a neighbour node to our current one
+ * @param definition variable definition
+ * @param learningRate how much of a change we should have between neighbour nodes
+ */
+const generateSuccessor = (definition: Definition, learningRate: number) => (
+    currentValue: number[]
+): number[] => {
+    const whichNeighbour = Math.round(
+        (definition.variables.length - 1) * Math.random()
+    );
+
+    let nextValue;
+    if (
+        currentValue[whichNeighbour] - learningRate <=
+        definition.variables[whichNeighbour].min
+    ) {
+        nextValue = currentValue[whichNeighbour] += learningRate;
+    } else if (
+        currentValue[whichNeighbour] + learningRate >=
+        definition.variables[whichNeighbour].max
+    ) {
+        nextValue = currentValue[whichNeighbour] -= learningRate;
+    } else {
+        const whichOperation = Math.round(Math.random());
+        const operation = whichOperation === 0 ? learningRate : -learningRate;
+
+        nextValue = currentValue[whichNeighbour] + operation;
+    }
+
+    return [
+        ...currentValue.slice(0, whichNeighbour),
+        nextValue,
+        ...currentValue.slice(whichNeighbour + 1),
+    ];
+};
+
+/**
+ * Determine the best node to choose next, following the simulated annealing algorithm.
+ *
+ * Three possibilities:
+ * 1. Candidate node is a better choice than current node
+ * then we select the candidate node
+ * 2. Candidate node is a worst choice and
+ * a. we determine by Math.random() that we should select it
+ * then we select the candidate node
+ * b. we determine by Math.random that we should not select it
+ * then we select the current node
+ *
+ * We use this approach to ensure we do not get stuck in a local minima of our difficulty function. The likelihood
+ * of us choosing a worst candidate is determined by the system's temperature. A lower temperate reduces the likelihood
+ * of us choosing a worst candidate. As the gradient process goes on, the temperature decreases, ensuring we ultimately
+ * find a good candidate.
+ *
+ * @param temperature current "temperature" the system, used as part of the simulated annealing process
+ * @param currentNode
+ * @param candidateNode
+ */
+const selectSuccessor = (
+    temperature: number,
+    currentNode: Result,
+    candidateNode: Result
+) => {
+    if (currentNode.difficulty > candidateNode.difficulty) {
+        return candidateNode;
+    } else {
+        const P = 1 - Math.exp(-1 / (0.001 * temperature));
+        const p = Math.random();
+        if (p > P) {
+            return candidateNode;
         } else {
             return currentNode;
         }
     }
-    return currentNode;
-}
+};
 
-const generateInitialValues = (variables: Variable[]) =>
-    variables.map((variable) => Math.round(variable.min + (variable.max - variable.min) * Math.random()));
-
-const getBestNeighbour = (definition: Definition, targetDifficulty: number, currentNode: Result, learningRate: number) => {
-    const currentValues = currentNode.values;
-
-    for (let i = 0; i < currentNode.values.length; i++) {
-        for (let j = 0; j <= 1; j++) {
-            const operation = j === 0 ? learningRate : -learningRate;
-
-            const newValue = currentValues[i] + operation;
-
-            if (newValue < definition.variables[i].min || newValue > definition.variables[i].max) {
-                continue;
-            }
-
-            const newValues = [
-                ...currentValues.slice(0, i),
-                newValue,
-                ...currentValues.slice(i + 1),
-            ]
-
-            const candidateNode = getResult(definition, targetDifficulty, newValues, definition.result.value(newValues));
-
-            if (candidateNode.difficulty < currentNode.difficulty) {
-                return candidateNode;
-            }
-        }
-    }
-
-    return undefined;
-}
-
-const getResult = (definition: Definition, targetDifficulty: number, values: number[], result: number): Result => {
-    const valueDifficulty = values.reduce((acc, value, i) => acc + definition.variables[i].weight(value, result), 0);
-    const returnDifficulty = definition.result.weight(result);
+/**
+ * Calculate the difference (delta) of the current difficulty of the specified values, and the target
+ * difficulty.
+ * @param definition
+ * @param targetDifficulty
+ */
+const getResult = (definition: Definition, targetDifficulty: number) => (
+    values: number[]
+) => {
+    const difficulty = definition.difficulty(values);
+    const deltaDifficulty = Math.abs(targetDifficulty - difficulty);
 
     return {
         values,
-        result,
-        difficulty: Math.abs(targetDifficulty - (valueDifficulty + returnDifficulty)),
+        difficulty: deltaDifficulty,
     };
-}
-
-const definition: Definition = {
-
-    variables: [
-        {
-            min: 0,
-            max: 100,
-            weight: () => 0,
-        },
-        {
-            min: 0,
-            max: 100,
-            weight: () => 0,
-        }
-    ],
-    result: {
-        value: (values) => values[0] + values[1],
-        weight: (result) => result,
-    }
-}
-
-const resultNode = solve(definition, 57, "hellow");
-
-console.log(resultNode);
+};
