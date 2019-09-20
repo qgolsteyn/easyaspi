@@ -10,7 +10,8 @@
     ],
     "scripts": {
         "start": "concurrently \"cd server && yarn start\" \"cd client && yarn start\"",
-        "test": "jest"
+        "test": "jest",
+        "test:coverage": "jest --coverage"
     },
     "dependencies": {},
     "devDependencies": {
