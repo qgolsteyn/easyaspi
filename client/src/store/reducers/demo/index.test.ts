@@ -1,4 +1,4 @@
-import { demoActions, demoReducer } from '.';
+import { demoActions, demoReducer, demoSelectors } from '.';
 
 describe('demo store', () => {
     describe('actions', () => {
@@ -16,16 +16,30 @@ describe('demo store', () => {
 
     describe('reducer', () => {
         it('should return the initial state', () => {
-            expect(demoReducer(undefined, {} as any)).toEqual({
-                demoText: 'Press here',
-            });
+            expect(demoReducer(undefined, {} as any)).toEqual(
+                expect.objectContaining({
+                    demoText: expect.any(String),
+                })
+            );
         });
         it('should handle demo_CHANGE_TEXT', () => {
             expect(
                 demoReducer(undefined, demoActions.changeDemoText('test'))
-            ).toEqual({
+            ).toMatchObject({
                 demoText: 'test',
             });
+        });
+    });
+
+    describe('selectors', () => {
+        it('should return the demo text', () => {
+            const state = {
+                demo: {
+                    demoText: 'test',
+                },
+            };
+
+            expect(demoSelectors.getText(state)).toEqual('test');
         });
     });
 });

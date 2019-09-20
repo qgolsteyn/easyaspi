@@ -1,18 +1,10 @@
 import { combineReducers } from 'redux';
 
-import {
-    demoReducer,
-    demoActions,
-    DemoAction,
-    demoSelectors,
-    IDemoState,
-} from './demo';
+import { demoReducer, demoActions, demoSelectors, IDemoState } from './demo';
 
-export interface IRootState {
+export interface IState {
     demo: IDemoState;
 }
-
-export type Action = DemoAction;
 
 export const actions = {
     demo: demoActions,
