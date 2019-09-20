@@ -1,5 +1,5 @@
 name: Test CI
-on: [push, pull_request]
+on: [push]
 jobs:
     test:
         runs-on: ubuntu-latest
@@ -12,6 +12,11 @@ jobs:
             - name: yarn install, and test
               run: |
                   yarn
-                  yarn test
+                  yarn test:coverage
               env:
                   CI: true
+            - name: Upload coverage to Codecov
+              run: |
+                  yarn codecov
+              env:
+                  CODECOV_TOKEN: ${{secrets.CODECOV_TOKEN}}
