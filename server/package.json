@@ -6,7 +6,8 @@
     "scripts": {
         "prestart": "yarn clean",
         "start": "webpack --watch",
-        "clean": "rimraf dist"
+        "clean": "rimraf dist",
+        "test": "jest --config ../jest.config.js"
     },
     "dependencies": {
         "express": "^4.17.1",
