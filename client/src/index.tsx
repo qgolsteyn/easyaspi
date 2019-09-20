@@ -1,3 +1,7 @@
+/**
+ * Entry point of the app
+ */
+
 import { registerRootComponent } from 'expo';
 import React from 'react';
 import { Provider } from 'react-redux';

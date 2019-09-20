@@ -1,3 +1,7 @@
+/**
+ * This file specifies a demo component for demonstration purposes
+ */
+
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { StyleSheet, Text, View } from 'react-native';
