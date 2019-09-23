@@ -5,11 +5,12 @@
 - [Project goals](#project-goals)
   - [Defining project success](#defining-project-success)
   - [Additional requirements](#additional-requirements)
-- [Project opportunities](#project-opportunities)
-  - [Users](#users)
-    - [Pains and gains](#pains-and-gains)
+- [Scoping](#scoping)
+  - [Personas](#personas)
+  - [Brainstorming user actions](#brainstorming-user-actions)
+  - [Pains and gains](#pains-and-gains)
   - [Opportunity statements](#opportunity-statements)
-- [High-level description of features](#high-level-description-of-features)
+- [User stories](#user-stories)
 - [Technical considerations](#technical-considerations)
   - [API](#api)
 - [Bibliography](#bibliography)
@@ -31,13 +32,43 @@ on where additional support from the teacher is needed.
 - Must have a real-time aspect
 - Must include third-party integration
 
-# Project opportunities
+# Scoping
 
-## Users
+## Personas
+
+**Students**
+
+<details>
+<summary>Jess (Grade 1 student)</summary>
+Details go here.
+</details>
+<details>
+<summary>Jess (Grade 1 student)</summary>
+</details>
+
+<details>
+<summary>Jess (Grade 1 student)</summary>
+</details>
+
+**Teacher**
+
+<details>
+<summary>Jess (Grade 1 student)</summary>
+</details>
+
+<details>
+<summary>Jess (Grade 1 student)</summary>
+</details>
+
+<details>
+<summary>Jess (Grade 1 student)</summary>
+</details>
+
+## Brainstorming user actions
 
 | User     | Actions                                                     | Story Ending                                   |
 | -------- | ----------------------------------------------------------- | ---------------------------------------------- |
-| Students | S1 - Join a teacher virtual classroom's                     | Successfully complete the daily set            |
+| Students | S1 - Join a teacher virtual classroom                       | Successfully complete the daily set            |
 |          | S2 - Work on a daily math set                               | Get feedback on what to work next              |
 |          | S3 - Ask for help from their teacher                        |                                                |
 |          | S4 - Access learning material to solve a particular problem |                                                |
@@ -52,20 +83,21 @@ on where additional support from the teacher is needed.
 
 \* italicized actions are not being considered for MVP
 
-### Pains and gains
+## Pains and gains
 
-| Pain                                     | Action      | Gain                               |
-| ---------------------------------------- | ----------- | ---------------------------------- |
-| Authentication is difficult              | S1 T1       | Quickly get set up on the app      |
-| Getting students on the app is difficult | S1 T1       | Quickly get set up on the app      |
-| Running out of math problems             | S2          | Enough problems for practice       |
-| Problems are too difficult               | S2 S3 S4 S5 | Improved learning                  |
-| Need practice in certain areas           | S2 S5       | Improved learning                  |
-| Need help on math problems               | S3 S4       | Improved learning                  |
-| Lose interest in the app                 | S2 S5       | Increase retention and better data |
-| Know what students need help on          | T3 T4 T5    | Adjust teaching approach           |
-| Adapt the app to current class progress  | T2 T6       | Adjust teaching approach           |
-| Know which students are ahead/lagging    | T3 T4       | Know which students to focus on    |
+| Pain                                      | Action      | Gain                                      |
+| ----------------------------------------- | ----------- | ----------------------------------------- |
+| Authentication is difficult               | S1 T1       | Quickly get set up on the app             |
+| Getting students on the app is difficult  | S1 T1       | Quickly get set up on the app             |
+| Running out of math problems              | S2          | Enough problems for practice              |
+| Problems are too difficult                | S2 S3 S4 S5 | Improved learning                         |
+| Need practice in certain areas            | S2 S5       | Improved learning                         |
+| Need help on math problems                | S3 S4       | Improved learning                         |
+| Understanding how well you are performing | S5          | Increased retention and improved learning |
+| Lose interest in the app                  | S2 S5       | Increased retention and better data       |
+| Know what students need help on           | T3 T4 T5    | Adjust teaching approach                  |
+| Adapt the app to current class progress   | T2 T6       | Adjust teaching approach                  |
+| Know which students are ahead/lagging     | T3 T4       | Know which students to focus on           |
 
 ## Opportunity statements
 
@@ -74,13 +106,13 @@ on where additional support from the teacher is needed.
 - How might we provide enough math problems for students to practice on?
 - How might we make sure that the problems are at the correct level of difficulty?
 - How might we adapt the app to particular student's deficiencies?
+- How can we inform students regarding their performance?
 - How can we ensure that students remain engaged in the app ?
 - How can we inform the teacher on the areas that students need more help?
 - How can we inform the teacher on the students that are ahead/behind the rest of the class?
 - How can we let the teacher influence the problems the students are working on?
 
-# High-level description of features
-
+# User stories
 
 # Technical considerations
 
