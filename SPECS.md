@@ -111,3 +111,111 @@ following:
 In addition, we need to provide real-time communication between two users.
 
 Communication on most points can be achieved via a series of REST endpoints.
+
+## Endpoint API Specs
+
+## Math Problems
+
+1.  GET math-problems/nextProblem?previousResult={previousResult}
+    Description:    Retrieves the next problem for a specific user based on their result of the previous problem
+    URL:            http://Dunno.com/math-problems/nextProblem?previousResult={previousResult}
+    Headers:        userUid: <UUID>
+
+    Response:       HTTP/1.1 200 OK:
+                    {
+                        "problemArchetype": "arithmetic",
+                        "problemType": "addition",
+                        "problem": "3 + 4 =",
+                        "solution": ["7"],
+                        "difficulty": 10,
+                        "seed": someHash
+                    }
+
+                    HTTP/1.1 400 Bad Request:
+                        *  when "previousResult" is missing
+                        *  when "previousResult" is not "correct" or "incorrect"
+
+                    HTTP/1.1 404 Not Found:
+                        *  when userUid is not found
+
+                    HTTP/1.1 500 Internal Server Error
+
+    Notes:          *  "solution" is an array because we could support solution steps in the future
+                    *  "difficulty" is an arbitray number right now, we still need to define the scale of 
+                       this and what it means. For now it will just be the average of the numbers on the
+                       left side of the equation
+                    *  The next problem will be 1 of 2. Either a harder one or an easier one. This is 
+                       based on "previousResult". If student got the previous problem correct, the next will
+                       be harder and vise versa
+                    *  Asynchrously, 2 potential next math problems will be generated after every call of this endpoint.
+                       One easier problem for if user gets previous problem wrong, another harder problem for it user gets
+                       previous problem correct. This will speed up this endpoint, but we will handle this later
+
+
+2.  POST math-problems/newTemplate
+    Description:    Inserts a new problem template into the database. *This should be used internally only, not by the app*
+    URL:            http://Dunno.com/math-problems/newTemplate
+    Headers:        N/A
+
+    Request Body:   {
+                        "problemArchetype": "Arithmetic",
+                        "problemType": "subtraction",
+                        "operators": ["-"],
+                    }
+
+    Response:       HTTP/1.1 201 Created
+                        *  problem template successfully saved in db
+                    
+                    HTTP/1.1 400 Bad Request
+                        *  when any of the fields in the request body are invalid or insufficient given the "problemArchetype"
+                    
+                    HTTP/1.1 500 Internal Server Error
+
+    Notes:          *  "problemArchetype" is required because in future different types of problems could be supported. For                           example: area questions, equation questions, fraction questions. The other fields will likely be different
+                       based on the "problemArchetype". For example an area question will not require "operators"
+                    *  The reason I chose this format instead of inputting a string temple like "x - y =" is because we could have
+                       any number of operands. Also for a problem that tests BEDMAS (4 + (15/3)) we could have operators or brackets in any place
+    
+
+    3.  GET math-problems/allTemplates
+        Description:    Gets all problem templates in the database *This should be used interally only, not by the app*
+        URL:            http://Dunno.com/math-problems/allTemplates
+        Headers:        N/A
+
+        Response:       HTTP/1.1 200 OK:
+                        {
+                            "arithmetic": [
+                                {
+                                    "problemType": "addition",
+                                    "operators": ["+"]
+                                },
+                                {
+                                    "problemType": "subtraction",
+                                    "operators": ["-"]
+                                },
+                                {
+                                    "problemType": "multiplication",
+                                    "operators": ["*"]
+                                },
+                                {
+                                    "problemType": "division",
+                                    "operators": ["/"]
+                                },
+                                {
+                                    "problemType": "bedmas",
+                                    "operators": ["+", "-", "*", "/", "^", "(", ")"]
+                                }
+                            ],
+                            "fractions": [
+                                {
+                                    "problemType": "addition",
+                                    "operators": ["+"]
+                                }
+                            ],
+                            "Geometry": [
+                                {
+                                    "problemType": "area",
+                                    "shape": ["circle", "square", "rectangle", "triangle"]
+                                }
+                            ]
+                        }
