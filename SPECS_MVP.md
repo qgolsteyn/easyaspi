@@ -40,16 +40,36 @@ on where additional support from the teacher is needed.
 
 ### Pains and gains
 
-| Pain                                    | Action      | Gain                               |
-| --------------------------------------- | ----------- | ---------------------------------- |
-| Authentication is difficult             | S1 T1       | Quickly get set up on the app      |
-| Running out of math problems            | S2          | Enough problems for practice       |
-| Problems are too difficult              | S2 S3 S4 S5 | Improved learning                  |
-| Need practice in certain areas          | S2 S5       | Improved learning                  |
-| Need help on math problems              | S3 S4       | Improved learning                  |
-| Lose interest in the app                | S2 S5       | Increase retention and better data |
-| Know what students need help on         | T4 T5       | Adjust teaching approach           |
-| Adapt the app to current class progress | T2          | Adjust teaching approach           |
-| Know which students are ahead/lagging   | T4          | Know which students to focus on    |
+| Pain                                     | Action      | Gain                               |
+| ---------------------------------------- | ----------- | ---------------------------------- |
+| Authentication is difficult              | S1 T1       | Quickly get set up on the app      |
+| Getting students on the app is difficult | S1 T1       | Quickly get set up on the app      |
+| Running out of math problems             | S2          | Enough problems for practice       |
+| Problems are too difficult               | S2 S3 S4 S5 | Improved learning                  |
+| Need practice in certain areas           | S2 S5       | Improved learning                  |
+| Need help on math problems               | S3 S4       | Improved learning                  |
+| Lose interest in the app                 | S2 S5       | Increase retention and better data |
+| Know what students need help on          | T3 T4 T5    | Adjust teaching approach           |
+| Adapt the app to current class progress  | T2 T6       | Adjust teaching approach           |
+| Know which students are ahead/lagging    | T3 T4       | Know which students to focus on    |
 
-### Feature
+### Opportunity statements
+
+- How might we make authenticating simple for students?
+- How might we make creating a classroom simple for teachers?
+- How might we provide enough math problems for students to practice on?
+- How might we make sure that the problems are at the correct level of difficulty?
+- How might we adapt the app to particular student's deficiencies?
+- How can we ensure that students remain engaged in the app ?
+- How can we inform the teacher on the areas that students need more help?
+- How can we inform the teacher on the students that are ahead/behind the rest of the class?
+- How can we let the teacher influence the problems the students are working on?
+
+## Features
+
+
+
+## References
+
+Project planning approach inspired by https://medium.com/@ClrMobile/planning-a-minimum-viable-product-a-step-by-step-guide-6f387d657870
+
