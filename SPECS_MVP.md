@@ -1,25 +1,39 @@
-# Specifications for the MVP of Easy as π
+# Easy as π Specifications
 
-## Project goals
+**Table of content**
+- [Easy as π Specifications](#easy-as-%cf%80-specifications)
+- [Project goals](#project-goals)
+  - [Defining project success](#defining-project-success)
+  - [Additional requirements](#additional-requirements)
+- [Project opportunities](#project-opportunities)
+  - [Users](#users)
+    - [Pains and gains](#pains-and-gains)
+  - [Opportunity statements](#opportunity-statements)
+- [High-level description of features](#high-level-description-of-features)
+- [Technical considerations](#technical-considerations)
+  - [API](#api)
+- [Bibliography](#bibliography)
+
+# Project goals
 
 - To offer a platform for students in Grade 1 to 5 to practice their math skills daily.
 - To offer a platform for teachers to track their students' progress and offer insights
 on where additional support from the teacher is needed.
 
-###  Defining project success
+##  Defining project success
 
 - Generate math problems of varying difficulty in 5 domain areas.
 - Accurately determine the ability level of the student in those 5 domain areas.
 - Provide recommendations for the teacher on which skills the student needs to improve in.
 
-### Additional requirements
+## Additional requirements
 
 - Must have a real-time aspect
 - Must include third-party integration
 
-## Project opportunities
+# Project opportunities
 
-### Users
+## Users
 
 | User     | Actions                                                     | Story Ending                                   |
 | -------- | ----------------------------------------------------------- | ---------------------------------------------- |
@@ -53,7 +67,7 @@ on where additional support from the teacher is needed.
 | Adapt the app to current class progress  | T2 T6       | Adjust teaching approach           |
 | Know which students are ahead/lagging    | T3 T4       | Know which students to focus on    |
 
-### Opportunity statements
+## Opportunity statements
 
 - How might we make authenticating simple for students?
 - How might we make creating a classroom simple for teachers?
@@ -65,11 +79,16 @@ on where additional support from the teacher is needed.
 - How can we inform the teacher on the students that are ahead/behind the rest of the class?
 - How can we let the teacher influence the problems the students are working on?
 
-## Features
+# High-level description of features
+
+
+# Technical considerations
+
+## API
 
 
 
-## References
+# Bibliography
 
 Project planning approach inspired by https://medium.com/@ClrMobile/planning-a-minimum-viable-product-a-step-by-step-guide-6f387d657870
 
