@@ -8,7 +8,10 @@
         "test": "jest --config ../jest.config.js"
     },
     "dependencies": {
+        "@expo/samples": "^3.0.3",
+        "@expo/vector-icons": "^10.0.5",
         "expo": "^34.0.1",
+        "firebase": "^6.6.2",
         "immer": "^4.0.0",
         "react": "^16.5.0",
         "react-dom": "^16.8.6",
@@ -16,6 +19,7 @@
         "react-native-firebase": "^5.5.6",
         "react-native-web": "^0.11.4",
         "react-navigation": "^4.0.7",
+        "react-navigation-tabs": "^2.5.5",
         "react-redux": "^7.1.1",
         "redux": "^4.0.4",
         "redux-saga": "^1.1.1",
