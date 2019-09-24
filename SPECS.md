@@ -1,15 +1,18 @@
 # Easy as π Specifications
 
-**Table of content**
+<details>
+<summary>Table of content</summary>
 - [Easy as π Specifications](#easy-as-%cf%80-specifications)
 - [Project goals](#project-goals)
   - [Defining project success](#defining-project-success)
   - [Additional requirements](#additional-requirements)
 - [Scoping](#scoping)
-  - [Personas](#personas)
-  - [Brainstorming user actions](#brainstorming-user-actions)
-  - [Pains and gains](#pains-and-gains)
-  - [Opportunity statements](#opportunity-statements)
+  - [UX perspective](#ux-perspective)
+    - [Personas](#personas)
+    - [Brainstorming user actions](#brainstorming-user-actions)
+    - [Pains and gains](#pains-and-gains)
+    - [Opportunity statements](#opportunity-statements)
+  - [BC Math curriculum (Grade 1 to 5)](#bc-math-curriculum-grade-1-to-5)
 - [User stories](#user-stories)
 - [Technical considerations](#technical-considerations)
   - [Generating math problems](#generating-math-problems)
@@ -20,6 +23,7 @@
   - [Fetching the next math problem](#fetching-the-next-math-problem)
     - [API](#api)
 - [Bibliography](#bibliography)
+</details>
 
 # Project goals
 
@@ -40,37 +44,55 @@ on where additional support from the teacher is needed.
 
 # Scoping
 
-## Personas
+<details>
+<summary>UX perspective</summary>
+
+## UX perspective
+
+### Personas
 
 **Students**
 
 <details>
-<summary>Jess (Grade 1 student)</summary>
-Details go here.
+<summary>Ewen (Grade 3 student)</summary>
+Ewen loves video games and can quickly get addicted to games on his parent's phones.
+He is not very interested in school and lags behing compared to his classmates.
 </details>
 <details>
-<summary>Jess (Grade 1 student)</summary>
+<summary>Enora (Grade 5 student)</summary>
+Enora generally likes school, but thinks she is not good at math. She rapidly gives up
+on math problems, and think she will never improve. At school, she prefers arts and English class.
 </details>
 
 <details>
-<summary>Jess (Grade 1 student)</summary>
+<summary>Gareth (Grade 1 student)</summary>
+Gareth loves the thrill of solving puzzles. He is considered brilliant at school, and is quite bored in 
+class.
 </details>
 
 **Teacher**
 
 <details>
-<summary>Jess (Grade 1 student)</summary>
+<summary>Jess (Grade 3 teacher)</summary>
+Jess is a teacher in a class of 32 students. She struggles to find time to help all her students individually and
+she is worried that if she spent more time, the rest of her class would not do anything productive.
 </details>
 
 <details>
-<summary>Jess (Grade 1 student)</summary>
+<summary>George (Grade 5 teacher for students with disabilities)</summary>
+George has 5 students in his class with varying levels of cognitive disabilities. His students are generally quite
+attentive, but their knowledge and skill level are quite different, and he sometimes has difficulty making his classes
+interesting and interactive.
 </details>
 
 <details>
-<summary>Jess (Grade 1 student)</summary>
+<summary>Annie (Parent of a Grade 2 student)</summary>
+Annie is a consultant in an engineering firm and has difficulty coming home early most days of the week. She
+wants to make sure her son gets enough practice in mathematics to make sure he does well in school.
+She wants him to learn how to study, but she doesn't know where to start and is often not around to help him.
 </details>
 
-## Brainstorming user actions
+### Brainstorming user actions
 
 | User     | Actions                                                     | Story Ending                                   |
 | -------- | ----------------------------------------------------------- | ---------------------------------------------- |
@@ -89,7 +111,7 @@ Details go here.
 
 \* italicized actions are not being considered for MVP
 
-## Pains and gains
+### Pains and gains
 
 | Pain                                      | Action      | Gain                                      |
 | ----------------------------------------- | ----------- | ----------------------------------------- |
@@ -105,7 +127,7 @@ Details go here.
 | Adapt the app to current class progress   | T2 T6       | Adjust teaching approach                  |
 | Know which students are ahead/lagging     | T3 T4       | Know which students to focus on           |
 
-## Opportunity statements
+### Opportunity statements
 
 - How might we make authenticating simple for students?
 - How might we make creating a classroom simple for teachers?
@@ -117,6 +139,32 @@ Details go here.
 - How can we inform the teacher on the areas that students need more help?
 - How can we inform the teacher on the students that are ahead/behind the rest of the class?
 - How can we let the teacher influence the problems the students are working on?
+</details>
+
+<details>
+<summary>BC Math curriculum (1-5)</summary>
+
+## BC Math curriculum (Grade 1 to 5)
+
+The BC math curriculum from grade 1 to 5 is focused on building mathematic literacy in the following areas:
+
+- Counting, and number decomposition
+- Fractions and decimals
+- Patterns (repeating, increasing, decreasing)
+- Addition, substraction, multiplication and division
+- Financial literacy
+- Equations with an unknown number
+- Probability
+- 2D shapes (describing them, perimeter)
+
+Generally, those concepts remain in focus for each year level, with increased complexity. The curriculum is very precise
+regarding the scope of learning for each year level (eg. addition to 20 in Grade 1).
+
+This information could be used to determine which problem to show to students based on their estimated year level.
+
+More information can be found here: https://curriculum.gov.bc.ca/curriculum/mathematics/
+
+</details>
 
 # User stories
 
