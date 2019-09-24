@@ -1,72 +1,137 @@
-# Specifications for Easy as Pi
+# Easy as π Specifications
 
-## Summary
+**Table of content**
+- [Easy as π Specifications](#easy-as-%cf%80-specifications)
+- [Project goals](#project-goals)
+  - [Defining project success](#defining-project-success)
+  - [Additional requirements](#additional-requirements)
+- [Scoping](#scoping)
+  - [Personas](#personas)
+  - [Brainstorming user actions](#brainstorming-user-actions)
+  - [Pains and gains](#pains-and-gains)
+  - [Opportunity statements](#opportunity-statements)
+- [User stories](#user-stories)
+- [Technical considerations](#technical-considerations)
+  - [Generating math problems](#generating-math-problems)
+      - [Number generation](#number-generation)
+      - [Difficulty score](#difficulty-score)
+      - [Hashing](#hashing)
+      - [Problem template](#problem-template)
+  - [Fetching the next math problem](#fetching-the-next-math-problem)
+    - [API](#api)
+- [Bibliography](#bibliography)
 
-The best way to learn new mathematical concepts is through practice. To this
-end, students may work on exercises in their textbook, through in-class
-assignments, or online. We believe these resources are lacking in that they
-provide a finite number of exercises which may not be sufficient for a student
-to fully understand a mathematical concept. Computer-generated mathematical
-problems, problems following a particular template with generated numbers,
-could an interesting area for innovation in this field. Combined with a
-learning method known as spaced repetition, we think we have the ingredients
-for an improved platform to teach mathematics.
+# Project goals
 
-## Goals
+- To offer a platform for students in Grade 1 to 5 to practice their math skills daily.
+- To offer a platform for teachers to track their students' progress and offer insights
+on where additional support from the teacher is needed.
 
-1. Display computer-generated mathematical problems to a user on a number of mathematical concepts
-2. Adapt to the student’s learning rate and display problems adapted to the student’s current knowledge
-3. Provide a platform for a teacher to manage a classroom and a means for students to communicate with the teacher
+##  Defining project success
 
-## Stretch goals
+- Generate math problems of varying difficulty in 5 domain areas.
+- Accurately determine the ability level of the student in those 5 domain areas.
+- Provide recommendations for the teacher on which skills the student needs to improve in.
 
-1. Provide any sort of dashboard system to display metric
-2. Any extensive user profile features
+## Additional requirements
 
-## Client
+- Must have a real-time aspect
+- Must include third-party integration
 
-### Authentication process
+# Scoping
 
-Teachers will be authenticating using their Google Account, while students will authenticate
-via a teacher provided code. Students are considered too young to be expected to have a student
-account.
+## Personas
 
-### Student view
+**Students**
 
-Students
+<details>
+<summary>Jess (Grade 1 student)</summary>
+Details go here.
+</details>
+<details>
+<summary>Jess (Grade 1 student)</summary>
+</details>
 
-### Teacher view
+<details>
+<summary>Jess (Grade 1 student)</summary>
+</details>
 
-## Server
+**Teacher**
 
-### API
+<details>
+<summary>Jess (Grade 1 student)</summary>
+</details>
 
-The mobile app will need to be able to request or notify the server about the
-following:
+<details>
+<summary>Jess (Grade 1 student)</summary>
+</details>
 
-1. Authenticate and create an account
-2. Create a classroom
-3. Request a list of available math problem categories
-4. Request a math problem of a certain type
-5. Notify the server if the current problem has been solved or not
+<details>
+<summary>Jess (Grade 1 student)</summary>
+</details>
 
-In addition, we need to provide real-time communication between two users.
+## Brainstorming user actions
 
-Communication on most points can be achieved via a series of REST endpoints.
+| User     | Actions                                                     | Story Ending                                   |
+| -------- | ----------------------------------------------------------- | ---------------------------------------------- |
+| Students | S1 - Join a teacher virtual classroom                       | Successfully complete the daily set            |
+|          | S2 - Work on a daily math set                               | Get feedback on what to work next              |
+|          | S3 - Ask for help from their teacher                        |                                                |
+|          | S4 - Access learning material to solve a particular problem |                                                |
+|          | S5 - Track their success rate                               |                                                |
+|          |                                                             |                                                |
+| Teachers | T1 - Create a virtual classroom                             | Know the deficiencies of each student          |
+|          | T2 - Prepare the content of the daily math set              | Get recommendations on which area is deficient |
+|          | T3 - View individual student progress in each domain area   |                                                |
+|          | T4 - View recommendations                                   |                                                |
+|          | T5 - Respond to students' request for help                  |                                                |
+|          | T6 - Add recommended learning material                      |                                                |
 
-### Computer-generated mathematical problems
+\* italicized actions are not being considered for MVP
+
+## Pains and gains
+
+| Pain                                      | Action      | Gain                                      |
+| ----------------------------------------- | ----------- | ----------------------------------------- |
+| Authentication is difficult               | S1 T1       | Quickly get set up on the app             |
+| Getting students on the app is difficult  | S1 T1       | Quickly get set up on the app             |
+| Running out of math problems              | S2          | Enough problems for practice              |
+| Problems are too difficult                | S2 S3 S4 S5 | Improved learning                         |
+| Need practice in certain areas            | S2 S5       | Improved learning                         |
+| Need help on math problems                | S3 S4       | Improved learning                         |
+| Understanding how well you are performing | S5          | Increased retention and improved learning |
+| Lose interest in the app                  | S2 S5       | Increased retention and better data       |
+| Know what students need help on           | T3 T4 T5    | Adjust teaching approach                  |
+| Adapt the app to current class progress   | T2 T6       | Adjust teaching approach                  |
+| Know which students are ahead/lagging     | T3 T4       | Know which students to focus on           |
+
+## Opportunity statements
+
+- How might we make authenticating simple for students?
+- How might we make creating a classroom simple for teachers?
+- How might we provide enough math problems for students to practice on?
+- How might we make sure that the problems are at the correct level of difficulty?
+- How might we adapt the app to particular student's deficiencies?
+- How can we inform students regarding their performance?
+- How can we ensure that students remain engaged in the app ?
+- How can we inform the teacher on the areas that students need more help?
+- How can we inform the teacher on the students that are ahead/behind the rest of the class?
+- How can we let the teacher influence the problems the students are working on?
+
+# User stories
+
+# Technical considerations
+
+<details>
+<summary>
+Generating math problems
+</summary>
+
+## Generating math problems
 
 This is the most critical piece of this project. Hence, effort should be made to
 ensure this part of the project is extensible without modification to the rest
 of the project.
-
-| **Task**                  |      **Status** |
-| ------------------------- | --------------: |
-| *Math problem generation* |                 |
-| Number generation         |   Needs testing |
-| Hashing                   |            Done |
-| Difficulty function       | Needs prototype |
-| Math templates            | Needs prototype |
 
 #### Number generation
 
@@ -139,46 +204,17 @@ incorporating the values inside a string representing the math problem. It may d
 additional values if necessary (for example to generate a polynomial when given the
 value of the factors).  
 
-### Adapt to the student's learning
+</details>
 
-Students can self-report whether or not they solved the problem, and whether or
-not they found the problem easy. From there, the server can adjust the student's
-proficiency score and select the appropriate next problem.
 
-The key challenge is to determine the appropriate heuristic to select the next problem to show
-the student based on whether or not they successfully solved the problem.
+<details>
+<summary>
+Fetching the next math problem
+</summary>
 
-This would most likely take the shape of a function accepting a student profile. From there,
-the function would indicate which problem to show at which difficulty level.
+## Fetching the next math problem
 
-### Student profile
-
-The application will need to store information about each student using the app. At a minimum,
-we will need to store data regarding the student's proficiency score for each type of math problem and
-the last time a problem of a certain type was attempted.
-
-Teacher can view students' profile.
-
-### Instant messaging
-
-API required for a chat system:
-
--   Create a new conversation
--   Access conversations
--   Append a new message to a conversation (which would include images)
-
-Get data,
-What's your story
-Third-party API
-Real-time notifications
-Status text to teachers
-Maybe chat is a bad idea
-
-Communication on most points can be achieved via a series of REST endpoints.
-
-## Endpoint API Specs
-
-## Math Problems
+### API
 
 1.  `GET math-problems/nextProblem?previousResult={previousResult}`
 
@@ -306,3 +342,11 @@ Communication on most points can be achieved via a series of REST endpoints.
                 ]
             }
             ```
+</details>
+
+
+
+# Bibliography
+
+Project planning approach inspired by https://medium.com/@ClrMobile/planning-a-minimum-viable-product-a-step-by-step-guide-6f387d657870
+
