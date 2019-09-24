@@ -1,14 +1,23 @@
-import express from 'express';
+import express, {Application} from 'express';
+import mongoose from 'mongoose';
+require('dotenv/config');
+import bodyParser from 'body-parser';
 
-const app = express();
+const PORT = process.env.PORT || 3000;
 
-const PORT = 3000;
+const app: Application = express();
 
-app.get('/', (_, res) => {
-    res.send({
-        message: 'Hello World!',
-    });
-});
+app.use(bodyParser.json());
+
+//import routes
+const mathRoutes = require('./routes/math');
+app.use('/math',mathRoutes);
+
+//Connect to db
+// @ts-ignore
+mongoose.connect(String(process.env.DB_CONNECTION),
+  { useNewUrlParser: true },
+  ()=> {console.log('connected to DB')});
 
 app.listen(PORT, () => {
     console.log('Server started successfully on port ' + PORT);
