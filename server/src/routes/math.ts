@@ -47,6 +47,7 @@ router.post('/problem', (req : Request, res : Response) => {
     difficulty: req.body.difficulty,
     seed: req.body.seed
   });
+  console.log(p);
   p.save()
     .then((data: any) => {
       res.json(data)
@@ -56,10 +57,10 @@ router.post('/problem', (req : Request, res : Response) => {
     });
 });
 
-/* get a math problem */
+/* get all the math problem (for now) */
+//todo implement logic for getting a single math problem
 router.get('/problem', async (req : Request, res : Response) => {
   try{
-    //todo implement logic for getting the math problem
     const prob = await problem.find();
     res.json(prob);
   }
