@@ -10,7 +10,7 @@ const TemplateSchema = new Schema({
     required: true
   },
   operators: {
-    type: String,
+    type: Array,
     required: true
   }
 });

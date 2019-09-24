@@ -14,7 +14,7 @@ const ProblemSchema = new Schema({
     default: true
   },
   solution: {
-    type: String,
+    type: Array,
     default: true
   },
   difficulty: {
@@ -28,3 +28,4 @@ const ProblemSchema = new Schema({
 });
 
 module.exports = mongoose.model('problemSchema', ProblemSchema);
+

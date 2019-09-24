@@ -1,11 +1,13 @@
+//Todo convert require statements to ES6
+// Todo remove console.logs
+
 import express, {Request, Response} from 'express';
 const problem = require('../models/problem');
-const template = require('../models/template');
-const Post = require('../models/Post')
+const template = require('../models/arithmeticTemplate');
 
 const router = express.Router();
 
-//get all templates
+/* get all templates */
 router.get('/templates', async (req : Request, res : Response) => {
   try{
     const templates = await template.find();
@@ -16,7 +18,7 @@ router.get('/templates', async (req : Request, res : Response) => {
   }
 });
 
-//post a template
+/* post a template */
 router.post('/template', (req : Request, res : Response) => {
   const t = new template({
     problemArchetype: req.body.problemArchetype,
@@ -34,8 +36,8 @@ router.post('/template', (req : Request, res : Response) => {
     });
 });
 
-//TEST: THIS IS FOR PUTTING DUMMY PROBLEMS IN THE DB
-//post a problem
+
+/* post a problem (for putting dummy data to DB through API) */
 router.post('/problem', (req : Request, res : Response) => {
   const p = new problem({
     problemArchetype: req.body.problemArchetype,
@@ -54,7 +56,7 @@ router.post('/problem', (req : Request, res : Response) => {
     });
 });
 
-//get a math problem
+/* get a math problem */
 router.get('/problem', async (req : Request, res : Response) => {
   try{
     //todo implement logic for getting the math problem
@@ -64,23 +66,6 @@ router.get('/problem', async (req : Request, res : Response) => {
   catch (e) {
     res.json({message: e})
   }
-});
-
-
-//TEST
-router.post('/test', (req: Request,res: Response) => {
-  const post = new Post({
-    title: req.body.title,
-    description: req.body.description
-  });
-  post.save()
-    .then((data: any) => {
-      res.json(data)
-    })
-    .catch((err: any) => {
-      res.json({message: err})
-    });
-
 });
 
 module.exports = router;

@@ -1,3 +1,5 @@
+//Todo convert require statements to ES6
+
 import express, {Application} from 'express';
 import mongoose from 'mongoose';
 require('dotenv/config');
@@ -9,11 +11,11 @@ const app: Application = express();
 
 app.use(bodyParser.json());
 
-//import routes
+/* import routes */
 const mathRoutes = require('./routes/math');
 app.use('/math',mathRoutes);
 
-//Connect to db
+/* Connect to db */
 // @ts-ignore
 mongoose.connect(String(process.env.DB_CONNECTION),
   { useNewUrlParser: true },
