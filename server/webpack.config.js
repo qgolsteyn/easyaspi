@@ -28,4 +28,8 @@ module.exports = {
             onBuildEnd: ['nodemon dist/index.js --watch dist'],
         }),
     ],
+    externals: [
+        { mongoose: 'commonjs mongoose' },
+        { express: 'commonjs express' },
+    ],
 };

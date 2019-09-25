@@ -1,6 +1,10 @@
-import mongoose, { Schema } from 'mongoose';
+import * as mongoose from 'mongoose';
 
-const ProblemSchema = new Schema({
+import { IProblem } from '../../../types/model';
+
+export type IProblemSchema = IProblem & mongoose.Document;
+
+const ProblemSchema = new mongoose.Schema({
     problemArchetype: {
         type: String,
         required: true,
@@ -27,4 +31,7 @@ const ProblemSchema = new Schema({
     },
 });
 
-export const problemSchema = mongoose.model('problemSchema', ProblemSchema);
+export const ProblemModel = mongoose.model<IProblemSchema>(
+    'problemSchema',
+    ProblemSchema
+);

@@ -1,65 +1,77 @@
 //Todo convert require statements to ES6
 // Todo remove console.logs
 
-import express, { Request, Response } from 'express';
+import express from 'express';
+import RestypedRouter from 'restyped-express-async';
 
-import { templateSchema } from '../models/templateSchema';
-import { problemSchema } from '../models/problemSchema';
+import { MathAPI } from '../../../types/routes/math';
+import { TemplateModel, ProblemModel } from '../models';
 
-export const mathRouter = express.Router();
+export const initializeMathRoutes = (app: express.Application) => {
+    const router = express.Router();
+    app.use('/math', router);
 
-/* get all templates */
-mathRouter.get('/templates', async (_, res: Response) => {
-    try {
-        const templates = await templateSchema.find();
-        res.json(templates);
-    } catch (e) {
-        res.json({ message: e });
-    }
-});
+    const mathRouter = RestypedRouter<MathAPI>(router);
 
-/* post a template */
-mathRouter.post('/template', (req: Request, res: Response) => {
-    const t = new templateSchema({
-        problemArchetype: req.body.problemArchetype,
-        problemType: req.body.problemType,
-        operators: req.body.operators,
+    /* get all templates */
+    mathRouter.get('/templates', async (_, res) => {
+        try {
+            const templates = await TemplateModel.find();
+            res.status(200);
+            return templates;
+        } catch (e) {
+            res.status(500);
+            console.error(e);
+            return [];
+        }
     });
-    t.save()
-        .then((data: any) => {
-            res.json(data);
-        })
-        .catch((err: any) => {
-            res.json({ message: err });
-        });
-});
 
-/* post a problem (for putting dummy data to DB through API) */
-mathRouter.post('/problem', (req: Request, res: Response) => {
-    const p = new problemSchema({
-        problemArchetype: req.body.problemArchetype,
-        problemType: req.body.problemType,
-        problem: req.body.problem,
-        solution: req.body.solution,
-        difficulty: req.body.difficulty,
-        seed: req.body.seed,
+    /* post a template */
+    mathRouter.post('/template', async (req, res) => {
+        try {
+            const t = new TemplateModel({
+                problemArchetype: req.body.problemArchetype,
+                problemType: req.body.problemType,
+                operators: req.body.operators,
+            });
+            await t.save();
+            res.status(200);
+        } catch (e) {
+            res.status(500);
+            console.error(e);
+        }
     });
-    p.save()
-        .then((data: any) => {
-            res.json(data);
-        })
-        .catch((err: any) => {
-            res.json({ message: err });
-        });
-});
 
-/* get all the math problem (for now) */
-//todo implement logic for getting a single math problem
-mathRouter.get('/problem', async (_, res: Response) => {
-    try {
-        const prob = await problemSchema.find();
-        res.json(prob);
-    } catch (e) {
-        res.json({ message: e });
-    }
-});
+    /* post a problem (for putting dummy data to DB through API) */
+    mathRouter.post('/problem', async (req, res) => {
+        try {
+            const p = new ProblemModel({
+                problemArchetype: req.body.problemArchetype,
+                problemType: req.body.problemType,
+                problem: req.body.problem,
+                solution: req.body.solution,
+                difficulty: req.body.difficulty,
+                seed: req.body.seed,
+            });
+
+            await p.save();
+            res.status(200);
+        } catch (e) {
+            console.error(e);
+            res.status(500);
+        }
+    });
+
+    /* get all the math problem (for now) */
+    //todo implement logic for getting a single math problem
+    mathRouter.get('/problem', async (_, res) => {
+        try {
+            const prob = await ProblemModel.find().exec();
+            res.status(200);
+            return prob;
+        } catch (e) {
+            res.status(500);
+            return [];
+        }
+    });
+};

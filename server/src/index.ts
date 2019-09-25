@@ -4,30 +4,24 @@ import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 
-import { mathRouter } from './routes/math';
+import { connectToDB } from './models';
+import { initializeRoutes } from './routes';
 
-const DB_CONNECTION =
-    'mongodb://test1:iuf6nkfy273YTP5@cluster0-shard-00-00-ckvam.mongodb.net:27017,cluster0-shard-00-01-ckvam.mongodb.net:27017,cluster0-shard-00-02-ckvam.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority';
 const PORT = 3000;
 
-const app = express();
+export const initializeApp = async () => {
+    const app = express();
 
-app.use(bodyParser.json());
-app.use('/math', mathRouter);
+    app.use(bodyParser.json());
+    initializeRoutes(app);
 
-mongoose
-    .connect(DB_CONNECTION, { useNewUrlParser: true }, err => {
-        if (err) {
-            console.error(err);
-        }
+    await connectToDB();
 
-        console.log('DB connection successful');
-    })
-    .then(() => {
-        app.listen(PORT, err => {
-            if (err) {
-                console.error(err);
-            }
-            console.log('Server started successfully on port ' + PORT);
-        });
-    });
+    try {
+        await app.listen(PORT);
+    } catch (e) {
+        console.error(e);
+    }
+
+    return app;
+};
