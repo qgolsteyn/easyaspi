@@ -226,6 +226,25 @@ to hard code rules in the implementation.
 It is important to note that the optimization algorithm may not be able to find the best solution depending
 on the output of the difficulty function.
 
+Simple Solution:
+Looking at this website: https://ca.ixl.com/math/, I found the curriculum for grades 1 through 5. Looking at only addition
+right now I have determined these to be the following difficulty tiers. The idea is that each grade has 3 tiers: easy,
+medium and hard. There would be overlap, for example the hardest tier of grade 1, would be the same as the easiest tier
+of grade 2. I have broken it down into 11 difficulty tiers as follows:
+1)  adding 0,1,2 to numbers up to 10                                        (g1 easy)
+2)  adding 3,4,5 to numbers up to 10                                        (g1 medium)
+3)  adding 6,7,8,9 to numbers up to 10                                      (g1 hard, g2 easy)
+4)  adding two or three numbers, up to 2 digits, of multiples of 5 or 10    (g2 medium)
+5)  adding two or three numbers, up to 2 digits                             (g2 hard, g3 easy)
+6)  adding two numbers, up to 3 digits                                      (g3 medium)
+7)  adding three numbers, up to 3 digits                                    (g3 hard, g4 easy)
+8)  adding two numbers, up to 4 digits                                      (g4 medium)
+9)  adding two numbers, up to 5 digits                                      (g4 hard, g5 easy)
+10) adding two numbers, up to 6 digits                                      (g5 medium)
+11) adding two numbres, up to 7 digits                                      (g5 hard)
+
+This would be a rule set of difficulty.
+
 #### Hashing
 
 We will guarrantee some determinism in problem generation by using a seed. By using the same seed and
@@ -261,6 +280,25 @@ Fetching the next math problem
 </summary>
 
 ## Fetching the next math problem
+
+Steps:
+1.  - Async generate 500 (tbd) problems of each tier and save them in db
+    - In db, have a collection of addition problems for example, have 1 document for each difficulty tier 
+      with an array that contains the problems
+2.  - Each userUid has a map containing their current difficulty level for each problem type
+    - Each userUid has a points metric for each problem type which counts the number of problems they 
+      got right
+3.  - GET is called for a given userUid. It returns a random problem (for now only addition) with difficulty
+      matching their current difficulty level. Increment problem index
+    - By random problem I mean we look into the collection, find the problem type, find the right difficulty
+      then take a random problem. If we have enough problems stored (500+ then the chance of duplicates will
+      be pretty low)
+4.  - POST is called telling the server if they got it right or wrong. If they get it right, their points
+      metric for that problem goes up by 1
+    - If they get it wrong it goes down by 2. When they get to 10, they graduate up to the next level and 
+      their points metric is reset to 0. If they get to -1, the get demoted to the previous difficulty and 
+      their points is set to 10. If they are at difficulty level 1 keep them there
+5.  - GET is called again taking us back to step 3
 
 ### API
 
