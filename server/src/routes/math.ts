@@ -4,25 +4,21 @@
 import express from 'express';
 import RestypedRouter from 'restyped-express-async';
 
-import { MathAPI } from '../../../types/routes/math';
 import { TemplateModel, ProblemModel } from '../models';
 
 export const initializeMathRoutes = (app: express.Application) => {
-    const router = express.Router();
-    app.use('/math', router);
-
-    const mathRouter = RestypedRouter<MathAPI>(router);
+    const mathRouter = express.Router();
+    app.use('/math', mathRouter);
 
     /* get all templates */
     mathRouter.get('/templates', async (_, res) => {
         try {
             const templates = await TemplateModel.find();
             res.status(200);
-            return templates;
+            res.json(templates);
         } catch (e) {
             res.status(500);
             console.error(e);
-            return [];
         }
     });
 
@@ -68,10 +64,9 @@ export const initializeMathRoutes = (app: express.Application) => {
         try {
             const prob = await ProblemModel.find().exec();
             res.status(200);
-            return prob;
+            res.json(prob);
         } catch (e) {
             res.status(500);
-            return [];
         }
     });
 };

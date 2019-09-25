@@ -1,7 +1,7 @@
 import express from 'express';
 import request from 'supertest';
 
-import { initializeApp } from '..';
+import { initializeApp } from '../server';
 
 describe('math router', () => {
     let app: express.Application;

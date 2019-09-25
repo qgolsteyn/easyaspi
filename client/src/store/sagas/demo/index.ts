@@ -2,10 +2,22 @@
  * Demo saga; used for demonstration purposes
  */
 
-import { put } from 'redux-saga/effects';
+import { call, put } from 'redux-saga/effects';
 
+import { api } from '../api';
 import { actions } from '../..';
+import { IProblem } from '../../../../../types/model';
+import { AxiosResponse } from 'axios';
 
 export function* demoStart() {
-    yield put(actions.demo.changeDemoText('Hello from Saga land!'));
+    const problems = (yield call(
+        [api, api.get],
+        '/math/problem'
+    )) as AxiosResponse<IProblem[]>;
+    yield put(
+        actions.demo.changeDemoText(
+            problems.data[0].problem,
+            problems.data[0].solution[0]
+        )
+    );
 }

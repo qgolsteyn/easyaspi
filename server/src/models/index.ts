@@ -12,5 +12,5 @@ export const connectToDB = () => {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         })
-        .then(() => console.log('Db connected...')).catch;
+        .then(() => console.log('Db connected...'));
 };

@@ -1,27 +1,3 @@
-//Todo convert require statements to ES6
+import { initializeApp } from './server';
 
-import express from 'express';
-import mongoose from 'mongoose';
-import bodyParser from 'body-parser';
-
-import { connectToDB } from './models';
-import { initializeRoutes } from './routes';
-
-const PORT = 3000;
-
-export const initializeApp = async () => {
-    const app = express();
-
-    app.use(bodyParser.json());
-    initializeRoutes(app);
-
-    await connectToDB();
-
-    try {
-        await app.listen(PORT);
-    } catch (e) {
-        console.error(e);
-    }
-
-    return app;
-};
+initializeApp();
