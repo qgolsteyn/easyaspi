@@ -10,11 +10,11 @@
         "shared"
     ],
     "scripts": {
-        "prestart": "cd shared && yarn build",
+        "prestart": "yarn build:shared",
         "start": "concurrently \"cd server && yarn start\" \"cd client && yarn start\"",
-        "pretest": "cd shared && yarn build",
-        "test": "jest",
-        "test:coverage": "jest --coverage",
+        "build:shared": "cd shared && yarn build",
+        "test": "yarn build:shared && jest",
+        "test:coverage": "yarn build:shared && jest --coverage",
         "codecov": "codecov"
     },
     "dependencies": {},
