@@ -33,7 +33,7 @@ describe('math router', () => {
                 problemArchetype: 'arithmetic',
                 problemType: 'addition',
                 problem: '1+1=',
-                solution: '1+1=2',
+                solution: ['1+1=2'],
                 difficulty: 10,
                 seed: 10,
             })

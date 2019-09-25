@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
 
-import { ITemplate } from '../../../types/model';
+import { ITemplate } from 'shared';
 
 export type ITemplateSchema = ITemplate & mongoose.Document;
 

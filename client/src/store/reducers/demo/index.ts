@@ -25,7 +25,7 @@ export const demoSelectors = {
 
 // And actions allow us to mutate the state
 export const demoActions = {
-    changeDemoText: createAction(
+    setProblem: createAction(
         'demo_SET_PROBLEM',
         resolve => (problem: string, solution: string) =>
             resolve({ problem, solution })
@@ -38,7 +38,7 @@ export type DemoAction = ActionType<typeof demoActions>;
 export const demoReducer = produce((draft: IDemoState, action: DemoAction) => {
     // We switch based on the type of action
     switch (action.type) {
-        case getType(demoActions.changeDemoText): {
+        case getType(demoActions.setProblem): {
             const { problem, solution } = action.payload;
 
             draft.problem = problem;

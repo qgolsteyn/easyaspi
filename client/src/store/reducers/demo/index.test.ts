@@ -3,14 +3,18 @@ import { demoActions, demoReducer, demoSelectors } from '.';
 describe('demo store', () => {
     describe('actions', () => {
         it('should create an action to change demo text', () => {
-            const text = 'test text';
+            const problem = 'test problem';
+            const solution = 'test solution';
             const expectedAction = {
-                type: 'demo_CHANGE_TEXT',
+                type: 'demo_SET_PROBLEM',
                 payload: {
-                    text,
+                    problem,
+                    solution,
                 },
             };
-            expect(demoActions.changeDemoText(text)).toEqual(expectedAction);
+            expect(demoActions.setProblem(problem, solution)).toEqual(
+                expectedAction
+            );
         });
     });
 
@@ -18,28 +22,45 @@ describe('demo store', () => {
         it('should return the initial state', () => {
             expect(demoReducer(undefined, {} as any)).toEqual(
                 expect.objectContaining({
-                    demoText: expect.any(String),
+                    problem: expect.any(String),
+                    solution: expect.any(String),
                 })
             );
         });
-        it('should handle demo_CHANGE_TEXT', () => {
+        it('should handle demo_SET_PROBLEM', () => {
             expect(
-                demoReducer(undefined, demoActions.changeDemoText('test'))
+                demoReducer(
+                    undefined,
+                    demoActions.setProblem('test', 'solution')
+                )
             ).toMatchObject({
-                demoText: 'test',
+                problem: 'test',
+                solution: 'solution',
             });
         });
     });
 
     describe('selectors', () => {
-        it('should return the demo text', () => {
+        it('should return problem', () => {
             const state = {
                 demo: {
-                    demoText: 'test',
+                    problem: 'test',
+                    solution: 'solution',
                 },
             };
 
-            expect(demoSelectors.getText(state)).toEqual('test');
+            expect(demoSelectors.getProblem(state)).toEqual('test');
+        });
+
+        it('should return solution', () => {
+            const state = {
+                demo: {
+                    problem: 'test',
+                    solution: 'solution',
+                },
+            };
+
+            expect(demoSelectors.getSolution(state)).toEqual('solution');
         });
     });
 });

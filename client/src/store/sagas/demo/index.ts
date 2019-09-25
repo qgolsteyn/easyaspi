@@ -2,22 +2,23 @@
  * Demo saga; used for demonstration purposes
  */
 
+import { AxiosResponse } from 'axios';
 import { call, put } from 'redux-saga/effects';
+
+import { problemSerializer } from 'shared';
 
 import { api } from '../api';
 import { actions } from '../..';
-import { IProblem } from '../../../../../types/model';
-import { AxiosResponse } from 'axios';
 
 export function* demoStart() {
-    const problems = (yield call(
+    const response = (yield call(
         [api, api.get],
         '/math/problem'
-    )) as AxiosResponse<IProblem[]>;
+    )) as AxiosResponse;
+
+    const problems = problemSerializer.parseAsArray(response.data);
+
     yield put(
-        actions.demo.changeDemoText(
-            problems.data[0].problem,
-            problems.data[0].solution[0]
-        )
+        actions.demo.setProblem(problems[0].problem, problems[0].solution[0])
     );
 }

@@ -6,10 +6,13 @@
     "license": "MIT",
     "workspaces": [
         "client",
-        "server"
+        "server",
+        "shared"
     ],
     "scripts": {
+        "prestart": "cd shared && yarn build",
         "start": "concurrently \"cd server && yarn start\" \"cd client && yarn start\"",
+        "pretest": "cd shared && yarn build",
         "test": "jest",
         "test:coverage": "jest --coverage",
         "codecov": "codecov"
