@@ -1,4 +1,5 @@
 import express from 'express';
+import { Server } from 'http';
 import request from 'supertest';
 
 import { initializeApp } from '../server';
@@ -6,8 +7,10 @@ import mongoose from 'mongoose';
 
 describe('math router', () => {
     let app: express.Application;
+    let server: Server;
+
     beforeAll(async () => {
-        app = await initializeApp();
+        [app, server] = await initializeApp();
     });
 
     it('should GET /math/templates', async () => {
@@ -47,7 +50,8 @@ describe('math router', () => {
             .expect(200);
     });
 
-    afterAll(done => {
-        mongoose.disconnect(done);
+    afterAll(async done => {
+        await mongoose.disconnect();
+        server.close(done);
     });
 });

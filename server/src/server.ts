@@ -1,7 +1,7 @@
 //Todo convert require statements to ES6
 
 import express from 'express';
-import mongoose from 'mongoose';
+import { Server } from 'http';
 import bodyParser from 'body-parser';
 
 import { connectToDB } from './models';
@@ -17,12 +17,14 @@ export const initializeApp = async () => {
 
     await connectToDB();
 
+    let server: Server;
     try {
-        await app.listen(PORT);
+        server = await app.listen(PORT);
         console.log(`Server listening on port ${PORT}`);
     } catch (e) {
         console.error(e);
+        throw e;
     }
 
-    return app;
+    return [app, server] as [express.Application, Server];
 };
