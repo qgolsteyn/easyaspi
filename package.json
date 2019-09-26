@@ -14,7 +14,7 @@
         "start": "concurrently \"cd server && yarn start\" \"cd client && yarn start\"",
         "build:shared": "cd shared && yarn build",
         "test": "yarn build:shared && jest",
-        "test:coverage": "yarn build:shared && jest --coverage",
+        "test:coverage": "yarn build:shared && jest --coverage --detectOpenHandles --forceExit",
         "codecov": "codecov"
     },
     "dependencies": {},
