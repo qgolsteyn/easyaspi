@@ -2,6 +2,7 @@ import express from 'express';
 import request from 'supertest';
 
 import { initializeApp } from '../server';
+import mongoose from 'mongoose';
 
 describe('math router', () => {
     let app: express.Application;
@@ -44,5 +45,9 @@ describe('math router', () => {
         await request(app)
             .get('/math/problem')
             .expect(200);
+    });
+
+    afterAll(() => {
+        mongoose.disconnect();
     });
 });
