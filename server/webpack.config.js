@@ -2,7 +2,10 @@
  * This file specifies the configuration for webpack
  */
 
+const path = require('path');
+
 const WebpackShellPlugin = require('webpack-shell-plugin');
+const Dotenv = require('dotenv-webpack');
 
 module.exports = {
     entry: ['./src/index.ts'],
@@ -27,5 +30,12 @@ module.exports = {
         new WebpackShellPlugin({
             onBuildEnd: ['nodemon dist/index.js --watch dist'],
         }),
+        new Dotenv({
+            path: path.resolve(__dirname, '../.env'),
+        }),
+    ],
+    externals: [
+        { mongoose: 'commonjs mongoose' },
+        { express: 'commonjs express' },
     ],
 };

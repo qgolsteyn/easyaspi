@@ -8,6 +8,7 @@
         "test": "jest --config ../jest.config.js"
     },
     "dependencies": {
+        "axios": "^0.19.0",
         "expo": "^34.0.1",
         "immer": "^4.0.0",
         "react": "16.8.3",
@@ -18,7 +19,9 @@
         "redux": "^4.0.4",
         "redux-saga": "^1.1.1",
         "redux-saga-test-plan": "^4.0.0-rc.1",
-        "typesafe-actions": "^4.4.2"
+        "restyped-axios": "^2.0.0",
+        "typesafe-actions": "^4.4.2",
+        "shared": "1.0.0"
     },
     "devDependencies": {
         "@storybook/react-native": "^5.1.11",

@@ -6,12 +6,15 @@
     "license": "MIT",
     "workspaces": [
         "client",
-        "server"
+        "server",
+        "shared"
     ],
     "scripts": {
+        "prestart": "yarn build:shared",
         "start": "concurrently \"cd server && yarn start\" \"cd client && yarn start\"",
-        "test": "jest",
-        "test:coverage": "jest --coverage",
+        "build:shared": "cd shared && yarn build",
+        "test": "yarn build:shared && jest",
+        "test:coverage": "yarn build:shared && jest --coverage --detectOpenHandles --forceExit",
         "codecov": "codecov"
     },
     "dependencies": {},

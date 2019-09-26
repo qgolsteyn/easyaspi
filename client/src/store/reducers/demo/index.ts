@@ -7,24 +7,28 @@ import produce from 'immer';
 
 // We specify the shape of the state in an interface
 export interface IDemoState {
-    demoText: string;
+    problem: string;
+    solution: string;
 }
 
 // And provide a default value for initialization
 const defaultState: IDemoState = {
-    demoText: 'Press here',
+    problem: 'Waiting',
+    solution: 'Waiting',
 };
 
 // Selectors are responsible for getting values in the state
 export const demoSelectors = {
-    getText: (state: { demo: IDemoState }) => state.demo.demoText,
+    getProblem: (state: { demo: IDemoState }) => state.demo.problem,
+    getSolution: (state: { demo: IDemoState }) => state.demo.solution,
 };
 
 // And actions allow us to mutate the state
 export const demoActions = {
-    changeDemoText: createAction(
-        'demo_CHANGE_TEXT',
-        resolve => (text: string) => resolve({ text })
+    setProblem: createAction(
+        'demo_SET_PROBLEM',
+        resolve => (problem: string, solution: string) =>
+            resolve({ problem, solution })
     ),
 };
 
@@ -34,10 +38,11 @@ export type DemoAction = ActionType<typeof demoActions>;
 export const demoReducer = produce((draft: IDemoState, action: DemoAction) => {
     // We switch based on the type of action
     switch (action.type) {
-        case getType(demoActions.changeDemoText): {
-            const { text } = action.payload;
+        case getType(demoActions.setProblem): {
+            const { problem, solution } = action.payload;
 
-            draft.demoText = text;
+            draft.problem = problem;
+            draft.solution = solution;
 
             return draft;
         }
