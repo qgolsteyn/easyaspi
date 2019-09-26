@@ -8,7 +8,7 @@ import { call, put } from 'redux-saga/effects';
 import { problemSerializer } from 'shared';
 
 import { api } from '../api';
-import { actions } from '../..';
+import { actions } from '../../reducers';
 
 export function* demoStart() {
     const response = (yield call(

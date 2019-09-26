@@ -4,7 +4,7 @@
     "private": true,
     "main": "./src/index.tsx",
     "scripts": {
-        "start": "expo start --web",
+        "start": "expo start --android",
         "test": "jest --config ../jest.config.js"
     },
     "dependencies": {

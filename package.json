@@ -5,11 +5,11 @@
     "author": "Quentin Golsteyn <qgolsteyn@gmail.com>",
     "license": "MIT",
     "workspaces": [
-        "client",
         "server",
         "shared"
     ],
     "scripts": {
+        "postinstall": "cd shared && yarn link && cd ../client && yarn link shared && yarn",
         "prestart": "yarn build:shared",
         "start": "concurrently \"cd server && yarn start\" \"cd client && yarn start\"",
         "build:shared": "cd shared && yarn build",
