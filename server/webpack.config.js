@@ -31,7 +31,7 @@ module.exports = {
             onBuildEnd: ['nodemon dist/index.js --watch dist'],
         }),
         new Dotenv({
-            path: path.resolve(__dirname, '.env'),
+            path: path.resolve(__dirname, '../.env'),
         }),
     ],
     externals: [
