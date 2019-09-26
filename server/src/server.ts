@@ -7,7 +7,7 @@ import bodyParser from 'body-parser';
 import { connectToDB } from './models';
 import { initializeRoutes } from './routes';
 
-const PORT = 3000;
+const PORT = process.env['SERVER_PORT'] || 3000;
 
 export const initializeApp = async () => {
     const app = express();
@@ -19,7 +19,7 @@ export const initializeApp = async () => {
 
     try {
         await app.listen(PORT);
-        console.log('Server listening on port 3000');
+        console.log(`Server listening on port ${PORT}`);
     } catch (e) {
         console.error(e);
     }

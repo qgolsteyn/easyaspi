@@ -4,7 +4,7 @@ export { ProblemModel } from './problem';
 export { TemplateModel } from './template';
 
 const DB_CONNECTION =
-    'mongodb://test1:iuf6nkfy273YTP5@cluster0-shard-00-00-ckvam.mongodb.net:27017,cluster0-shard-00-01-ckvam.mongodb.net:27017,cluster0-shard-00-02-ckvam.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority';
+    process.env['DB_CONNECTION'] || 'mongodb://localhost:27017/test';
 
 export const connectToDB = () => {
     return mongoose
