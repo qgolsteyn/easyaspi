@@ -47,7 +47,7 @@ describe('math router', () => {
             .expect(200);
     });
 
-    afterAll(() => {
-        mongoose.disconnect();
+    afterAll(done => {
+        mongoose.disconnect(done);
     });
 });
