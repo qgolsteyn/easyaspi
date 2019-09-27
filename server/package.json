@@ -5,9 +5,9 @@
     "main": "dist/index.js",
     "scripts": {
         "prestart": "yarn clean",
-        "start": "webpack --watch",
-        "clean": "rimraf dist",
-        "test": "jest --config ../jest.config.js"
+        "start": "node ../scripts/start.js server",
+        "test": "node ../scripts/test.js",
+        "clean": "rimraf dist"
     },
     "dependencies": {
         "body-parser": "^1.19.0",

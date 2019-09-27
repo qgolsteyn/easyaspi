@@ -10,11 +10,10 @@
         "shared"
     ],
     "scripts": {
-        "prestart": "yarn build:shared",
-        "start": "concurrently \"cd server && yarn start\" \"cd client && yarn start\"",
-        "build:shared": "cd shared && yarn build",
-        "test": "yarn build:shared && jest",
-        "test:coverage": "yarn build:shared && jest --coverage --detectOpenHandles --forceExit",
+        "postinstall": "node ./scripts/setup.js",
+        "start": "node ./scripts/start.js",
+        "build": "node ./scripts/build.js",
+        "test": "node ./scripts/test.js",
         "codecov": "codecov"
     },
     "dependencies": {},
@@ -23,6 +22,7 @@
         "codecov": "^3.6.1",
         "concurrently": "^4.1.2",
         "jest": "^24.9.0",
+        "node-keytool": "^0.0.3",
         "prettier": "^1.18.2",
         "ts-jest": "^24.1.0",
         "typescript": "^3.6.3"
