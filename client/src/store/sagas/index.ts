@@ -9,5 +9,5 @@ import { spawn } from 'redux-saga/effects';
 import { demoStart } from './demo';
 
 export function* initializeSagas() {
-    yield spawn(demoStart);
+    // yield spawn(demoStart);
 }
