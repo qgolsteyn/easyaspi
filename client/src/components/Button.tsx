@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { TouchableOpacity, StyleSheet, View, Text } from 'react-native';
+import { TouchableWithoutFeedback, StyleSheet, View, Text } from 'react-native';
+import * as Haptic from 'expo-haptics';
 
 import { colors } from '../constants/colors';
 
@@ -9,16 +10,33 @@ interface IStyledButton {
 }
 
 export const StyledButton = (props: IStyledButton) => {
+    const [focus, setFocus] = React.useState(false);
+
     return (
         <View style={styles.wrapper}>
-            <TouchableOpacity
-                onPress={() => {}}
+            <TouchableWithoutFeedback
                 style={styles.button}
-                onPressOut={props.onPress}
-            />
-            <View style={styles.textContainer}>
-                <Text style={styles.text}>{props.text}</Text>
-            </View>
+                onPressIn={() => setFocus(true)}
+                onPressOut={() => setFocus(false)}
+                onPress={() => {
+                    Haptic.impactAsync(Haptic.ImpactFeedbackStyle.Light);
+
+                    if (props.onPress) {
+                        props.onPress();
+                    }
+                }}
+            >
+                <View
+                    style={{
+                        ...styles.textContainer,
+                        backgroundColor: focus
+                            ? colors.primaryDark
+                            : colors.primary,
+                    }}
+                >
+                    <Text style={styles.text}>{props.text}</Text>
+                </View>
+            </TouchableWithoutFeedback>
         </View>
     );
 };
@@ -33,23 +51,18 @@ const styles = StyleSheet.create({
         backgroundColor: colors.primaryDark,
     },
     button: {
-        position: 'absolute',
         width: '100%',
         height: '100%',
-        borderRadius: 8,
         display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: colors.primary,
     },
     textContainer: {
-        position: 'absolute',
         width: '100%',
         height: '100%',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         paddingBottom: 4,
+        borderRadius: 8,
     },
     text: {
         fontFamily: 'josefin-sans-bold',
