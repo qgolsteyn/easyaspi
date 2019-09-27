@@ -16,15 +16,12 @@ export const StyledButton = (props: IStyledButton) => {
         <View style={styles.wrapper}>
             <TouchableWithoutFeedback
                 style={styles.button}
-                onPressIn={() => setFocus(true)}
-                onPressOut={() => setFocus(false)}
-                onPress={() => {
+                onPressIn={() => {
                     Haptic.impactAsync(Haptic.ImpactFeedbackStyle.Light);
-
-                    if (props.onPress) {
-                        props.onPress();
-                    }
+                    setFocus(true);
                 }}
+                onPressOut={() => setFocus(false)}
+                onPress={props.onPress}
             >
                 <View
                     style={{

@@ -3,18 +3,25 @@
  */
 
 import React from 'react';
-import { Image, View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 
 import { Background } from '../components/Background';
 import { StyledButton } from '../components/Button';
-import { colors } from '../constants/colors';
 
 import bg2 from '../../assets/bg2.png';
 
 export const UserSelectionScreen = () => {
     return (
         <Background backgroundImage={bg2}>
-            <View style={styles.wrapper}></View>
+            <View style={styles.wrapper}>
+                <View style={styles.header}>
+                    <Text style={styles.headerText}>I am</Text>
+                </View>
+                <View style={styles.container}>
+                    <StyledButton text="a student" />
+                    <StyledButton text="a teacher" />
+                </View>
+            </View>
         </Background>
     );
 };
@@ -31,6 +38,27 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        paddingBottom: 32,
+    },
+    header: {
+        width: '100%',
+        height: '30%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    headerText: {
+        fontFamily: 'amatic-sc',
+        fontSize: 72,
+        color: '#fff',
+    },
+    container: {
+        width: '100%',
+        flexGrow: 1,
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingTop: 96,
+        paddingBottom: 96,
+        paddingHorizontal: 32,
     },
 });
