@@ -12,6 +12,7 @@ import { App } from './App';
 
 import JosefinSans from '../assets/fonts/JosefinSans-Regular.ttf';
 import JosefinSansBold from '../assets/fonts/JosefinSans-Bold.ttf';
+import AmaticSC from '../assets/fonts/AmaticSC-Regular.ttf';
 
 const store = createStore();
 
@@ -22,6 +23,7 @@ const Entry = () => {
         Font.loadAsync({
             'josefin-sans': JosefinSans,
             'josefin-sans-bold': JosefinSansBold,
+            'amatic-sc': AmaticSC,
         }).then(() => {
             setLoading(false);
         });
