@@ -4,18 +4,25 @@
 
 import React from 'react';
 import { Image, View, StyleSheet } from 'react-native';
+import { NavigationNavigator } from 'react-navigation';
 
 import { Background } from '../components/Background';
 import { StyledButton } from '../components/Button';
+import { colors } from '../constants/colors';
 
 import welcome from '../../assets/welcome.png';
 import logo from '../../assets/logo.png';
 
-export const WelcomeScreen = () => {
+interface IWelcomeScreenProps {
+    navigation: any;
+}
+
+export const WelcomeScreen = (props: IWelcomeScreenProps) => {
     return (
         <Background>
             <View style={styles.wrapper}>
                 <View style={styles.logoContainer}>
+                    <View style={styles.topBuffer} />
                     <Image
                         source={welcome}
                         style={{
@@ -33,12 +40,21 @@ export const WelcomeScreen = () => {
                     />
                 </View>
                 <View style={styles.buttonContainer}>
-                    <StyledButton text="Next" />
+                    <StyledButton
+                        text="Let's start!"
+                        onPress={() =>
+                            props.navigation.navigate('UserSelection')
+                        }
+                    />
                 </View>
             </View>
         </Background>
     );
 };
+
+WelcomeScreen['navigationOptions'] = () => ({
+    header: null,
+});
 
 const styles = StyleSheet.create({
     wrapper: {
@@ -52,8 +68,13 @@ const styles = StyleSheet.create({
     },
     logoContainer: {
         display: 'flex',
-        flexDirection: 'column',
         width: '100%',
+    },
+    topBuffer: {
+        width: '100%',
+        height: 32,
+        marginBottom: -1,
+        backgroundColor: colors.bg,
     },
     buttonContainer: {
         display: 'flex',

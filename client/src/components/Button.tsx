@@ -5,12 +5,17 @@ import { colors } from '../constants/colors';
 
 interface IStyledButton {
     text: string;
+    onPress?: () => void;
 }
 
 export const StyledButton = (props: IStyledButton) => {
     return (
         <View style={styles.wrapper}>
-            <TouchableOpacity onPress={() => {}} style={styles.button} />
+            <TouchableOpacity
+                onPress={() => {}}
+                style={styles.button}
+                onPressOut={props.onPress}
+            />
             <View style={styles.textContainer}>
                 <Text style={styles.text}>{props.text}</Text>
             </View>
