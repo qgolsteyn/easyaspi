@@ -6,7 +6,7 @@ import seedrandom from 'seedrandom';
  */
 export interface Definition {
     variables: Variable[];
-    difficulty: (values: number[]) => number;
+    score: (values: number[]) => number;
 }
 
 /**
@@ -22,7 +22,7 @@ interface Variable {
  */
 export interface Result {
     values: number[];
-    difficulty: number;
+    score: number;
 }
 
 /**
@@ -33,25 +33,17 @@ export interface Result {
  * @param seed optional - seed used when requiring random values
  * @return a Result object with values for each variable and the resulting difficulty
  */
-export const generateMathProblem = (
-    definition: Definition,
-    targetDifficulty: number,
-    seed = 'seed'
-) => {
+export const selectBestAssignment = (definition: Definition, seed = 'seed') => {
     seedrandom(seed, { global: true });
 
     // Initial values are randomly assigned inside the domain space
     const initialValues = generateInitialValues(definition.variables);
 
     // Use gradient descent to find the optimal solution
-    return gradientDescent(definition, targetDifficulty, initialValues);
+    return gradientDescent(definition, initialValues);
 };
 
-const gradientDescent = (
-    variables: Definition,
-    targetDifficulty: number,
-    initialValues: number[]
-) => {
+const gradientDescent = (variables: Definition, initialValues: number[]) => {
     // How fast should we converge to a solution
     // Higher values reduce the runtime, but could lead to lower accuracy
     const learningRate = 3;
@@ -61,7 +53,7 @@ const gradientDescent = (
 
     // Prime the successor and result generator function with the provided parameters
     const successor = generateSuccessor(variables, learningRate);
-    const generateNode = getResult(variables, targetDifficulty);
+    const generateNode = getResult(variables);
 
     // We will be keeping the best set of values we found so far here
     let bestNode = generateNode(initialValues);
@@ -78,11 +70,11 @@ const gradientDescent = (
         currentNode = selectSuccessor(count - i, currentNode, candidateNode);
 
         // Check if our current node has a lower difficulty delta than the best node so far
-        if (bestNode.difficulty > currentNode.difficulty) {
+        if (bestNode.score > currentNode.score) {
             bestNode = currentNode;
 
             // If the delta is 0, then return it, we can't do better than that
-            if (bestNode.difficulty === 0) {
+            if (bestNode.score === 0) {
                 return bestNode;
             }
         }
@@ -162,7 +154,7 @@ const selectSuccessor = (
     currentNode: Result,
     candidateNode: Result
 ) => {
-    if (currentNode.difficulty > candidateNode.difficulty) {
+    if (currentNode.score > candidateNode.score) {
         return candidateNode;
     } else {
         const P = 1 - Math.exp(-1 / (0.001 * temperature));
@@ -179,16 +171,12 @@ const selectSuccessor = (
  * Calculate the difference (delta) of the current difficulty of the specified values, and the target
  * difficulty.
  * @param definition
- * @param targetDifficulty
  */
-const getResult = (definition: Definition, targetDifficulty: number) => (
-    values: number[]
-) => {
-    const difficulty = definition.difficulty(values);
-    const deltaDifficulty = Math.abs(targetDifficulty - difficulty);
+const getResult = (definition: Definition) => (values: number[]) => {
+    const score = definition.score(values);
 
     return {
         values,
-        difficulty: deltaDifficulty,
+        score,
     };
 };
