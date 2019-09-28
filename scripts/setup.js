@@ -7,9 +7,6 @@ const { execSync } = require('child_process');
 
 // Link shared
 console.log('Link shared package');
-execSync('yarn unlink', {
-    cwd: resolve(__dirname, '../shared'),
-});
 execSync('yarn link', {
     cwd: resolve(__dirname, '../shared'),
 });

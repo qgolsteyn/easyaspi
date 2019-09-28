@@ -14,7 +14,13 @@ interface IBackgroundProps {
 
 export const Background = (props: IBackgroundProps) => {
     return props.backgroundImage !== undefined ? (
-        <ImageBackground source={props.backgroundImage} style={styles.bg}>
+        <ImageBackground
+            source={props.backgroundImage}
+            style={{
+                ...styles.bg,
+                backgroundColor: props.backgroundColor || '#fff',
+            }}
+        >
             {props.children}
         </ImageBackground>
     ) : (

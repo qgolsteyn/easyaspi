@@ -5,7 +5,6 @@
     "author": "Quentin Golsteyn <qgolsteyn@gmail.com>",
     "license": "MIT",
     "workspaces": [
-        "client",
         "server",
         "shared"
     ],

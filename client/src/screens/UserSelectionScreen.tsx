@@ -9,16 +9,26 @@ import { Background } from '../components/Background';
 import { StyledButton } from '../components/Button';
 
 import bg2 from '../../assets/bg2.png';
+import { colors } from '../constants/colors';
 
-export const UserSelectionScreen = () => {
+interface IUserSelectionScreenProps {
+    navigation: any;
+}
+
+export const UserSelectionScreen = (props: IUserSelectionScreenProps) => {
     return (
-        <Background backgroundImage={bg2}>
+        <Background backgroundImage={bg2} backgroundColor={colors.bg}>
             <View style={styles.wrapper}>
                 <View style={styles.header}>
                     <Text style={styles.headerText}>I am</Text>
                 </View>
                 <View style={styles.container}>
-                    <StyledButton text="a student" />
+                    <StyledButton
+                        text="a student"
+                        onPress={() =>
+                            props.navigation.navigate('StudentSignUp')
+                        }
+                    />
                     <StyledButton text="a teacher" />
                 </View>
             </View>
