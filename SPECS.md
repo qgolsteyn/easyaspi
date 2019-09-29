@@ -205,9 +205,8 @@ Each rule of a particular problem type can be formulated as a mathematical inequ
 For example, for addition in Grade 1, students are expected to be able to add a "large" number with 
 a "small" number to values up to 10. This can be formulated as such, assuming an addition takes the form a + b = c.
 
-- `a > 5`
-- `b < 5`
-- `a + b < 10`
+- `5 < a < 10`
+- `0 < b < 5`
 
 A particular assignment to all the variables can be scored on how many constraints it satisfies.
 
