@@ -1,5 +1,3 @@
-//Todo convert require statements to ES6
-
 import express from 'express';
 import { Server } from 'http';
 import bodyParser from 'body-parser';
