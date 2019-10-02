@@ -19,7 +19,7 @@
     - [Rule-based generation](#rule-based-generation)
     - [Categorizing student's ability](#categorizing-students-ability)
     - [Formulating rules as constraints](#formulating-rules-as-constraints)
-    - [Hashing](#hashing)
+      - [Hashing](#hashing)
   - [Adapting to the student's performance](#adapting-to-the-students-performance)
   - [Fetching the next math problem](#fetching-the-next-math-problem)
     - [API](#api)
@@ -218,7 +218,7 @@ controlled variables.
 
 An algorithm can pick a random value for the controlled variables, and then compute derived variables as needed.
 
-### Hashing
+#### Hashing
 
 We need to ensure some determinism when generating math problems. This can be achieved by seeding the random number
 generator.
@@ -249,6 +249,25 @@ Fetching the next math problem
 </summary>
 
 ## Fetching the next math problem
+
+Steps:
+1.  - Async generate 500 (tbd) problems of each tier and save them in db
+    - In db, have a collection of addition problems for example, have 1 document for each difficulty tier 
+      with an array that contains the problems
+2.  - Each userUid has a map containing their current difficulty level for each problem type
+    - Each userUid has a points metric for each problem type which counts the number of problems they 
+      got right
+3.  - GET is called for a given userUid. It returns a random problem (for now only addition) with difficulty
+      matching their current difficulty level. Increment problem index
+    - By random problem I mean we look into the collection, find the problem type, find the right difficulty
+      then take a random problem. If we have enough problems stored (500+ then the chance of duplicates will
+      be pretty low)
+4.  - POST is called telling the server if they got it right or wrong. If they get it right, their points
+      metric for that problem goes up by 1
+    - If they get it wrong it goes down by 2. When they get to 10, they graduate up to the next level and 
+      their points metric is reset to 0. If they get to -1, the get demoted to the previous difficulty and 
+      their points is set to 10. If they are at difficulty level 1 keep them there
+5.  - GET is called again taking us back to step 3
 
 ### API
 

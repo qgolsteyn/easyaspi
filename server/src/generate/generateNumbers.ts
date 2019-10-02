@@ -12,6 +12,11 @@ interface IRange {
 
 type Assignment = string;
 
+/**
+ * Generate a random value with a specified domain for each variable passed in the variables parameter
+ * @param variables a definition of the variables to assign and their requested domain
+ * @param seed
+ */
 export const generateNumbers = (
     variables: { [name: string]: IRange },
     seed: string = 'seed'
@@ -32,6 +37,11 @@ export const generateNumbers = (
     return assignments;
 };
 
+/**
+ * Assigns a value for each specified variable
+ * @param variables assignment operation to perform for each variable
+ * @param scope values to use for each variable
+ */
 export const computeAssignments = (
     variables: { [name: string]: Assignment },
     scope: { [name: string]: number }
