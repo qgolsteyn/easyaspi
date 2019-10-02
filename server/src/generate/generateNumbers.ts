@@ -21,6 +21,11 @@ export const generateNumbers = (
     const assignments: { [name: string]: number } = {};
     Object.keys(variables).forEach(key => {
         const { min, max } = variables[key];
+
+        if (min > max) {
+            throw new Error(`min cannot be larger than max`);
+        }
+
         assignments[key] = Math.round(min + (max - min) * Math.random());
     });
 

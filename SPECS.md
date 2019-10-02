@@ -19,7 +19,6 @@
     - [Rule-based generation](#rule-based-generation)
     - [Categorizing student's ability](#categorizing-students-ability)
     - [Formulating rules as constraints](#formulating-rules-as-constraints)
-    - [Finding the best assignment](#finding-the-best-assignment)
     - [Hashing](#hashing)
   - [Adapting to the student's performance](#adapting-to-the-students-performance)
   - [Fetching the next math problem](#fetching-the-next-math-problem)
@@ -200,25 +199,24 @@ of a particular type will vary depending on the student's assigned category.
 
 ### Formulating rules as constraints
 
-Each rule of a particular problem type can be formulated as a mathematical inequation.
+Each rule of a particular problem type can be formulated as a set of controlled and derived variables.
 
 For example, for addition in Grade 1, students are expected to be able to add a "large" number with 
-a "small" number to values up to 10. This can be formulated as such, assuming an addition takes the form a + b = c.
+a "small" number to values up to 9. This can be formulated as such, assuming an addition takes the form a + b = c.
 
-- `5 < a < 10`
-- `0 < b < 5`
+Controlled variables:
 
-A particular assignment to all the variables can be scored on how many constraints it satisfies.
+- `5 < c < 9`
+- `0 < b < 3`
 
-### Finding the best assignment
+Derived variables:
 
-Using local search with gradient descent, we can find the assignment that satisfies all the constraints. The starting
-assignment can use the unary constraints as a starting point, and the algorithm can iterate until it finds a solution
-for the complex constraints. This approach allows us to be quite declarative in formulating the rules of a particular
-problem, and have the algorithm remain general enough to solve the problem for us.
+- `a = c - b`
 
-The algorithm accepts a problem definition (variables and constraints) and outputs the best assignment it found for
-all the variables.
+Controlled variables have their domain specified, while derived variables are formulated as an equation consisting of
+controlled variables.
+
+An algorithm can pick a random value for the controlled variables, and then compute derived variables as needed.
 
 ### Hashing
 

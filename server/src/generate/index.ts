@@ -26,24 +26,3 @@ export const generateProblemValues = (
 
     return { ...controlledAssignments, ...derivedAssignments };
 };
-
-const test = generateProblemValues(
-    {
-        controlledVariables: {
-            quotient: {
-                min: 3,
-                max: 2,
-            },
-            divisor: {
-                min: 1,
-                max: 5,
-            },
-        },
-        derivedVariables: {
-            dividend: 'quotient * divisor',
-        },
-    },
-    String(Math.random())
-);
-
-console.log(`${test['dividend']} / ${test['divisor']} = ${test['quotient']}`);
