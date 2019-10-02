@@ -2,35 +2,27 @@
  * This file specifies a demo component for demonstration purposes
  */
 
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { StyleSheet, Text, View } from 'react-native';
+import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
+import { fromLeft, fromRight } from 'react-navigation-transitions';
 
-import { selectors, actions } from './store';
+import { WelcomeScreen } from './screens/WelcomeScreen';
+import { UserSelectionScreen } from './screens/UserSelectionScreen';
+import { StudentSignUpScreen } from './screens/StudentSignUpScreen';
 
-export const App = () => {
-    const [showProblem, setState] = useState(true);
-    const problem = useSelector(selectors.demo.getProblem);
-    const solution = useSelector(selectors.demo.getSolution);
-
-    return (
-        <View style={styles.container}>
-            <Text
-                onPress={() => {
-                    setState(false);
-                }}
-            >
-                {showProblem ? problem : solution}
-            </Text>
-        </View>
-    );
-};
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
+const AppNavigator = createStackNavigator(
+    {
+        Welcome: {
+            screen: WelcomeScreen,
+        },
+        UserSelection: {
+            screen: UserSelectionScreen,
+        },
+        StudentSignUp: {
+            screen: StudentSignUpScreen,
+        },
     },
-});
+    { initialRouteName: 'Welcome', transitionConfig: () => fromRight() }
+);
+
+export const App = createAppContainer(AppNavigator);
