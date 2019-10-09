@@ -248,155 +248,267 @@ but Grade 1 medium on substraction.
 Fetching the next math problem
 </summary>
 
-## Fetching the next math problem
+## Generating and Fetching Problems (take from Q8 of M2)
 
-Steps:
-1.  - Async generate 500 (tbd) problems of each tier and save them in db
-    - In db, have a collection of addition problems for example, have 1 document for each difficulty tier 
-      with an array that contains the problems
-2.  - Each userUid has a map containing their current difficulty level for each problem type
-    - Each userUid has a points metric for each problem type which counts the number of problems they 
-      got right
-3.  - GET is called for a given userUid. It returns a random problem (for now only addition) with difficulty
-      matching their current difficulty level. Increment problem index
-    - By random problem I mean we look into the collection, find the problem type, find the right difficulty
-      then take a random problem. If we have enough problems stored (500+ then the chance of duplicates will
-      be pretty low)
-4.  - POST is called telling the server if they got it right or wrong. If they get it right, their points
-      metric for that problem goes up by 1
-    - If they get it wrong it goes down by 2. When they get to 10, they graduate up to the next level and 
-      their points metric is reset to 0. If they get to -1, the get demoted to the previous difficulty and 
-      their points is set to 10. If they are at difficulty level 1 keep them there
-5.  - GET is called again taking us back to step 3
+- MathProblemsDB with 2 collections: problemTemplates, generatedProblems
+- Retrieve all templates of all problemTypes
+- Generate n problems for each difficulty of each problemType
+- Store genereated problems in generatedProblems collection
+- Call GET endpoint to retrieve user's next problem, will pull from this collection
+- Each user has an index for each problem type
+- UI calls POST endpoint to tell backend if user got question right or wrong
+- Update user's index, points and difficulty for this problem type based on the result
+- If GET endpoint returns the n-1th problem, trigger async generation to create another
+  n problems only for this difficulty tier
 
 ### API
 
-1.  `GET math-problems/nextProblem?previousResult={previousResult}`
+1.  `GET /math/problem?archetype={problemArchetype}&type={problemType}&difficulty={difficulty}&index={index}`
 
-    - Description:    Retrieves the next problem for a specific user based on their result of the previous problem
-    - URL:            http://Dunno.com/math-problems/nextProblem?previousResult={previousResult}
-    - Headers:        
-        ```json
-        {
-            "userUid": <UUID>
-        }
-        ```
+    - Description:    Retrieves the next problem for a specific user
+    - URL:            http://localhost:3000/math/nextProblem?archetype={problemArchetype}&type={problemType}&difficulty={difficulty}&index={index}
+    - Headers:        N/A
 
     - Response:       
         - `HTTP/1.1 200 OK`
+            if query matched:
+            Content-Type: application/json
             ```json 
             {
                 "problemArchetype": "arithmetic",
                 "problemType": "addition",
                 "problem": "3 + 4 =",
                 "solution": ["7"],
-                "difficulty": 10,
-                "seed": someHash
+                "difficulty": "g1m"
+            }
+            ```
+            if query not matched, empty json will be returned
+
+        - `HTTP/1.1 500 Internal Server Error`
+    
+    - Notes:          
+        *  "solution" is an array because we could support solution steps in the future
+
+2.  `GET /users/teacher/{teacherId}`
+
+    - Description:    Retrieves a teacher profile by their id
+    - URL:            http://localhost:3000/users/teacher/{teacherId}
+    - Headers:        N/A
+
+    - Response:       
+        - `HTTP/1.1 200 OK`
+          Content-Type: application/json
+            ```json 
+            {
+                "name": "Obi-wan Kenobi",
+                "email": "jedi@gmail.com",
+                "virtualClassroomId": "5d9991271c9d440000d47e08"
             }
             ```
 
-        - `HTTP/1.1 400 Bad Request`
-            *  when "previousResult" is missing
-            *  when "previousResult" is not "correct" or "incorrect"
-
         - `HTTP/1.1 404 Not Found`
-            *  when userUid is not found
+            *  when teacherId does not
 
         - `HTTP/1.1 500 Internal Server Error`
+
+3.  `POST /users/teacher`
+
+    - Description:    Creates a new Teacher user
+    - URL:            http://localhost:3000/users/teacher
+    - Headers:        
+        ```json
+        {
+            Content-Type: application/json
+        }
+        ```
     
-
-    - Notes:          
-        *  "solution" is an array because we could support solution steps in the future
-        *  "difficulty" is an arbitray number right now, we still need to define the scale of 
-           this and what it means. For now it will just be the average of the numbers on the
-           left side of the equation
-        *  The next problem will be 1 of 2. Either a harder one or an easier one. This is 
-           based on "previousResult". If student got the previous problem correct, the next will
-           be harder and vise versa
-        *  Asynchrously, 2 potential next math problems will be generated after every call of this endpoint.
-           One easier problem for if user gets previous problem wrong, another harder problem for it user gets
-           previous problem correct. This will speed up this endpoint, but we will handle this later
-
-
-2.  `POST math-problems/newTemplate`
-   
-    - Description:    Inserts a new problem template into the database. *This should be used internally only, not by the app*
-    - URL:            http://Dunno.com/math-problems/newTemplate
-    - Headers:        `N/A`
-
     - Request Body:
         ```json
         {
-            "problemArchetype": "Arithmetic",
-            "problemType": "subtraction",
-            "operators": ["-"],
+            "name": "Obi-wan Kenobi",
+            "email": "jedi@gmail.com"
         }
         ```
 
-    - Response: 
+    - Response:       
         - `HTTP/1.1 201 Created`
-            *  problem template successfully saved in db
-                    
+          Location: /user/teacher/5d946f761c9d440000d525ff
+
         - `HTTP/1.1 400 Bad Request`
-            *  when any of the fields in the request body are invalid or insufficient given the "problemArchetype"
-    
+            *  when either name or email is empty or blank
+
         - `HTTP/1.1 500 Internal Server Error`
 
-    - Notes:          
-        *  "problemArchetype" is required because in future different types of problems could be supported. For       
-            example: area questions, equation questions, fraction questions. The other fields will likely be different
-            based on the "problemArchetype". For example an area question will not require "operators"
-        *  The reason I chose this format instead of inputting a string temple like "x - y =" is because we could have
-            any number of operands. Also for a problem that tests BEDMAS (4 + (15/3)) we could have operators or brackets
-            in any place
+4.  `PUT /users/teacher/{teacherId}`
+
+    - Description:    Updates an existing Teacher user
+    - URL:            http://localhost:3000/users/teacher/{teacherId}
+    - Headers:        
+        ```json
+        {
+            Content-Type: application/json
+        }
+        ```
     
+    - Request Body:
+        ```json
+        {
+            "name": "Master Yoda",
+            "email": "greenguy@gmail.com",
+            "virtualClassroomId": "5d9991271c9d440000d47e09"
+        }
+        ```
 
-3.  GET math-problems/allTemplates
+    - Response:       
+        - `HTTP/1.1 204 No Content`
 
-    - Description:    Gets all problem templates in the database *This should be used interally only, not by the app*
-    - URL:            http://Dunno.com/math-problems/allTemplates
-    - Headers:        `N/A`
+        - `HTTP/1.1 400 Bad Request`
+            *  when either name, email, or virtualClassroomId is empty or blank
 
-    - Response: 
+        - `HTTP/1.1 404 Not Found`
+            *  when teacherId does not exist
+
+        - `HTTP/1.1 500 Internal Server Error`
+
+5.  `DELETE /users/teacher/{teacherId}`
+
+    - Description:    Deletes a teacher profile by their id
+    - URL:            http://localhost:3000/users/teacher/{teacherId}
+    - Headers:        N/A
+
+    - Response:       
+        - `HTTP/1.1 204 No Content`
+
+        - `HTTP/1.1 404 Not Found`
+            *  when teacherId does not exist
+
+        - `HTTP/1.1 500 Internal Server Error`
+
+6.  `GET /users/student/{studentId}`
+
+    - Description:    Retrieves a student profile by their id
+    - URL:            http://localhost:3000/users/student/{studentId}
+    - Headers:        N/A
+
+    - Response:       
         - `HTTP/1.1 200 OK`
+          Content-Type: application/json
             ```json 
             {
-                "arithmetic": [
+                "name": "Anakin Skywalker",
+                "virtualClassroomId": "5d9991271c9d440000d47e08",
+                "mastery": [
                     {
                         "problemType": "addition",
-                        "operators": ["+"]
+                        "difficulty": "g1m",
+                        "index": 7,
+                        "currentDifficultyPoints": 3,
+                        "totalPoints": 13 
                     },
                     {
                         "problemType": "subtraction",
-                        "operators": ["-"]
-                    },
-                    {
-                        "problemType": "multiplication",
-                        "operators": ["*"]
-                    },
-                    {
-                        "problemType": "division",
-                        "operators": ["/"]
-                    },
-                    {
-                        "problemType": "bedmas",
-                        "operators": ["+", "-", "*", "/", "^", "(", ")"]
-                    }
-                ],
-                "fractions": [
-                    {
-                        "problemType": "addition",
-                        "operators": ["+"]
-                    }
-                ],
-                "Geometry": [
-                    {
-                        "problemType": "area",
-                        "shape": ["circle", "square", "rectangle", "triangle"]
+                        "difficulty": "g1e",
+                        "index": 2,
+                        "currentDifficultyPoints": 2,
+                        "totalPoints": 2 
                     }
                 ]
             }
             ```
+
+        - `HTTP/1.1 404 Not Found`
+            *  when studentId does not exist
+
+        - `HTTP/1.1 500 Internal Server Error`
+
+7.  `POST /users/student`
+
+    - Description:    Creates a new Student user
+    - URL:            http://localhost:3000/users/student
+    - Headers:        
+        ```json
+        {
+            Content-Type: application/json
+        }
+        ```
+    
+    - Request Body:
+        ```json
+        {
+            "name": "Anakin Skywalker",
+        }
+        ```
+
+    - Response:       
+        - `HTTP/1.1 201 Created`
+          Location: /user/student/5d980fa0c5edee2d50cd5a82
+
+        - `HTTP/1.1 400 Bad Request`
+            *  when name is empty or blank
+
+        - `HTTP/1.1 500 Internal Server Error` 
+
+8.  `PUT /users/student/{studentId}`
+
+    - Description:    Updates a Student user
+    - URL:            http://localhost:3000/users/student/{studentId}
+    - Headers:        
+        ```json
+        {
+            Content-Type: application/json
+        }
+        ```
+    
+    - Request Body:
+        ```json
+        {
+            "name": "Anakin Skywalker",
+            "virtualClassroomId": "5d9991271c9d440000d47e08",
+            "mastery": [
+                    {
+                        "problemType": "addition",
+                        "difficulty": "g1h",
+                        "index": 5,
+                        "currentDifficultyPoints": 1,
+                        "totalPoints": 21 
+                    },
+                    {
+                        "problemType": "subtraction",
+                        "difficulty": "g1m",
+                        "index": 4,
+                        "currentDifficultyPoints": 4,
+                        "totalPoints": 14 
+                    }
+                ]
+        }
+        ```
+
+    - Response:       
+        - `HTTP/1.1 204 No Content`
+
+        - `HTTP/1.1 400 Bad Request`
+            *  when name, virtualClassroomId is empty or blank
+            *  when mastery is null or missing fields
+
+        - `HTTP/1.1 404 Not Found`
+            *  when studentId does not exist
+
+        - `HTTP/1.1 500 Internal Server Error` 
+
+9.  `DELETE /users/student/{studentId}`
+
+    - Description:    Updates a Student user
+    - URL:            http://localhost:3000/users/student/{studentId}
+    - Headers:        N/A
+
+    - Response:       
+        - `HTTP/1.1 204 No Content`
+
+        - `HTTP/1.1 404 Not Found`
+            *  when studentId does not exist
+
+        - `HTTP/1.1 500 Internal Server Error` 
+
 </details>
 
 
