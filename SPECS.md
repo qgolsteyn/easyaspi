@@ -263,15 +263,19 @@ Fetching the next math problem
 
 ### API
 
-1.  `GET /math/problem?archetype={problemArchetype}&type={problemType}&difficulty={difficulty}&index={index}`
+1.  `GET /math/nextProblem`
 
     - Description:    Retrieves the next problem for a specific user
-    - URL:            http://localhost:3000/math/nextProblem?archetype={problemArchetype}&type={problemType}&difficulty={difficulty}&index={index}
-    - Headers:        N/A
+    - URL:            http://localhost:3000/math/nextProblem
+    - Headers:        
+        ```json
+            {
+                userId: ObjectId
+            }
+            ```
 
     - Response:       
         - `HTTP/1.1 200 OK`
-            if query matched:
             Content-Type: application/json
             ```json 
             {
@@ -282,12 +286,36 @@ Fetching the next math problem
                 "difficulty": "g1m"
             }
             ```
-            if query not matched, empty json will be returned
 
         - `HTTP/1.1 500 Internal Server Error`
     
     - Notes:          
         *  "solution" is an array because we could support solution steps in the future
+
+2.  `POST /users/student/result`
+
+    - Description:    Informs the backend whether the user got the previous question right or wrong
+    - URL:            http://localhost:3000/users/student/result
+    - Headers:        
+        ```json
+            {
+                userId: ObjectId
+            }
+            ```
+
+    - Response:       
+        - `HTTP/1.1 200 OK`
+            Content-Type: application/json
+            ```json 
+            {
+                "problemArchetype": "arithmetic",
+                "problemType": "addition",
+                "difficulty": "g1m",
+                "isCorrect": true
+            }
+            ```
+
+        - `HTTP/1.1 500 Internal Server Error`
 
 2.  `GET /users/teacher/{teacherId}`
 
