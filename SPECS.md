@@ -286,6 +286,7 @@ Fetching the next math problem
                 "difficulty": "g1m"
             }
             ```
+            if query not matched, empty json will be returned
 
         - `HTTP/1.1 500 Internal Server Error`
     
