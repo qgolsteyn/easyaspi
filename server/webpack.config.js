@@ -7,7 +7,9 @@ const path = require('path');
 const WebpackShellPlugin = require('webpack-shell-plugin');
 const Dotenv = require('dotenv-webpack');
 
-module.exports = {
+const watch = process.argv[2] === '--watch';
+
+const config = {
     entry: ['./src/index.ts'],
     mode: 'development',
     target: 'node',
@@ -27,9 +29,6 @@ module.exports = {
         ],
     },
     plugins: [
-        new WebpackShellPlugin({
-            onBuildEnd: ['nodemon dist/index.js --watch dist'],
-        }),
         new Dotenv({
             path: path.resolve(__dirname, '../.env'),
         }),
@@ -39,3 +38,13 @@ module.exports = {
         { express: 'commonjs express' },
     ],
 };
+
+if (watch) {
+    config.plugins.push(
+        new WebpackShellPlugin({
+            onBuildEnd: ['nodemon dist/index.js --watch dist'],
+        })
+    );
+}
+
+module.exports = config;

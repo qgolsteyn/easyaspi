@@ -12,7 +12,7 @@ jobs:
             - name: yarn install, and test
               run: |
                   yarn
-                  yarn test:coverage
+                  yarn test
               env:
                   CI: true
             - name: Upload coverage to Codecov
