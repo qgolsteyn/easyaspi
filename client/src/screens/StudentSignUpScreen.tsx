@@ -25,7 +25,7 @@ export const StudentSignUpScreen = (props: IStudentSignUpScreen) => {
                     <StyledButton
                         text="Submit!"
                         onPress={() =>
-                            props.navigation.navigate('UserSelection')
+                            props.navigation.navigate('Auth')
                         }
                     />
                 </View>
