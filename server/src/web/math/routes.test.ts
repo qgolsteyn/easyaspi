@@ -2,7 +2,7 @@ import express from 'express';
 import { Server } from 'http';
 import request from 'supertest';
 
-import { initializeApp } from '../server';
+import { initializeApp } from '../../server';
 import mongoose from 'mongoose';
 
 describe('math router', () => {
@@ -16,17 +16,6 @@ describe('math router', () => {
     it('should GET /math/templates', async () => {
         await request(app)
             .get('/math/templates')
-            .expect(200);
-    });
-
-    it('should POST /math/template', async () => {
-        await request(app)
-            .post('/math/template')
-            .send({
-                problemArchetype: 'arithmetic',
-                problemType: 'addition',
-                operators: ['+'],
-            })
             .expect(200);
     });
 
