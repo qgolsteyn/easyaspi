@@ -20,26 +20,6 @@ export const initializeMathRoutes = (app: express.Application) => {
         }
     });
 
-    /* post a template */
-    mathRouter.post('/template', async (req, res) => {
-        const template = templateSerializer.parse(req.body);
-        if (template) {
-            try {
-                const t = new ProblemTemplateModel(template);
-                await t.save();
-                res.status(200);
-                res.json(template);
-            } catch (e) {
-                console.error(e);
-                res.status(500);
-                res.send('Error 500');
-            }
-        } else {
-            res.status(400);
-            res.send('Invalid request');
-        }
-    });
-
     /* post a problem (for putting dummy data to DB through API) */
     mathRouter.post('/problem', async (req, res) => {
         const problem = problemSerializer.parse(req.body);

@@ -19,17 +19,6 @@ describe('math router', () => {
             .expect(200);
     });
 
-    it('should POST /math/template', async () => {
-        await request(app)
-            .post('/math/template')
-            .send({
-                problemArchetype: 'arithmetic',
-                problemType: 'addition',
-                operators: ['+'],
-            })
-            .expect(200);
-    });
-
     it('should POST /math/problem', async () => {
         await request(app)
             .post('/math/problem')
