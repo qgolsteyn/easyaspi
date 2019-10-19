@@ -51,7 +51,7 @@ export const WelcomeScreen = (props: IWelcomeScreenProps) => {
     );
 };
 
-WelcomeScreen['navigationOptions'] = () => ({
+WelcomeScreen.navigationOptions = () => ({
     header: null,
 });
 

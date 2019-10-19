@@ -13,21 +13,22 @@ import { colors } from '../constants/colors';
 import { StyledInput } from '../components/Input';
 import { StyledHeader } from '../components/Header';
 
-interface IStudentSignUpScreen {
+interface ITeacherSignUpScreen {
     navigation: any;
 }
 
-export const StudentSignUpScreen = (props: IStudentSignUpScreen) => {
+export const TeacherSignUpScreen = (props: ITeacherSignUpScreen) => {
     return (
         <KeyboardAvoidingView behavior="padding" enabled>
             <Background backgroundImage={bg1} backgroundColor={colors.bg}>
                 <View style={styles.wrapper}>
-                    <StyledHeader>Let's meet</StyledHeader>
+                    <StyledHeader>Create classroom</StyledHeader>
+                    <StyledInput label="Name" styles={{ marginBottom: 32 }} />
                     <StyledInput
-                        label="My name is..."
+                        label="Classroom name"
                         styles={{ marginBottom: 32 }}
                     />
-                    <StyledInput label="What is the teacher password?" />
+                    <StyledInput label="Student registration code" />
                     <View style={styles.buttonContainer}>
                         <StyledButton
                             text="Submit!"
@@ -42,7 +43,7 @@ export const StudentSignUpScreen = (props: IStudentSignUpScreen) => {
     );
 };
 
-StudentSignUpScreen.navigationOptions = () => ({
+TeacherSignUpScreen.navigationOptions = () => ({
     header: null,
 });
 

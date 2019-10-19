@@ -4,11 +4,12 @@
 
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
-import { fromLeft, fromRight } from 'react-navigation-transitions';
+import { fromRight } from 'react-navigation-transitions';
 
 import { WelcomeScreen } from './screens/WelcomeScreen';
 import { UserSelectionScreen } from './screens/UserSelectionScreen';
 import { StudentSignUpScreen } from './screens/StudentSignUpScreen';
+import { TeacherSignUpScreen } from './screens/TeacherSignUpScreen';
 
 const AppNavigator = createStackNavigator(
     {
@@ -21,8 +22,11 @@ const AppNavigator = createStackNavigator(
         StudentSignUp: {
             screen: StudentSignUpScreen,
         },
+        TeacherSignUp: {
+            screen: TeacherSignUpScreen,
+        },
     },
-    { initialRouteName: 'Welcome', transitionConfig: () => fromRight() }
+    { initialRouteName: 'StudentHome', transitionConfig: () => fromRight() }
 );
 
 export const App = createAppContainer(AppNavigator);
