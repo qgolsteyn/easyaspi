@@ -2,7 +2,7 @@ import express from 'express';
 import { Server } from 'http';
 import request from 'supertest';
 
-import { initializeApp } from '../server';
+import { initializeApp } from '../../server';
 import mongoose from 'mongoose';
 
 describe('math router', () => {

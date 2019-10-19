@@ -4,7 +4,7 @@ import { IProblem } from 'shared';
 
 export type IProblemSchema = IProblem & mongoose.Document;
 
-const ProblemSchema = new mongoose.Schema({
+const GeneratedProblemSchema = new mongoose.Schema({
     problemArchetype: {
         type: String,
         required: true,
@@ -31,7 +31,7 @@ const ProblemSchema = new mongoose.Schema({
     },
 });
 
-export const ProblemModel = mongoose.model<IProblemSchema>(
-    'problemSchema',
-    ProblemSchema
+export const GeneratedProblemModel = mongoose.model<IProblemSchema>(
+    'generatedproblem',
+    GeneratedProblemSchema
 );

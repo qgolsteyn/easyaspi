@@ -2,8 +2,8 @@ import express from 'express';
 import { Server } from 'http';
 import bodyParser from 'body-parser';
 
-import { connectToDB } from './models';
-import { initializeRoutes } from './routes';
+import { connectToDB } from './database';
+import { initializeRoutes } from './web';
 
 const PORT = process.env['SERVER_PORT'] || 3000;
 

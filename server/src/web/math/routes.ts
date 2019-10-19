@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { TemplateModel, ProblemModel } from '../models';
+import { ProblemTemplateModel, GeneratedProblemModel } from '../../database';
 import { problemSerializer, templateSerializer } from 'shared/src';
 
 export const initializeMathRoutes = (app: express.Application) => {
@@ -10,7 +10,7 @@ export const initializeMathRoutes = (app: express.Application) => {
     /* get all templates */
     mathRouter.get('/templates', async (_, res) => {
         try {
-            const templates = await TemplateModel.find();
+            const templates = await ProblemTemplateModel.find();
             res.status(200);
             res.json(templates);
         } catch (e) {
@@ -25,7 +25,7 @@ export const initializeMathRoutes = (app: express.Application) => {
         const template = templateSerializer.parse(req.body);
         if (template) {
             try {
-                const t = new TemplateModel(template);
+                const t = new ProblemTemplateModel(template);
                 await t.save();
                 res.status(200);
                 res.json(template);
@@ -45,7 +45,7 @@ export const initializeMathRoutes = (app: express.Application) => {
         const problem = problemSerializer.parse(req.body);
         if (problem) {
             try {
-                const p = new ProblemModel(problem);
+                const p = new GeneratedProblemModel(problem);
                 await p.save();
                 res.status(200);
                 res.json(problem);
@@ -64,7 +64,7 @@ export const initializeMathRoutes = (app: express.Application) => {
     //todo implement logic for getting a single math problem
     mathRouter.get('/problem', async (_, res) => {
         try {
-            const prob = await ProblemModel.find().exec();
+            const prob = await GeneratedProblemModel.find().exec();
             res.status(200);
             res.json(prob);
         } catch (e) {
