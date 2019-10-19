@@ -26,7 +26,7 @@ const AppNavigator = createStackNavigator(
             screen: TeacherSignUpScreen,
         },
     },
-    { initialRouteName: 'StudentHome', transitionConfig: () => fromRight() }
+    { initialRouteName: 'Welcome', transitionConfig: () => fromRight() }
 );
 
 export const App = createAppContainer(AppNavigator);

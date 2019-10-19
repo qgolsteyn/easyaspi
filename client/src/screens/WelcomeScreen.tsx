@@ -4,6 +4,7 @@
 
 import React from 'react';
 import { Image, View, StyleSheet } from 'react-native';
+import { useDispatch } from 'react-redux';
 
 import { Background } from '../components/Background';
 import { StyledButton } from '../components/Button';
@@ -11,12 +12,12 @@ import { colors } from '../constants/colors';
 
 import welcome from '../../assets/welcome.png';
 import logo from '../../assets/logo.png';
+import { NavigationActions } from 'react-navigation';
+import { actions } from '../store';
 
-interface IWelcomeScreenProps {
-    navigation: any;
-}
+export const WelcomeScreen = () => {
+    const dispatch = useDispatch();
 
-export const WelcomeScreen = (props: IWelcomeScreenProps) => {
     return (
         <Background>
             <View style={styles.wrapper}>
@@ -42,7 +43,7 @@ export const WelcomeScreen = (props: IWelcomeScreenProps) => {
                     <StyledButton
                         text="Let's start!"
                         onPress={() =>
-                            props.navigation.navigate('UserSelection')
+                            dispatch(actions.nav.goToScreen('UserSelection'))
                         }
                     />
                 </View>

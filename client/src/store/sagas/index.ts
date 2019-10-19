@@ -5,9 +5,8 @@
  */
 
 import { spawn } from 'redux-saga/effects';
-
-import { demoStart } from './demo';
+import navInit from './nav';
 
 export function* initializeSagas() {
-    // yield spawn(demoStart);
+    yield spawn(navInit);
 }

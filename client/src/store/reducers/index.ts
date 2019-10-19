@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 
 import { demoReducer, demoActions, demoSelectors, IDemoState } from './demo';
+import { navActions } from './navigation';
 
 export interface IState {
     demo: IDemoState;
@@ -8,6 +9,7 @@ export interface IState {
 
 export const actions = {
     demo: demoActions,
+    nav: navActions,
 };
 
 export const reducers = combineReducers({
