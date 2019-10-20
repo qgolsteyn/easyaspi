@@ -1,25 +1,29 @@
 import * as React from 'react';
-import { StyleSheet, View, TextInput, Text } from 'react-native';
+import {
+    StyleSheet,
+    View,
+    TextInput,
+    Text,
+    TextInputProps,
+} from 'react-native';
 
 import { colors } from '../constants/colors';
 
-interface IStyledInput {
-    styles?: Object;
+interface IStyledInput extends TextInputProps {
+    style?: Object;
     label?: string;
-    placeholder?: string;
-    onChange?: (text: string) => void;
 }
 
 export const StyledInput = (props: IStyledInput) => {
     return (
-        <View style={{ ...styles.wrapper, ...props.styles }}>
+        <View style={{ ...styles.wrapper, ...props.style }}>
             {props.label && <Text style={styles.label}>{props.label}</Text>}
             <View style={styles.inputWrapper}>
                 <View style={styles.inputContainer}>
                     <TextInput
+                        {...props}
                         style={styles.input}
-                        onChangeText={props.onChange}
-                        placeholder={props.placeholder || 'Write here!'}
+                        placeholder={props.placeholder || 'Write here...'}
                         placeholderTextColor="#C7DAEF"
                     />
                 </View>

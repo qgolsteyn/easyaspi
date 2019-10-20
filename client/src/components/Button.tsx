@@ -6,6 +6,7 @@ import { colors } from '../constants/colors';
 
 interface IStyledButton {
     text: string;
+    styles?: Object;
     onPress?: () => void;
 }
 
@@ -13,7 +14,7 @@ export const StyledButton = (props: IStyledButton) => {
     const [focus, setFocus] = React.useState(false);
 
     return (
-        <View style={styles.wrapper}>
+        <View style={{ ...styles.wrapper, ...props.styles }}>
             <TouchableWithoutFeedback
                 style={styles.button}
                 onPressIn={() => {

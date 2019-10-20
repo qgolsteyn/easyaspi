@@ -76,7 +76,8 @@ const styles = StyleSheet.create({
     },
     topBuffer: {
         width: '100%',
-        height: 32,
+        height: 4,
+        marginTop: -1,
         marginBottom: -1,
         backgroundColor: colors.bg,
     },

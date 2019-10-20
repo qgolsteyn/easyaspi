@@ -2,48 +2,60 @@
  * This file specifies a demo component for demonstration purposes
  */
 
-import React from 'react';
-import {
-    View,
-    StyleSheet,
-    KeyboardAvoidingView,
-    ScrollView,
-} from 'react-native';
+import React, { useState } from 'react';
+import { View, StyleSheet } from 'react-native';
 
 import { Background } from '../components/Background';
 import { StyledButton } from '../components/Button';
-
-import bg1 from '../../assets/bg1.png';
 import { colors } from '../constants/colors';
 import { StyledInput } from '../components/Input';
 import { StyledHeader } from '../components/Header';
+import { StyledForm } from '../components/Form';
+import { useDispatch } from 'react-redux';
+import { actions } from '../store';
 
 interface IStudentSignUpScreen {
     navigation: any;
 }
 
 export const StudentSignUpScreen = (props: IStudentSignUpScreen) => {
+    const dispatch = useDispatch();
+    const [state, setState] = useState({
+        name: undefined,
+        classroomPasscode: undefined,
+    });
+
     return (
-        <Background backgroundImage={bg1} backgroundColor={colors.bg}>
+        <Background backgroundColor={colors.bg}>
             <View style={styles.wrapper}>
-                <KeyboardAvoidingView behavior="padding" enabled>
-                    <View style={styles.scrollView}>
-                        <StyledHeader>Let's meet</StyledHeader>
-                        <StyledInput
-                            label="My name is..."
-                            styles={{ marginBottom: 32 }}
-                        />
-                        <StyledInput label="What is the teacher password?" />
-                    </View>
-                </KeyboardAvoidingView>
-                <View style={styles.buttonContainer}>
+                <StyledForm backgroundColor={colors.bg}>
+                    <StyledHeader>Let's meet!</StyledHeader>
+                    <StyledInput
+                        label="My name is..."
+                        textContentType="name"
+                        style={{ marginBottom: 32 }}
+                        onChangeText={val => setState({ ...state, name: val })}
+                    />
+                    <StyledInput
+                        label="What is the teacher password?"
+                        keyboardType="number-pad"
+                        style={{ marginBottom: 32 }}
+                        onChangeText={val => setState({ ...state, name: val })}
+                    />
                     <StyledButton
                         text="Submit!"
                         onPress={() =>
-                            props.navigation.navigate('UserSelection')
+                            dispatch(
+                                actions.user.registerStudent(
+                                    state.name,
+                                    state.name,
+                                    state.classroomPasscode
+                                )
+                            )
                         }
+                        styles={{ marginBottom: 32 }}
                     />
-                </View>
+                </StyledForm>
             </View>
         </Background>
     );
@@ -58,19 +70,5 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
         display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        paddingTop: 28,
-        paddingBottom: 32,
-    },
-    scrollView: {
-        paddingBottom: 32,
-    },
-    buttonContainer: {
-        display: 'flex',
-        width: '100%',
-        marginTop: 'auto',
-        paddingHorizontal: 32,
     },
 });

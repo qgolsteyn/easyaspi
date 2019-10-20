@@ -21,7 +21,7 @@ export const UserSelectionScreen = (props: IUserSelectionScreenProps) => {
         <Background backgroundImage={bg2} backgroundColor={colors.bg}>
             <View style={styles.wrapper}>
                 <View style={styles.header}>
-                    <StyledHeader>Let's meet</StyledHeader>
+                    <StyledHeader>Who are you?</StyledHeader>
                 </View>
                 <View style={styles.container}>
                     <StyledButton
@@ -52,7 +52,6 @@ const styles = StyleSheet.create({
     wrapper: {
         width: '100%',
         height: '100%',
-        paddingTop: 28,
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'flex-start',
@@ -60,7 +59,7 @@ const styles = StyleSheet.create({
     },
     header: {
         width: '100%',
-        height: '25%',
+        height: '30%',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',

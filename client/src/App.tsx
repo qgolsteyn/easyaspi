@@ -10,6 +10,8 @@ import { WelcomeScreen } from './screens/WelcomeScreen';
 import { UserSelectionScreen } from './screens/UserSelectionScreen';
 import { StudentSignUpScreen } from './screens/StudentSignUpScreen';
 import { TeacherSignUpScreen } from './screens/TeacherSignUpScreen';
+import { StudentHome } from './screens/StudentHomeScreen';
+import { TeacherHome } from './screens/TeacherHomeScreen';
 
 const AuthStack = createStackNavigator(
     {
@@ -32,6 +34,8 @@ const AuthStack = createStackNavigator(
 const SwitchNavigator = createSwitchNavigator(
     {
         Auth: AuthStack,
+        Student: StudentHome,
+        Teacher: TeacherHome,
     },
     {
         initialRouteName: 'Auth',
