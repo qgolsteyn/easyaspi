@@ -3,5 +3,6 @@ export {
     Problem,
     IProblem,
     problemSerializer,
-} from './models/problem';
-export { Template, ITemplate, templateSerializer } from './models/template';
+} from './models/math/problem';
+export { Template, ITemplate, templateSerializer } from './models/math/template';
+export { Teacher, ITeacher, teacherSerializer } from './models/users/teacher';
