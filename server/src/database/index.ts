@@ -1,7 +1,9 @@
 import mongoose from 'mongoose';
 
-export { ProblemModel } from './problem';
-export { TemplateModel } from './template';
+export { GeneratedProblemModel } from './models/math/generatedProblem';
+export { ProblemTemplateModel } from './models/math/problemTemplate';
+export { TeacherTemplateModel } from './models/users/teacher';
+export { StudentTemplateModel } from './models/users/student';
 
 const DB_CONNECTION =
     process.env['DB_CONNECTION'] || 'mongodb://localhost:27017/test';
