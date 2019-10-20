@@ -7,7 +7,8 @@ export type IClassroomSchema = IClassroom & mongoose.Document;
 const ClassroomSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     passcode: {
         type: String,

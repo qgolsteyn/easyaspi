@@ -15,7 +15,7 @@ export const initializeClassroomRoutes = (app: express.Application) => {
                 const p = new ClassroomTemplateModel(classroom);
                 await p.save();
                 res.status(200);
-                res.json(classroom);
+                res.json(`VirtualClassroomId: ${p.id}`);
             } catch (e) {
                 console.error(e);
                 res.status(500);
