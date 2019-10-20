@@ -538,6 +538,41 @@ Fetching the next math problem
 
         - `HTTP/1.1 500 Internal Server Error` 
 
+10. `POST /virtual-classroom`
+
+    - Description:    Creates a virtual classroom
+    - URL:            http://localhost:3000/virtual-classroom
+    - Headers:
+        ```json
+        {
+            teacherId: ObjectId
+            Content-Type: application/json
+        }
+        ```
+
+        - Request Body:
+        ```json
+        {
+            "name": "Obi Wan's Grade 3 Classroom",
+            "passcode": "MayTheForceBeWithYou",
+        }
+        ```
+
+    - Response:       
+        - `HTTP/1.1 201 Created`
+        Content-Type: application/json
+        ```json
+        {
+            "virtualClassroomId": "5d9991271c9d440000d47e08"
+        }
+        ```
+        - `HTTP/1.1 400 Bad Request`
+            *  when name or passcode are empty or null
+
+        - `HTTP/1.1 404 Not Found`
+            *  when teacherId does not exist
+
+        - `HTTP/1.1 500 Internal Server Error` 
 </details>
 
 
