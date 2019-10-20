@@ -38,7 +38,7 @@ export const TeacherSignUpScreen = (props: ITeacherSignUpScreen) => {
                     <StyledButton
                         text="Submit!"
                         onPress={() =>
-                            props.navigation.navigate('UserSelection')
+                            props.navigation.navigate('TeacherHomeScreen')
                         }
                     />
                 </View>
@@ -60,7 +60,6 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center',
         paddingTop: 28,
-        paddingHorizontal: 32,
         paddingBottom: 32,
     },
     buttonContainer: {

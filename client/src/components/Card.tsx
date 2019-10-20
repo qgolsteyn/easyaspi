@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     cardWrapper: {
         position: 'relative',
         width: '100%',
-        height: 64,
+        height: 350,
         paddingBottom: 4,
         marginBottom: 4,
         borderRadius: 8,
