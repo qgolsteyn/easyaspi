@@ -1,10 +1,29 @@
 import * as mongoose from 'mongoose';
 
-import { IProblem } from 'shared';
+import { ProblemArchetype, ProblemType } from 'shared';
+import { IArithmeticProblem } from './arithmeticProblem';
 
-export type IProblemSchema = IProblem & mongoose.Document;
+export interface IGeneratedProblems {
+    problemArchetype: ProblemArchetype;
+    problemType: ProblemType;
+    problems: Map<string, Array<IArithmeticProblem>>;
+}
 
-const GeneratedProblemSchema = new mongoose.Schema({
+export class GeneratedProblems implements IGeneratedProblems {
+    problemArchetype!: ProblemArchetype;
+    problemType!: ProblemType;
+    problems!: Map<string, Array<IArithmeticProblem>>;
+
+    ProblemTemplate() {
+        this.problemArchetype = ProblemArchetype.UNKNOWN;
+        this.problemType = ProblemType.UNKNOWN;
+        this.problems = new Map<string, Array<IArithmeticProblem>>();
+    }
+}
+
+export type IGeneratedProblemsSchema = IGeneratedProblems & mongoose.Document;
+
+const GeneratedProblemsSchema = new mongoose.Schema({
     problemArchetype: {
         type: String,
         required: true,
@@ -13,25 +32,13 @@ const GeneratedProblemSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    problem: {
-        type: String,
-        default: true,
-    },
-    solution: {
-        type: Array,
-        default: true,
-    },
-    difficulty: {
-        type: Number,
-        default: true,
-    },
-    seed: {
-        type: Number,
+    problems: {
+        type: Map,
         default: true,
     },
 });
 
-export const GeneratedProblemModel = mongoose.model<IProblemSchema>(
-    'generatedproblem',
-    GeneratedProblemSchema
+export const GeneratedProblemsModel = mongoose.model<IGeneratedProblemsSchema>(
+    'generatedproblems',
+    GeneratedProblemsSchema
 );
