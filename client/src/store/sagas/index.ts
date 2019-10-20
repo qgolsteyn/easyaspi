@@ -12,6 +12,6 @@ import userInit from './user';
 export function* initializeSagas() {
     yield spawn(navInit);
 
-    yield delay(1000);
+    yield delay(100);
     yield spawn(userInit);
 }

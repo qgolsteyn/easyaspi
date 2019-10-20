@@ -6,4 +6,6 @@ export const colors = {
     secondary: '#F7D06F',
     inputs: '#74A2D6',
     inputsDark: '#4F81BA',
+    error: '#ED4337',
+    errorDark: '#d62013',
 };

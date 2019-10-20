@@ -27,23 +27,28 @@ export const StyledInput = (props: IStyledInput) => {
             <View
                 style={{
                     ...styles.inputWrapper,
-                    ...(props.error ? { backgroundColor: '#FF0000' } : {}),
+                    ...(props.error
+                        ? { backgroundColor: colors.errorDark }
+                        : {}),
                 }}
             >
                 <View
                     style={{
                         ...styles.inputContainer,
-                        ...(props.error ? { backgroundColor: '#FF0000' } : {}),
+                        ...(props.error
+                            ? { backgroundColor: colors.error }
+                            : {}),
                     }}
                 >
                     <TextInput
                         {...props}
                         style={styles.input}
                         placeholder={props.placeholder || 'Write here...'}
-                        placeholderTextColor="#C7DAEF"
+                        placeholderTextColor={props.error ? '#FFF' : '#C7DAEF'}
                     />
                 </View>
             </View>
+            {props.error && <Text style={styles.error}>{props.error}</Text>}
         </View>
     );
 };
@@ -85,5 +90,10 @@ const styles = StyleSheet.create({
         fontSize: 24,
         color: '#fff',
         marginBottom: 16,
+    },
+    error: {
+        fontSize: 12,
+        color: '#fff',
+        marginTop: 4,
     },
 });

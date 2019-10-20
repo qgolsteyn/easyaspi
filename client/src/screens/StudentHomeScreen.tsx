@@ -11,10 +11,11 @@ import { StyledHeader } from '../components/Header';
 import { StyledCard } from '../components/Card';
 import { Icon } from '../components/Icon';
 import { StyledButton } from '../components/Button';
-import { useSelector } from 'react-redux';
-import { selectors } from '../store';
+import { useSelector, useDispatch } from 'react-redux';
+import { actions, selectors } from '../store';
 
 export const StudentHome = () => {
+    const dispatch = useDispatch();
     const userName = useSelector(selectors.user.getName);
 
     return (
@@ -28,7 +29,12 @@ export const StudentHome = () => {
                         <Icon backgroundColor={colors.inputs} text="*" />
                         <Icon backgroundColor={colors.inputs} text="/" />
                     </View>
-                    <StyledButton text="Start!" />
+                    <StyledButton
+                        text="Start!"
+                        onPress={() =>
+                            dispatch(actions.nav.goToScreen('Problem'))
+                        }
+                    />
                 </StyledCard>
                 <StyledCard title="Get more practice" style={{ marginTop: 16 }}>
                     <View style={styles.exerciseList}>

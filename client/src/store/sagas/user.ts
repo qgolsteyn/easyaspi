@@ -12,6 +12,7 @@ export default function* init() {
 
     yield takeLatest(actions.user.loginStudent, loginStudent);
     yield takeLatest(actions.user.registerTeacher, registerTeacher);
+    yield takeLatest(actions.user.loginTeacher, loginTeacher);
 }
 
 function* fetchAuthenticationInfo() {
@@ -32,10 +33,31 @@ function* fetchAuthenticationInfo() {
     }
 }
 
-function* loginTeacher() {}
+function* loginTeacher(action: ReturnType<typeof actions.user.loginTeacher>) {
+    const { email } = action.payload;
+
+    yield put(actions.user.setLoading(true));
+
+    yield call(
+        AsyncStorage.setItem,
+        USER_INFO_STORAGE_KEY,
+        JSON.stringify({
+            name: 'Test',
+            username: email,
+            type: 'STUDENT',
+            token: 'test_token',
+        })
+    );
+
+    yield call(fetchAuthenticationInfo);
+
+    yield put(actions.user.setLoading(false));
+}
 
 function* loginStudent(action: ReturnType<typeof actions.user.loginStudent>) {
     const { name, username } = action.payload;
+
+    yield put(actions.user.setLoading(true));
 
     yield call(
         AsyncStorage.setItem,
@@ -49,12 +71,16 @@ function* loginStudent(action: ReturnType<typeof actions.user.loginStudent>) {
     );
 
     yield call(fetchAuthenticationInfo);
+
+    yield put(actions.user.setLoading(false));
 }
 
 function* registerTeacher(
     action: ReturnType<typeof actions.user.registerTeacher>
 ) {
     const { name, email } = action.payload;
+
+    yield put(actions.user.setLoading(true));
 
     yield call(
         AsyncStorage.setItem,
@@ -71,6 +97,8 @@ function* registerTeacher(
     );
 
     yield call(fetchAuthenticationInfo);
+
+    yield put(actions.user.setLoading(false));
 }
 
 function* signOut() {}

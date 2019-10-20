@@ -4,7 +4,8 @@
 
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import validate from 'validate.js';
 
 import { Background } from '../../components/Background';
 import { StyledButton } from '../../components/Button';
@@ -13,7 +14,50 @@ import { colors } from '../../constants/colors';
 import { StyledInput } from '../../components/Input';
 import { StyledHeader } from '../../components/Header';
 import { StyledForm } from '../../components/Form';
-import { actions } from '../../store';
+import { actions, selectors } from '../../store';
+
+validate.validators.presence.options = { message: "can't be empty." };
+const constraints = {
+    name: {
+        presence: true,
+        format: {
+            pattern: /[^0-9\.\,\"\?\!\;\:\#\$\%\&\(\)\*\+\-\/\<\>\=\@\[\]\\\^\_\{\}\|\~]+/,
+            message: 'must be a valid name.',
+        },
+    },
+    email: {
+        presence: true,
+        format: {
+            pattern: /\b[\w\.-]+@[\w\.-]+\.\w{2,4}\b/,
+            message: 'must be a valid email.',
+        },
+    },
+    password: {
+        presence: true,
+        length: {
+            minimum: 6,
+            message: 'must have at least 6 characters.',
+        },
+    },
+    classroomName: {
+        presence: true,
+        format: {
+            pattern: /[^\.\,\"\?\!\;\:\#\$\%\&\(\)\*\+\-\/\<\>\=\@\[\]\\\^\_\{\}\|\~]+/,
+            message: 'must not contain special characters.',
+        },
+    },
+    classroomPasscode: {
+        presence: true,
+        format: {
+            pattern: /[0-9]+/,
+            message: 'must be all digits.',
+        },
+        length: {
+            minimum: 4,
+            message: 'must have at least 4 numbers.',
+        },
+    },
+};
 
 interface ITeacherSignUpScreen {
     navigation: any;
@@ -21,13 +65,40 @@ interface ITeacherSignUpScreen {
 
 export const TeacherSignUpScreen = (props: ITeacherSignUpScreen) => {
     const dispatch = useDispatch();
+    const loading = useSelector(selectors.user.isLoading);
     const [state, setState] = useState({
-        name: undefined,
-        email: undefined,
-        classroomName: undefined,
-        password: undefined,
-        classroomPasscode: undefined,
+        values: {
+            name: undefined,
+            email: undefined,
+            classroomName: undefined,
+            password: undefined,
+            classroomPasscode: undefined,
+        },
+        errors: {
+            name: undefined,
+            email: undefined,
+            classroomName: undefined,
+            password: undefined,
+            classroomPasscode: undefined,
+        },
     });
+
+    const onSubmit = () => {
+        const errors = validate(state.values, constraints);
+        if (errors) {
+            setState({ ...state, errors });
+        } else {
+            dispatch(
+                actions.user.registerTeacher(
+                    state.values.name,
+                    state.values.classroomName,
+                    state.values.classroomPasscode,
+                    state.values.email,
+                    state.values.password
+                )
+            );
+        }
+    };
 
     return (
         <Background backgroundColor={colors.bg}>
@@ -39,8 +110,15 @@ export const TeacherSignUpScreen = (props: ITeacherSignUpScreen) => {
                         textContentType="name"
                         placeholder="Name"
                         style={{ marginBottom: 16 }}
-                        value={state.name}
-                        onChangeText={val => setState({ ...state, name: val })}
+                        value={state.values.name}
+                        error={state.errors.name}
+                        onChangeText={val =>
+                            setState({
+                                ...state,
+                                values: { ...state.values, name: val },
+                                errors: { ...state.errors, name: undefined },
+                            })
+                        }
                     />
                     <StyledInput
                         placeholder="Email"
@@ -48,8 +126,15 @@ export const TeacherSignUpScreen = (props: ITeacherSignUpScreen) => {
                         keyboardType="email-address"
                         autoCapitalize="none"
                         style={{ marginBottom: 16 }}
-                        value={state.email}
-                        onChangeText={val => setState({ ...state, email: val })}
+                        value={state.values.email}
+                        error={state.errors.email}
+                        onChangeText={val =>
+                            setState({
+                                ...state,
+                                values: { ...state.values, email: val },
+                                errors: { ...state.errors, email: undefined },
+                            })
+                        }
                     />
                     <StyledInput
                         placeholder="Password"
@@ -57,9 +142,17 @@ export const TeacherSignUpScreen = (props: ITeacherSignUpScreen) => {
                         autoCapitalize="none"
                         style={{ marginBottom: 32 }}
                         secureTextEntry
-                        value={state.password}
+                        value={state.values.password}
+                        error={state.errors.password}
                         onChangeText={val =>
-                            setState({ ...state, password: val })
+                            setState({
+                                ...state,
+                                values: { ...state.values, password: val },
+                                errors: {
+                                    ...state.errors,
+                                    password: undefined,
+                                },
+                            })
                         }
                     />
                     <StyledInput
@@ -67,33 +160,42 @@ export const TeacherSignUpScreen = (props: ITeacherSignUpScreen) => {
                         placeholder="Classroom name"
                         textContentType="name"
                         style={{ marginBottom: 16 }}
-                        value={state.classroomName}
+                        value={state.values.classroomName}
+                        error={state.errors.classroomName}
                         onChangeText={val =>
-                            setState({ ...state, classroomName: val })
+                            setState({
+                                ...state,
+                                values: { ...state.values, classroomName: val },
+                                errors: {
+                                    ...state.errors,
+                                    classroomName: undefined,
+                                },
+                            })
                         }
                     />
                     <StyledInput
                         placeholder="Student registration code"
                         keyboardType="number-pad"
                         style={{ marginBottom: 32 }}
-                        value={state.classroomPasscode}
+                        value={state.values.classroomPasscode}
+                        error={state.errors.classroomPasscode}
                         onChangeText={val =>
-                            setState({ ...state, classroomPasscode: val })
+                            setState({
+                                ...state,
+                                values: {
+                                    ...state.values,
+                                    classroomPasscode: val,
+                                },
+                                errors: {
+                                    ...state.errors,
+                                    classroomPasscode: undefined,
+                                },
+                            })
                         }
                     />
                     <StyledButton
                         text="Submit!"
-                        onPress={() =>
-                            dispatch(
-                                actions.user.registerTeacher(
-                                    state.name,
-                                    state.classroomName,
-                                    state.classroomPasscode,
-                                    state.email,
-                                    state.password
-                                )
-                            )
-                        }
+                        onPress={onSubmit}
                         styles={{ marginBottom: 32 }}
                     />
                 </StyledForm>

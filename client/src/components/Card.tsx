@@ -4,6 +4,7 @@ import { StyleSheet, View, Text } from 'react-native';
 interface IStyledCard {
     title?: string;
     style?: Object;
+    height?: string | number;
     children?: React.ReactNode | React.ReactNode[];
 }
 
@@ -11,7 +12,7 @@ export const StyledCard = (props: IStyledCard) => {
     return (
         <View style={{ ...styles.cardWrapper, ...props.style }}>
             <View style={styles.cardContainer}>
-                <View style={styles.cardContent}>
+                <View style={{ ...styles.cardContent, height: props.height }}>
                     {props.title && (
                         <Text style={styles.title}>{props.title}</Text>
                     )}

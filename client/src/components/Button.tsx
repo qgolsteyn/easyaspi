@@ -1,10 +1,17 @@
 import * as React from 'react';
-import { TouchableWithoutFeedback, StyleSheet, View, Text } from 'react-native';
+import {
+    TouchableWithoutFeedback,
+    StyleSheet,
+    View,
+    Text,
+    ActivityIndicator,
+} from 'react-native';
 import * as Haptic from 'expo-haptics';
 
 import { colors } from '../constants/colors';
 
 interface IStyledButton {
+    loading?: boolean;
     text: string;
     styles?: Object;
     onPress?: () => void;
@@ -22,17 +29,22 @@ export const StyledButton = (props: IStyledButton) => {
                     setFocus(true);
                 }}
                 onPressOut={() => setFocus(false)}
-                onPress={props.onPress}
+                onPress={!props.loading ? props.onPress : undefined}
             >
                 <View
                     style={{
                         ...styles.textContainer,
-                        backgroundColor: focus
-                            ? colors.primaryDark
-                            : colors.primary,
+                        backgroundColor:
+                            focus || props.loading
+                                ? colors.primaryDark
+                                : colors.primary,
                     }}
                 >
-                    <Text style={styles.text}>{props.text}</Text>
+                    {props.loading ? (
+                        <ActivityIndicator size="large" color="#FFF" />
+                    ) : (
+                        <Text style={styles.text}>{props.text}</Text>
+                    )}
                 </View>
             </TouchableWithoutFeedback>
         </View>
@@ -60,12 +72,12 @@ const styles = StyleSheet.create({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        paddingBottom: 4,
         borderRadius: 8,
     },
     text: {
         fontFamily: 'josefin-sans-bold',
         fontSize: 24,
         color: '#fff',
+        paddingBottom: 4,
     },
 });
