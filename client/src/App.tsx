@@ -2,7 +2,7 @@
  * This file specifies a demo component for demonstration purposes
  */
 
-import { createAppContainer } from 'react-navigation';
+import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { fromRight } from 'react-navigation-transitions';
 
@@ -11,7 +11,7 @@ import { UserSelectionScreen } from './screens/UserSelectionScreen';
 import { StudentSignUpScreen } from './screens/StudentSignUpScreen';
 import { TeacherSignUpScreen } from './screens/TeacherSignUpScreen';
 
-const AppNavigator = createStackNavigator(
+const AuthStack = createStackNavigator(
     {
         Welcome: {
             screen: WelcomeScreen,
@@ -29,4 +29,13 @@ const AppNavigator = createStackNavigator(
     { initialRouteName: 'Welcome', transitionConfig: () => fromRight() }
 );
 
-export const App = createAppContainer(AppNavigator);
+const SwitchNavigator = createSwitchNavigator(
+    {
+        Auth: AuthStack,
+    },
+    {
+        initialRouteName: 'Auth',
+    }
+);
+
+export const App = createAppContainer(SwitchNavigator);

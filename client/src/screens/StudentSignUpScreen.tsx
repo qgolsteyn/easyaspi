@@ -3,7 +3,12 @@
  */
 
 import React from 'react';
-import { View, StyleSheet, KeyboardAvoidingView } from 'react-native';
+import {
+    View,
+    StyleSheet,
+    KeyboardAvoidingView,
+    ScrollView,
+} from 'react-native';
 
 import { Background } from '../components/Background';
 import { StyledButton } from '../components/Button';
@@ -19,26 +24,28 @@ interface IStudentSignUpScreen {
 
 export const StudentSignUpScreen = (props: IStudentSignUpScreen) => {
     return (
-        <KeyboardAvoidingView behavior="padding" enabled>
-            <Background backgroundImage={bg1} backgroundColor={colors.bg}>
-                <View style={styles.wrapper}>
-                    <StyledHeader>Let's meet</StyledHeader>
-                    <StyledInput
-                        label="My name is..."
-                        styles={{ marginBottom: 32 }}
-                    />
-                    <StyledInput label="What is the teacher password?" />
-                    <View style={styles.buttonContainer}>
-                        <StyledButton
-                            text="Submit!"
-                            onPress={() =>
-                                props.navigation.navigate('UserSelection')
-                            }
+        <Background backgroundImage={bg1} backgroundColor={colors.bg}>
+            <View style={styles.wrapper}>
+                <KeyboardAvoidingView behavior="padding" enabled>
+                    <View style={styles.scrollView}>
+                        <StyledHeader>Let's meet</StyledHeader>
+                        <StyledInput
+                            label="My name is..."
+                            styles={{ marginBottom: 32 }}
                         />
+                        <StyledInput label="What is the teacher password?" />
                     </View>
+                </KeyboardAvoidingView>
+                <View style={styles.buttonContainer}>
+                    <StyledButton
+                        text="Submit!"
+                        onPress={() =>
+                            props.navigation.navigate('UserSelection')
+                        }
+                    />
                 </View>
-            </Background>
-        </KeyboardAvoidingView>
+            </View>
+        </Background>
     );
 };
 
@@ -55,12 +62,15 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center',
         paddingTop: 28,
-        paddingHorizontal: 32,
+        paddingBottom: 32,
+    },
+    scrollView: {
         paddingBottom: 32,
     },
     buttonContainer: {
         display: 'flex',
         width: '100%',
         marginTop: 'auto',
+        paddingHorizontal: 32,
     },
 });

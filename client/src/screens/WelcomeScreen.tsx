@@ -4,18 +4,18 @@
 
 import React from 'react';
 import { Image, View, StyleSheet } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Background } from '../components/Background';
 import { StyledButton } from '../components/Button';
 import { colors } from '../constants/colors';
+import { actions, selectors } from '../store';
 
 import welcome from '../../assets/welcome.png';
 import logo from '../../assets/logo.png';
-import { NavigationActions } from 'react-navigation';
-import { actions } from '../store';
 
 export const WelcomeScreen = () => {
+    const loading = useSelector(selectors.user.isLoading);
     const dispatch = useDispatch();
 
     return (
@@ -39,14 +39,18 @@ export const WelcomeScreen = () => {
                         }}
                     />
                 </View>
-                <View style={styles.buttonContainer}>
-                    <StyledButton
-                        text="Let's start!"
-                        onPress={() =>
-                            dispatch(actions.nav.goToScreen('UserSelection'))
-                        }
-                    />
-                </View>
+                {!loading && (
+                    <View style={styles.buttonContainer}>
+                        <StyledButton
+                            text="Let's start!"
+                            onPress={() =>
+                                dispatch(
+                                    actions.nav.goToScreen('UserSelection')
+                                )
+                            }
+                        />
+                    </View>
+                )}
             </View>
         </Background>
     );

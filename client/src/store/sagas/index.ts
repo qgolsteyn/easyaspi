@@ -4,9 +4,14 @@
  * as actions that update the Redux store.
  */
 
-import { spawn } from 'redux-saga/effects';
+import { spawn, delay } from 'redux-saga/effects';
+
 import navInit from './nav';
+import userInit from './user';
 
 export function* initializeSagas() {
     yield spawn(navInit);
+
+    yield delay(500);
+    yield spawn(userInit);
 }

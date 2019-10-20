@@ -5,7 +5,7 @@ import {
     NavigationActions,
 } from 'react-navigation';
 
-import { actions } from '../../reducers';
+import { actions } from '../reducers';
 
 export default function* init() {
     yield takeLatest(

@@ -19,27 +19,31 @@ interface ITeacherSignUpScreen {
 
 export const TeacherSignUpScreen = (props: ITeacherSignUpScreen) => {
     return (
-        <KeyboardAvoidingView behavior="padding" enabled>
-            <Background backgroundImage={bg1} backgroundColor={colors.bg}>
-                <View style={styles.wrapper}>
-                    <StyledHeader>Create classroom</StyledHeader>
+        <Background backgroundImage={bg1} backgroundColor={colors.bg}>
+            <View style={styles.wrapper}>
+                <StyledHeader>Create classroom</StyledHeader>
+                <KeyboardAvoidingView
+                    style={{ paddingBottom: 32 }}
+                    behavior="position"
+                    enabled
+                >
                     <StyledInput label="Name" styles={{ marginBottom: 32 }} />
                     <StyledInput
                         label="Classroom name"
                         styles={{ marginBottom: 32 }}
                     />
                     <StyledInput label="Student registration code" />
-                    <View style={styles.buttonContainer}>
-                        <StyledButton
-                            text="Submit!"
-                            onPress={() =>
-                                props.navigation.navigate('UserSelection')
-                            }
-                        />
-                    </View>
+                </KeyboardAvoidingView>
+                <View style={styles.buttonContainer}>
+                    <StyledButton
+                        text="Submit!"
+                        onPress={() =>
+                            props.navigation.navigate('UserSelection')
+                        }
+                    />
                 </View>
-            </Background>
-        </KeyboardAvoidingView>
+            </View>
+        </Background>
     );
 };
 

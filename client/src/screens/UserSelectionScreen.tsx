@@ -20,7 +20,9 @@ export const UserSelectionScreen = (props: IUserSelectionScreenProps) => {
     return (
         <Background backgroundImage={bg2} backgroundColor={colors.bg}>
             <View style={styles.wrapper}>
-                <StyledHeader>Let's meet</StyledHeader>
+                <View style={styles.header}>
+                    <StyledHeader>Let's meet</StyledHeader>
+                </View>
                 <View style={styles.container}>
                     <StyledButton
                         text="a student"
@@ -28,6 +30,8 @@ export const UserSelectionScreen = (props: IUserSelectionScreenProps) => {
                             props.navigation.navigate('StudentSignUp')
                         }
                     />
+                </View>
+                <View style={styles.container}>
                     <StyledButton
                         text="a teacher"
                         onPress={() =>
@@ -54,14 +58,20 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center',
     },
+    header: {
+        width: '100%',
+        height: '25%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingHorizontal: 32,
+    },
     container: {
         width: '100%',
         flexGrow: 1,
         display: 'flex',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
         alignItems: 'center',
-        paddingTop: 96,
-        paddingBottom: 96,
         paddingHorizontal: 32,
     },
 });
