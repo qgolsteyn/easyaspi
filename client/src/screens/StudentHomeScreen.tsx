@@ -3,7 +3,7 @@
  */
 
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 
 import { Background } from '../components/Background';
 import { colors } from '../constants/colors';
@@ -14,12 +14,14 @@ import { StyledButton } from '../components/Button';
 import { useSelector, useDispatch } from 'react-redux';
 import { actions, selectors } from '../store';
 
+import bg1 from '../../assets/bg1.png';
+
 export const StudentHome = () => {
     const dispatch = useDispatch();
     const userName = useSelector(selectors.user.getName);
 
     return (
-        <Background backgroundColor={colors.bg}>
+        <Background backgroundColor={colors.bg} backgroundImage={bg1}>
             <View style={styles.wrapper}>
                 <StyledHeader>Hi {userName}!</StyledHeader>
                 <StyledCard title="Today's math exercises">

@@ -7,12 +7,12 @@ import { call, put } from 'redux-saga/effects';
 
 import { problemSerializer } from 'shared';
 
-import { api } from './api';
+import { baseApi } from './api';
 import { actions } from '../reducers';
 
 export function* demoStart() {
     const response = (yield call(
-        [api, api.get],
+        [baseApi, baseApi.get],
         '/math/problem'
     )) as AxiosResponse;
 

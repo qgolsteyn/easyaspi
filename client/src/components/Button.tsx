@@ -14,14 +14,46 @@ interface IStyledButton {
     loading?: boolean;
     text: string;
     styles?: Object;
+    styleAttr?: 'primary' | 'secondary' | 'success' | 'error';
     onPress?: () => void;
 }
 
 export const StyledButton = (props: IStyledButton) => {
     const [focus, setFocus] = React.useState(false);
 
+    const color = React.useMemo(() => {
+        switch (props.styleAttr) {
+            case 'secondary':
+                return colors.secondary;
+            case 'error':
+                return colors.error;
+            case 'success':
+                return colors.success;
+            default:
+                return colors.primary;
+        }
+    }, [props.styleAttr]);
+    const colorDark = React.useMemo(() => {
+        switch (props.styleAttr) {
+            case 'secondary':
+                return colors.secondaryDark;
+            case 'error':
+                return colors.errorDark;
+            case 'success':
+                return colors.successDark;
+            default:
+                return colors.primaryDark;
+        }
+    }, [props.styleAttr]);
+
     return (
-        <View style={{ ...styles.wrapper, ...props.styles }}>
+        <View
+            style={{
+                ...styles.wrapper,
+                ...props.styles,
+                backgroundColor: colorDark,
+            }}
+        >
             <TouchableWithoutFeedback
                 style={styles.button}
                 onPressIn={() => {
@@ -35,9 +67,7 @@ export const StyledButton = (props: IStyledButton) => {
                     style={{
                         ...styles.textContainer,
                         backgroundColor:
-                            focus || props.loading
-                                ? colors.primaryDark
-                                : colors.primary,
+                            focus || props.loading ? colorDark : color,
                     }}
                 >
                     {props.loading ? (
@@ -59,7 +89,6 @@ const styles = StyleSheet.create({
         paddingBottom: 4,
         borderRadius: 8,
         marginBottom: 4,
-        backgroundColor: colors.primaryDark,
     },
     button: {
         width: '100%',

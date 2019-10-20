@@ -16,6 +16,8 @@ import { StyledHeader } from '../../components/Header';
 import { StyledForm } from '../../components/Form';
 import { actions, selectors } from '../../store';
 
+import bg1 from '../../../assets/bg1.png';
+
 validate.validators.presence.options = { message: "can't be empty." };
 const constraints = {
     email: {
@@ -59,7 +61,7 @@ export const TeacherLoginScreen = () => {
     };
 
     return (
-        <Background backgroundColor={colors.bg}>
+        <Background backgroundColor={colors.bg} backgroundImage={bg1}>
             <View style={styles.wrapper}>
                 <StyledForm backgroundColor={colors.bg}>
                     <StyledHeader>Login</StyledHeader>
@@ -106,6 +108,7 @@ export const TeacherLoginScreen = () => {
                     />
                     <StyledButton
                         text="Create a new classroom"
+                        styleAttr="secondary"
                         styles={{ marginBottom: 32 }}
                         onPress={() =>
                             dispatch(actions.nav.goToScreen('TeacherSignUp'))

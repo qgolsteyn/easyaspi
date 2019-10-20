@@ -1,6 +1,5 @@
 import { AsyncStorage } from 'react-native';
-import { takeLatest, put, call, delay } from 'redux-saga/effects';
-import { getType } from 'typesafe-actions';
+import { takeLatest, put, call } from 'redux-saga/effects';
 
 import { actions } from '../reducers';
 import { IUser } from '../reducers/user';
