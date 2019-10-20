@@ -2,15 +2,21 @@ import * as React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 
 interface IStyledCard {
-    styles?: Object;
+    title?: string;
+    style?: Object;
     children?: React.ReactNode | React.ReactNode[];
 }
 
 export const StyledCard = (props: IStyledCard) => {
     return (
-        <View style={{ ...styles.cardWrapper, ...props.styles }}>
+        <View style={{ ...styles.cardWrapper, ...props.style }}>
             <View style={styles.cardContainer}>
-                <View style={styles.cardContent}>{props.children}</View>
+                <View style={styles.cardContent}>
+                    {props.title && (
+                        <Text style={styles.title}>{props.title}</Text>
+                    )}
+                    {props.children}
+                </View>
             </View>
         </View>
     );
@@ -20,7 +26,6 @@ const styles = StyleSheet.create({
     cardWrapper: {
         position: 'relative',
         width: '100%',
-        height: 64,
         paddingBottom: 4,
         marginBottom: 4,
         borderRadius: 8,
@@ -28,18 +33,18 @@ const styles = StyleSheet.create({
     },
     cardContainer: {
         width: '100%',
-        height: '100%',
         display: 'flex',
     },
     cardContent: {
         width: '100%',
-        height: '100%',
         backgroundColor: '#FFF',
         display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingVertical: 8,
-        paddingHorizontal: 16,
+        padding: 16,
         borderRadius: 8,
+    },
+    title: {
+        fontFamily: 'josefin-sans-bold',
+        fontSize: 24,
+        color: '#333',
     },
 });

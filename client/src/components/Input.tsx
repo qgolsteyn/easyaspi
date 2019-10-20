@@ -12,14 +12,30 @@ import { colors } from '../constants/colors';
 interface IStyledInput extends TextInputProps {
     style?: Object;
     label?: string;
+    error?: boolean;
 }
 
 export const StyledInput = (props: IStyledInput) => {
     return (
-        <View style={{ ...styles.wrapper, ...props.style }}>
+        <View
+            style={{
+                ...styles.wrapper,
+                ...props.style,
+            }}
+        >
             {props.label && <Text style={styles.label}>{props.label}</Text>}
-            <View style={styles.inputWrapper}>
-                <View style={styles.inputContainer}>
+            <View
+                style={{
+                    ...styles.inputWrapper,
+                    ...(props.error ? { backgroundColor: '#FF0000' } : {}),
+                }}
+            >
+                <View
+                    style={{
+                        ...styles.inputContainer,
+                        ...(props.error ? { backgroundColor: '#FF0000' } : {}),
+                    }}
+                >
                     <TextInput
                         {...props}
                         style={styles.input}
@@ -51,17 +67,15 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
         display: 'flex',
+        borderRadius: 8,
+        backgroundColor: colors.inputs,
     },
     input: {
         width: '100%',
         height: '100%',
-        backgroundColor: colors.inputs,
         display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
         paddingVertical: 8,
         paddingHorizontal: 16,
-        borderRadius: 8,
         fontFamily: 'josefin-sans-bold',
         fontSize: 24,
         color: '#fff',

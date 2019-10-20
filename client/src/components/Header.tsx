@@ -2,7 +2,7 @@ import * as React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 
 interface IStyledHeader {
-    children: string;
+    children: string | string[];
 }
 
 export const StyledHeader = (props: IStyledHeader) => {

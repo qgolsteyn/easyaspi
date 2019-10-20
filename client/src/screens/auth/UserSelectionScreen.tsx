@@ -5,12 +5,12 @@
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 
-import { Background } from '../components/Background';
-import { StyledButton } from '../components/Button';
-import { StyledHeader } from '../components/Header';
+import { Background } from '../../components/Background';
+import { StyledButton } from '../../components/Button';
+import { StyledHeader } from '../../components/Header';
 
-import bg2 from '../../assets/bg2.png';
-import { colors } from '../constants/colors';
+import bg2 from '../../../assets/bg2.png';
+import { colors } from '../../constants/colors';
 
 interface IUserSelectionScreenProps {
     navigation: any;
@@ -35,7 +35,7 @@ export const UserSelectionScreen = (props: IUserSelectionScreenProps) => {
                     <StyledButton
                         text="a teacher"
                         onPress={() =>
-                            props.navigation.navigate('TeacherSignUp')
+                            props.navigation.navigate('TeacherLogin')
                         }
                     />
                 </View>

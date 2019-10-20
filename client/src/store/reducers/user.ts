@@ -14,14 +14,15 @@ export interface IUser {
     name: string;
     username: string;
     type: UserType;
-    token: string;
+    userToken: string;
+    classroomToken: string;
 }
 
 // We specify the shape of the state in an interface
 export interface IUserState {
     loading: boolean;
+    error?: string;
     user?: IUser;
-    classroomName?: string;
 }
 
 // And provide a default value for initialization
@@ -32,31 +33,29 @@ const defaultState: IUserState = {
 // Selectors are responsible for getting values in the state
 export const userSelectors = {
     isLoading: (state: { user: IUserState }) => state.user.loading,
-    getUser: (state: { user: IUserState }) => state.user.user,
-    getClassroom: (state: { user: IUserState }) => state.user.classroomName,
+    getName: (state: { user: IUserState }) => state.user.user.name,
 };
 
 // And actions allow us to mutate the state
 export const userActions = {
-    setUser: createAction(
-        'user_setUser',
-        resolve => (user: IUser, classroomName: string) =>
-            resolve({ user, classroomName })
+    setCurrentUser: createAction('user_setUser', resolve => (user: IUser) =>
+        resolve({ user })
+    ),
+    setError: createAction('user_setError', resolve => (error: string) =>
+        resolve({ error })
+    ),
+    setLoading: createAction('user_setLoading', resolve => (loading: boolean) =>
+        resolve({ loading })
     ),
     loginStudent: createAction(
         'user_loginStudent',
-        resolve => (username: string, passcode: string) =>
-            resolve({ username, passcode })
+        resolve => (name: string, username: string, passcode: string) =>
+            resolve({ name, username, passcode })
     ),
     loginTeacher: createAction(
         'user_loginTeacher',
         resolve => (email: string, password: string) =>
             resolve({ email, password })
-    ),
-    registerStudent: createAction(
-        'user_registerStudent',
-        resolve => (name: string, username: string, passcode: string) =>
-            resolve({ name, username, passcode })
     ),
     registerTeacher: createAction(
         'user_registerTeacher',
@@ -77,18 +76,27 @@ export type UserAction = ActionType<typeof userActions>;
 export const userReducer = produce((draft: IUserState, action: UserAction) => {
     // We switch based on the type of action
     switch (action.type) {
-        case getType(userActions.setUser): {
-            const { user, classroomName } = action.payload;
+        case getType(userActions.setCurrentUser): {
+            const { user } = action.payload;
 
             draft.loading = false;
+            draft.error = undefined;
             draft.user = user;
-            draft.classroomName = classroomName;
-
-            return draft;
+            break;
         }
-        default: {
-            // Redux requires us to return the state in case the action does not match
-            return draft;
+        case getType(userActions.setError): {
+            const { error } = action.payload;
+
+            draft.loading = false;
+            draft.error = error;
+            break;
+        }
+        case getType(userActions.setLoading): {
+            const { loading } = action.payload;
+            draft.loading = loading;
+            break;
         }
     }
+
+    return draft;
 }, defaultState);

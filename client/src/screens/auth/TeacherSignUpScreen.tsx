@@ -6,14 +6,14 @@ import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useDispatch } from 'react-redux';
 
-import { Background } from '../components/Background';
-import { StyledButton } from '../components/Button';
+import { Background } from '../../components/Background';
+import { StyledButton } from '../../components/Button';
 
-import { colors } from '../constants/colors';
-import { StyledInput } from '../components/Input';
-import { StyledHeader } from '../components/Header';
-import { StyledForm } from '../components/Form';
-import { actions } from '../store';
+import { colors } from '../../constants/colors';
+import { StyledInput } from '../../components/Input';
+import { StyledHeader } from '../../components/Header';
+import { StyledForm } from '../../components/Form';
+import { actions } from '../../store';
 
 interface ITeacherSignUpScreen {
     navigation: any;
@@ -33,34 +33,28 @@ export const TeacherSignUpScreen = (props: ITeacherSignUpScreen) => {
         <Background backgroundColor={colors.bg}>
             <View style={styles.wrapper}>
                 <StyledForm backgroundColor={colors.bg}>
-                    <StyledHeader>Create classroom</StyledHeader>
+                    <StyledHeader>Register</StyledHeader>
                     <StyledInput
-                        label="Name"
+                        label="Personal info"
                         textContentType="name"
-                        style={{ marginBottom: 32 }}
+                        placeholder="Name"
+                        style={{ marginBottom: 16 }}
                         value={state.name}
                         onChangeText={val => setState({ ...state, name: val })}
                     />
                     <StyledInput
-                        label="Email"
+                        placeholder="Email"
                         textContentType="emailAddress"
                         keyboardType="email-address"
-                        style={{ marginBottom: 32 }}
+                        autoCapitalize="none"
+                        style={{ marginBottom: 16 }}
                         value={state.email}
                         onChangeText={val => setState({ ...state, email: val })}
                     />
                     <StyledInput
-                        label="Classroom name"
-                        textContentType="name"
-                        style={{ marginBottom: 32 }}
-                        value={state.classroomName}
-                        onChangeText={val =>
-                            setState({ ...state, classroomName: val })
-                        }
-                    />
-                    <StyledInput
-                        label="Account Password"
+                        placeholder="Password"
                         textContentType="newPassword"
+                        autoCapitalize="none"
                         style={{ marginBottom: 32 }}
                         secureTextEntry
                         value={state.password}
@@ -69,7 +63,17 @@ export const TeacherSignUpScreen = (props: ITeacherSignUpScreen) => {
                         }
                     />
                     <StyledInput
-                        label="Student registration code"
+                        label="Classroom"
+                        placeholder="Classroom name"
+                        textContentType="name"
+                        style={{ marginBottom: 16 }}
+                        value={state.classroomName}
+                        onChangeText={val =>
+                            setState({ ...state, classroomName: val })
+                        }
+                    />
+                    <StyledInput
+                        placeholder="Student registration code"
                         keyboardType="number-pad"
                         style={{ marginBottom: 32 }}
                         value={state.classroomPasscode}

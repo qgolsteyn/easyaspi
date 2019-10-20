@@ -3,54 +3,48 @@ import { takeLatest, put, call, delay } from 'redux-saga/effects';
 import { getType } from 'typesafe-actions';
 
 import { actions } from '../reducers';
+import { IUser } from '../reducers/user';
 
 const USER_INFO_STORAGE_KEY = 'user_info';
 
 export default function* init() {
     yield call(fetchAuthenticationInfo);
 
-    yield takeLatest(actions.user.registerStudent, registerStudent);
+    yield takeLatest(actions.user.loginStudent, loginStudent);
     yield takeLatest(actions.user.registerTeacher, registerTeacher);
 }
 
 function* fetchAuthenticationInfo() {
-    const userInfo = JSON.parse(
+    const user = JSON.parse(
         yield call(AsyncStorage.getItem, USER_INFO_STORAGE_KEY)
-    );
+    ) as IUser;
 
-    if (userInfo) {
-        yield put(actions.user.setUser(userInfo.user, userInfo.classroomName));
+    if (user) {
+        yield put(actions.user.setCurrentUser(user));
 
-        if (userInfo.user.type === 'STUDENT') {
+        if (user.type === 'STUDENT') {
             yield put(actions.nav.goToScreen('Student'));
-        } else if (userInfo.user.type === 'TEACHER') {
+        } else if (user.type === 'TEACHER') {
             yield put(actions.nav.goToScreen('Teacher'));
         }
     } else {
-        yield put(actions.user.setUser(undefined, undefined));
+        yield put(actions.user.setLoading(false));
     }
 }
 
 function* loginTeacher() {}
 
-function* loginStudent() {}
-
-function* registerStudent(
-    action: ReturnType<typeof actions.user.registerStudent>
-) {
-    const { name } = action.payload;
+function* loginStudent(action: ReturnType<typeof actions.user.loginStudent>) {
+    const { name, username } = action.payload;
 
     yield call(
         AsyncStorage.setItem,
         USER_INFO_STORAGE_KEY,
         JSON.stringify({
-            user: {
-                name,
-                username: name,
-                type: 'STUDENT',
-                token: 'test_token',
-            },
-            classroomName: 'Hello',
+            name,
+            username,
+            type: 'STUDENT',
+            token: 'test_token',
         })
     );
 

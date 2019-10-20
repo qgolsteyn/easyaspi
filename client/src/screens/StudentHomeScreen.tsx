@@ -4,24 +4,44 @@
 
 import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
 
 import { Background } from '../components/Background';
-import { StyledButton } from '../components/Button';
 import { colors } from '../constants/colors';
-import { actions, selectors } from '../store';
-
-import welcome from '../../assets/welcome.png';
-import logo from '../../assets/logo.png';
+import { StyledHeader } from '../components/Header';
+import { StyledCard } from '../components/Card';
+import { Icon } from '../components/Icon';
+import { StyledButton } from '../components/Button';
+import { useSelector } from 'react-redux';
+import { selectors } from '../store';
 
 export const StudentHome = () => {
-    const loading = useSelector(selectors.user.isLoading);
-    const dispatch = useDispatch();
+    const userName = useSelector(selectors.user.getName);
 
     return (
-        <Background>
+        <Background backgroundColor={colors.bg}>
             <View style={styles.wrapper}>
-                <Text>Student</Text>
+                <StyledHeader>Hi {userName}!</StyledHeader>
+                <StyledCard title="Today's math exercises">
+                    <View style={styles.typeList}>
+                        <Icon backgroundColor={colors.inputs} text="+" />
+                        <Icon backgroundColor={colors.inputs} text="-" />
+                        <Icon backgroundColor={colors.inputs} text="*" />
+                        <Icon backgroundColor={colors.inputs} text="/" />
+                    </View>
+                    <StyledButton text="Start!" />
+                </StyledCard>
+                <StyledCard title="Get more practice" style={{ marginTop: 16 }}>
+                    <View style={styles.exerciseList}>
+                        <Icon backgroundColor={colors.inputs} text="+" />
+                        <Icon backgroundColor={colors.inputs} text="-" />
+                        <Icon backgroundColor={colors.inputs} text="*" />
+                        <Icon backgroundColor={colors.inputs} text="/" />
+                        <Icon backgroundColor={colors.inputs} text="+" />
+                        <Icon backgroundColor={colors.inputs} text="-" />
+                        <Icon backgroundColor={colors.inputs} text="*" />
+                        <Icon backgroundColor={colors.inputs} text="/" />
+                    </View>
+                </StyledCard>
             </View>
         </Background>
     );
@@ -39,22 +59,18 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        paddingBottom: 32,
+        paddingHorizontal: 16,
     },
-    logoContainer: {
+    typeList: {
+        width: '100%',
         display: 'flex',
-        width: '100%',
+        flexDirection: 'row',
+        marginBottom: 16,
     },
-    topBuffer: {
+    exerciseList: {
         width: '100%',
-        height: 32,
-        marginBottom: -1,
-        backgroundColor: colors.bg,
-    },
-    buttonContainer: {
         display: 'flex',
-        width: '100%',
-        marginTop: 'auto',
-        paddingHorizontal: 32,
+        marginTop: 8,
+        marginBottom: 8,
     },
 });
