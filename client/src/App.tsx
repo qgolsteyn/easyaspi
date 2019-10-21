@@ -9,6 +9,7 @@ import { fromLeft, fromRight } from 'react-navigation-transitions';
 import { WelcomeScreen } from './screens/WelcomeScreen';
 import { UserSelectionScreen } from './screens/UserSelectionScreen';
 import { StudentSignUpScreen } from './screens/StudentSignUpScreen';
+import { PushNotification} from './screens/PushNotification';
 
 const AppNavigator = createStackNavigator(
     {
@@ -21,8 +22,11 @@ const AppNavigator = createStackNavigator(
         StudentSignUp: {
             screen: StudentSignUpScreen,
         },
+        PushNotification:{
+            screen: PushNotification,
+        },
     },
-    { initialRouteName: 'Welcome', transitionConfig: () => fromRight() }
+    { initialRouteName: 'PushNotification', transitionConfig: () => fromRight() }
 );
 
 export const App = createAppContainer(AppNavigator);
