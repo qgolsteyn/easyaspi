@@ -5,12 +5,11 @@ import { AuthInfoModel } from '../../database';
 import Expo from 'expo-server-sdk';
 
 export const initializeNotificationRoutes = (app: express.Application) => {
-
     const expo = new Expo();
     const notificationRouter = express.Router();
     app.use('/notification', notificationRouter);
 
-    const handlePushTokens = (message : string, pushToken : string) => {
+    const handlePushTokens = (message: string, pushToken: string) => {
         // Create the messages that you want to send to clents
         let notifications = [];
 
@@ -42,13 +41,12 @@ export const initializeNotificationRoutes = (app: express.Application) => {
                 }
             }
         })();
-    }
+    };
 
     notificationRouter.post('/token/:userId', async (req, res) => {
-        const token : string = req.body.pushToken;
+        const token: string = req.body.pushToken;
 
-        if(Expo.isExpoPushToken(token))
-        {
+        if (Expo.isExpoPushToken(token)) {
             try {
                 const authInfo = await AuthInfoModel.findOne({
                     userId: req.params.userId,
@@ -63,29 +61,27 @@ export const initializeNotificationRoutes = (app: express.Application) => {
                 const auth = await AuthInfoModel.findByIdAndUpdate(
                     authInfo._id,
                     authInfo
-                )
+                );
                 res.status(200);
-                res.send(`User with id ${req.params.userId} updated with tokenId ${token}`);
+                res.send(
+                    `User with id ${req.params.userId} updated with tokenId ${token}`
+                );
             } catch (e) {
                 console.error(e);
                 res.status(500);
                 res.send('Error 500');
             }
-        }
-        else
-        {
+        } else {
             console.error(`Push token ${token} is not a valid Expo push token`);
             res.status(400);
             res.send('Invalid request');
         }
     });
 
-
     notificationRouter.post('/message/:userId', async (req, res) => {
-        const message : string = req.body.message;
+        const message: string = req.body.message;
 
-        if(message)
-        {
+        if (message) {
             try {
                 const authInfo = await AuthInfoModel.findOne({
                     userId: req.params.userId,
@@ -104,13 +100,10 @@ export const initializeNotificationRoutes = (app: express.Application) => {
                 res.status(500);
                 res.send('Error 500');
             }
-        }
-        else
-        {
+        } else {
             console.error(`Message can not be undefined or empty`);
             res.status(400);
             res.send('Invalid request');
         }
     });
-}
-
+};
