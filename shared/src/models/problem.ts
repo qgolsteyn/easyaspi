@@ -19,8 +19,6 @@ export interface IProblem {
     problemType: ProblemType;
     problem: string;
     solution: string[];
-    difficulty: number;
-    seed: number;
 }
 
 @jsonObject
@@ -37,26 +35,16 @@ export class Problem {
     @jsonArrayMember(String)
     solution: string[];
 
-    @jsonMember
-    difficulty: number;
-
-    @jsonMember
-    seed: number;
-
     constructor(
         problemArchetype?: ProblemArchetype,
         problemType?: ProblemType,
         problem?: string,
         solution?: string[],
-        difficulty?: number,
-        seed?: number
     ) {
         this.problemArchetype = problemArchetype || ProblemArchetype.UNKNOWN;
         this.problemType = problemType || ProblemType.UNKNOWN;
         this.problem = problem || '';
         this.solution = solution || [''];
-        this.difficulty = difficulty || 0;
-        this.seed = seed || 0;
     }
 }
 
