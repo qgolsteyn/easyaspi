@@ -3,7 +3,6 @@
  * introduce side-effects in the application (such as talking to a server). They output their result
  * as actions that update the Redux store.
  */
-
 import { spawn, delay } from 'redux-saga/effects';
 
 import navInit from './nav';

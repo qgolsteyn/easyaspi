@@ -12,7 +12,7 @@ import { colors } from '../constants/colors';
 interface IStyledInput extends TextInputProps {
     style?: Object;
     label?: string;
-    error?: boolean;
+    error?: string;
 }
 
 export const StyledInput = (props: IStyledInput) => {

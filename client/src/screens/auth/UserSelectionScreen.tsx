@@ -35,7 +35,7 @@ export const UserSelectionScreen = (props: IUserSelectionScreenProps) => {
                     <StyledButton
                         text="a teacher"
                         onPress={() =>
-                            props.navigation.navigate('TeacherLogin')
+                            props.navigation.navigate('TeacherSignUp')
                         }
                     />
                 </View>

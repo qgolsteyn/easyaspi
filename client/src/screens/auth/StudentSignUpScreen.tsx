@@ -24,15 +24,11 @@ const constraints = {
             message: 'must be a valid name.',
         },
     },
-    username: {
+    classroomName: {
         presence: true,
         format: {
-            pattern: /[a-zA-Z0-9]+/,
-            message: 'must be a valid username.',
-        },
-        length: {
-            minimum: 6,
-            message: 'must have at least 6 characters.',
+            pattern: /[^\.\,\"\?\!\;\:\#\$\%\&\(\)\*\+\-\/\<\>\=\@\[\]\\\^\_\{\}\|\~]+/,
+            message: 'must not contain special characters.',
         },
     },
     classroomPasscode: {
@@ -44,25 +40,24 @@ const constraints = {
     },
 };
 
-interface IStudentSignUpScreen {
-    navigation: any;
-}
-
-export const StudentSignUpScreen = (props: IStudentSignUpScreen) => {
+export const StudentSignUpScreen = () => {
     const dispatch = useDispatch();
+
+    const currentUser = useSelector(selectors.user.getCurrentUser);
     const loading = useSelector(selectors.user.isLoading);
-    const [state, setState] = useState({
+
+    const [state, setState] = useState(() => ({
         values: {
-            name: undefined,
-            username: undefined,
+            name: currentUser.name,
+            classroomName: undefined,
             classroomPasscode: undefined,
         },
         errors: {
             name: undefined,
-            username: undefined,
+            classroomName: undefined,
             classroomPasscode: undefined,
         },
-    });
+    }));
 
     const onSubmit = () => {
         const errors = validate(state.values, constraints);
@@ -70,9 +65,10 @@ export const StudentSignUpScreen = (props: IStudentSignUpScreen) => {
             setState({ ...state, errors });
         } else {
             dispatch(
-                actions.user.loginStudent(
+                actions.user.registerStudent(
+                    currentUser.authToken,
                     state.values.name,
-                    state.values.username,
+                    state.values.classroomName,
                     state.values.classroomPasscode
                 )
             );
@@ -88,6 +84,7 @@ export const StudentSignUpScreen = (props: IStudentSignUpScreen) => {
                         label="My name is..."
                         textContentType="name"
                         autoCapitalize="words"
+                        value={state.values.name}
                         error={state.errors.name}
                         style={{ marginBottom: 16 }}
                         onChangeText={val =>
@@ -99,24 +96,26 @@ export const StudentSignUpScreen = (props: IStudentSignUpScreen) => {
                         }
                     />
                     <StyledInput
-                        label="My username is..."
-                        textContentType="username"
-                        autoCapitalize="none"
-                        error={state.errors.username}
+                        label="The class name is..."
+                        textContentType="name"
+                        autoCapitalize="words"
+                        value={state.values.classroomName}
+                        error={state.errors.classroomName}
                         style={{ marginBottom: 16 }}
                         onChangeText={val =>
                             setState({
                                 ...state,
-                                values: { ...state.values, username: val },
+                                values: { ...state.values, classroomName: val },
                                 errors: {
                                     ...state.errors,
-                                    username: undefined,
+                                    classroomName: undefined,
                                 },
                             })
                         }
                     />
                     <StyledInput
                         label="What is the teacher password?"
+                        value={state.values.classroomPasscode}
                         error={state.errors.classroomPasscode}
                         keyboardType="number-pad"
                         style={{ marginBottom: 32 }}

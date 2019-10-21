@@ -25,20 +25,6 @@ const constraints = {
             message: 'must be a valid name.',
         },
     },
-    email: {
-        presence: true,
-        format: {
-            pattern: /\b[\w\.-]+@[\w\.-]+\.\w{2,4}\b/,
-            message: 'must be a valid email.',
-        },
-    },
-    password: {
-        presence: true,
-        length: {
-            minimum: 6,
-            message: 'must have at least 6 characters.',
-        },
-    },
     classroomName: {
         presence: true,
         format: {
@@ -65,20 +51,18 @@ interface ITeacherSignUpScreen {
 
 export const TeacherSignUpScreen = (props: ITeacherSignUpScreen) => {
     const dispatch = useDispatch();
+    const currentUser = useSelector(selectors.user.getCurrentUser);
     const loading = useSelector(selectors.user.isLoading);
+
     const [state, setState] = useState({
         values: {
-            name: undefined,
-            email: undefined,
+            name: currentUser.name,
             classroomName: undefined,
-            password: undefined,
             classroomPasscode: undefined,
         },
         errors: {
             name: undefined,
-            email: undefined,
             classroomName: undefined,
-            password: undefined,
             classroomPasscode: undefined,
         },
     });
@@ -90,11 +74,10 @@ export const TeacherSignUpScreen = (props: ITeacherSignUpScreen) => {
         } else {
             dispatch(
                 actions.user.registerTeacher(
+                    currentUser.authToken,
                     state.values.name,
                     state.values.classroomName,
-                    state.values.classroomPasscode,
-                    state.values.email,
-                    state.values.password
+                    state.values.classroomPasscode
                 )
             );
         }
@@ -117,41 +100,6 @@ export const TeacherSignUpScreen = (props: ITeacherSignUpScreen) => {
                                 ...state,
                                 values: { ...state.values, name: val },
                                 errors: { ...state.errors, name: undefined },
-                            })
-                        }
-                    />
-                    <StyledInput
-                        placeholder="Email"
-                        textContentType="emailAddress"
-                        keyboardType="email-address"
-                        autoCapitalize="none"
-                        style={{ marginBottom: 16 }}
-                        value={state.values.email}
-                        error={state.errors.email}
-                        onChangeText={val =>
-                            setState({
-                                ...state,
-                                values: { ...state.values, email: val },
-                                errors: { ...state.errors, email: undefined },
-                            })
-                        }
-                    />
-                    <StyledInput
-                        placeholder="Password"
-                        textContentType="newPassword"
-                        autoCapitalize="none"
-                        style={{ marginBottom: 32 }}
-                        secureTextEntry
-                        value={state.values.password}
-                        error={state.errors.password}
-                        onChangeText={val =>
-                            setState({
-                                ...state,
-                                values: { ...state.values, password: val },
-                                errors: {
-                                    ...state.errors,
-                                    password: undefined,
-                                },
                             })
                         }
                     />
@@ -196,6 +144,7 @@ export const TeacherSignUpScreen = (props: ITeacherSignUpScreen) => {
                     <StyledButton
                         text="Submit!"
                         onPress={onSubmit}
+                        loading={loading}
                         styles={{ marginBottom: 32 }}
                     />
                 </StyledForm>

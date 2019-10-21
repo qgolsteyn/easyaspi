@@ -39,18 +39,13 @@ export const WelcomeScreen = () => {
                         }}
                     />
                 </View>
-                {!loading && (
-                    <View style={styles.buttonContainer}>
-                        <StyledButton
-                            text="Let's start!"
-                            onPress={() =>
-                                dispatch(
-                                    actions.nav.goToScreen('UserSelection')
-                                )
-                            }
-                        />
-                    </View>
-                )}
+                <View style={styles.buttonContainer}>
+                    <StyledButton
+                        text="Let's start!"
+                        loading={loading}
+                        onPress={() => dispatch(actions.user.login())}
+                    />
+                </View>
             </View>
         </Background>
     );

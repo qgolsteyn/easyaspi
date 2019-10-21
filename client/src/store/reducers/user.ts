@@ -5,24 +5,12 @@
 import { createAction, ActionType, getType } from 'typesafe-actions';
 import produce from 'immer';
 
-export enum UserType {
-    STUDENT = 'STUDENT',
-    TEACHER = 'TEACHER',
-}
-
-export interface IUser {
-    name: string;
-    username: string;
-    type: UserType;
-    userToken: string;
-    classroomToken: string;
-}
+import { IUser } from 'shared';
 
 // We specify the shape of the state in an interface
 export interface IUserState {
     loading: boolean;
-    error?: string;
-    user?: IUser;
+    user?: Partial<IUser>;
 }
 
 // And provide a default value for initialization
@@ -33,39 +21,36 @@ const defaultState: IUserState = {
 // Selectors are responsible for getting values in the state
 export const userSelectors = {
     isLoading: (state: { user: IUserState }) => state.user.loading,
-    getName: (state: { user: IUserState }) => state.user.user.name,
+    getCurrentUser: (state: { user: IUserState }) => state.user.user,
 };
 
 // And actions allow us to mutate the state
 export const userActions = {
-    setCurrentUser: createAction('user_setUser', resolve => (user: IUser) =>
-        resolve({ user })
-    ),
-    setError: createAction('user_setError', resolve => (error: string) =>
-        resolve({ error })
-    ),
     setLoading: createAction('user_setLoading', resolve => (loading: boolean) =>
         resolve({ loading })
     ),
-    loginStudent: createAction(
-        'user_loginStudent',
-        resolve => (name: string, username: string, passcode: string) =>
-            resolve({ name, username, passcode })
+    setCurrentUser: createAction(
+        'user_setUser',
+        resolve => (user: Partial<IUser>) => resolve({ user })
     ),
-    loginTeacher: createAction(
-        'user_loginTeacher',
-        resolve => (email: string, password: string) =>
-            resolve({ email, password })
+    login: createAction('user_login'),
+    registerStudent: createAction(
+        'user_registerStudent',
+        resolve => (
+            authToken: string,
+            name: string,
+            classroomName: string,
+            classroomPasscode: string
+        ) => resolve({ authToken, name, classroomName, classroomPasscode })
     ),
     registerTeacher: createAction(
         'user_registerTeacher',
         resolve => (
+            authToken: string,
             name: string,
             classroomName: string,
-            studentPasscode: string,
-            email: string,
-            password: string
-        ) => resolve({ name, classroomName, studentPasscode, email, password })
+            classroomPasscode: string
+        ) => resolve({ authToken, name, classroomName, classroomPasscode })
     ),
     signout: createAction('user_signout', resolve => () => resolve()),
 };
@@ -80,15 +65,7 @@ export const userReducer = produce((draft: IUserState, action: UserAction) => {
             const { user } = action.payload;
 
             draft.loading = false;
-            draft.error = undefined;
-            draft.user = user;
-            break;
-        }
-        case getType(userActions.setError): {
-            const { error } = action.payload;
-
-            draft.loading = false;
-            draft.error = error;
+            draft.user = { ...draft.user, ...user };
             break;
         }
         case getType(userActions.setLoading): {

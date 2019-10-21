@@ -18,7 +18,7 @@ import bg1 from '../../assets/bg1.png';
 
 export const StudentHome = () => {
     const dispatch = useDispatch();
-    const userName = useSelector(selectors.user.getName);
+    const userName = useSelector(selectors.user.getCurrentUser).name;
 
     return (
         <Background backgroundColor={colors.bg} backgroundImage={bg1}>
