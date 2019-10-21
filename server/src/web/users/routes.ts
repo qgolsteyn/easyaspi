@@ -78,10 +78,11 @@ export const initializeUsersRoutes = (app: express.Application) => {
                 throw [400, 'Invalid request'];
             }
 
-            const u = new UserModel(userCreation.user);
+            const u = new UserModel({
+                ...userCreation.user,
+                virtualClassroomUid: classroom.id,
+            });
             await u.save();
-
-            console.log(classroom);
 
             const a = new AuthInfoModel({
                 userId: u.id,

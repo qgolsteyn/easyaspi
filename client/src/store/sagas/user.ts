@@ -51,7 +51,9 @@ function* login() {
 
     yield put(actions.user.setAuthToken(googleResonse.id));
 
-    if (!(yield call(getUserInfo, googleResonse.id))) {
+    const isFound = yield call(getUserInfo, googleResonse.id);
+
+    if (!isFound) {
         yield put(actions.nav.goToScreen('UserSelection'));
         yield delay(500);
         yield put(actions.user.setLoading(false));
@@ -71,6 +73,7 @@ function* getUserInfo(authToken: string) {
         )) as AxiosResponse;
 
         const user = userSerializer.parse(userResponse.data);
+
         if (user) {
             yield put(actions.user.setCurrentUser(user));
             if (user.userType === UserType.STUDENT) {
@@ -80,9 +83,7 @@ function* getUserInfo(authToken: string) {
             }
             return true;
         }
-    } finally {
-        return false;
-    }
+    } catch (e) {}
 }
 
 function* register(action: ReturnType<typeof actions.user.register>) {
