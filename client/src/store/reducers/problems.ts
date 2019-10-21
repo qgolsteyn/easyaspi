@@ -6,8 +6,7 @@ import { createAction, ActionType, getType } from 'typesafe-actions';
 import produce from 'immer';
 
 export interface IProblem {
-    id: string;
-    prompt;
+    prompt: string;
     problem: string;
     solution: string;
     solved: boolean;
@@ -26,15 +25,7 @@ const defaultState: IProblemState = {
     problemSetCount: 10,
     solvedProblems: 0,
     currentProblem: 0,
-    problems: [
-        {
-            id: '1',
-            prompt: 'What is',
-            problem: '1 + 1 = ?',
-            solution: '1 + 1 = 2',
-            solved: false,
-        },
-    ],
+    problems: [],
 };
 
 // Selectors are responsible for getting values in the state

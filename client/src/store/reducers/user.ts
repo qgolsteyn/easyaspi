@@ -12,6 +12,7 @@ export interface IUserState {
     loading: boolean;
     authToken?: string;
     user?: Partial<IUser>;
+    userId?: string;
 }
 
 // And provide a default value for initialization
@@ -24,6 +25,7 @@ export const userSelectors = {
     isLoading: (state: { user: IUserState }) => state.user.loading,
     getAuthToken: (state: { user: IUserState }) => state.user.authToken,
     getCurrentUser: (state: { user: IUserState }) => state.user.user,
+    getCurrentUserId: (state: { user: IUserState }) => state.user.userId,
 };
 
 // And actions allow us to mutate the state
@@ -34,6 +36,9 @@ export const userActions = {
     setCurrentUser: createAction(
         'user_setUser',
         resolve => (user: Partial<IUser>) => resolve({ user })
+    ),
+    setCurrentUserId: createAction('user_setUserId', resolve => (id: string) =>
+        resolve({ id })
     ),
     setAuthToken: createAction('user_setAuth', resolve => (authToken: string) =>
         resolve({ authToken })
@@ -66,6 +71,11 @@ export const userReducer = produce((draft: IUserState, action: UserAction) => {
         case getType(userActions.setCurrentUser): {
             const { user } = action.payload;
             draft.user = { ...draft.user, ...user };
+            break;
+        }
+        case getType(userActions.setCurrentUserId): {
+            const { id } = action.payload;
+            draft.userId = id;
             break;
         }
         case getType(userActions.setAuthToken): {

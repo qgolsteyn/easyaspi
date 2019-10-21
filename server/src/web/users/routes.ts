@@ -32,7 +32,7 @@ export const initializeUsersRoutes = (app: express.Application) => {
             }
 
             res.status(200);
-            res.json(user);
+            res.json({ id: user.id, user });
         } catch (e) {
             console.error(e);
             res.status(500);
@@ -101,7 +101,7 @@ export const initializeUsersRoutes = (app: express.Application) => {
             await classroom.save();
 
             res.status(200);
-            res.json(u);
+            res.json({ id: u.id, user: u });
         } catch (e) {
             if (Array.isArray(e)) {
                 res.status(e[0]);

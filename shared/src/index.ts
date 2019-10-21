@@ -23,3 +23,8 @@ export {
     IClassroom,
     classroomSerializer,
 } from './models/classroom/classroom';
+export {
+    UserCreationResponse,
+    IUserCreationResponse,
+    userCreationResponseSerializer,
+} from './models/users/userResponse';

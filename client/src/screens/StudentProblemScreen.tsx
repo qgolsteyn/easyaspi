@@ -36,23 +36,23 @@ export const StudentProblem = () => {
     return (
         <Background backgroundColor={colors.bg} backgroundImage={bg1}>
             <View style={styles.wrapper}>
-                <ProgressBarAndroid
-                    style={styles.progressBar}
-                    styleAttr="Horizontal"
-                    color="#FFF"
-                    indeterminate={false}
-                    progress={
-                        (currentProblemNumber -
-                            (currentProblem.solved ? 0 : 0.5)) /
-                        numberOfProblems
-                    }
-                />
                 {isLoading ? (
                     <View style={styles.loadingView}>
                         <ActivityIndicator size="large" color="#FFF" />
                     </View>
                 ) : (
                     <>
+                        <ProgressBarAndroid
+                            style={styles.progressBar}
+                            styleAttr="Horizontal"
+                            color="#FFF"
+                            indeterminate={false}
+                            progress={
+                                (currentProblemNumber -
+                                    (currentProblem.solved ? 0 : 0.5)) /
+                                numberOfProblems
+                            }
+                        />
                         <StyledCard
                             title={`Question ${currentProblemNumber}`}
                             style={styles.problemCard}
@@ -126,6 +126,9 @@ export const StudentProblem = () => {
                                         text="Next >"
                                         onPress={() => {
                                             setShowSolution(true);
+                                            dispatch(
+                                                actions.problems.fetchNextProblem()
+                                            );
                                             dispatch(
                                                 actions.problems.goToNextProblem()
                                             );

@@ -1,7 +1,13 @@
 import { AsyncStorage } from 'react-native';
 import { takeLatest, put, call, delay, select } from 'redux-saga/effects';
 
-import { IUser, UserType, userSerializer, IUserCreation } from 'shared';
+import {
+    IUser,
+    UserType,
+    userSerializer,
+    IUserCreation,
+    userCreationResponseSerializer,
+} from 'shared';
 
 import * as Google from 'expo-google-app-auth';
 
@@ -43,15 +49,15 @@ function* saveAuthenticationInfo(
 function* login() {
     yield put(actions.user.setLoading(true));
 
-    const googleResonse = (yield call(loginWithGoogle)) as Google.GoogleUser;
-    if (googleResonse === undefined) {
+    const googleResponse = (yield call(loginWithGoogle)) as Google.GoogleUser;
+    if (googleResponse === undefined) {
         yield put(actions.user.setLoading(false));
         return;
     }
 
-    yield put(actions.user.setAuthToken(googleResonse.id));
+    yield put(actions.user.setAuthToken(googleResponse.id));
 
-    const isFound = yield call(getUserInfo, googleResonse.id);
+    const isFound = yield call(getUserInfo, googleResponse.id);
 
     if (!isFound) {
         yield put(actions.nav.goToScreen('UserSelection'));
@@ -59,7 +65,7 @@ function* login() {
         yield put(actions.user.setLoading(false));
         yield put(
             actions.user.setCurrentUser({
-                name: googleResonse.name,
+                name: googleResponse.name,
             })
         );
     }
@@ -72,11 +78,15 @@ function* getUserInfo(authToken: string) {
             `/users/auth/${authToken}`
         )) as AxiosResponse;
 
-        const user = userSerializer.parse(userResponse.data);
+        const { id, user } = userCreationResponseSerializer.parse(
+            userResponse.data
+        );
 
         if (user) {
+            yield put(actions.user.setCurrentUserId(id));
             yield put(actions.user.setCurrentUser(user));
             if (user.userType === UserType.STUDENT) {
+                yield put(actions.problems.fetchNextProblem());
                 yield put(actions.nav.goToScreen('Student'));
             } else if (user.userType === UserType.TEACHER) {
                 yield put(actions.classroom.fetchClassroom());
@@ -109,6 +119,7 @@ function* register(action: ReturnType<typeof actions.user.register>) {
                 classroomName: values.classroomName,
                 classroomPasscode: values.classroomPasscode,
                 user: {
+                    id: 'placeholder',
                     name: values.name,
                     userType: values.userType,
                     virtualClassroomUid: 'placeholder',
@@ -120,6 +131,7 @@ function* register(action: ReturnType<typeof actions.user.register>) {
         if (user) {
             yield put(actions.user.setCurrentUser(user));
             if (user.userType === UserType.STUDENT) {
+                yield put(actions.problems.fetchNextProblem());
                 yield put(actions.nav.goToScreen('Student'));
             } else if (user.userType === UserType.TEACHER) {
                 yield put(actions.classroom.fetchClassroom());
