@@ -5,11 +5,12 @@
 import { createAction, ActionType, getType } from 'typesafe-actions';
 import produce from 'immer';
 
-import { IUser } from 'shared';
+import { IUser, UserType } from 'shared';
 
 // We specify the shape of the state in an interface
 export interface IUserState {
     loading: boolean;
+    authToken?: string;
     user?: Partial<IUser>;
 }
 
@@ -21,6 +22,7 @@ const defaultState: IUserState = {
 // Selectors are responsible for getting values in the state
 export const userSelectors = {
     isLoading: (state: { user: IUserState }) => state.user.loading,
+    getAuthToken: (state: { user: IUserState }) => state.user.authToken,
     getCurrentUser: (state: { user: IUserState }) => state.user.user,
 };
 
@@ -33,24 +35,24 @@ export const userActions = {
         'user_setUser',
         resolve => (user: Partial<IUser>) => resolve({ user })
     ),
-    login: createAction('user_login'),
-    registerStudent: createAction(
-        'user_registerStudent',
-        resolve => (
-            authToken: string,
-            name: string,
-            classroomName: string,
-            classroomPasscode: string
-        ) => resolve({ authToken, name, classroomName, classroomPasscode })
+    setAuthToken: createAction('user_setAuth', resolve => (authToken: string) =>
+        resolve({ authToken })
     ),
-    registerTeacher: createAction(
-        'user_registerTeacher',
+    login: createAction('user_login'),
+    register: createAction(
+        'user_register',
         resolve => (
-            authToken: string,
             name: string,
+            userType: UserType,
             classroomName: string,
             classroomPasscode: string
-        ) => resolve({ authToken, name, classroomName, classroomPasscode })
+        ) =>
+            resolve({
+                name,
+                userType: userType,
+                classroomName,
+                classroomPasscode,
+            })
     ),
     signout: createAction('user_signout', resolve => () => resolve()),
 };
@@ -63,9 +65,12 @@ export const userReducer = produce((draft: IUserState, action: UserAction) => {
     switch (action.type) {
         case getType(userActions.setCurrentUser): {
             const { user } = action.payload;
-
-            draft.loading = false;
             draft.user = { ...draft.user, ...user };
+            break;
+        }
+        case getType(userActions.setAuthToken): {
+            const { authToken } = action.payload;
+            draft.authToken = authToken;
             break;
         }
         case getType(userActions.setLoading): {

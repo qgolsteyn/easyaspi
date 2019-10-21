@@ -1,8 +1,11 @@
 import express from 'express';
 
-import { UserModel, AuthInfoModel } from '../../database';
-import { userCreationSerializer, UserType, User } from 'shared';
-import { ClassroomTemplateModel } from '../../database/models/classroom/classroom';
+import {
+    UserModel,
+    AuthInfoModel,
+    ClassroomTemplateModel,
+} from '../../database';
+import { userCreationSerializer, UserType } from 'shared';
 
 export const initializeUsersRoutes = (app: express.Application) => {
     const usersRouter = express.Router();
@@ -10,6 +13,7 @@ export const initializeUsersRoutes = (app: express.Application) => {
 
     /* Retrieves a user profile by auth id */
     usersRouter.get('/auth/:authId', async (req, res) => {
+        console.log(`GET /auth/${req.params.authId}`);
         try {
             const authInfo = await AuthInfoModel.findOne({
                 authToken: req.params.authId,
@@ -38,6 +42,7 @@ export const initializeUsersRoutes = (app: express.Application) => {
 
     /* Creates a new user */
     usersRouter.post('/auth/register', async (req, res) => {
+        console.log(`GET /auth/register`);
         try {
             const userCreation = userCreationSerializer.parse(req.body);
             if (!userCreation) {
@@ -76,6 +81,8 @@ export const initializeUsersRoutes = (app: express.Application) => {
             const u = new UserModel(userCreation.user);
             await u.save();
 
+            console.log(classroom);
+
             const a = new AuthInfoModel({
                 userId: u.id,
                 authToken: userCreation.authToken,
@@ -100,6 +107,7 @@ export const initializeUsersRoutes = (app: express.Application) => {
                 res.send(e[1]);
             } else {
                 res.status(500);
+                console.error(e);
                 res.send('Server error');
             }
         }

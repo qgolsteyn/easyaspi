@@ -1,50 +1,42 @@
 import { AsyncStorage } from 'react-native';
-import { takeLatest, put, call, delay } from 'redux-saga/effects';
+import { takeLatest, put, call, delay, select } from 'redux-saga/effects';
 
 import { IUser, UserType, userSerializer, IUserCreation } from 'shared';
 
 import * as Google from 'expo-google-app-auth';
 
-import { actions } from '../reducers';
+import { actions, selectors } from '../reducers';
 import { baseApi } from './api';
 import { AxiosResponse } from 'axios';
 import { Notifications } from 'expo';
 
-const USER_INFO_STORAGE_KEY = 'user_info';
+const AUTH_TOKEN_KEY = 'auth_token';
 
 export default function* init() {
-    yield call(fetchAuthenticationInfo);
+    yield call(fetchUser);
 
     yield takeLatest(actions.user.login, login);
-    yield takeLatest(actions.user.registerTeacher, register, true);
-    yield takeLatest(actions.user.registerStudent, register, false);
+    yield takeLatest(actions.user.register, register);
+    yield takeLatest(actions.user.setAuthToken, saveAuthenticationInfo);
 }
 
-function* fetchAuthenticationInfo() {
-    const user = JSON.parse(
-        yield call(AsyncStorage.getItem, USER_INFO_STORAGE_KEY)
+function* fetchUser() {
+    const authToken = JSON.parse(
+        yield call(AsyncStorage.getItem, AUTH_TOKEN_KEY)
     );
 
-    if (user) {
-        if (user.userType === UserType.STUDENT) {
-            yield put(actions.user.setCurrentUser(user));
-            yield put(actions.nav.goToScreen('Student'));
-        } else if (user.userType === UserType.TEACHER) {
-            yield put(actions.user.setCurrentUser(user));
-            yield put(actions.nav.goToScreen('Teacher'));
-        } else {
-            yield put(actions.user.setLoading(false));
-        }
-    } else {
+    if (!authToken || !(yield call(getUserInfo, authToken))) {
         yield put(actions.user.setLoading(false));
     }
 }
 
-function* saveAuthenticationInfo(user: IUser) {
+function* saveAuthenticationInfo(
+    action: ReturnType<typeof actions.user.setAuthToken>
+) {
     yield call(
         AsyncStorage.setItem,
-        USER_INFO_STORAGE_KEY,
-        JSON.stringify(user)
+        AUTH_TOKEN_KEY,
+        JSON.stringify(action.payload.authToken)
     );
 }
 
@@ -57,64 +49,86 @@ function* login() {
         return;
     }
 
-    try {
-        const userResponse = (yield call(
-            [baseApi, baseApi.get],
-            `/users/${googleResonse.id}`
-        )) as AxiosResponse;
+    yield put(actions.user.setAuthToken(googleResonse.id));
 
-        const user = userSerializer.parse(userResponse.data);
-        if (user) {
-            yield call(saveAuthenticationInfo, user);
-            yield call(fetchAuthenticationInfo);
-        } else {
-            yield put(actions.user.setLoading(false));
-        }
-    } catch (e) {
+    if (!(yield call(getUserInfo, googleResonse.id))) {
         yield put(actions.nav.goToScreen('UserSelection'));
         yield delay(500);
+        yield put(actions.user.setLoading(false));
         yield put(
             actions.user.setCurrentUser({
                 name: googleResonse.name,
-                authToken: googleResonse.id,
             })
         );
     }
 }
 
-function* register(
-    action: ReturnType<typeof actions.user.registerStudent> | ReturnType<typeof actions.user.registerTeacher>,
-    teacher: boolean
-) {
+function* getUserInfo(authToken: string) {
+    try {
+        const userResponse = (yield call(
+            [baseApi, baseApi.get],
+            `/users/auth/${authToken}`
+        )) as AxiosResponse;
+
+        const user = userSerializer.parse(userResponse.data);
+        if (user) {
+            yield put(actions.user.setCurrentUser(user));
+            if (user.userType === UserType.STUDENT) {
+                yield put(actions.nav.goToScreen('Student'));
+            } else if (user.userType === UserType.TEACHER) {
+                yield put(actions.nav.goToScreen('Teacher'));
+            }
+            return true;
+        }
+    } finally {
+        return false;
+    }
+}
+
+function* register(action: ReturnType<typeof actions.user.register>) {
     const values = action.payload;
 
     yield put(actions.user.setLoading(true));
 
+    const authToken = (yield select(selectors.user.getAuthToken)) as string;
+    if (!authToken) {
+        yield put(actions.user.setLoading(true));
+        yield put(actions.nav.goToScreen('Welcome'));
+        return;
+    }
+
     try {
-        const userResponse = (yield call([baseApi, baseApi.post], '/users', {
-            authToken: values.authToken,
-            pushToken: yield call(Notifications.getExpoPushTokenAsync),
-            classroomName: values.classroomName,
-            classroomPasscode: values.classroomPasscode,
-            user: {
-                name: values.name,
-                userType: teacher ? UserType.TEACHER, UserType.STUDENT,
-                virtualClassroomUid: 'placeholder',
-                authToken: values.authToken,
-            },
-        } as IUserCreation)) as AxiosResponse;
+        const userResponse = (yield call(
+            [baseApi, baseApi.post],
+            '/users/auth/register',
+            {
+                authToken: authToken,
+                pushToken: yield call(Notifications.getExpoPushTokenAsync),
+                classroomName: values.classroomName,
+                classroomPasscode: values.classroomPasscode,
+                user: {
+                    name: values.name,
+                    userType: values.userType,
+                    virtualClassroomUid: 'placeholder',
+                },
+            } as IUserCreation
+        )) as AxiosResponse;
 
         const user = userSerializer.parse(userResponse.data);
         if (user) {
-            yield call(saveAuthenticationInfo, user);
-            yield call(fetchAuthenticationInfo);
+            yield put(actions.user.setCurrentUser(user));
+            if (user.userType === UserType.STUDENT) {
+                yield put(actions.nav.goToScreen('Student'));
+            } else if (user.userType === UserType.TEACHER) {
+                yield put(actions.nav.goToScreen('Teacher'));
+            }
         } else {
-            alert('Error');
+            alert('Invalid user format');
+            yield put(actions.user.setLoading(false));
         }
     } catch (e) {
         alert(e);
         yield put(actions.user.setLoading(false));
-        return;
     }
 }
 

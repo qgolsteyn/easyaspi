@@ -7,6 +7,8 @@ import { View, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import validate from 'validate.js';
 
+import { UserType } from 'shared';
+
 import { Background } from '../../components/Background';
 import { StyledButton } from '../../components/Button';
 import { colors } from '../../constants/colors';
@@ -65,9 +67,9 @@ export const StudentSignUpScreen = () => {
             setState({ ...state, errors });
         } else {
             dispatch(
-                actions.user.registerStudent(
-                    currentUser.authToken,
+                actions.user.register(
                     state.values.name,
+                    UserType.STUDENT,
                     state.values.classroomName,
                     state.values.classroomPasscode
                 )

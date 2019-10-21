@@ -17,7 +17,6 @@ const AuthInfoSchema = new mongoose.Schema({
     },
     pushToken: {
         type: String,
-        unique: true,
         required: true,
     },
 });
@@ -25,6 +24,6 @@ const AuthInfoSchema = new mongoose.Schema({
 // TODO: by default mongoose only looks for lowercase collection names,
 // there is a way to change this but its not a priority
 export const AuthInfoModel = mongoose.model<IAuthInfoSchema>(
-    'auth',
+    'auths',
     AuthInfoSchema
 );

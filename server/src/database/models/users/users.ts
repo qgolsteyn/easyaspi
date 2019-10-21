@@ -13,11 +13,6 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    authToken: {
-        type: String,
-        unique: true,
-        required: true,
-    },
     virtualClassroomUid: {
         type: String,
         required: true,
