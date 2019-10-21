@@ -28,3 +28,13 @@ export {
     IUserCreationResponse,
     userCreationResponseSerializer,
 } from './models/users/userResponse';
+export {
+    Token,
+    IToken,
+    tokenSerializer,
+} from './models/push-notification/token';
+export {
+    Message,
+    IMessage,
+    messageSerializer,
+} from './models/push-notification/message';
