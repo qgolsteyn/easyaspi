@@ -7,10 +7,12 @@ import { spawn, delay } from 'redux-saga/effects';
 
 import navInit from './nav';
 import userInit from './user';
+import classroomInit from './classroom';
 
 export function* initializeSagas() {
     yield spawn(navInit);
 
     yield delay(100);
     yield spawn(userInit);
+    yield spawn(classroomInit);
 }

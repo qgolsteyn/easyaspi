@@ -1,8 +1,30 @@
 import * as mongoose from 'mongoose';
 
-import { ITemplate } from 'shared';
+import { ProblemArchetype, ProblemType } from 'shared';
+import { IArithmeticDifficulty } from './arithmeticDifficulty';
 
-export type ITemplateSchema = ITemplate & mongoose.Document;
+export interface IProblemTemplate {
+    problemArchetype: ProblemArchetype;
+    problemType: ProblemType;
+    operators: string[];
+    difficultyMap: Map<string, IArithmeticDifficulty>; 
+}
+
+export class ProblemTemplate implements IProblemTemplate {
+    problemArchetype!: ProblemArchetype;
+    problemType!: ProblemType;
+    operators!: string[];
+    difficultyMap!: Map<string, IArithmeticDifficulty>; 
+
+    ProblemTemplate() {
+        this.problemArchetype = ProblemArchetype.UNKNOWN;
+        this.problemType = ProblemType.UNKNOWN;
+        this.operators = new Array<string>();
+        this.difficultyMap = new Map<string, IArithmeticDifficulty>(); 
+    }
+}
+
+export type IProblemTemplateSchema = IProblemTemplate & mongoose.Document;
 
 const ProblemTemplateSchema = new mongoose.Schema({
     problemArchetype: {
@@ -25,7 +47,7 @@ const ProblemTemplateSchema = new mongoose.Schema({
 
 // TODO: by default mongoose only looks for lowercase collection names,
 // there is a way to change this but its not a priority
-export const ProblemTemplateModel = mongoose.model<ITemplateSchema>(
+export const ProblemTemplateModel = mongoose.model<IProblemTemplateSchema>(
     'problemtemplate',
     ProblemTemplateSchema
 );

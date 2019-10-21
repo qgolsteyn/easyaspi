@@ -1,5 +1,6 @@
 export {
     ProblemArchetype,
+    ProblemType,
     Problem,
     IProblem,
     problemSerializer,

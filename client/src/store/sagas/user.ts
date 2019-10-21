@@ -79,6 +79,7 @@ function* getUserInfo(authToken: string) {
             if (user.userType === UserType.STUDENT) {
                 yield put(actions.nav.goToScreen('Student'));
             } else if (user.userType === UserType.TEACHER) {
+                yield put(actions.classroom.fetchClassroom());
                 yield put(actions.nav.goToScreen('Teacher'));
             }
             return true;
@@ -121,6 +122,7 @@ function* register(action: ReturnType<typeof actions.user.register>) {
             if (user.userType === UserType.STUDENT) {
                 yield put(actions.nav.goToScreen('Student'));
             } else if (user.userType === UserType.TEACHER) {
+                yield put(actions.classroom.fetchClassroom());
                 yield put(actions.nav.goToScreen('Teacher'));
             }
         } else {

@@ -13,8 +13,10 @@ export const StyledCard = (props: IStyledCard) => {
         <View style={{ ...styles.cardWrapper, ...props.style }}>
             <View style={styles.cardContainer}>
                 <View style={{ ...styles.cardContent, height: props.height }}>
-                    {props.title && (
+                    {props.title ? (
                         <Text style={styles.title}>{props.title}</Text>
+                    ) : (
+                        undefined
                     )}
                     {props.children}
                 </View>

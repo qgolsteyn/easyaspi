@@ -1,18 +1,20 @@
 import express from 'express';
 
 import { ProblemTemplateModel, GeneratedProblemModel } from '../../database';
-import { problemSerializer, templateSerializer } from 'shared/src';
+import { Problem, problemSerializer } from 'shared/src';
+import { generateAllProblems } from '../../service/math/generate/generateProblems';
+import { fetchProblem } from '../../service/math/fetch/fetchProblem';
+import { ObjectId } from 'bson';
 
 export const initializeMathRoutes = (app: express.Application) => {
     const mathRouter = express.Router();
     app.use('/math', mathRouter);
 
-    /* get all templates */
-    mathRouter.get('/templates', async (_, res) => {
+    mathRouter.post('/problems/generate', async (req, res) => {
         try {
-            const templates = await ProblemTemplateModel.find();
-            res.status(200);
-            res.json(templates);
+            await generateAllProblems();
+            res.status(201);
+            res.send("success");
         } catch (e) {
             console.error(e);
             res.status(500);
@@ -20,33 +22,30 @@ export const initializeMathRoutes = (app: express.Application) => {
         }
     });
 
-    // /* post a problem (for putting dummy data to DB through API) */
-    // mathRouter.post('/problem', async (req, res) => {
-    //     const problem = problemSerializer.parse(req.body);
-    //     if (problem) {
-    //         try {
-    //             const p = new GeneratedProblemModel(problem);
-    //             await p.save();
-    //             res.status(200);
-    //             res.json(problem);
-    //         } catch (e) {
-    //             console.error(e);
-    //             res.status(500);
-    //             res.send('Error 500');
-    //         }
-    //     } else {
-    //         res.status(400);
-    //         res.send('Invalid request');
-    //     }
-    // });
+    mathRouter.get('/nextProblem', async (req, res) => {
+        let studentId = req.headers["studentid"];
+        if (typeof studentId === 'string') {
+            try {
+                const problem = await fetchProblem(new ObjectId(studentId), "g1e");
+                res.status(200);
+                res.json(problem);
+            } catch (e) {
+                console.error(e);
+                res.status(500);
+                res.send('Error 500');
+            }
+        } else {
+            res.status(404);
+            res.send('StudentId not found');
+        }
+    });
 
-    /* get all the math problem (for now) */
-    //todo implement logic for getting a single math problem
-    mathRouter.get('/problem', async (_, res) => {
+    /* get all templates */
+    mathRouter.get('/templates', async (_, res) => {
         try {
-            const prob = await GeneratedProblemModel.find().exec();
+            const templates = await ProblemTemplateModel.find();
             res.status(200);
-            res.json(prob);
+            res.json(templates);
         } catch (e) {
             console.error(e);
             res.status(500);

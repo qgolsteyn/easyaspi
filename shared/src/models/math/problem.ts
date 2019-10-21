@@ -6,13 +6,19 @@ export enum ProblemArchetype {
     UNKNOWN = 'unknown',
 }
 
+export enum ProblemType {
+    ADDITION = "addition",
+    SUBTRACTION = "subtraction",
+    MULTIPLICATION = "multiplication",
+    DIVISION = "division",
+    UNKNOWN = "unknown"
+}
+
 export interface IProblem {
     problemArchetype: ProblemArchetype;
-    problemType: string;
+    problemType: ProblemType;
     problem: string;
     solution: string[];
-    difficulty: number;
-    seed: number;
 }
 
 @jsonObject
@@ -21,7 +27,7 @@ export class Problem {
     public problemArchetype: ProblemArchetype;
 
     @jsonMember
-    problemType: string;
+    problemType: ProblemType;
 
     @jsonMember
     problem: string;
@@ -29,26 +35,16 @@ export class Problem {
     @jsonArrayMember(String)
     solution: string[];
 
-    @jsonMember
-    difficulty: number;
-
-    @jsonMember
-    seed: number;
-
     constructor(
         problemArchetype?: ProblemArchetype,
-        problemType?: string,
+        problemType?: ProblemType,
         problem?: string,
         solution?: string[],
-        difficulty?: number,
-        seed?: number
     ) {
         this.problemArchetype = problemArchetype || ProblemArchetype.UNKNOWN;
-        this.problemType = problemType || '';
+        this.problemType = problemType || ProblemType.UNKNOWN;
         this.problem = problem || '';
         this.solution = solution || [''];
-        this.difficulty = difficulty || 0;
-        this.seed = seed || 0;
     }
 }
 

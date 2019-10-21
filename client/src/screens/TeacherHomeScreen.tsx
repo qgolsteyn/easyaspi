@@ -3,16 +3,15 @@
  */
 
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 
 import { Background } from '../components/Background';
 import { colors } from '../constants/colors';
 import { StyledHeader } from '../components/Header';
 import { StyledCard } from '../components/Card';
-import { Icon } from '../components/Icon';
 import { StyledButton } from '../components/Button';
 import { useSelector, useDispatch } from 'react-redux';
-import { actions, selectors } from '../store';
+import { selectors, actions } from '../store';
 
 import bg1 from '../../assets/bg1.png';
 
@@ -20,23 +19,31 @@ export const TeacherHome = () => {
     const dispatch = useDispatch();
     const userName = useSelector(selectors.user.getCurrentUser).name;
 
+    const loading = useSelector(selectors.classroom.isLoading);
+    const classroomName = useSelector(selectors.classroom.getClassroomName);
+    const classroomStudents = useSelector(selectors.classroom.getStudentList);
+
     return (
         <Background backgroundColor={colors.bg} backgroundImage={bg1}>
             <View style={styles.wrapper}>
                 <StyledHeader>Hi {userName}!</StyledHeader>
-                <StyledCard title="Student list">
-                    <View style={styles.typeList}>
-                        <Icon backgroundColor={colors.inputs} text="+" />
-                        <Icon backgroundColor={colors.inputs} text="-" />
-                        <Icon backgroundColor={colors.inputs} text="*" />
-                        <Icon backgroundColor={colors.inputs} text="/" />
-                    </View>
-                    <StyledButton
-                        text="Start!"
-                        onPress={() =>
-                            dispatch(actions.nav.goToScreen('Problem'))
-                        }
-                    />
+                <StyledCard title={loading ? 'Loading...' : classroomName}>
+                    {!loading
+                        ? classroomStudents.map(student => (
+                              <View key={student} style={styles.studentItem}>
+                                  <StyledButton
+                                      text={student}
+                                      onPress={() =>
+                                          dispatch(
+                                              actions.classroom.notifyStudent(
+                                                  student
+                                              )
+                                          )
+                                      }
+                                  />
+                              </View>
+                          ))
+                        : undefined}
                 </StyledCard>
             </View>
         </Background>
@@ -57,16 +64,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingHorizontal: 16,
     },
-    typeList: {
+    studentItem: {
         width: '100%',
         display: 'flex',
         flexDirection: 'row',
-        marginBottom: 16,
-    },
-    exerciseList: {
-        width: '100%',
-        display: 'flex',
         marginTop: 8,
-        marginBottom: 8,
     },
 });

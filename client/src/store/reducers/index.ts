@@ -9,6 +9,12 @@ import {
     problemActions,
     IProblemState,
 } from './problems';
+import {
+    classroomReducer,
+    classroomSelectors,
+    classroomActions,
+    IClassroomState,
+} from './classroom';
 
 export interface IState {
     demo: IDemoState;
@@ -21,16 +27,19 @@ export const actions = {
     nav: navActions,
     user: userActions,
     problems: problemActions,
+    classroom: classroomActions,
 };
 
 export const reducers = combineReducers({
     demo: demoReducer,
     user: userReducer,
     problems: problemReducer,
+    classroom: classroomReducer,
 });
 
 export const selectors = {
     demo: demoSelectors,
     user: userSelectors,
     problems: problemSelectors,
+    classroom: classroomSelectors,
 };
