@@ -13,13 +13,13 @@ jobs:
               run: |
                   npm install -g expo-cli
                   yarn
+                  expo login -u ${{ secrets.EXPO_USERNAME }} -p ${{ secrets.EXPO_PASSWORD }}
             - name: Build
               run: |
                   cd client
                   expo build:android
             - name: Download assets
               run: |
-                  expo login -u ${{ secrets.EXPO_USERNAME }} -p ${{ secrets.EXPO_PASSWORD }}
                   expo url:apk | xargs wget -o client.apk
             - name: Release
               uses: softprops/action-gh-release@v1
