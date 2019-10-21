@@ -42,7 +42,7 @@ export const WelcomeScreen = (props: IWelcomeScreenProps) => {
                     <StyledButton
                         text="Let's start!"
                         onPress={() =>
-                            props.navigation.navigate('UserSelection')
+                            props.navigation.navigate('PushNotification')
                         }
                     />
                 </View>
