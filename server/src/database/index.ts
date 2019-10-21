@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-export { GeneratedProblemModel } from './models/math/generatedProblem';
+export { GeneratedProblemsModel as GeneratedProblemModel } from './models/math/generatedProblem';
 export { ProblemTemplateModel } from './models/math/problemTemplate';
 
 const DB_CONNECTION =

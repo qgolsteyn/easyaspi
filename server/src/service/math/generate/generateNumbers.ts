@@ -37,6 +37,13 @@ export const generateNumbers = (
     return assignments;
 };
 
+export const generateNumber = (
+    min: number,
+    max: number
+) => {
+    return Math.round(min + (max - min) * Math.random());
+}
+
 /**
  * Assigns a value for each specified variable
  * @param variables assignment operation to perform for each variable
