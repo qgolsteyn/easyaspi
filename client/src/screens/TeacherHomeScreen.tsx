@@ -26,7 +26,7 @@ export const TeacherHome = () => {
     return (
         <Background backgroundColor={colors.bg} backgroundImage={bg1}>
             <View style={styles.wrapper}>
-                <StyledHeader>Hi {userName}!</StyledHeader>
+                <StyledHeader>Hi {userName.split(' ')[0]}!</StyledHeader>
                 <StyledCard title={loading ? 'Loading...' : classroomName}>
                     {!loading
                         ? classroomStudents.map(student => (

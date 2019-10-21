@@ -9,6 +9,7 @@ import {
     Text,
     ActivityIndicator,
     ProgressBarAndroid,
+    Image,
 } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectors, actions } from '../store';
@@ -17,12 +18,14 @@ import { Background } from '../components/Background';
 import { colors } from '../constants/colors';
 import { StyledCard } from '../components/Card';
 import { StyledButton } from '../components/Button';
+import { StyledHeader } from '../components/Header';
 
 import bg1 from '../../assets/bg1.png';
+import done from '../../assets/done.png';
 
 export const StudentProblem = () => {
     const dispatch = useDispatch();
-    const isLoading = useSelector(selectors.problems.isLoading);
+
     const currentProblem = useSelector(selectors.problems.getCurrentProblem);
     const currentProblemNumber = useSelector(
         selectors.problems.getCurrentProblemNumber
@@ -31,12 +34,33 @@ export const StudentProblem = () => {
         selectors.problems.getNumberOfProblems
     );
 
+    const isDone = currentProblemNumber >= numberOfProblems;
+    const isLoading = useSelector(selectors.problems.isLoading);
+
     const [showSolution, setShowSolution] = useState(true);
 
     return (
         <Background backgroundColor={colors.bg} backgroundImage={bg1}>
             <View style={styles.wrapper}>
-                {isLoading ? (
+                {isDone ? (
+                    <View style={styles.loadingView}>
+                        <StyledHeader>Done for the day!</StyledHeader>
+                        <Image
+                            source={done}
+                            style={{
+                                width: '100%',
+                                height: 400,
+                                resizeMode: 'contain',
+                            }}
+                        />
+                        <StyledButton
+                            text="Back"
+                            onPress={() =>
+                                dispatch(actions.nav.goToScreen('StudentHome'))
+                            }
+                        />
+                    </View>
+                ) : isLoading ? (
                     <View style={styles.loadingView}>
                         <ActivityIndicator size="large" color="#FFF" />
                     </View>
@@ -126,9 +150,6 @@ export const StudentProblem = () => {
                                         text="Next >"
                                         onPress={() => {
                                             setShowSolution(true);
-                                            dispatch(
-                                                actions.problems.fetchNextProblem()
-                                            );
                                             dispatch(
                                                 actions.problems.goToNextProblem()
                                             );

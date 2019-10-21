@@ -11,9 +11,22 @@ export default function* init() {
     yield takeLatest(actions.problems.fetchNextProblem, fetchNextProblem);
 }
 
-function* solveCurrentProblem() {}
+function* solveCurrentProblem() {
+    yield put(actions.problems.fetchNextProblem());
+}
 
 function* fetchNextProblem() {
+    const currentProblem = yield select(
+        selectors.problems.getCurrentProblemNumber
+    );
+    const numberOfProblems = yield select(
+        selectors.problems.getNumberOfProblems
+    );
+
+    if (currentProblem >= numberOfProblems) {
+        return;
+    }
+
     try {
         const studentId = (yield select(
             selectors.user.getCurrentUserId

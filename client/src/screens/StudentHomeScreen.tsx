@@ -23,13 +23,11 @@ export const StudentHome = () => {
     return (
         <Background backgroundColor={colors.bg} backgroundImage={bg1}>
             <View style={styles.wrapper}>
-                <StyledHeader>Hi {userName}!</StyledHeader>
+                <StyledHeader>Hi {userName.split(' ')[0]}!</StyledHeader>
                 <StyledCard title="Today's math exercises">
                     <View style={styles.typeList}>
                         <Icon backgroundColor={colors.inputs} text="+" />
                         <Icon backgroundColor={colors.inputs} text="-" />
-                        <Icon backgroundColor={colors.inputs} text="*" />
-                        <Icon backgroundColor={colors.inputs} text="/" />
                     </View>
                     <StyledButton
                         text="Start!"
@@ -37,18 +35,6 @@ export const StudentHome = () => {
                             dispatch(actions.nav.goToScreen('Problem'))
                         }
                     />
-                </StyledCard>
-                <StyledCard title="Get more practice" style={{ marginTop: 16 }}>
-                    <View style={styles.exerciseList}>
-                        <Icon backgroundColor={colors.inputs} text="+" />
-                        <Icon backgroundColor={colors.inputs} text="-" />
-                        <Icon backgroundColor={colors.inputs} text="*" />
-                        <Icon backgroundColor={colors.inputs} text="/" />
-                        <Icon backgroundColor={colors.inputs} text="+" />
-                        <Icon backgroundColor={colors.inputs} text="-" />
-                        <Icon backgroundColor={colors.inputs} text="*" />
-                        <Icon backgroundColor={colors.inputs} text="/" />
-                    </View>
                 </StyledCard>
             </View>
         </Background>

@@ -127,8 +127,11 @@ function* register(action: ReturnType<typeof actions.user.register>) {
             } as IUserCreation
         )) as AxiosResponse;
 
-        const user = userSerializer.parse(userResponse.data);
+        const { id, user } = userCreationResponseSerializer.parse(
+            userResponse.data
+        );
         if (user) {
+            yield put(actions.user.setCurrentUserId(id));
             yield put(actions.user.setCurrentUser(user));
             if (user.userType === UserType.STUDENT) {
                 yield put(actions.problems.fetchNextProblem());
@@ -154,6 +157,8 @@ function* loginWithGoogle() {
                 '1045897314106-fds1dsf16nesvidoscda541jq3rt2622.apps.googleusercontent.com',
             androidClientId:
                 '1045897314106-fds1dsf16nesvidoscda541jq3rt2622.apps.googleusercontent.com',
+            androidStandaloneAppClientId:
+                '1045897314106-9mrv3no49mvrufejeptit1ubn1vl2obt.apps.googleusercontent.com',
             scopes: ['profile', 'email'],
         });
 
