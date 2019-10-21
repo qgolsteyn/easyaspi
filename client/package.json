@@ -31,7 +31,7 @@
         "redux-saga": "^1.1.1",
         "redux-saga-test-plan": "^4.0.0-rc.1",
         "restyped-axios": "^2.0.0",
-        "shared": "1.0.0",
+        "shared": "0.2.0",
         "typesafe-actions": "^4.4.2",
         "validate.js": "^0.13.1"
     },
