@@ -3,11 +3,18 @@
  * introduce side-effects in the application (such as talking to a server). They output their result
  * as actions that update the Redux store.
  */
+import { spawn, delay } from 'redux-saga/effects';
 
-import { spawn } from 'redux-saga/effects';
-
-import { demoStart } from './demo';
+import navInit from './nav';
+import userInit from './user';
+import classroomInit from './classroom';
+import problemInit from './problems';
 
 export function* initializeSagas() {
-    // yield spawn(demoStart);
+    yield spawn(navInit);
+
+    yield delay(100);
+    yield spawn(userInit);
+    yield spawn(classroomInit);
+    yield spawn(problemInit);
 }

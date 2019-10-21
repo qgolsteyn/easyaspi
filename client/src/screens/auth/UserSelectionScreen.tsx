@@ -5,11 +5,12 @@
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 
-import { Background } from '../components/Background';
-import { StyledButton } from '../components/Button';
+import { Background } from '../../components/Background';
+import { StyledButton } from '../../components/Button';
+import { StyledHeader } from '../../components/Header';
 
-import bg2 from '../../assets/bg2.png';
-import { colors } from '../constants/colors';
+import bg2 from '../../../assets/bg2.png';
+import { colors } from '../../constants/colors';
 
 interface IUserSelectionScreenProps {
     navigation: any;
@@ -20,7 +21,7 @@ export const UserSelectionScreen = (props: IUserSelectionScreenProps) => {
         <Background backgroundImage={bg2} backgroundColor={colors.bg}>
             <View style={styles.wrapper}>
                 <View style={styles.header}>
-                    <Text style={styles.headerText}>I am</Text>
+                    <StyledHeader>Who are you?</StyledHeader>
                 </View>
                 <View style={styles.container}>
                     <StyledButton
@@ -29,14 +30,21 @@ export const UserSelectionScreen = (props: IUserSelectionScreenProps) => {
                             props.navigation.navigate('StudentSignUp')
                         }
                     />
-                    <StyledButton text="a teacher" />
+                </View>
+                <View style={styles.container}>
+                    <StyledButton
+                        text="a teacher"
+                        onPress={() =>
+                            props.navigation.navigate('TeacherSignUp')
+                        }
+                    />
                 </View>
             </View>
         </Background>
     );
 };
 
-UserSelectionScreen['navigationOptions'] = () => ({
+UserSelectionScreen.navigationOptions = () => ({
     header: null,
 });
 
@@ -55,20 +63,14 @@ const styles = StyleSheet.create({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-    },
-    headerText: {
-        fontFamily: 'amatic-sc',
-        fontSize: 72,
-        color: '#fff',
+        paddingHorizontal: 32,
     },
     container: {
         width: '100%',
         flexGrow: 1,
         display: 'flex',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
         alignItems: 'center',
-        paddingTop: 96,
-        paddingBottom: 96,
         paddingHorizontal: 32,
     },
 });

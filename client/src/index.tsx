@@ -7,7 +7,7 @@ import * as Font from 'expo-font';
 import React, { useState, useEffect } from 'react';
 import { Provider } from 'react-redux';
 
-import { createStore } from './store';
+import { createStore, actions } from './store';
 import { App } from './App';
 
 import JosefinSans from '../assets/fonts/JosefinSans-Regular.ttf';
@@ -33,7 +33,7 @@ const Entry = () => {
         <AppLoading />
     ) : (
         <Provider store={store}>
-            <App />
+            <App ref={nav => store.dispatch(actions.nav.setNavigator(nav!))} />
         </Provider>
     );
 };
