@@ -4,6 +4,8 @@ import { jsonObject, jsonMember, TypedJSON } from 'typedjson';
 import { IUser, User } from './users';
 
 export interface IUserCreation {
+    authToken: string;
+    pushToken: string;
     classroomName: string;
     classroomPasscode: string;
     user: IUser;
@@ -11,6 +13,12 @@ export interface IUserCreation {
 
 @jsonObject
 export class UserCreation {
+    @jsonMember
+    authToken: string;
+
+    @jsonMember
+    pushToken: string;
+
     @jsonMember
     classroomName: string;
 
@@ -21,10 +29,14 @@ export class UserCreation {
     user: User;
 
     constructor(
+        authToken?: string,
+        pushToken?: string,
         classroomName?: string,
         classroomPasscode?: string,
         user?: User
     ) {
+        this.authToken = authToken || '';
+        this.pushToken = pushToken || '';
         this.classroomName = classroomName || '';
         this.classroomPasscode = classroomPasscode || '';
         this.user = user || new User();

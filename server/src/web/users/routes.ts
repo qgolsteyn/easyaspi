@@ -1,7 +1,7 @@
 import express from 'express';
 
 import { UserModel } from '../../database';
-import { userSerializer, userCreationSerializer, UserType } from 'shared';
+import { userCreationSerializer, UserType } from 'shared';
 import { ClassroomTemplateModel } from '../../database/models/classroom/classroom';
 
 export const initializeUsersRoutes = (app: express.Application) => {
@@ -9,7 +9,7 @@ export const initializeUsersRoutes = (app: express.Application) => {
     app.use('/users', usersRouter);
 
     /* Retrieves a user profile by auth id */
-    usersRouter.get('/:authId', async (req, res) => {
+    usersRouter.get('/auth/:authId', async (req, res) => {
         try {
             const user = await UserModel.findOne({
                 authToken: req.params.authId,
@@ -29,7 +29,7 @@ export const initializeUsersRoutes = (app: express.Application) => {
     });
 
     /* Creates a new user */
-    usersRouter.post('/', async (req, res) => {
+    usersRouter.post('/auth/register', async (req, res) => {
         const userCreation = userCreationSerializer.parse(req.body);
         if (userCreation) {
             if (userCreation.user.userType === UserType.STUDENT) {

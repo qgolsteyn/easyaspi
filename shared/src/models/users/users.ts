@@ -10,7 +10,6 @@ export enum UserType {
 export interface IUser {
     name: string;
     userType: string;
-    authToken: string;
     virtualClassroomUid: string;
 }
 
@@ -20,9 +19,6 @@ export class User {
     name: string;
 
     @jsonMember
-    authToken: string;
-
-    @jsonMember
     userType: UserType;
 
     @jsonMember
@@ -30,12 +26,10 @@ export class User {
 
     constructor(
         name?: string,
-        authToken?: string,
         userType?: UserType,
         virtualClassroomUid?: string
     ) {
         this.name = name || '';
-        this.authToken = authToken || '';
         this.userType = userType || UserType.UNKNOWN;
         this.virtualClassroomUid = virtualClassroomUid || '';
     }

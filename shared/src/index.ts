@@ -16,6 +16,7 @@ export {
     IUserCreation,
     userCreationSerializer,
 } from './models/users/userCreation';
+export { AuthInfo, IAuthInfo, authSerializer } from './models/users/auth';
 export {
     Classroom,
     IClassroom,
