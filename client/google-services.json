@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1027843016665",
+    "firebase_url": "https://easyaspi-a679e.firebaseio.com",
+    "project_id": "easyaspi-a679e",
+    "storage_bucket": "easyaspi-a679e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1027843016665:android:8c032f56be3993f8dffbc8",
+        "android_client_info": {
+          "package_name": "com.easyaspi.easyaspi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1027843016665-4q8sijud17vsj4amn9tt1fu89pfr6pm1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC98iyy3iOyN9Q7JTHRpmKl1Uj1INtzDAs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1027843016665-4q8sijud17vsj4amn9tt1fu89pfr6pm1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

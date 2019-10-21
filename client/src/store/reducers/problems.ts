@@ -47,7 +47,6 @@ export const problemActions = {
         resolve => (problem: IProblem) => resolve({ problem })
     ),
     fetchNextProblem: createAction('problem_FETCH_NEXT_PROBLEM'),
-    goToPreviousProblem: createAction('problem_PREVIOUS_PROBLEM'),
     goToNextProblem: createAction('problem_NEXT_PROBLEM'),
     solveCurrentProblem: createAction(
         'problem_SOLVE_CURRENT_PROBLEM',
@@ -74,14 +73,8 @@ export const problemReducer = produce(
                 break;
             }
             case getType(problemActions.goToNextProblem): {
-                if (draft.currentProblem < draft.problems.length - 1) {
+                if (draft.currentProblem < draft.problems.length) {
                     draft.currentProblem++;
-                }
-                break;
-            }
-            case getType(problemActions.goToPreviousProblem): {
-                if (draft.currentProblem > 0) {
-                    draft.currentProblem--;
                 }
                 break;
             }

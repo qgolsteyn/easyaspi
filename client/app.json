@@ -18,7 +18,14 @@
         },
         "assetBundlePatterns": ["**/*"],
         "android": {
-            "package": "com.easyaspi.easyaspi"
+            "package": "com.easyaspi.easyaspi",
+            "googleServicesFile": "./google-services.json",
+            "config": {
+                "googleSignIn": {
+                    "apiKey": "AIzaSyCjt3Ii2KFYbtX8CwSDxFoLeHNSJ8m4jT8",
+                    "certificateHash": "6CB8418651822B740C5C2633BEE943FD5C55670C"
+                }
+            }
         },
         "androidStatusBar": {
             "backgroundColor": "#3d3f56"
