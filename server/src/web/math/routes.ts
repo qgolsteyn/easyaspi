@@ -1,7 +1,6 @@
 import express from 'express';
 
-import { ProblemTemplateModel, GeneratedProblemModel } from '../../database';
-import { Problem, problemSerializer } from 'shared/src';
+import { ProblemTemplateModel } from '../../database';
 import { generateAllProblems } from '../../service/math/generate/generateProblems';
 import { fetchProblem } from '../../service/math/fetch/fetchProblem';
 import { ObjectId } from 'bson';
@@ -14,7 +13,7 @@ export const initializeMathRoutes = (app: express.Application) => {
         try {
             await generateAllProblems();
             res.status(201);
-            res.send("success");
+            res.send('success');
         } catch (e) {
             console.error(e);
             res.status(500);
@@ -23,11 +22,16 @@ export const initializeMathRoutes = (app: express.Application) => {
     });
 
     mathRouter.get('/nextProblem', async (req, res) => {
-        let studentId = req.headers["studentid"];
+        console.log('GET /math/nextProblem');
+        let studentId = req.headers['studentid'];
         if (typeof studentId === 'string') {
             try {
-                const problem = await fetchProblem(new ObjectId(studentId), "g1e");
+                const problem = await fetchProblem(
+                    new ObjectId(studentId),
+                    'g1e'
+                );
                 res.status(200);
+                console.log(problem);
                 res.json(problem);
             } catch (e) {
                 console.error(e);

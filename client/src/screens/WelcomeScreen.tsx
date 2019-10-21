@@ -4,19 +4,20 @@
 
 import React from 'react';
 import { Image, View, StyleSheet } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Background } from '../components/Background';
 import { StyledButton } from '../components/Button';
 import { colors } from '../constants/colors';
+import { actions, selectors } from '../store';
 
 import welcome from '../../assets/welcome.png';
 import logo from '../../assets/logo.png';
 
-interface IWelcomeScreenProps {
-    navigation: any;
-}
+export const WelcomeScreen = () => {
+    const loading = useSelector(selectors.user.isLoading);
+    const dispatch = useDispatch();
 
-export const WelcomeScreen = (props: IWelcomeScreenProps) => {
     return (
         <Background>
             <View style={styles.wrapper}>
@@ -41,9 +42,8 @@ export const WelcomeScreen = (props: IWelcomeScreenProps) => {
                 <View style={styles.buttonContainer}>
                     <StyledButton
                         text="Let's start!"
-                        onPress={() =>
-                            props.navigation.navigate('UserSelection')
-                        }
+                        loading={loading}
+                        onPress={() => dispatch(actions.user.login())}
                     />
                 </View>
             </View>
@@ -51,7 +51,7 @@ export const WelcomeScreen = (props: IWelcomeScreenProps) => {
     );
 };
 
-WelcomeScreen['navigationOptions'] = () => ({
+WelcomeScreen.navigationOptions = () => ({
     header: null,
 });
 
@@ -71,7 +71,8 @@ const styles = StyleSheet.create({
     },
     topBuffer: {
         width: '100%',
-        height: 32,
+        height: 4,
+        marginTop: -1,
         marginBottom: -1,
         backgroundColor: colors.bg,
     },

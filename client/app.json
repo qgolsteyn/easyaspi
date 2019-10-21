@@ -19,6 +19,9 @@
         "assetBundlePatterns": ["**/*"],
         "android": {
             "package": "com.easyaspi.easyaspi"
+        },
+        "androidStatusBar": {
+            "backgroundColor": "#3d3f56"
         }
     }
 }
