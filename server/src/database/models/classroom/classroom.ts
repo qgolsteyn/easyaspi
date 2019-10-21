@@ -8,18 +8,18 @@ const ClassroomSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
     },
     passcode: {
         type: String,
-        required: true
+        required: true,
     },
     teacherId: {
-        type: String
+        type: String,
     },
     studentIds: {
-        type: Array
-    }
+        type: Array,
+    },
 });
 
 // TODO: by default mongoose only looks for lowercase collection names,

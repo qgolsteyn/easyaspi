@@ -4,8 +4,20 @@ export {
     IProblem,
     problemSerializer,
 } from './models/math/problem';
-export { Template, ITemplate, templateSerializer } from './models/math/template';
-export { Teacher, ITeacher, teacherSerializer } from './models/users/teacher';
+export {
+    Template,
+    ITemplate,
+    templateSerializer,
+} from './models/math/template';
 export { Mastery, IMastery, masterySerializer } from './models/users/mastery';
-export { Student, IStudent, studentSerializer } from './models/users/student';
-export { Classroom, IClassroom, classroomSerializer } from './models/classroom/classroom';
+export { User, IUser, UserType, userSerializer } from './models/users/users';
+export {
+    UserCreation,
+    IUserCreation,
+    userCreationSerializer,
+} from './models/users/userCreation';
+export {
+    Classroom,
+    IClassroom,
+    classroomSerializer,
+} from './models/classroom/classroom';
