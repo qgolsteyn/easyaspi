@@ -8,6 +8,7 @@ import * as Google from 'expo-google-app-auth';
 import { actions } from '../reducers';
 import { baseApi } from './api';
 import { AxiosResponse } from 'axios';
+import { Notifications } from 'expo';
 
 const USER_INFO_STORAGE_KEY = 'user_info';
 
@@ -15,8 +16,8 @@ export default function* init() {
     yield call(fetchAuthenticationInfo);
 
     yield takeLatest(actions.user.login, login);
-    yield takeLatest(actions.user.registerTeacher, registerTeacher);
-    yield takeLatest(actions.user.registerStudent, registerStudent);
+    yield takeLatest(actions.user.registerTeacher, register, true);
+    yield takeLatest(actions.user.registerStudent, register, false);
 }
 
 function* fetchAuthenticationInfo() {
@@ -81,8 +82,9 @@ function* login() {
     }
 }
 
-function* registerStudent(
-    action: ReturnType<typeof actions.user.registerStudent>
+function* register(
+    action: ReturnType<typeof actions.user.registerStudent> | ReturnType<typeof actions.user.registerTeacher>,
+    teacher: boolean
 ) {
     const values = action.payload;
 
@@ -90,44 +92,13 @@ function* registerStudent(
 
     try {
         const userResponse = (yield call([baseApi, baseApi.post], '/users', {
+            authToken: values.authToken,
+            pushToken: yield call(Notifications.getExpoPushTokenAsync),
             classroomName: values.classroomName,
             classroomPasscode: values.classroomPasscode,
             user: {
                 name: values.name,
-                userType: UserType.STUDENT,
-                virtualClassroomUid: 'placeholder',
-                authToken: values.authToken,
-            },
-        } as IUserCreation)) as AxiosResponse;
-
-        const user = userSerializer.parse(userResponse.data);
-        if (user) {
-            yield call(saveAuthenticationInfo, user);
-            yield call(fetchAuthenticationInfo);
-        } else {
-            alert('Error');
-        }
-    } catch (e) {
-        alert(e);
-        yield put(actions.user.setLoading(false));
-        return;
-    }
-}
-
-function* registerTeacher(
-    action: ReturnType<typeof actions.user.registerTeacher>
-) {
-    const values = action.payload;
-
-    yield put(actions.user.setLoading(true));
-
-    try {
-        const userResponse = (yield call([baseApi, baseApi.post], '/users', {
-            classroomName: values.classroomName,
-            classroomPasscode: values.classroomPasscode,
-            user: {
-                name: values.name,
-                userType: UserType.TEACHER,
+                userType: teacher ? UserType.TEACHER, UserType.STUDENT,
                 virtualClassroomUid: 'placeholder',
                 authToken: values.authToken,
             },

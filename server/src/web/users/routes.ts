@@ -1,7 +1,7 @@
 import express from 'express';
 
-import { UserModel } from '../../database';
-import { userCreationSerializer, UserType } from 'shared';
+import { UserModel, AuthInfoModel } from '../../database';
+import { userCreationSerializer, UserType, User } from 'shared';
 import { ClassroomTemplateModel } from '../../database/models/classroom/classroom';
 
 export const initializeUsersRoutes = (app: express.Application) => {
@@ -11,16 +11,24 @@ export const initializeUsersRoutes = (app: express.Application) => {
     /* Retrieves a user profile by auth id */
     usersRouter.get('/auth/:authId', async (req, res) => {
         try {
-            const user = await UserModel.findOne({
+            const authInfo = await AuthInfoModel.findOne({
                 authToken: req.params.authId,
             });
-            if (user) {
-                res.status(200);
-                res.json(user);
-            } else {
+            if (!authInfo) {
                 res.status(404);
                 res.send('User not found.');
+                return;
             }
+
+            const user = await UserModel.findById(authInfo.userId);
+            if (!user) {
+                res.status(404);
+                res.send('User not found.');
+                return;
+            }
+
+            res.status(200);
+            res.json(user);
         } catch (e) {
             console.error(e);
             res.status(500);
@@ -30,57 +38,70 @@ export const initializeUsersRoutes = (app: express.Application) => {
 
     /* Creates a new user */
     usersRouter.post('/auth/register', async (req, res) => {
-        const userCreation = userCreationSerializer.parse(req.body);
-        if (userCreation) {
+        try {
+            const userCreation = userCreationSerializer.parse(req.body);
+            if (!userCreation) {
+                throw [400, 'Unable to parse body'];
+            }
+
+            let classroom;
             if (userCreation.user.userType === UserType.STUDENT) {
-                const classroom = await ClassroomTemplateModel.findOne({
+                const c = await ClassroomTemplateModel.findOne({
                     name: userCreation.classroomName,
                 });
-                if (
-                    classroom &&
-                    classroom.passcode === userCreation.classroomPasscode
-                ) {
-                    const s = new UserModel({
-                        ...userCreation.user,
-                        virtualClassroomUid: classroom.id,
-                    });
-                    await s.save();
-                    res.status(200);
-                    res.json(s);
-                } else {
-                    res.status(404);
-                    res.send(
-                        'Classroom does not exist or password is not correct'
-                    );
+
+                if (!c || c.passcode !== userCreation.classroomPasscode) {
+                    throw [401, 'Invalid classroom or wrong password'];
                 }
+
+                classroom = c;
             } else if (userCreation.user.userType === UserType.TEACHER) {
-                try {
-                    const c = new ClassroomTemplateModel({
-                        name: userCreation.classroomName,
-                        passcode: userCreation.classroomPasscode,
-                        teacherId: userCreation.user.authToken,
-                        studentIds: [],
-                    });
-                    const t = new UserModel({
-                        ...userCreation.user,
-                        virtualClassroomUid: c.id,
-                    });
-                    await c.save();
-                    await t.save();
-                    res.status(200);
-                    res.json(t);
-                } catch (e) {
-                    res.status(500);
-                    console.error(e);
-                    res.send(e);
+                const c = new ClassroomTemplateModel({
+                    name: userCreation.classroomName,
+                    passcode: userCreation.classroomPasscode,
+                    teacherId: 'placeholder',
+                    studentIds: [],
+                });
+
+                if (!c) {
+                    throw [500, 'Unable to create classroom'];
                 }
+
+                await c.save();
+                classroom = c;
             } else {
-                res.status(400);
-                res.send('Invalid request');
+                throw [400, 'Invalid request'];
             }
-        } else {
-            res.status(400);
-            res.send('Invalid request');
+
+            const u = new UserModel(userCreation.user);
+            await u.save();
+
+            const a = new AuthInfoModel({
+                userId: u.id,
+                authToken: userCreation.authToken,
+                pushToken: userCreation.pushToken,
+            });
+            await a.save();
+
+            if (u.userType === UserType.STUDENT) {
+                classroom.studentIds.push(u.id);
+                await u.save();
+            } else if (u.userType === UserType.TEACHER) {
+                classroom.teacherId = u.id;
+            }
+
+            await classroom.save();
+
+            res.status(200);
+            res.json(u);
+        } catch (e) {
+            if (Array.isArray(e)) {
+                res.status(e[0]);
+                res.send(e[1]);
+            } else {
+                res.status(500);
+                res.send('Server error');
+            }
         }
     });
 };
