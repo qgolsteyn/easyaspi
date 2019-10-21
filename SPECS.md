@@ -270,7 +270,7 @@ Fetching the next math problem
     - Headers:        
         ```json
             {
-                userId: ObjectId
+                studentId: ObjectId
             }
             ```
 
