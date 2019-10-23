@@ -7,7 +7,7 @@ import {
     TextInputProps,
 } from 'react-native';
 
-import { colors } from '../constants/colors';
+import { colors } from '@client/constants/colors';
 
 interface IStyledInput extends TextInputProps {
     style?: Object;

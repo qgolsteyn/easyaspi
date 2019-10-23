@@ -1,8 +1,8 @@
 import express from 'express';
 
-import { ProblemTemplateModel } from '../../database';
-import { generateAllProblems } from '../../service/math/generate/generateProblems';
-import { fetchProblem } from '../../service/math/fetch/fetchProblem';
+import { ProblemTemplateModel } from '@server/database';
+import { generateAllProblems } from '@server/service/math/generate/generateProblems';
+import { fetchProblem } from '@server/service/math/fetch/fetchProblem';
 import { ObjectId } from 'bson';
 
 export const initializeMathRoutes = (app: express.Application) => {

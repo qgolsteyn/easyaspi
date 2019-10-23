@@ -4,26 +4,27 @@
 
 const { resolve } = require('path');
 const { execSync } = require('child_process');
+const { platform } = require('os');
 
-// Link shared
-console.log('Link shared package');
-execSync('yarn link', {
-    cwd: resolve(__dirname, '../shared'),
-});
-execSync('yarn link shared', {
-    cwd: resolve(__dirname, '../client'),
-});
+osType = platform();
 
-// Build shared
-console.log('Build shared');
-execSync('yarn build', {
-    cwd: resolve(__dirname, '../shared'),
+let options = {};
+if (osType == 'win32') {
+    options.shell = true;
+}
+
+// Get server dependencies
+console.log('Get dependencies for server');
+execSync('yarn', {
+    ...options,
+    cwd: resolve(__dirname, '../server'),
     stdio: [process.stdin, process.stdout, process.stderr],
 });
 
 // Get client dependencies
 console.log('Get dependencies for client');
 execSync('yarn', {
+    ...options,
     cwd: resolve(__dirname, '../client'),
     stdio: [process.stdin, process.stdout, process.stderr],
 });

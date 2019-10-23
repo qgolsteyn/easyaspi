@@ -4,15 +4,15 @@
 
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-
-import { Background } from '../components/Background';
-import { colors } from '../constants/colors';
-import { StyledHeader } from '../components/Header';
-import { StyledCard } from '../components/Card';
-import { Icon } from '../components/Icon';
-import { StyledButton } from '../components/Button';
 import { useSelector, useDispatch } from 'react-redux';
-import { actions, selectors } from '../store';
+
+import { actions, selectors } from '@client/store';
+import { Background } from '@client/components/Background';
+import { colors } from '@client/constants/colors';
+import { StyledHeader } from '@client/components/Header';
+import { StyledCard } from '@client/components/Card';
+import { Icon } from '@client/components/Icon';
+import { StyledButton } from '@client/components/Button';
 
 import bg1 from '../../assets/bg1.png';
 

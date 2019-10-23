@@ -4,14 +4,14 @@
 
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
-
-import { Background } from '../components/Background';
-import { colors } from '../constants/colors';
-import { StyledHeader } from '../components/Header';
-import { StyledCard } from '../components/Card';
-import { StyledButton } from '../components/Button';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectors, actions } from '../store';
+
+import { Background } from '@client/components/Background';
+import { colors } from '@client/constants/colors';
+import { StyledHeader } from '@client/components/Header';
+import { StyledCard } from '@client/components/Card';
+import { StyledButton } from '@client/components/Button';
+import { selectors, actions } from '@client/store';
 
 import bg1 from '../../assets/bg1.png';
 

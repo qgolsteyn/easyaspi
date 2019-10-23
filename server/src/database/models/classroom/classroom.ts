@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
 
-import { IClassroom } from 'shared/src/models/classroom/classroom';
+import { IClassroom } from '@shared/index';
 
 export type IClassroomSchema = IClassroom & mongoose.Document;
 

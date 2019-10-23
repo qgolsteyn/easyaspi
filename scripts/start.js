@@ -4,18 +4,20 @@
 
 const { resolve } = require('path');
 const { execSync, spawn } = require('child_process');
+const { platform } = require('os');
+
+osType = platform();
+
+let options = {};
+if (osType == 'win32') {
+    options.shell = true;
+}
 
 const what = process.argv[2];
 
-// Build shared
-console.log('Build shared');
-execSync('yarn build', {
-    cwd: resolve(__dirname, '../shared'),
-    stdio: [process.stdin, process.stdout, process.stderr],
-});
-
 if (what === undefined || what === 'client') {
     spawn('yarn', ['expo', 'start'], {
+        ...options,
         cwd: resolve(__dirname, '../client'),
         stdio: [process.stdin, process.stdout, process.stderr],
     });
@@ -23,6 +25,7 @@ if (what === undefined || what === 'client') {
 
 if (what === undefined || what === 'server') {
     spawn('yarn', ['webpack', '--watch'], {
+        ...options,
         cwd: resolve(__dirname, '../server'),
         stdio: [process.stdin, process.stdout, process.stderr],
     });

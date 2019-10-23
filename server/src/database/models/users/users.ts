@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
 
-import { IUser } from 'shared';
+import { IUser } from '@shared/index';
 
 export type IUserSchema = IUser & mongoose.Document;
 

@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
 
-import { ProblemArchetype, ProblemType } from 'shared';
+import { ProblemArchetype, ProblemType } from '@shared/index';
 import { IArithmeticProblem } from './arithmeticProblem';
 
 export interface IGeneratedProblems {

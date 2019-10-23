@@ -5,12 +5,12 @@
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 
-import { Background } from '../../components/Background';
-import { StyledButton } from '../../components/Button';
-import { StyledHeader } from '../../components/Header';
+import { Background } from '@client/components/Background';
+import { StyledButton } from '@client/components/Button';
+import { StyledHeader } from '@client/components/Header';
+import { colors } from '@client/constants/colors';
 
 import bg2 from '../../../assets/bg2.png';
-import { colors } from '../../constants/colors';
 
 interface IUserSelectionScreenProps {
     navigation: any;

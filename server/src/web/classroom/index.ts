@@ -1,7 +1,7 @@
 import express from 'express';
 
-import { ClassroomTemplateModel } from '../../database/models/classroom/classroom';
-import { classroomSerializer } from 'shared/dist';
+import { ClassroomTemplateModel } from '@server/database/models/classroom/classroom';
+import { classroomSerializer } from '@shared/index';
 
 export const initializeClassroomRoutes = (app: express.Application) => {
     const classroomRouter = express.Router();

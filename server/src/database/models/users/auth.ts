@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
 
-import { IAuthInfo } from 'shared';
+import { IAuthInfo } from '@shared/index';
 
 export type IAuthInfoSchema = IAuthInfo & mongoose.Document;
 

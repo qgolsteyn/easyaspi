@@ -6,10 +6,10 @@ import React from 'react';
 import { Image, View, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Background } from '../components/Background';
-import { StyledButton } from '../components/Button';
-import { colors } from '../constants/colors';
-import { actions, selectors } from '../store';
+import { Background } from '@client/components/Background';
+import { StyledButton } from '@client/components/Button';
+import { colors } from '@client/constants/colors';
+import { actions, selectors } from '@client/store';
 
 import welcome from '../../assets/welcome.png';
 import logo from '../../assets/logo.png';

@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { AuthInfoModel } from '../../database';
+import { AuthInfoModel } from '@server/database';
 
 import Expo from 'expo-server-sdk';
 

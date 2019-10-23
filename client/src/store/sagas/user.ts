@@ -1,13 +1,7 @@
 import { AsyncStorage } from 'react-native';
 import { takeLatest, put, call, delay, select } from 'redux-saga/effects';
 
-import {
-    IUser,
-    UserType,
-    userSerializer,
-    IUserCreation,
-    userCreationResponseSerializer,
-} from 'shared';
+import { UserType, IUserCreation } from '@shared/index';
 
 import * as Google from 'expo-google-app-auth';
 
@@ -78,9 +72,7 @@ function* getUserInfo(authToken: string) {
             `/users/auth/${authToken}`
         )) as AxiosResponse;
 
-        const { id, user } = userCreationResponseSerializer.parse(
-            userResponse.data
-        );
+        const { id, user } = userResponse.data;
 
         if (user) {
             yield put(actions.user.setCurrentUserId(id));
@@ -127,9 +119,8 @@ function* register(action: ReturnType<typeof actions.user.register>) {
             } as IUserCreation
         )) as AxiosResponse;
 
-        const { id, user } = userCreationResponseSerializer.parse(
-            userResponse.data
-        );
+        const { id, user } = userResponse.data;
+
         if (user) {
             yield put(actions.user.setCurrentUserId(id));
             yield put(actions.user.setCurrentUser(user));

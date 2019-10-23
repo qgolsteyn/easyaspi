@@ -1,5 +1,5 @@
 import { takeLatest, select, call, put } from 'redux-saga/effects';
-import { IUser, classroomSerializer } from 'shared';
+import { IUser } from 'shared';
 
 import { actions, selectors } from '../reducers';
 import { baseApi } from './api';
@@ -39,7 +39,7 @@ function* notifyStudent(
     action: ReturnType<typeof actions.classroom.notifyStudent>
 ) {
     try {
-        const classroomResponse = (yield call(
+        (yield call(
             [baseApi, baseApi.post],
             `/notification/message/${action.payload.studentId}`,
             { message: 'Do your homework!' }

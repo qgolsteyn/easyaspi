@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import * as Haptic from 'expo-haptics';
 
-import { colors } from '../constants/colors';
+import { colors } from '@client/constants/colors';
 
 interface IStyledButton {
     loading?: boolean;

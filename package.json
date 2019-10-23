@@ -4,10 +4,6 @@
     "version": "1.0.0",
     "author": "Quentin Golsteyn <qgolsteyn@gmail.com>",
     "license": "MIT",
-    "workspaces": [
-        "server",
-        "shared"
-    ],
     "scripts": {
         "postinstall": "node ./scripts/setup.js",
         "start": "node ./scripts/start.js",
@@ -15,7 +11,6 @@
         "test": "node ./scripts/test.js",
         "codecov": "codecov"
     },
-    "dependencies": {},
     "devDependencies": {
         "@types/jest": "^24.0.18",
         "codecov": "^3.6.1",

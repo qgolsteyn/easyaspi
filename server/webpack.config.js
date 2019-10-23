@@ -19,6 +19,10 @@ const config = {
     },
     resolve: {
         extensions: ['.ts', '.js'],
+        alias: {
+            '@server': path.resolve(__dirname, 'src'),
+            '@shared': path.resolve(__dirname, '../shared'),
+        },
     },
     module: {
         rules: [

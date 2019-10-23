@@ -4,8 +4,8 @@ import {
     UserModel,
     AuthInfoModel,
     ClassroomTemplateModel,
-} from '../../database';
-import { userCreationSerializer, UserType } from 'shared';
+} from '@server/database';
+import { userCreationSerializer, UserType } from '@shared/index';
 
 export const initializeUsersRoutes = (app: express.Application) => {
     const usersRouter = express.Router();

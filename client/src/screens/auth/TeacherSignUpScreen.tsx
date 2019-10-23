@@ -7,15 +7,15 @@ import { View, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import validate from 'validate.js';
 
-import { UserType } from 'shared';
+import { UserType } from '@shared/index';
 
-import { Background } from '../../components/Background';
-import { StyledButton } from '../../components/Button';
-import { colors } from '../../constants/colors';
-import { StyledInput } from '../../components/Input';
-import { StyledHeader } from '../../components/Header';
-import { StyledForm } from '../../components/Form';
-import { actions, selectors } from '../../store';
+import { Background } from '@client/components/Background';
+import { StyledButton } from '@client/components/Button';
+import { colors } from '@client/constants/colors';
+import { StyledInput } from '@client/components/Input';
+import { StyledHeader } from '@client/components/Header';
+import { StyledForm } from '@client/components/Form';
+import { actions, selectors } from '@client/store';
 
 validate.validators.presence.options = { message: "can't be empty." };
 const constraints = {

@@ -1,26 +1,26 @@
 import * as mongoose from 'mongoose';
 
-import { ProblemArchetype, ProblemType } from 'shared';
+import { ProblemArchetype, ProblemType } from '@shared/index';
 import { IArithmeticDifficulty } from './arithmeticDifficulty';
 
 export interface IProblemTemplate {
     problemArchetype: ProblemArchetype;
     problemType: ProblemType;
     operators: string[];
-    difficultyMap: Map<string, IArithmeticDifficulty>; 
+    difficultyMap: Map<string, IArithmeticDifficulty>;
 }
 
 export class ProblemTemplate implements IProblemTemplate {
     problemArchetype!: ProblemArchetype;
     problemType!: ProblemType;
     operators!: string[];
-    difficultyMap!: Map<string, IArithmeticDifficulty>; 
+    difficultyMap!: Map<string, IArithmeticDifficulty>;
 
     ProblemTemplate() {
         this.problemArchetype = ProblemArchetype.UNKNOWN;
         this.problemType = ProblemType.UNKNOWN;
         this.operators = new Array<string>();
-        this.difficultyMap = new Map<string, IArithmeticDifficulty>(); 
+        this.difficultyMap = new Map<string, IArithmeticDifficulty>();
     }
 }
 

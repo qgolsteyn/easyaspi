@@ -30,8 +30,9 @@
         "redux": "^4.0.4",
         "redux-saga": "^1.1.1",
         "redux-saga-test-plan": "^4.0.0-rc.1",
+        "reflect-metadata": "^0.1.13",
         "restyped-axios": "^2.0.0",
-        "shared": "0.2.0",
+        "typedjson": "^1.4.0",
         "typesafe-actions": "^4.4.2",
         "validate.js": "^0.13.1"
     },
@@ -41,6 +42,7 @@
         "@types/react-redux": "^7.1.2",
         "@types/redux": "^3.6.0",
         "@types/redux-saga": "^0.10.5",
+        "babel-plugin-module-resolver": "^3.2.0",
         "babel-preset-expo": "^6.0.0"
     }
 }
