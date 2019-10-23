@@ -13,7 +13,6 @@
         "expo-google-app-auth": "^7.0.0",
         "expo-haptics": "~6.0.0",
         "expo-keep-awake": "^7.0.0",
-        "firebase": "^7.2.1",
         "immer": "^4.0.0",
         "react": "16.8.3",
         "react-dom": "^16.8.6",
@@ -30,9 +29,6 @@
         "redux": "^4.0.4",
         "redux-saga": "^1.1.1",
         "redux-saga-test-plan": "^4.0.0-rc.1",
-        "reflect-metadata": "^0.1.13",
-        "restyped-axios": "^2.0.0",
-        "typedjson": "^1.4.0",
         "typesafe-actions": "^4.4.2",
         "validate.js": "^0.13.1"
     },

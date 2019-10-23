@@ -6,9 +6,10 @@ module.exports = function(api) {
             [
                 require.resolve('babel-plugin-module-resolver'),
                 {
+                    roots: ['./src'],
                     alias: {
-                        '@client': './src',
-                        '@shared': '../shared/index',
+                        '@client': '.',
+                        '@shared': '../../shared/index',
                     },
                 },
             ],
