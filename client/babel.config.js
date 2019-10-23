@@ -8,7 +8,7 @@ module.exports = function(api) {
                 {
                     alias: {
                         '@client': './src',
-                        '@shared': '../shared',
+                        '@shared': '../shared/index',
                     },
                 },
             ],

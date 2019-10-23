@@ -1,5 +1,5 @@
 import { takeLatest, select, call, put } from 'redux-saga/effects';
-import { IUser } from 'shared';
+import { IUser } from '@shared';
 
 import { actions, selectors } from '../reducers';
 import { baseApi } from './api';

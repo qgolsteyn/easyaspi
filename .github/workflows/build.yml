@@ -1,7 +1,7 @@
 name: Build CI
 on: [push]
 jobs:
-    test:
+    build:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v1
@@ -17,7 +17,7 @@ jobs:
             - name: Build
               run: |
                   cd client
-                  expo build:android -c
+                  expo build:android
             - name: Download assets
               run: |
                   expo url:apk | xargs wget -o client.apk
