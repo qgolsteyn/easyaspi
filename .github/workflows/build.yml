@@ -17,7 +17,7 @@ jobs:
             - name: Build
               run: |
                   cd client
-                  expo build:android
+                  expo publish -c --release-channel $GITHUB_REF
             - name: Download assets
               run: |
                   expo url:apk | xargs wget -o client.apk
