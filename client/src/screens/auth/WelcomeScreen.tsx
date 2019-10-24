@@ -12,8 +12,8 @@ import { StyledButton } from '@client/components/Button';
 import { colors } from '@client/constants/colors';
 import { actions, selectors } from '@client/store';
 
-import logo from '../../assets/logo.png';
-import welcome from '../../assets/welcome.png';
+import logo from '../../../assets/logo.png';
+import welcome from '../../../assets/welcome.png';
 
 export const WelcomeScreen = () => {
     const loading = useSelector(selectors.user.isLoading);

@@ -22,8 +22,8 @@ import { colors } from '@client/constants/colors';
 
 import { actions, selectors } from '@client/store';
 
-import bg1 from '../../assets/bg1.png';
-import done from '../../assets/done.png';
+import bg1 from '../../../assets/bg1.png';
+import done from '../../../assets/done.png';
 
 export const StudentProblem = () => {
     const dispatch = useDispatch();
