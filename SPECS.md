@@ -3,54 +3,53 @@
 <details>
 <summary>Table of content</summary>
 - [Easy as π Specifications](#easy-as-%cf%80-specifications)
-- [Project goals](#project-goals)
-  - [Defining project success](#defining-project-success)
-  - [Additional requirements](#additional-requirements)
-- [Scoping](#scoping)
-  - [UX perspective](#ux-perspective)
-    - [Personas](#personas)
-    - [Brainstorming user actions](#brainstorming-user-actions)
-    - [Pains and gains](#pains-and-gains)
-    - [Opportunity statements](#opportunity-statements)
-  - [BC Math curriculum (Grade 1 to 5)](#bc-math-curriculum-grade-1-to-5)
-- [User stories](#user-stories)
-- [Technical considerations](#technical-considerations)
-  - [Generating math problems](#generating-math-problems)
-    - [Rule-based generation](#rule-based-generation)
-    - [Categorizing student's ability](#categorizing-students-ability)
-    - [Formulating rules as constraints](#formulating-rules-as-constraints)
+  - [Project goals](#project-goals)
+    - [Defining project success](#defining-project-success)
+    - [Additional requirements](#additional-requirements)
+  - [Scoping](#scoping)
+    - [UX perspective](#ux-perspective)
+      - [Personas](#personas)
+      - [Brainstorming user actions](#brainstorming-user-actions)
+      - [Pains and gains](#pains-and-gains)
+      - [Opportunity statements](#opportunity-statements)
+    - [BC Math curriculum (Grade 1 to 5)](#bc-math-curriculum-grade-1-to-5)
+  - [Technical considerations](#technical-considerations)
+    - [Generating math problems](#generating-math-problems)
+      - [Rule-based generation](#rule-based-generation)
+      - [Categorizing student's ability](#categorizing-students-ability)
+      - [Formulating rules as constraints](#formulating-rules-as-constraints)
       - [Hashing](#hashing)
-  - [Adapting to the student's performance](#adapting-to-the-students-performance)
-  - [Fetching the next math problem](#fetching-the-next-math-problem)
-    - [API](#api)
-- [Bibliography](#bibliography)
+    - [Adapting to the student's performance](#adapting-to-the-students-performance)
+    - [Generating and Fetching Problems (take from Q8 of M2)](#generating-and-fetching-problems-take-from-q8-of-m2)
+      - [API](#api)
+  - [Bibliography](#bibliography)
 </details>
 
-# Project goals
+## Project goals
 
-- To offer a platform for students in Grade 1 to 5 to practice their math skills daily.
-- To offer a platform for teachers to track their students' progress and offer insights
-on where additional support from the teacher is needed.
+  - To offer a platform for students in Grade 1 to 5 to practice their math skills daily.
+  
+  - To offer a platform for teachers to track their students' progress and offer insights
+  on where additional support from the teacher is needed.
+###  Defining project success
 
-##  Defining project success
+  - Generate math problems of varying difficulty in 5 domain areas.
+  - Accurately determine the ability level of the student in those 5 domain areas.
+  - Provide recommendations for the teacher on which skills the student needs to improve in.
 
-- Generate math problems of varying difficulty in 5 domain areas.
-- Accurately determine the ability level of the student in those 5 domain areas.
-- Provide recommendations for the teacher on which skills the student needs to improve in.
+### Additional requirements
 
-## Additional requirements
+  - Must have a real-time aspect
+  - Must include third-party integration
 
-- Must have a real-time aspect
-- Must include third-party integration
-
-# Scoping
+## Scoping
 
 <details>
 <summary>UX perspective</summary>
 
-## UX perspective
+### UX perspective
 
-### Personas
+#### Personas
 
 **Students**
 
@@ -93,7 +92,7 @@ wants to make sure her son gets enough practice in mathematics to make sure he d
 She wants him to learn how to study, but she doesn't know where to start and is often not around to help him.
 </details>
 
-### Brainstorming user actions
+#### Brainstorming user actions
 
 | User     | Actions                                                     | Story Ending                                   |
 | -------- | ----------------------------------------------------------- | ---------------------------------------------- |
@@ -112,7 +111,7 @@ She wants him to learn how to study, but she doesn't know where to start and is 
 
 \* italicized actions are not being considered for MVP
 
-### Pains and gains
+#### Pains and gains
 
 | Pain                                      | Action      | Gain                                      |
 | ----------------------------------------- | ----------- | ----------------------------------------- |
@@ -128,61 +127,59 @@ She wants him to learn how to study, but she doesn't know where to start and is 
 | Adapt the app to current class progress   | T2 T6       | Adjust teaching approach                  |
 | Know which students are ahead/lagging     | T3 T4       | Know which students to focus on           |
 
-### Opportunity statements
+#### Opportunity statements
 
-- How might we make authenticating simple for students?
-- How might we make creating a classroom simple for teachers?
-- How might we provide enough math problems for students to practice on?
-- How might we make sure that the problems are at the correct level of difficulty?
-- How might we adapt the app to particular student's deficiencies?
-- How can we inform students regarding their performance?
-- How can we ensure that students remain engaged in the app ?
-- How can we inform the teacher on the areas that students need more help?
-- How can we inform the teacher on the students that are ahead/behind the rest of the class?
-- How can we let the teacher influence the problems the students are working on?
+  - How might we make authenticating simple for students?
+  - How might we make creating a classroom simple for teachers?
+  - How might we provide enough math problems for students to practice on?
+  - How might we make sure that the problems are at the correct level of difficulty?
+  - How might we adapt the app to particular student's deficiencies?
+  - How can we inform students regarding their performance?
+  - How can we ensure that students remain engaged in the app ?
+  - How can we inform the teacher on the areas that students need more help?
+  - How can we inform the teacher on the students that are ahead/behind the rest of the class?
+  - How can we let the teacher influence the problems the students are working on?
 </details>
 
 <details>
 <summary>BC Math curriculum (1-5)</summary>
 
-## BC Math curriculum (Grade 1 to 5)
+### BC Math curriculum (Grade 1 to 5)
 
 The BC math curriculum from grade 1 to 5 is focused on building mathematic literacy in the following areas:
 
-- Counting, and number decomposition
-- Fractions and decimals
-- Patterns (repeating, increasing, decreasing)
-- Addition, substraction, multiplication and division
-- Financial literacy
-- Equations with an unknown number
-- Probability
-- 2D shapes (describing them, perimeter)
+  - Counting, and number decomposition
+  - Fractions and decimals
+  - Patterns (repeating, increasing, decreasing)
+  - Addition, substraction, multiplication and division
+  - Financial literacy
+  - Equations with an unknown number
+  - Probability
+  - 2D shapes (describing them, perimeter)
 
 Generally, those concepts remain in focus for each year level, with increased complexity. The curriculum is very precise
 regarding the scope of learning for each year level (eg. addition to 20 in Grade 1).
 
 This information could be used to determine which problem to show to students based on their estimated year level.
 
-More information can be found here: https://curriculum.gov.bc.ca/curriculum/mathematics/
+More information can be found here: <https://curriculum.gov.bc.ca/curriculum/mathematics/>
 
 </details>
 
-# User stories
-
-# Technical considerations
+## Technical considerations
 
 <details>
 <summary>
 Generating math problems
 </summary>
 
-## Generating math problems
+### Generating math problems
 
 This is the most critical piece of this project. Hence, effort should be made to
 ensure this part of the project is extensible without modification to the rest
 of the project.
 
-### Rule-based generation
+#### Rule-based generation
 
 The BC Math curriculum from grade 1 to 5 can easily be transformed into a list of requirements. The curriculum
 is divided into 5 major archetypes, each containing a set of problem types.
@@ -191,13 +188,13 @@ At each year level, the curriculum specifies a certain number of constraints par
 in Grade 1, students are expected to be able to add numbers up to 10. These constraints could be used to determine
 which problem to show to students.
 
-### Categorizing student's ability
+#### Categorizing student's ability
 
 To determine the correct problem to show the student, students will be categorized according to their grade and level
 within their grade. There are 3 levels per grade, low, medium, and high level. The rules selected to generate a problem
 of a particular type will vary depending on the student's assigned category.
 
-### Formulating rules as constraints
+#### Formulating rules as constraints
 
 Each rule of a particular problem type can be formulated as a set of controlled and derived variables.
 
@@ -206,12 +203,12 @@ a "small" number to values up to 9. This can be formulated as such, assuming an 
 
 Controlled variables:
 
-- `5 < c < 9`
-- `0 < b < 3`
+  - `5 < c < 9`
+  - `0 < b < 3`
 
 Derived variables:
 
-- `a = c - b`
+  - `a = c - b`
 
 Controlled variables have their domain specified, while derived variables are formulated as an equation consisting of
 controlled variables.
@@ -223,7 +220,7 @@ An algorithm can pick a random value for the controlled variables, and then comp
 We need to ensure some determinism when generating math problems. This can be achieved by seeding the random number
 generator.
 
-## Adapting to the student's performance
+### Adapting to the student's performance
 
 Depending on the student performance, we can adjust the category the student is in to vary the problems difficulty.
 
@@ -242,26 +239,33 @@ but Grade 1 medium on substraction.
 
 </details>
 
-
 <details>
 <summary>
 Fetching the next math problem
 </summary>
 
-## Generating and Fetching Problems (take from Q8 of M2)
+### Generating and Fetching Problems (take from Q8 of M2)
 
-- MathProblemsDB with 2 collections: problemTemplates, generatedProblems
-- Retrieve all templates of all problemTypes
-- Generate n problems for each difficulty of each problemType
-- Store genereated problems in generatedProblems collection
-- Call GET endpoint to retrieve user's next problem, will pull from this collection
-- Each user has an index for each problem type
-- UI calls POST endpoint to tell backend if user got question right or wrong
-- Update user's index, points and difficulty for this problem type based on the result
-- If GET endpoint returns the n-1th problem, trigger async generation to create another
-  n problems only for this difficulty tier
+  - MathProblemsDB with 2 collections: problemTemplates, generatedProblems
 
-### API
+  - Retrieve all templates of all problemTypes
+
+  - Generate n problems for each difficulty of each problemType
+    
+  - Store genereated problems in generatedProblems collection
+    
+  - Call GET endpoint to retrieve user's next problem, will pull from this collection
+    
+  - Each user has an index for each problem type
+    
+  - UI calls POST endpoint to tell backend if user got question right or wrong
+    
+  - Update user's index, points and difficulty for this problem type based on the result
+    
+  - If GET endpoint returns the n-1th problem, trigger async generation to create another
+    n problems only for this difficulty tier
+
+#### API
 
 1.  `GET /math/nextProblem`
 
@@ -318,7 +322,7 @@ Fetching the next math problem
 
         - `HTTP/1.1 500 Internal Server Error`
 
-2.  `GET /users/teacher/{teacherId}`
+3.  `GET /users/teacher/{teacherId}`
 
     - Description:    Retrieves a teacher profile by their id
     - URL:            http://localhost:3000/users/teacher/{teacherId}
@@ -340,7 +344,7 @@ Fetching the next math problem
 
         - `HTTP/1.1 500 Internal Server Error`
 
-3.  `POST /users/teacher`
+4.  `POST /users/teacher`
 
     - Description:    Creates a new Teacher user
     - URL:            http://localhost:3000/users/teacher
@@ -368,7 +372,7 @@ Fetching the next math problem
 
         - `HTTP/1.1 500 Internal Server Error`
 
-4.  `PUT /users/teacher/{teacherId}`
+5.  `PUT /users/teacher/{teacherId}`
 
     - Description:    Updates an existing Teacher user
     - URL:            http://localhost:3000/users/teacher/{teacherId}
@@ -399,7 +403,7 @@ Fetching the next math problem
 
         - `HTTP/1.1 500 Internal Server Error`
 
-5.  `DELETE /users/teacher/{teacherId}`
+6.  `DELETE /users/teacher/{teacherId}`
 
     - Description:    Deletes a teacher profile by their id
     - URL:            http://localhost:3000/users/teacher/{teacherId}
@@ -413,7 +417,7 @@ Fetching the next math problem
 
         - `HTTP/1.1 500 Internal Server Error`
 
-6.  `GET /users/student/{studentId}`
+7.  `GET /users/student/{studentId}`
 
     - Description:    Retrieves a student profile by their id
     - URL:            http://localhost:3000/users/student/{studentId}
@@ -450,7 +454,7 @@ Fetching the next math problem
 
         - `HTTP/1.1 500 Internal Server Error`
 
-7.  `POST /users/student`
+8.  `POST /users/student`
 
     - Description:    Creates a new Student user
     - URL:            http://localhost:3000/users/student
@@ -477,7 +481,7 @@ Fetching the next math problem
 
         - `HTTP/1.1 500 Internal Server Error` 
 
-8.  `PUT /users/student/{studentId}`
+9.  `PUT /users/student/{studentId}`
 
     - Description:    Updates a Student user
     - URL:            http://localhost:3000/users/student/{studentId}
@@ -524,7 +528,7 @@ Fetching the next math problem
 
         - `HTTP/1.1 500 Internal Server Error` 
 
-9.  `DELETE /users/student/{studentId}`
+10. `DELETE /users/student/{studentId}`
 
     - Description:    Updates a Student user
     - URL:            http://localhost:3000/users/student/{studentId}
@@ -538,7 +542,7 @@ Fetching the next math problem
 
         - `HTTP/1.1 500 Internal Server Error` 
 
-10. `POST /virtual-classroom`
+11. `POST /virtual-classroom`
 
     - Description:    Creates a virtual classroom
     - URL:            http://localhost:3000/virtual-classroom
@@ -577,7 +581,7 @@ Fetching the next math problem
 
 
 
-# Bibliography
+## Bibliography
 
 Project planning approach inspired by https://medium.com/@ClrMobile/planning-a-minimum-viable-product-a-step-by-step-guide-6f387d657870
 

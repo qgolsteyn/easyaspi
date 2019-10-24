@@ -4,7 +4,6 @@
   <h1 align="center">Easy as π</h1>
 </p>
 
-
 The best way to learn new mathematical concepts is through practice. To this
 end, students may work on exercises in their textbook, through in-class
 assignments, or online. We believe these resources are lacking in that they
