@@ -13,6 +13,13 @@ if (osType == 'win32') {
     options.shell = true;
 }
 
+console.log('Copy secrets');
+execSync('yarn setup', {
+    ...options,
+    cwd: resolve(__dirname, '../secrets'),
+    stdio: [process.stdin, process.stdout, process.stderr],
+});
+
 // Get server dependencies
 console.log('Get dependencies for server');
 execSync('yarn', {

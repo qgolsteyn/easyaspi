@@ -17,14 +17,4 @@ jobs:
             - name: Build
               run: |
                   cd client
-                  rm -fr $TMPDIR/metro*
                   expo publish -c
-            - name: Download assets
-              run: |
-                  cd client
-                  expo url:apk | xargs wget -o client.apk
-            - name: Upload artifact
-              uses: actions/upload-artifact@master
-              with:
-                  name: client.apk
-                  path: client/client.apk
