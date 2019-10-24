@@ -16,7 +16,7 @@ jobs:
                   expo login -u ${{ secrets.EXPO_USERNAME }} -p ${{ secrets.EXPO_PASSWORD }}
             - name: Build
               run: |
-                  cd client/src
+                  cd client
                   rm -fr $TMPDIR/metro*
                   expo publish -c
             - name: Download assets
