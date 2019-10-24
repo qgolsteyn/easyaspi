@@ -6,7 +6,7 @@ jobs:
         steps:
             - uses: actions/checkout@v1
               with:
-                  token: ${{ secrets.GITHUB_TOKEN }}
+                  token: ${{ secrets.SECRETS_TOKEN }}
                   submodules: true
             - name: Use Node.js 12.x
               uses: actions/setup-node@v1
