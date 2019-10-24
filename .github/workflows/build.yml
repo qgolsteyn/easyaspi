@@ -21,6 +21,7 @@ jobs:
                   expo publish -c
             - name: Download assets
               run: |
+                  cd client
                   expo url:apk | xargs wget -o client.apk
             - name: Release
               uses: softprops/action-gh-release@v1
