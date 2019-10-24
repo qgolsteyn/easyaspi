@@ -23,9 +23,8 @@ jobs:
               run: |
                   cd client
                   expo url:apk | xargs wget -o client.apk
-            - name: Release
-              uses: softprops/action-gh-release@v1
+            - name: Upload artifact
+              uses: actions/upload-artifact@master
               with:
-                  files: client.apk
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  name: client.apk
+                  path: client/client.apk
