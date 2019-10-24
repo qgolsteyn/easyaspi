@@ -14,7 +14,6 @@ jobs:
                   node-version: '12.x'
             - name: Install
               run: |
-                  echo $GITHUB_REF
                   yarn
             - name: Setup Expo
               run: |
@@ -23,4 +22,4 @@ jobs:
             - name: Build
               run: |
                   cd client
-                  expo publish -c
+                  expo publish -c --release-channel ${GITHUB_REF##*/}
