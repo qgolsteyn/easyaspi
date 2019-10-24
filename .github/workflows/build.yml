@@ -5,14 +5,18 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v1
+              with:
+                  submodules: true
             - name: Use Node.js 12.x
               uses: actions/setup-node@v1
               with:
                   node-version: '12.x'
             - name: Install
               run: |
-                  npm install -g expo-cli
                   yarn
+            - name: Setup Expo
+              run: |
+                  npm install -g expo-cli
                   expo login -u ${{ secrets.EXPO_USERNAME }} -p ${{ secrets.EXPO_PASSWORD }}
             - name: Build
               run: |
