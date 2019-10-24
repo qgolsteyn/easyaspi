@@ -4,11 +4,12 @@
         [
             "module-resolver",
             {
-                "root": ["./"],
                 "alias": {
                     "@client": "./src",
-                    "@shared": "../shared"
-                }
+                    "@shared": "./src/shared"
+                },
+                "extensions": [".js", ".jsx", ".ts", ".tsx"],
+                "cwd": "babelrc"
             }
         ]
     ]
