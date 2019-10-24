@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 interface IStyledCard {
     title?: string;
-    style?: Object;
+    style?: object;
     height?: string | number;
     children?: React.ReactNode | React.ReactNode[];
 }
@@ -26,28 +26,28 @@ export const StyledCard = (props: IStyledCard) => {
 };
 
 const styles = StyleSheet.create({
-    cardWrapper: {
-        position: 'relative',
-        width: '100%',
-        paddingBottom: 4,
-        marginBottom: 4,
-        borderRadius: 8,
-        backgroundColor: '#CCC',
-    },
     cardContainer: {
-        width: '100%',
         display: 'flex',
+        width: '100%',
     },
     cardContent: {
-        width: '100%',
         backgroundColor: '#FFF',
+        borderRadius: 8,
         display: 'flex',
         padding: 16,
+        width: '100%',
+    },
+    cardWrapper: {
+        backgroundColor: '#CCC',
         borderRadius: 8,
+        marginBottom: 4,
+        paddingBottom: 4,
+        position: 'relative',
+        width: '100%',
     },
     title: {
+        color: '#333',
         fontFamily: 'josefin-sans-bold',
         fontSize: 24,
-        color: '#333',
     },
 });

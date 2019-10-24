@@ -4,21 +4,23 @@
 
 import React, { useState } from 'react';
 import {
-    View,
+    ActivityIndicator,
+    Image,
+    ProgressBarAndroid,
     StyleSheet,
     Text,
-    ActivityIndicator,
-    ProgressBarAndroid,
-    Image,
+    View,
 } from 'react-native';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { selectors, actions } from '@client/store';
 import { Background } from '@client/components/Background';
-import { colors } from '@client/constants/colors';
-import { StyledCard } from '@client/components/Card';
 import { StyledButton } from '@client/components/Button';
+import { StyledCard } from '@client/components/Card';
 import { StyledHeader } from '@client/components/Header';
+
+import { colors } from '@client/constants/colors';
+
+import { actions, selectors } from '@client/store';
 
 import bg1 from '../../assets/bg1.png';
 import done from '../../assets/done.png';
@@ -35,7 +37,6 @@ export const StudentProblem = () => {
     );
 
     const isDone = currentProblemNumber >= numberOfProblems;
-    const isLoading = useSelector(selectors.problems.isLoading);
 
     const [showSolution, setShowSolution] = useState(true);
 
@@ -48,9 +49,9 @@ export const StudentProblem = () => {
                         <Image
                             source={done}
                             style={{
-                                width: '100%',
                                 height: 400,
                                 resizeMode: 'contain',
+                                width: '100%',
                             }}
                         />
                         <StyledButton
@@ -60,7 +61,7 @@ export const StudentProblem = () => {
                             }
                         />
                     </View>
-                ) : isLoading ? (
+                ) : currentProblem === null ? (
                     <View style={styles.loadingView}>
                         <ActivityIndicator size="large" color="#FFF" />
                     </View>
@@ -174,60 +175,60 @@ StudentProblem.navigationOptions = () => ({
 });
 
 const styles = StyleSheet.create({
-    wrapper: {
-        width: '100%',
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        paddingTop: 16,
-        paddingBottom: 16,
-        paddingHorizontal: 16,
-    },
-    progressBar: {
-        width: '100%',
-        flex: 0,
-        marginBottom: 16,
-    },
-    loadingView: {
-        width: '100%',
-        height: '100%',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    problemCard: {
-        width: '100%',
+    button: {
         flex: 1,
-        marginBottom: 16,
-    },
-    cardContent: {
-        width: '100%',
-        height: '100%',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingBottom: 64,
-    },
-    problemPrompt: {
-        fontFamily: 'josefin-sans-bold',
-        fontSize: 32,
-        color: '#333',
-        marginBottom: 32,
-    },
-    problemText: {
-        fontFamily: 'josefin-sans-bold',
-        fontSize: 64,
-        color: '#333',
     },
     buttonRow: {
-        width: '100%',
         display: 'flex',
         flexDirection: 'row',
         flexWrap: 'nowrap',
+        width: '100%',
     },
-    button: {
+    cardContent: {
+        alignItems: 'center',
+        display: 'flex',
+        height: '100%',
+        justifyContent: 'center',
+        paddingBottom: 64,
+        width: '100%',
+    },
+    loadingView: {
+        alignItems: 'center',
+        display: 'flex',
+        height: '100%',
+        justifyContent: 'center',
+        width: '100%',
+    },
+    problemCard: {
         flex: 1,
+        marginBottom: 16,
+        width: '100%',
+    },
+    problemPrompt: {
+        color: '#333',
+        fontFamily: 'josefin-sans-bold',
+        fontSize: 32,
+        marginBottom: 32,
+    },
+    problemText: {
+        color: '#333',
+        fontFamily: 'josefin-sans-bold',
+        fontSize: 64,
+    },
+    progressBar: {
+        flex: 0,
+        marginBottom: 16,
+        width: '100%',
+    },
+    wrapper: {
+        alignItems: 'center',
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+        justifyContent: 'flex-start',
+        paddingBottom: 16,
+        paddingHorizontal: 16,
+        paddingTop: 16,
+        width: '100%',
     },
 });

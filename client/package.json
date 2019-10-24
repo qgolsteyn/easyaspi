@@ -5,7 +5,8 @@
     "main": "./src/index.tsx",
     "scripts": {
         "start": "node ../scripts/start.js client",
-        "test": "node ../scripts/test.js"
+        "test": "node ../scripts/test.js",
+        "lint": "tslint -c ./tslint.json './client/**/*.ts*'"
     },
     "dependencies": {
         "axios": "^0.19.0",

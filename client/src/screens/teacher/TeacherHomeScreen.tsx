@@ -3,25 +3,30 @@
  */
 
 import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
-import { useSelector, useDispatch } from 'react-redux';
+import { StyleSheet, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Background } from '@client/components/Background';
-import { colors } from '@client/constants/colors';
-import { StyledHeader } from '@client/components/Header';
-import { StyledCard } from '@client/components/Card';
 import { StyledButton } from '@client/components/Button';
-import { selectors, actions } from '@client/store';
+import { StyledCard } from '@client/components/Card';
+import { StyledHeader } from '@client/components/Header';
+
+import { colors } from '@client/constants/colors';
+
+import { actions, selectors } from '@client/store';
 
 import bg1 from '../../assets/bg1.png';
 
 export const TeacherHome = () => {
     const dispatch = useDispatch();
-    const userName = useSelector(selectors.user.getCurrentUser).name;
+
+    const currentUser = useSelector(selectors.user.getCurrentUser);
+    const userName = (currentUser ? currentUser.name : '') || '';
 
     const loading = useSelector(selectors.classroom.isLoading);
     const classroomName = useSelector(selectors.classroom.getClassroomName);
-    const classroomStudents = useSelector(selectors.classroom.getStudentList);
+    const classroomStudents =
+        useSelector(selectors.classroom.getStudentList) || [];
 
     return (
         <Background backgroundColor={colors.bg} backgroundImage={bg1}>
@@ -55,19 +60,19 @@ TeacherHome.navigationOptions = () => ({
 });
 
 const styles = StyleSheet.create({
-    wrapper: {
-        width: '100%',
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        paddingHorizontal: 16,
-    },
     studentItem: {
-        width: '100%',
         display: 'flex',
         flexDirection: 'row',
         marginTop: 8,
+        width: '100%',
+    },
+    wrapper: {
+        alignItems: 'center',
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+        justifyContent: 'flex-start',
+        paddingHorizontal: 16,
+        width: '100%',
     },
 });

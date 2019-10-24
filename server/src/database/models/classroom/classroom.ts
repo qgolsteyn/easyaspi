@@ -6,19 +6,19 @@ export type IClassroomSchema = IClassroom & mongoose.Document;
 
 const ClassroomSchema = new mongoose.Schema({
     name: {
-        type: String,
         required: true,
+        type: String,
         unique: true,
     },
     passcode: {
-        type: String,
         required: true,
-    },
-    teacherId: {
         type: String,
     },
     studentIds: {
         type: Array,
+    },
+    teacherId: {
+        type: String,
     },
 });
 

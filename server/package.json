@@ -7,7 +7,8 @@
         "prestart": "yarn clean",
         "start": "node ../scripts/start.js server",
         "test": "node ../scripts/test.js",
-        "clean": "rimraf dist"
+        "clean": "rimraf dist",
+        "lint": "tslint -c ./tslint.json './server/**/*.ts'"
     },
     "dependencies": {
         "body-parser": "^1.19.0",

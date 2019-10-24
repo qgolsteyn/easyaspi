@@ -2,8 +2,8 @@
  * Demo reducer and actions for reference purposes
  */
 
-import { createAction, ActionType, getType } from 'typesafe-actions';
 import produce from 'immer';
+import { ActionType, createAction, getType } from 'typesafe-actions';
 
 import { IClassroom } from '@shared/index';
 
@@ -20,12 +20,12 @@ const defaultState: IClassroomState = {
 
 // Selectors are responsible for getting values in the state
 export const classroomSelectors = {
+    getClassroomName: (state: { classroom: IClassroomState }) =>
+        state.classroom.classroom ? state.classroom.classroom.name : undefined,
     getStudentList: (state: { classroom: IClassroomState }) =>
         state.classroom.classroom
             ? state.classroom.classroom.studentIds
             : undefined,
-    getClassroomName: (state: { classroom: IClassroomState }) =>
-        state.classroom.classroom ? state.classroom.classroom.name : undefined,
     isLoading: (state: { classroom: IClassroomState }) =>
         state.classroom.loading,
 };
@@ -33,6 +33,10 @@ export const classroomSelectors = {
 // And actions allow us to mutate the state
 export const classroomActions = {
     fetchClassroom: createAction('classroom_FETCH'),
+    notifyStudent: createAction(
+        'classroom_NOTIFY',
+        resolve => (studentId: string) => resolve({ studentId })
+    ),
     setClassroom: createAction(
         'classroom_SET_CLASSROOM',
         resolve => (classroom: IClassroom) => resolve({ classroom })
@@ -40,10 +44,6 @@ export const classroomActions = {
     setLoading: createAction(
         'classroom_SET_LOADING',
         resolve => (loading: boolean) => resolve({ loading })
-    ),
-    notifyStudent: createAction(
-        'classroom_NOTIFY',
-        resolve => (studentId: string) => resolve({ studentId })
     ),
 };
 

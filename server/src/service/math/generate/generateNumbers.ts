@@ -2,8 +2,8 @@
  * This file specifies a function to assign a value to variables within their domain
  */
 
-import seedrandom from 'seedrandom';
 import * as math from 'mathjs';
+import seedrandom from 'seedrandom';
 
 interface IRange {
     max: number;
@@ -37,12 +37,9 @@ export const generateNumbers = (
     return assignments;
 };
 
-export const generateNumber = (
-    min: number,
-    max: number
-) => {
+export const generateNumber = (min: number, max: number) => {
     return Math.round(min + (max - min) * Math.random());
-}
+};
 
 /**
  * Assigns a value for each specified variable

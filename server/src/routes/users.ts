@@ -1,11 +1,11 @@
 import express from 'express';
 
 import {
-    UserModel,
     AuthInfoModel,
     ClassroomTemplateModel,
+    UserModel,
 } from '@server/database';
-import { userCreationSerializer, UserType } from '@shared/index';
+import { UserType } from '@shared/index';
 
 export const initializeUsersRoutes = (app: express.Application) => {
     const usersRouter = express.Router();
@@ -44,7 +44,7 @@ export const initializeUsersRoutes = (app: express.Application) => {
     usersRouter.post('/auth/register', async (req, res) => {
         console.log(`GET /auth/register`);
         try {
-            const userCreation = userCreationSerializer.parse(req.body);
+            const userCreation = req.body;
             if (!userCreation) {
                 throw [400, 'Unable to parse body'];
             }
@@ -64,8 +64,8 @@ export const initializeUsersRoutes = (app: express.Application) => {
                 const c = new ClassroomTemplateModel({
                     name: userCreation.classroomName,
                     passcode: userCreation.classroomPasscode,
-                    teacherId: 'placeholder',
                     studentIds: [],
+                    teacherId: 'placeholder',
                 });
 
                 if (!c) {
@@ -85,9 +85,9 @@ export const initializeUsersRoutes = (app: express.Application) => {
             await u.save();
 
             const a = new AuthInfoModel({
-                userId: u.id,
                 authToken: userCreation.authToken,
                 pushToken: userCreation.pushToken,
+                userId: u.id,
             });
             await a.save();
 

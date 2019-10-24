@@ -2,8 +2,8 @@
  * Demo reducer and actions for reference purposes
  */
 
-import { createAction, ActionType, getType } from 'typesafe-actions';
 import produce from 'immer';
+import { ActionType, createAction, getType } from 'typesafe-actions';
 
 import { IUser, UserType } from '@shared/index';
 
@@ -22,27 +22,14 @@ const defaultState: IUserState = {
 
 // Selectors are responsible for getting values in the state
 export const userSelectors = {
-    isLoading: (state: { user: IUserState }) => state.user.loading,
     getAuthToken: (state: { user: IUserState }) => state.user.authToken,
     getCurrentUser: (state: { user: IUserState }) => state.user.user,
     getCurrentUserId: (state: { user: IUserState }) => state.user.userId,
+    isLoading: (state: { user: IUserState }) => state.user.loading,
 };
 
 // And actions allow us to mutate the state
 export const userActions = {
-    setLoading: createAction('user_setLoading', resolve => (loading: boolean) =>
-        resolve({ loading })
-    ),
-    setCurrentUser: createAction(
-        'user_setUser',
-        resolve => (user: Partial<IUser>) => resolve({ user })
-    ),
-    setCurrentUserId: createAction('user_setUserId', resolve => (id: string) =>
-        resolve({ id })
-    ),
-    setAuthToken: createAction('user_setAuth', resolve => (authToken: string) =>
-        resolve({ authToken })
-    ),
     login: createAction('user_login'),
     register: createAction(
         'user_register',
@@ -53,11 +40,24 @@ export const userActions = {
             classroomPasscode: string
         ) =>
             resolve({
-                name,
-                userType: userType,
                 classroomName,
                 classroomPasscode,
+                name,
+                userType,
             })
+    ),
+    setAuthToken: createAction('user_setAuth', resolve => (authToken: string) =>
+        resolve({ authToken })
+    ),
+    setCurrentUser: createAction(
+        'user_setUser',
+        resolve => (user: Partial<IUser>) => resolve({ user })
+    ),
+    setCurrentUserId: createAction('user_setUserId', resolve => (id: string) =>
+        resolve({ id })
+    ),
+    setLoading: createAction('user_setLoading', resolve => (loading: boolean) =>
+        resolve({ loading })
     ),
     signout: createAction('user_signout', resolve => () => resolve()),
 };

@@ -11,14 +11,14 @@ export const initializeNotificationRoutes = (app: express.Application) => {
 
     const handlePushTokens = (message: string, pushToken: string) => {
         // Create the messages that you want to send to clents
-        let notifications = [];
+        const notifications = [];
 
         // Construct a message (see https://docs.expo.io/versions/latest/guides/push-notifications.html)
         notifications.push({
-            to: pushToken,
-            title: 'Message received!',
             body: message,
             data: { message },
+            title: 'Message received!',
+            to: pushToken,
         });
 
         // The Expo push notification service accepts batches of notifications so
@@ -26,15 +26,17 @@ export const initializeNotificationRoutes = (app: express.Application) => {
         // recommend you batch your notifications to reduce the number of requests
         // and to compress them (notifications with similar content will get
         // compressed).
-        let chunks = expo.chunkPushNotifications(notifications);
+        const chunks = expo.chunkPushNotifications(notifications);
 
         (async () => {
             // Send the chunks to the Expo push notification service. There are
             // different strategies you could use. A simple one is to send one chunk at a
             // time, which nicely spreads the load out over time:
-            for (let chunk of chunks) {
+            for (const chunk of chunks) {
                 try {
-                    let receipts = await expo.sendPushNotificationsAsync(chunk);
+                    const receipts = await expo.sendPushNotificationsAsync(
+                        chunk
+                    );
                     console.log(receipts);
                 } catch (error) {
                     console.error(error);
@@ -42,41 +44,6 @@ export const initializeNotificationRoutes = (app: express.Application) => {
             }
         })();
     };
-
-    notificationRouter.post('/token/:userId', async (req, res) => {
-        const token: string = req.body.pushToken;
-
-        if (Expo.isExpoPushToken(token)) {
-            try {
-                const authInfo = await AuthInfoModel.findOne({
-                    userId: req.params.userId,
-                });
-                if (!authInfo) {
-                    res.status(404);
-                    res.send('User not found.');
-                    return;
-                }
-
-                authInfo.pushToken = token;
-                const auth = await AuthInfoModel.findByIdAndUpdate(
-                    authInfo._id,
-                    authInfo
-                );
-                res.status(200);
-                res.send(
-                    `User with id ${req.params.userId} updated with tokenId ${token}`
-                );
-            } catch (e) {
-                console.error(e);
-                res.status(500);
-                res.send('Error 500');
-            }
-        } else {
-            console.error(`Push token ${token} is not a valid Expo push token`);
-            res.status(400);
-            res.send('Invalid request');
-        }
-    });
 
     notificationRouter.post('/message/:userId', async (req, res) => {
         const message: string = req.body.message;

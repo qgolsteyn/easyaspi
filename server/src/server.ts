@@ -1,11 +1,11 @@
+import bodyParser from 'body-parser';
 import express from 'express';
 import { Server } from 'http';
-import bodyParser from 'body-parser';
 
 import { connectToDB } from './database';
-import { initializeRoutes } from './web';
+import { initializeRoutes } from './routes';
 
-const PORT = process.env['SERVER_PORT'] || 3000;
+const PORT = process.env.SERVER_PORT || 3000;
 
 export const initializeApp = async () => {
     const app = express();
@@ -17,7 +17,7 @@ export const initializeApp = async () => {
 
     let server: Server;
     try {
-        server = await app.listen(PORT);
+        server = app.listen(PORT);
         console.log(`Server listening on port ${PORT}`);
     } catch (e) {
         console.error(e);

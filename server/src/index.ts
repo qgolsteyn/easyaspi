@@ -1,4 +1,4 @@
-import { initializeApp } from './server';
 import 'dotenv/config';
+import { initializeApp } from './server';
 
 initializeApp();

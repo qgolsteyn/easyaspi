@@ -2,28 +2,29 @@
  * Entry point of the app
  */
 
-import { registerRootComponent, AppLoading } from 'expo';
+import { AppLoading, registerRootComponent } from 'expo';
 import * as Font from 'expo-font';
-import React, { useState, useEffect } from 'react';
+import * as React from 'react';
 import { Provider } from 'react-redux';
 
-import { createStore, actions } from './store';
 import { App } from './App';
 
-import JosefinSans from '../assets/fonts/JosefinSans-Regular.ttf';
-import JosefinSansBold from '../assets/fonts/JosefinSans-Bold.ttf';
+import { actions, createStore } from './store';
+
 import AmaticSC from '../assets/fonts/AmaticSC-Regular.ttf';
+import JosefinSansBold from '../assets/fonts/JosefinSans-Bold.ttf';
+import JosefinSans from '../assets/fonts/JosefinSans-Regular.ttf';
 
 const store = createStore();
 
 const Entry = () => {
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = React.useState(true);
 
-    useEffect(() => {
+    React.useEffect(() => {
         Font.loadAsync({
+            'amatic-sc': AmaticSC,
             'josefin-sans': JosefinSans,
             'josefin-sans-bold': JosefinSansBold,
-            'amatic-sc': AmaticSC,
         }).then(() => {
             setLoading(false);
         });

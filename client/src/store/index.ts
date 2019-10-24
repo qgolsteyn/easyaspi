@@ -2,12 +2,11 @@
  * This file is the entry point for our Redux store
  */
 
-import { createStore as createReduxStore, applyMiddleware } from 'redux';
+import { applyMiddleware, createStore as createReduxStore } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 
-import { reducers, IState } from './reducers';
+import { reducers } from './reducers';
 export { actions, selectors } from './reducers';
-export type IRootState = IState;
 
 import { initializeSagas } from './sagas';
 

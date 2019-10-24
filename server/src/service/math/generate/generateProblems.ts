@@ -1,17 +1,9 @@
+import { ProblemTemplateModel } from '@server/database/models/math/problemTemplate';
 import {
-    ProblemTemplateModel,
-    IProblemTemplateSchema,
-} from '@server/database/models/math/problemTemplate';
-import {
-    IGeneratedProblemsSchema,
     GeneratedProblemsModel,
     IGeneratedProblems,
-    GeneratedProblems,
 } from '@server/database/models/math/generatedProblem';
-import {
-    IArithmeticProblem,
-    ArithmeticProblem,
-} from '@server/database/models/math/arithmeticProblem';
+import { IArithmeticProblem } from '@server/database/models/math/arithmeticProblem';
 import { ProblemArchetype, ProblemType } from '@shared/index';
 import { generateNumber } from './generateNumbers';
 import { IArithmeticDifficulty } from '@server/database/models/math/arithmeticDifficulty';

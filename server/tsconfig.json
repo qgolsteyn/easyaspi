@@ -61,9 +61,13 @@
         "experimentalDecorators": true /* Enables experimental support for ES7 decorators. */,
         "emitDecoratorMetadata": true /* Enables experimental support for emitting type metadata for decorators. */,
         "paths": {
-            "@shared/*": ["../../shared/*"],
+            "@shared/*": ["../../client/src/shared/*"],
             "@server/*": ["./*"]
-        }
+        },
+        "noUnusedLocals": true,
+        "noFallthroughCasesInSwitch": true,
+        "noUnusedParameters": true,
+        "noImplicitReturns": true
     },
     "lib": ["es2015"]
 }

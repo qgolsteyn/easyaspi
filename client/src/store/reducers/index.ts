@@ -1,45 +1,29 @@
 import { combineReducers } from 'redux';
 
-import { demoReducer, demoActions, demoSelectors, IDemoState } from './demo';
-import { navActions } from './navigation';
-import { userReducer, userSelectors, userActions, IUserState } from './user';
 import {
-    problemReducer,
-    problemSelectors,
-    problemActions,
-    IProblemState,
-} from './problems';
-import {
+    classroomActions,
     classroomReducer,
     classroomSelectors,
-    classroomActions,
-    IClassroomState,
 } from './classroom';
-
-export interface IState {
-    demo: IDemoState;
-    user: IUserState;
-    problems: IProblemState;
-}
+import { navActions } from './navigation';
+import { problemActions, problemReducer, problemSelectors } from './problems';
+import { userActions, userReducer, userSelectors } from './user';
 
 export const actions = {
-    demo: demoActions,
-    nav: navActions,
-    user: userActions,
-    problems: problemActions,
     classroom: classroomActions,
+    nav: navActions,
+    problems: problemActions,
+    user: userActions,
 };
 
 export const reducers = combineReducers({
-    demo: demoReducer,
-    user: userReducer,
-    problems: problemReducer,
     classroom: classroomReducer,
+    problems: problemReducer,
+    user: userReducer,
 });
 
 export const selectors = {
-    demo: demoSelectors,
-    user: userSelectors,
-    problems: problemSelectors,
     classroom: classroomSelectors,
+    problems: problemSelectors,
+    user: userSelectors,
 };

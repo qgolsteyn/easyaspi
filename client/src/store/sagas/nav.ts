@@ -1,9 +1,9 @@
+import {
+    NavigationActions,
+    NavigationContainerComponent,
+} from 'react-navigation';
 import { takeLatest } from 'redux-saga/effects';
 import { getType } from 'typesafe-actions';
-import {
-    NavigationContainerComponent,
-    NavigationActions,
-} from 'react-navigation';
 
 import { actions } from '../reducers';
 

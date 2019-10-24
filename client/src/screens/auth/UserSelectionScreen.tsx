@@ -3,7 +3,7 @@
  */
 
 import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { Background } from '@client/components/Background';
 import { StyledButton } from '@client/components/Button';
@@ -17,6 +17,10 @@ interface IUserSelectionScreenProps {
 }
 
 export const UserSelectionScreen = (props: IUserSelectionScreenProps) => {
+    const navigateTo = (screen: string) => () => {
+        props.navigation.navigate(screen);
+    };
+
     return (
         <Background backgroundImage={bg2} backgroundColor={colors.bg}>
             <View style={styles.wrapper}>
@@ -26,17 +30,13 @@ export const UserSelectionScreen = (props: IUserSelectionScreenProps) => {
                 <View style={styles.container}>
                     <StyledButton
                         text="a student"
-                        onPress={() =>
-                            props.navigation.navigate('StudentSignUp')
-                        }
+                        onPress={navigateTo('StudentSignUp')}
                     />
                 </View>
                 <View style={styles.container}>
                     <StyledButton
                         text="a teacher"
-                        onPress={() =>
-                            props.navigation.navigate('TeacherSignUp')
-                        }
+                        onPress={navigateTo('TeacherSignUp')}
                     />
                 </View>
             </View>
@@ -49,28 +49,28 @@ UserSelectionScreen.navigationOptions = () => ({
 });
 
 const styles = StyleSheet.create({
-    wrapper: {
-        width: '100%',
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
+    container: {
         alignItems: 'center',
+        display: 'flex',
+        flexGrow: 1,
+        justifyContent: 'center',
+        paddingHorizontal: 32,
+        width: '100%',
     },
     header: {
-        width: '100%',
+        alignItems: 'center',
+        display: 'flex',
         height: '30%',
-        display: 'flex',
         justifyContent: 'center',
-        alignItems: 'center',
         paddingHorizontal: 32,
-    },
-    container: {
         width: '100%',
-        flexGrow: 1,
-        display: 'flex',
-        justifyContent: 'center',
+    },
+    wrapper: {
         alignItems: 'center',
-        paddingHorizontal: 32,
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+        justifyContent: 'flex-start',
+        width: '100%',
     },
 });

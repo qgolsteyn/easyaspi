@@ -3,16 +3,17 @@
  */
 
 import React from 'react';
-import { Image, View, StyleSheet } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Background } from '@client/components/Background';
 import { StyledButton } from '@client/components/Button';
+
 import { colors } from '@client/constants/colors';
 import { actions, selectors } from '@client/store';
 
-import welcome from '../../assets/welcome.png';
 import logo from '../../assets/logo.png';
+import welcome from '../../assets/welcome.png';
 
 export const WelcomeScreen = () => {
     const loading = useSelector(selectors.user.isLoading);
@@ -26,16 +27,16 @@ export const WelcomeScreen = () => {
                     <Image
                         source={welcome}
                         style={{
-                            width: '100%',
                             height: 400,
                             resizeMode: 'contain',
+                            width: '100%',
                         }}
                     />
                     <Image
                         source={logo}
                         style={{
-                            width: '100%',
                             resizeMode: 'contain',
+                            width: '100%',
                         }}
                     />
                 </View>
@@ -56,30 +57,30 @@ WelcomeScreen.navigationOptions = () => ({
 });
 
 const styles = StyleSheet.create({
-    wrapper: {
-        width: '100%',
-        height: '100%',
+    buttonContainer: {
         display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        paddingBottom: 32,
+        marginTop: 'auto',
+        paddingHorizontal: 32,
+        width: '100%',
     },
     logoContainer: {
         display: 'flex',
         width: '100%',
     },
     topBuffer: {
-        width: '100%',
-        height: 4,
-        marginTop: -1,
-        marginBottom: -1,
         backgroundColor: colors.bg,
-    },
-    buttonContainer: {
-        display: 'flex',
+        height: 4,
+        marginBottom: -1,
+        marginTop: -1,
         width: '100%',
-        marginTop: 'auto',
-        paddingHorizontal: 32,
+    },
+    wrapper: {
+        alignItems: 'center',
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+        justifyContent: 'flex-start',
+        paddingBottom: 32,
+        width: '100%',
     },
 });

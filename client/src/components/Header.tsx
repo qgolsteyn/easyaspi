@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 interface IStyledHeader {
     children: string | string[];
@@ -15,15 +15,15 @@ export const StyledHeader = (props: IStyledHeader) => {
 
 const styles = StyleSheet.create({
     header: {
-        width: '100%',
-        marginVertical: 32,
+        alignItems: 'center',
         display: 'flex',
         justifyContent: 'center',
-        alignItems: 'center',
+        marginVertical: 32,
+        width: '100%',
     },
     headerText: {
+        color: '#fff',
         fontFamily: 'amatic-sc',
         fontSize: 64,
-        color: '#fff',
     },
 });
