@@ -1,8 +1,7 @@
-import { ObjectId } from 'bson';
 import express from 'express';
 
 import { ProblemTemplateModel } from '@server/database';
-import { fetchProblem } from '@server/service/math/fetch/fetchProblem';
+import { IProblem, ProblemArchetype, ProblemType } from '@shared/index';
 
 export const initializeMathRoutes = (app: express.Application) => {
     const mathRouter = express.Router();
@@ -13,7 +12,12 @@ export const initializeMathRoutes = (app: express.Application) => {
         const studentId = req.headers.studentid;
         if (typeof studentId === 'string') {
             try {
-                const problem = await fetchProblem('g1e');
+                const problem: IProblem = {
+                    problem: '1 + 1 = ?',
+                    problemArchetype: ProblemArchetype.ARITHMETIC,
+                    problemType: ProblemType.ADDITION,
+                    solution: ['2'],
+                };
                 res.status(200);
                 console.log(problem);
                 res.json(problem);
