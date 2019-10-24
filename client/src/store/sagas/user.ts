@@ -1,7 +1,7 @@
 import { AsyncStorage } from 'react-native';
 import { takeLatest, put, call, delay, select } from 'redux-saga/effects';
 
-import { UserType, IUserCreation } from '@shared';
+import { UserType, IUserCreation } from '../../../../shared';
 
 import * as Google from 'expo-google-app-auth';
 

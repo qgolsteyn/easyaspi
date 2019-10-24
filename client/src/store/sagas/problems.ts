@@ -1,7 +1,7 @@
 import { takeLatest, put, call, select } from 'redux-saga/effects';
 import { AxiosResponse } from 'axios';
 
-import { IProblem } from '@shared';
+import { IProblem } from '../../../../shared';
 
 import { actions, selectors } from '../reducers';
 import { baseApi } from './api';

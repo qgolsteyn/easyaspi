@@ -5,7 +5,7 @@
 import { createAction, ActionType, getType } from 'typesafe-actions';
 import produce from 'immer';
 
-import { IClassroom } from '@shared';
+import { IClassroom } from '../../../../shared';
 
 // We specify the shape of the state in an interface
 export interface IClassroomState {

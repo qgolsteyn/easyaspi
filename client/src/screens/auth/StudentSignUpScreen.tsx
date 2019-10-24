@@ -7,7 +7,7 @@ import { View, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import validate from 'validate.js';
 
-import { UserType } from '@shared';
+import { UserType } from '../../../../shared';
 
 import { Background } from '@client/components/Background';
 import { StyledButton } from '@client/components/Button';
