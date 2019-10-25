@@ -5,7 +5,7 @@ import { Server } from 'http';
 import { connectToDB } from './database';
 import { initializeRoutes } from './routes';
 
-const PORT = process.env.SERVER_PORT || 3000;
+const PORT = process.env.PORT || 8080;
 
 export const initializeApp = async () => {
     const app = express();

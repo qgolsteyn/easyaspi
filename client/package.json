@@ -4,7 +4,7 @@
     "private": true,
     "main": "./src/index.tsx",
     "scripts": {
-        "start": "node ../scripts/start.js client",
+        "start": "expo start",
         "test": "node ../scripts/test.js",
         "lint": "tslint -c ./tslint.json './client/**/*.ts*'"
     },
@@ -44,6 +44,7 @@
         "babel-preset-expo": "^6.0.0",
         "babel-preset-react-native": "^4.0.1",
         "babel-preset-react-native-stage-0": "^1.0.1",
-        "babel-preset-react-native-typescript": "^1.0.0-rc.1"
+        "babel-preset-react-native-typescript": "^1.0.0-rc.1",
+        "typescript": "^3.6.3"
     }
 }

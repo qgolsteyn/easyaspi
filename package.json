@@ -8,7 +8,7 @@
         "postinstall": "node ./scripts/setup.js",
         "start": "node ./scripts/start.js",
         "build": "node ./scripts/build.js",
-        "test": "node ./scripts/test.js",
+        "test": "yarn jest --coverage --detectOpenHandles --forceExit",
         "lint:client": "tslint -c ./tslint.json './client/**/*.ts*'",
         "lint:server": "tslint -c ./tslint.json './server/**/*.ts'",
         "lint": "yarn lint:client && yarn lint:server",
@@ -17,7 +17,6 @@
     "devDependencies": {
         "@types/jest": "^24.0.18",
         "codecov": "^3.6.1",
-        "concurrently": "^4.1.2",
         "jest": "^24.9.0",
         "node-keytool": "^0.0.3",
         "prettier": "^1.18.2",
@@ -25,7 +24,6 @@
         "tslint": "^5.20.0",
         "tslint-config-prettier": "^1.18.0",
         "tslint-react": "^4.1.0",
-        "typescript": "^3.6.3",
-        "webpack-cli": "^3.3.9"
+        "typescript": "^3.6.3"
     }
 }

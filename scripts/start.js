@@ -3,7 +3,7 @@
  */
 
 const { resolve } = require('path');
-const { execSync, spawn } = require('child_process');
+const { spawn, execSync } = require('child_process');
 const { platform } = require('os');
 
 osType = platform();
@@ -14,6 +14,13 @@ if (osType == 'win32') {
 }
 
 const what = process.argv[2];
+
+console.log('Copy secrets');
+execSync('yarn setup', {
+    ...options,
+    cwd: resolve(__dirname, '../secrets'),
+    stdio: [process.stdin, process.stdout, process.stderr],
+});
 
 if (what === undefined || what === 'client') {
     spawn('yarn', ['expo', 'start'], {

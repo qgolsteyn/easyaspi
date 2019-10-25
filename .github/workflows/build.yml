@@ -1,7 +1,7 @@
 name: Build CI
 on: [push]
 jobs:
-    build:
+    client:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v1
@@ -23,3 +23,29 @@ jobs:
               run: |
                   cd client
                   expo publish -c --release-channel ${GITHUB_REF##*/}
+    server:
+        runs-on: google/cloud-sdk:alpine
+        steps:
+            - uses: actions/checkout@v1
+              with:
+                  token: ${{ secrets.SECRETS_TOKEN }}
+                  submodules: true
+            - name: Use Node.js 12.x
+              uses: actions/setup-node@v1
+              with:
+                  node-version: '12.x'
+            - name: Install
+              run: |
+                  yarn
+            - name: Setup GCloud
+              run: |
+                  cd server
+                  gcloud auth activate-service-account --key-file deploy.json
+            - name: Build server
+              run: |
+                  cd server
+                  yarn prestart
+            - name: Deploy server
+              run: |
+                  cd server
+                  gcloud --quiet --project ${{ secrets.GCLOUD_PROJECT }} app
