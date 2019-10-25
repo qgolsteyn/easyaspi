@@ -20,8 +20,7 @@ jobs:
                   yarn
             - name: Linting
               run: |
-                  cd client
-                  yarn lint
+                  yarn lint:client
             - name: Setup Expo
               run: |
                   npm install -g expo-cli
@@ -46,8 +45,7 @@ jobs:
                   yarn
             - name: Linting
               run: |
-                  cd server
-                  yarn lint
+                  yarn lint:server
             - name: Test
               run: |
                   yarn test

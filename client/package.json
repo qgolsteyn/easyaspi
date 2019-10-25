@@ -4,8 +4,7 @@
     "private": true,
     "main": "./src/index.tsx",
     "scripts": {
-        "dev": "expo start",
-        "lint": "tslint -c ./tslint.json './client/**/*.ts*'"
+        "dev": "expo start"
     },
     "dependencies": {
         "axios": "^0.19.0",

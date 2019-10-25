@@ -4,8 +4,7 @@
     "private": true,
     "main": "dist/index.js",
     "scripts": {
-        "dev": "webpack --watch",
-        "lint": "tslint -c ./tslint.json './server/**/*.ts'"
+        "dev": "webpack --watch"
     },
     "dependencies": {
         "@types/dotenv": "^6.1.1",
