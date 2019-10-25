@@ -45,3 +45,7 @@ jobs:
               run: |
                   cd server
                   yarn prestart
+            - name: GCP List Clusters
+              uses: actions/gcloud/cli@master
+              with:
+                  args: app deploy
