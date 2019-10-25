@@ -24,7 +24,7 @@ jobs:
                   cd client
                   expo publish -c --release-channel ${GITHUB_REF##*/}
     server:
-        runs-on: google/cloud-sdk:alpine
+        runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v1
               with:
