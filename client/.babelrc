@@ -1,0 +1,16 @@
+{
+    "presets": ["babel-preset-expo", "module:react-native-dotenv"],
+    "plugins": [
+        [
+            "module-resolver",
+            {
+                "alias": {
+                    "@client": "./src",
+                    "@shared": "./src/shared"
+                },
+                "extensions": [".js", ".jsx", ".ts", ".tsx"],
+                "cwd": "babelrc"
+            }
+        ]
+    ]
+}

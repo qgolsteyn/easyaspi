@@ -1,20 +1,19 @@
+import { AxiosResponse } from 'axios';
+import { Notifications } from 'expo';
+import * as Google from 'expo-google-app-auth';
 import { AsyncStorage } from 'react-native';
-import { takeLatest, put, call, delay, select } from 'redux-saga/effects';
+import { call, delay, put, select, takeLatest } from 'redux-saga/effects';
 
 import {
-    IUser,
-    UserType,
-    userSerializer,
-    IUserCreation,
-    userCreationResponseSerializer,
-} from 'shared';
+    ANDROID_CLIENT_ID,
+    ANDROID_STANDALONE_CLIENT_ID,
+    CLIENT_ID,
+} from 'react-native-dotenv';
 
-import * as Google from 'expo-google-app-auth';
+import { IUserCreation, UserType } from '@shared/index';
 
 import { actions, selectors } from '../reducers';
 import { baseApi } from './api';
-import { AxiosResponse } from 'axios';
-import { Notifications } from 'expo';
 
 const AUTH_TOKEN_KEY = 'auth_token';
 
@@ -53,21 +52,21 @@ function* login() {
     if (googleResponse === undefined) {
         yield put(actions.user.setLoading(false));
         return;
-    }
+    } else {
+        yield put(actions.user.setAuthToken(googleResponse.id || ''));
 
-    yield put(actions.user.setAuthToken(googleResponse.id));
+        const isFound = yield call(getUserInfo, googleResponse.id || '');
 
-    const isFound = yield call(getUserInfo, googleResponse.id);
-
-    if (!isFound) {
-        yield put(actions.nav.goToScreen('UserSelection'));
-        yield delay(500);
-        yield put(actions.user.setLoading(false));
-        yield put(
-            actions.user.setCurrentUser({
-                name: googleResponse.name,
-            })
-        );
+        if (!isFound) {
+            yield put(actions.nav.goToScreen('UserSelection'));
+            yield delay(500);
+            yield put(actions.user.setLoading(false));
+            yield put(
+                actions.user.setCurrentUser({
+                    name: googleResponse.name,
+                })
+            );
+        }
     }
 }
 
@@ -78,9 +77,7 @@ function* getUserInfo(authToken: string) {
             `/users/auth/${authToken}`
         )) as AxiosResponse;
 
-        const { id, user } = userCreationResponseSerializer.parse(
-            userResponse.data
-        );
+        const { id, user } = userResponse.data;
 
         if (user) {
             yield put(actions.user.setCurrentUserId(id));
@@ -93,8 +90,12 @@ function* getUserInfo(authToken: string) {
                 yield put(actions.nav.goToScreen('Teacher'));
             }
             return true;
+        } else {
+            return false;
         }
-    } catch (e) {}
+    } catch (e) {
+        return false;
+    }
 }
 
 function* register(action: ReturnType<typeof actions.user.register>) {
@@ -114,10 +115,10 @@ function* register(action: ReturnType<typeof actions.user.register>) {
             [baseApi, baseApi.post],
             '/users/auth/register',
             {
-                authToken: authToken,
-                pushToken: yield call(Notifications.getExpoPushTokenAsync),
+                authToken,
                 classroomName: values.classroomName,
                 classroomPasscode: values.classroomPasscode,
+                pushToken: yield call(Notifications.getExpoPushTokenAsync),
                 user: {
                     id: 'placeholder',
                     name: values.name,
@@ -127,9 +128,8 @@ function* register(action: ReturnType<typeof actions.user.register>) {
             } as IUserCreation
         )) as AxiosResponse;
 
-        const { id, user } = userCreationResponseSerializer.parse(
-            userResponse.data
-        );
+        const { id, user } = userResponse.data;
+
         if (user) {
             yield put(actions.user.setCurrentUserId(id));
             yield put(actions.user.setCurrentUser(user));
@@ -153,12 +153,9 @@ function* register(action: ReturnType<typeof actions.user.register>) {
 function* loginWithGoogle() {
     try {
         const result = yield call(Google.logInAsync, {
-            clientId:
-                '1045897314106-fds1dsf16nesvidoscda541jq3rt2622.apps.googleusercontent.com',
-            androidClientId:
-                '1045897314106-fds1dsf16nesvidoscda541jq3rt2622.apps.googleusercontent.com',
-            androidStandaloneAppClientId:
-                '1045897314106-9mrv3no49mvrufejeptit1ubn1vl2obt.apps.googleusercontent.com',
+            androidClientId: ANDROID_CLIENT_ID,
+            androidStandaloneAppClientId: ANDROID_STANDALONE_CLIENT_ID,
+            clientId: CLIENT_ID,
             scopes: ['profile', 'email'],
         });
 
@@ -169,5 +166,6 @@ function* loginWithGoogle() {
         }
     } catch (e) {
         alert('Oops! Login failed!');
+        return undefined;
     }
 }

@@ -1,9 +1,10 @@
-import { takeLatest, select, call, put } from 'redux-saga/effects';
-import { IUser, classroomSerializer } from 'shared';
+import { AxiosResponse } from 'axios';
+import { call, put, select, takeLatest } from 'redux-saga/effects';
+
+import { IUser } from '@shared/index';
 
 import { actions, selectors } from '../reducers';
 import { baseApi } from './api';
-import { AxiosResponse } from 'axios';
 
 export default function* init() {
     yield takeLatest(actions.classroom.fetchClassroom, fetchClassroom);
@@ -39,11 +40,11 @@ function* notifyStudent(
     action: ReturnType<typeof actions.classroom.notifyStudent>
 ) {
     try {
-        const classroomResponse = (yield call(
+        yield call(
             [baseApi, baseApi.post],
             `/notification/message/${action.payload.studentId}`,
             { message: 'Do your homework!' }
-        )) as AxiosResponse;
+        );
     } catch (e) {
         alert(e);
     }

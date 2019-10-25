@@ -1,24 +1,24 @@
 import * as mongoose from 'mongoose';
 
-import { IClassroom } from 'shared/src/models/classroom/classroom';
+import { IClassroom } from '@shared/index';
 
 export type IClassroomSchema = IClassroom & mongoose.Document;
 
 const ClassroomSchema = new mongoose.Schema({
     name: {
-        type: String,
         required: true,
+        type: String,
         unique: true,
     },
     passcode: {
-        type: String,
         required: true,
-    },
-    teacherId: {
         type: String,
     },
     studentIds: {
         type: Array,
+    },
+    teacherId: {
+        type: String,
     },
 });
 

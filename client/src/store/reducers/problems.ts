@@ -2,8 +2,8 @@
  * Reducer and actions for showing math problems to students
  */
 
-import { createAction, ActionType, getType } from 'typesafe-actions';
 import produce from 'immer';
+import { ActionType, createAction, getType } from 'typesafe-actions';
 
 export interface IProblem {
     prompt: string;
@@ -22,32 +22,32 @@ export interface IProblemState {
 
 // And provide a default value for initialization
 const defaultState: IProblemState = {
-    problemSetCount: 10,
-    solvedProblems: 0,
     currentProblem: 0,
+    problemSetCount: 10,
     problems: [],
+    solvedProblems: 0,
 };
 
 // Selectors are responsible for getting values in the state
 export const problemSelectors = {
-    isLoading: (state: { problems: IProblemState }) =>
-        state.problems.problems[state.problems.currentProblem] === null,
     getCurrentProblem: (state: { problems: IProblemState }) =>
         state.problems.problems[state.problems.currentProblem],
-    getNumberOfProblems: (state: { problems: IProblemState }) =>
-        state.problems.problemSetCount,
     getCurrentProblemNumber: (state: { problems: IProblemState }) =>
         state.problems.currentProblem + 1,
+    getNumberOfProblems: (state: { problems: IProblemState }) =>
+        state.problems.problemSetCount,
+    isLoading: (state: { problems: IProblemState }) =>
+        state.problems.problems[state.problems.currentProblem] === null,
 };
 
 // And actions allow us to mutate the state
 export const problemActions = {
+    fetchNextProblem: createAction('problem_FETCH_NEXT_PROBLEM'),
+    goToNextProblem: createAction('problem_NEXT_PROBLEM'),
     setProblem: createAction(
         'problem_SET_PROBLEM',
         resolve => (problem: IProblem) => resolve({ problem })
     ),
-    fetchNextProblem: createAction('problem_FETCH_NEXT_PROBLEM'),
-    goToNextProblem: createAction('problem_NEXT_PROBLEM'),
     solveCurrentProblem: createAction(
         'problem_SOLVE_CURRENT_PROBLEM',
         resolve => (successful: boolean) => resolve({ successful })
@@ -79,7 +79,7 @@ export const problemReducer = produce(
                 break;
             }
             case getType(problemActions.solveCurrentProblem): {
-                draft.problems[draft.currentProblem].solved = true;
+                draft.problems[draft.currentProblem]!.solved = true;
                 break;
             }
         }

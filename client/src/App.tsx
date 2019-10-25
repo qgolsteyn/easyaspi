@@ -6,29 +6,29 @@ import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { fromRight } from 'react-navigation-transitions';
 
-import { WelcomeScreen } from './screens/WelcomeScreen';
-
-import { UserSelectionScreen } from './screens/auth/UserSelectionScreen';
 import { StudentSignUpScreen } from './screens/auth/StudentSignUpScreen';
 import { TeacherSignUpScreen } from './screens/auth/TeacherSignUpScreen';
+import { UserSelectionScreen } from './screens/auth/UserSelectionScreen';
+import { WelcomeScreen } from './screens/auth/WelcomeScreen';
 
-import { StudentHome } from './screens/StudentHomeScreen';
-import { TeacherHome } from './screens/TeacherHomeScreen';
-import { StudentProblem } from './screens/StudentProblemScreen';
+import { StudentHome } from './screens/student/StudentHomeScreen';
+import { StudentProblem } from './screens/student/StudentProblemScreen';
+
+import { TeacherHome } from './screens/teacher/TeacherHomeScreen';
 
 const AuthStack = createStackNavigator(
     {
-        Welcome: {
-            screen: WelcomeScreen,
-        },
-        UserSelection: {
-            screen: UserSelectionScreen,
-        },
         StudentSignUp: {
             screen: StudentSignUpScreen,
         },
         TeacherSignUp: {
             screen: TeacherSignUpScreen,
+        },
+        UserSelection: {
+            screen: UserSelectionScreen,
+        },
+        Welcome: {
+            screen: WelcomeScreen,
         },
     },
     { initialRouteName: 'Welcome', transitionConfig: () => fromRight() }
@@ -36,11 +36,11 @@ const AuthStack = createStackNavigator(
 
 const StudentStack = createStackNavigator(
     {
-        StudentHome: {
-            screen: StudentHome,
-        },
         Problem: {
             screen: StudentProblem,
+        },
+        StudentHome: {
+            screen: StudentHome,
         },
     },
     {

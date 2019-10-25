@@ -1,21 +1,21 @@
 import * as mongoose from 'mongoose';
 
-import { IUser } from 'shared';
+import { IUser } from '@shared/index';
 
 export type IUserSchema = IUser & mongoose.Document;
 
 const UserSchema = new mongoose.Schema({
     name: {
-        type: String,
         required: true,
+        type: String,
     },
     userType: {
-        type: String,
         required: true,
+        type: String,
     },
     virtualClassroomUid: {
-        type: String,
         required: true,
+        type: String,
     },
 });
 

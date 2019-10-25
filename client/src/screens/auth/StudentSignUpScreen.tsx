@@ -3,43 +3,32 @@
  */
 
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import validate from 'validate.js';
 
-import { UserType } from 'shared';
+import { UserType } from '@shared/index';
 
-import { Background } from '../../components/Background';
-import { StyledButton } from '../../components/Button';
-import { colors } from '../../constants/colors';
-import { StyledInput } from '../../components/Input';
-import { StyledHeader } from '../../components/Header';
-import { StyledForm } from '../../components/Form';
-import { actions, selectors } from '../../store';
+import { Background } from '@client/components/Background';
+import { StyledButton } from '@client/components/Button';
+import { StyledForm } from '@client/components/Form';
+import { StyledHeader } from '@client/components/Header';
+import { StyledInput } from '@client/components/Input';
+
+import { colors } from '@client/constants/colors';
+import {
+    classroomName,
+    classroomPasscode,
+    name,
+} from '@client/constants/validations';
+
+import { actions, selectors } from '@client/store';
 
 validate.validators.presence.options = { message: "can't be empty." };
 const constraints = {
-    name: {
-        presence: true,
-        format: {
-            pattern: /[^0-9\.\,\"\?\!\;\:\#\$\%\&\(\)\*\+\-\/\<\>\=\@\[\]\\\^\_\{\}\|\~]+/,
-            message: 'must be a valid name.',
-        },
-    },
-    classroomName: {
-        presence: true,
-        format: {
-            pattern: /[^\.\,\"\?\!\;\:\#\$\%\&\(\)\*\+\-\/\<\>\=\@\[\]\\\^\_\{\}\|\~]+/,
-            message: 'must not contain special characters.',
-        },
-    },
-    classroomPasscode: {
-        presence: true,
-        format: {
-            pattern: /[0-9]+/,
-            message: 'must be all digits',
-        },
-    },
+    classroomName,
+    classroomPasscode,
+    name,
 };
 
 export const StudentSignUpScreen = () => {
@@ -49,17 +38,27 @@ export const StudentSignUpScreen = () => {
     const loading = useSelector(selectors.user.isLoading);
 
     const [state, setState] = useState(() => ({
-        values: {
-            name: currentUser.name,
-            classroomName: undefined,
-            classroomPasscode: undefined,
-        },
         errors: {
-            name: undefined,
             classroomName: undefined,
             classroomPasscode: undefined,
+            name: undefined,
+        },
+        values: {
+            classroomName: undefined,
+            classroomPasscode: undefined,
+            name: currentUser ? currentUser.name : undefined,
         },
     }));
+
+    const onValue = (key: 'name' | 'classroomName' | 'classroomPasscode') => (
+        val: string
+    ) => {
+        setState({
+            ...state,
+            errors: { ...state.errors, [key]: undefined },
+            values: { ...state.values, [key]: val },
+        });
+    };
 
     const onSubmit = () => {
         const errors = validate(state.values, constraints);
@@ -68,10 +67,10 @@ export const StudentSignUpScreen = () => {
         } else {
             dispatch(
                 actions.user.register(
-                    state.values.name,
+                    state.values.name || '',
                     UserType.STUDENT,
-                    state.values.classroomName,
-                    state.values.classroomPasscode
+                    state.values.classroomName || '',
+                    state.values.classroomPasscode || ''
                 )
             );
         }
@@ -89,13 +88,7 @@ export const StudentSignUpScreen = () => {
                         value={state.values.name}
                         error={state.errors.name}
                         style={{ marginBottom: 16 }}
-                        onChangeText={val =>
-                            setState({
-                                ...state,
-                                values: { ...state.values, name: val },
-                                errors: { ...state.errors, name: undefined },
-                            })
-                        }
+                        onChangeText={onValue('name')}
                     />
                     <StyledInput
                         label="The class name is..."
@@ -104,16 +97,7 @@ export const StudentSignUpScreen = () => {
                         value={state.values.classroomName}
                         error={state.errors.classroomName}
                         style={{ marginBottom: 16 }}
-                        onChangeText={val =>
-                            setState({
-                                ...state,
-                                values: { ...state.values, classroomName: val },
-                                errors: {
-                                    ...state.errors,
-                                    classroomName: undefined,
-                                },
-                            })
-                        }
+                        onChangeText={onValue('classroomName')}
                     />
                     <StyledInput
                         label="What is the teacher password?"
@@ -121,19 +105,7 @@ export const StudentSignUpScreen = () => {
                         error={state.errors.classroomPasscode}
                         keyboardType="number-pad"
                         style={{ marginBottom: 32 }}
-                        onChangeText={val =>
-                            setState({
-                                ...state,
-                                values: {
-                                    ...state.values,
-                                    classroomPasscode: val,
-                                },
-                                errors: {
-                                    ...state.errors,
-                                    classroomPasscode: undefined,
-                                },
-                            })
-                        }
+                        onChangeText={onValue('classroomPasscode')}
                     />
                     <StyledButton
                         text="Submit!"
@@ -153,8 +125,8 @@ StudentSignUpScreen.navigationOptions = () => ({
 
 const styles = StyleSheet.create({
     wrapper: {
-        width: '100%',
-        height: '100%',
         display: 'flex',
+        height: '100%',
+        width: '100%',
     },
 });

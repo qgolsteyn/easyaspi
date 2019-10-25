@@ -5,6 +5,6 @@
 tmp/
 
 *.tern-port
-yarn.lock
 node_modules
 coverage
+.env

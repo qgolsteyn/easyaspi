@@ -11,7 +11,7 @@ export const StyledForm = (props: IStyledForm) => {
     return (
         <KeyboardAwareScrollView
             style={{ width: '100%', height: '100%' }}
-            enableOnAndroid
+            enableOnAndroid={true}
             enableAutomaticScroll={false}
         >
             <View
@@ -28,7 +28,7 @@ export const StyledForm = (props: IStyledForm) => {
 
 const styles = StyleSheet.create({
     wrapper: {
-        width: '100%',
         paddingHorizontal: 32,
+        width: '100%',
     },
 });

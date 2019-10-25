@@ -1,9 +1,9 @@
 import * as React from 'react';
 import {
     ImageBackground,
-    View,
     ImageSourcePropType,
     StyleSheet,
+    View,
 } from 'react-native';
 
 interface IBackgroundProps {
@@ -37,7 +37,7 @@ export const Background = (props: IBackgroundProps) => {
 
 const styles = StyleSheet.create({
     bg: {
-        width: '100%',
         height: '100%',
+        width: '100%',
     },
 });

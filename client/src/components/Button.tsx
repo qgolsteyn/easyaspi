@@ -1,19 +1,19 @@
+import * as Haptic from 'expo-haptics';
 import * as React from 'react';
 import {
-    TouchableWithoutFeedback,
-    StyleSheet,
-    View,
-    Text,
     ActivityIndicator,
+    StyleSheet,
+    Text,
+    TouchableWithoutFeedback,
+    View,
 } from 'react-native';
-import * as Haptic from 'expo-haptics';
 
-import { colors } from '../constants/colors';
+import { colors } from '@client/constants/colors';
 
 interface IStyledButton {
     loading?: boolean;
     text: string;
-    styles?: Object;
+    styles?: object;
     styleAttr?: 'primary' | 'secondary' | 'success' | 'error';
     onPress?: () => void;
 }
@@ -33,6 +33,7 @@ export const StyledButton = (props: IStyledButton) => {
                 return colors.primary;
         }
     }, [props.styleAttr]);
+
     const colorDark = React.useMemo(() => {
         switch (props.styleAttr) {
             case 'secondary':
@@ -46,6 +47,14 @@ export const StyledButton = (props: IStyledButton) => {
         }
     }, [props.styleAttr]);
 
+    const onButtonPressIn = () => {
+        Haptic.impactAsync(Haptic.ImpactFeedbackStyle.Light);
+        setFocus(true);
+    };
+    const onButtonPressOut = () => {
+        setFocus(false);
+    };
+
     return (
         <View
             style={{
@@ -56,11 +65,8 @@ export const StyledButton = (props: IStyledButton) => {
         >
             <TouchableWithoutFeedback
                 style={styles.button}
-                onPressIn={() => {
-                    Haptic.impactAsync(Haptic.ImpactFeedbackStyle.Light);
-                    setFocus(true);
-                }}
-                onPressOut={() => setFocus(false)}
+                onPressIn={onButtonPressIn}
+                onPressOut={onButtonPressOut}
                 onPress={!props.loading ? props.onPress : undefined}
             >
                 <View
@@ -82,31 +88,31 @@ export const StyledButton = (props: IStyledButton) => {
 };
 
 const styles = StyleSheet.create({
-    wrapper: {
-        position: 'relative',
-        width: '100%',
-        height: 64,
-        paddingBottom: 4,
-        borderRadius: 8,
-        marginBottom: 4,
-    },
     button: {
-        width: '100%',
-        height: '100%',
         display: 'flex',
-    },
-    textContainer: {
-        width: '100%',
         height: '100%',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 8,
+        width: '100%',
     },
     text: {
+        color: '#fff',
         fontFamily: 'josefin-sans-bold',
         fontSize: 24,
-        color: '#fff',
         paddingBottom: 4,
+    },
+    textContainer: {
+        alignItems: 'center',
+        borderRadius: 8,
+        display: 'flex',
+        height: '100%',
+        justifyContent: 'center',
+        width: '100%',
+    },
+    wrapper: {
+        borderRadius: 8,
+        height: 64,
+        marginBottom: 4,
+        paddingBottom: 4,
+        position: 'relative',
+        width: '100%',
     },
 });

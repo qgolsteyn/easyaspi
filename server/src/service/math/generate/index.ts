@@ -1,11 +1,11 @@
-import { generateNumbers, computeAssignments } from './generateNumbers';
+import { computeAssignments, generateNumbers } from './generateNumbers';
 
 interface IProblemDefinition {
-    controlledVariables: { [name: string]: Domain };
+    controlledVariables: { [name: string]: IDomain };
     derivedVariables?: { [name: string]: Assignment };
 }
 
-interface Domain {
+interface IDomain {
     min: number;
     max: number;
 }

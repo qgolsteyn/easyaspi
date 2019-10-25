@@ -1,7 +1,7 @@
-import { takeLatest, put, call, select } from 'redux-saga/effects';
 import { AxiosResponse } from 'axios';
+import { call, put, select, takeLatest } from 'redux-saga/effects';
 
-import { IProblem } from 'shared';
+import { IProblem } from '@shared/index';
 
 import { actions, selectors } from '../reducers';
 import { baseApi } from './api';
@@ -47,8 +47,8 @@ function* fetchNextProblem() {
         if (problem) {
             yield put(
                 actions.problems.setProblem({
-                    prompt: 'What is',
                     problem: problem.problem,
+                    prompt: 'What is',
                     solution: problem.solution[0],
                     solved: false,
                 })
