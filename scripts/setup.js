@@ -13,12 +13,16 @@ if (osType == 'win32') {
     options.shell = true;
 }
 
-console.log('Update submodules');
-execSync('git submodule update --remote', {
-    ...options,
-    cwd: resolve(__dirname, '.'),
-    stdio: [process.stdin, process.stdout, process.stderr],
-});
+try {
+    console.log('Update submodules');
+    execSync('git submodule update --remote', {
+        ...options,
+        cwd: resolve(__dirname, '.'),
+        stdio: [process.stdin, process.stdout, process.stderr],
+    });
+} catch (e) {
+    console.warn('Unable to update submodule');
+}
 
 console.log('Copy secrets');
 execSync('yarn setup', {
