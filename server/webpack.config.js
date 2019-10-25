@@ -6,8 +6,19 @@ const path = require('path');
 
 const WebpackShellPlugin = require('webpack-shell-plugin');
 const Dotenv = require('dotenv-webpack');
+const GeneratePackageJsonPlugin = require('generate-package-json-webpack-plugin');
 
 const watch = process.argv[2] === '--watch';
+
+const distPackage = {
+    name: 'dist-server',
+    private: true,
+    version: '1.0.0',
+    main: './index.js',
+    scripts: {
+        start: 'node index.js',
+    },
+};
 
 const config = {
     entry: ['./src/index.ts'],
@@ -30,12 +41,23 @@ const config = {
                 test: /\.ts$/,
                 use: ['ts-loader'],
             },
+            {
+                test: /\.(?!(tsx?|jsx?|json)$)(.*)$/i,
+                loader: 'file-loader',
+                options: {
+                    name: '[name].[ext]',
+                },
+            },
         ],
     },
     plugins: [
         new Dotenv({
             path: path.resolve(__dirname, '.env'),
         }),
+        new GeneratePackageJsonPlugin(
+            distPackage,
+            path.resolve(__dirname, './package.json')
+        ),
     ],
     externals: [
         { mongoose: 'commonjs mongoose' },
