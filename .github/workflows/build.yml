@@ -34,13 +34,13 @@ jobs:
               uses: actions/setup-node@v1
               with:
                   node-version: '12.x'
-            - name: Install
-              run: |
-                  yarn
             - name: Setup GCloud
               uses: actions/gcloud/auth@master
               env:
                   GCLOUD_AUTH: ${{ secrets.GCLOUD_AUTH }}
+            - name: Install
+              run: |
+                  yarn
             - name: Build server
               run: |
                   cd server
