@@ -18,6 +18,10 @@ jobs:
             - name: Install
               run: |
                   yarn
+            - name: Linting
+              run: |
+                  cd client
+                  yarn lint
             - name: Setup Expo
               run: |
                   npm install -g expo-cli
@@ -37,14 +41,21 @@ jobs:
               uses: actions/setup-node@v1
               with:
                   node-version: '12.x'
-            - name: Setup GCloud
-              uses: actions/gcloud/auth@master
-              env:
-                  GCLOUD_AUTH: ${{ secrets.GCLOUD_AUTH }}
             - name: Install
               run: |
                   yarn
-            - name: Build server
+            - name: Linting
               run: |
                   cd server
+                  yarn lint
+            - name: Test
+              run: |
+                  yarn test
+            - name: Codecov
+              run: |
+                  yarn codecov
+              env:
+                  CODECOV_TOKEN: ${{secrets.CODECOV_TOKEN}}
+            - name: Build server
+              run: |
                   yarn prestart
