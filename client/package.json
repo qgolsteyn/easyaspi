@@ -4,8 +4,7 @@
     "private": true,
     "main": "./src/index.tsx",
     "scripts": {
-        "start": "expo start",
-        "test": "node ../scripts/test.js",
+        "dev": "expo start",
         "lint": "tslint -c ./tslint.json './client/**/*.ts*'"
     },
     "dependencies": {
@@ -45,6 +44,7 @@
         "babel-preset-react-native": "^4.0.1",
         "babel-preset-react-native-stage-0": "^1.0.1",
         "babel-preset-react-native-typescript": "^1.0.0-rc.1",
+        "react-native-dotenv": "^0.2.0",
         "typescript": "^3.6.3"
     }
 }

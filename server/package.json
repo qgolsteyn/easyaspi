@@ -4,10 +4,7 @@
     "private": true,
     "main": "dist/index.js",
     "scripts": {
-        "prestart": "webpack",
-        "start": "node dist",
         "dev": "webpack --watch",
-        "test": "node ../scripts/test.js",
         "lint": "tslint -c ./tslint.json './server/**/*.ts'"
     },
     "dependencies": {

@@ -10370,6 +10370,11 @@ typedjson@^1.4.0:
   resolved "https://registry.yarnpkg.com/typedjson/-/typedjson-1.5.0.tgz#7ea2e152c95c45775843caf85c914efa73cad81a"
   integrity sha512-yFox3juzl6wJKdE14IZ9MnRRg4UyiiJeBWsYEKGMjnhblzyMjpTJkUY2yjBLgejcfla0NZpHgnDv/KZ/DSfGHw==
 
+typescript@^3.6.3:
+  version "3.6.4"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.6.4.tgz#b18752bb3792bc1a0281335f7f6ebf1bbfc5b91d"
+  integrity sha512-unoCll1+l+YK4i4F8f22TaNVPRHcD9PA3yCuZ8g5e0qGqlVlJ/8FSateOLLSagn+Yg5+ZwuPkL8LFUc0Jcvksg==
+
 uglify-js@3.4.x:
   version "3.4.10"
   resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-3.4.10.tgz#9ad9563d8eb3acdfb8d38597d2af1d815f6a755f"

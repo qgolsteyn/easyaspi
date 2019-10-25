@@ -13,6 +13,13 @@ if (osType == 'win32') {
     options.shell = true;
 }
 
+console.log('Update submodules');
+execSync('git submodule update --remote', {
+    ...options,
+    cwd: resolve(__dirname, '.'),
+    stdio: [process.stdin, process.stdout, process.stderr],
+});
+
 console.log('Copy secrets');
 execSync('yarn setup', {
     ...options,

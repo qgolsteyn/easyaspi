@@ -4,6 +4,12 @@ import * as Google from 'expo-google-app-auth';
 import { AsyncStorage } from 'react-native';
 import { call, delay, put, select, takeLatest } from 'redux-saga/effects';
 
+import {
+    ANDROID_CLIENT_ID,
+    ANDROID_STANDALONE_CLIENT_ID,
+    CLIENT_ID,
+} from 'react-native-dotenv';
+
 import { IUserCreation, UserType } from '@shared/index';
 
 import { actions, selectors } from '../reducers';
@@ -147,12 +153,9 @@ function* register(action: ReturnType<typeof actions.user.register>) {
 function* loginWithGoogle() {
     try {
         const result = yield call(Google.logInAsync, {
-            androidClientId:
-                '1045897314106-fds1dsf16nesvidoscda541jq3rt2622.apps.googleusercontent.com',
-            androidStandaloneAppClientId:
-                '1045897314106-9mrv3no49mvrufejeptit1ubn1vl2obt.apps.googleusercontent.com',
-            clientId:
-                '1045897314106-fds1dsf16nesvidoscda541jq3rt2622.apps.googleusercontent.com',
+            androidClientId: ANDROID_CLIENT_ID,
+            androidStandaloneAppClientId: ANDROID_STANDALONE_CLIENT_ID,
+            clientId: CLIENT_ID,
             scopes: ['profile', 'email'],
         });
 
