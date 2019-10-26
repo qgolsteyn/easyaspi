@@ -44,9 +44,13 @@ jobs:
             - name: Install
               run: |
                   yarn
-            - name: GCP List Clusters
+            - name: Build
+              run: |
+                  cd server
+                  yarn build
+            - name: Deploy
               uses: actions/gcloud/cli@master
               with:
-                  args: app deploy
+                  args: app deploy ./server/dist/app.yaml
               env:
                   CLOUDSDK_CORE_PROJECT: ${{ secrets.GCLOUD_PROJECT }}

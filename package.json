@@ -6,8 +6,6 @@
     "license": "MIT",
     "scripts": {
         "postinstall": "node ./scripts/setup.js",
-        "prestart": "cd server && webpack",
-        "start": "node server/dist",
         "test": "yarn jest --coverage --detectOpenHandles --forceExit",
         "lint:client": "tslint -c ./tslint.json './client/**/*.ts*'",
         "lint:server": "tslint -c ./tslint.json './server/**/*.ts'",

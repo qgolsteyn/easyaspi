@@ -56,4 +56,5 @@ jobs:
                   CODECOV_TOKEN: ${{secrets.CODECOV_TOKEN}}
             - name: Build server
               run: |
-                  yarn prestart
+                  cd server
+                  yarn build
