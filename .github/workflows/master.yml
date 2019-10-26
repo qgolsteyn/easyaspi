@@ -1,5 +1,8 @@
 name: Master CI
-on: ['push']
+on:
+    push:
+        branches:
+            - master
 jobs:
     client:
         runs-on: ubuntu-latest
