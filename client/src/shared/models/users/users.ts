@@ -5,7 +5,11 @@ export enum UserType {
 }
 
 export interface IUser {
-    name: string;
-    userType: string;
-    virtualClassroomUid: string;
+    id: string;
+    registered: boolean;
+    name?: string;
+    pushToken?: string;
+    email?: string;
+    userType?: string;
+    virtualClassroomUid?: string;
 }

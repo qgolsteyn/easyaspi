@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { ClassroomTemplateModel } from '@server/database/models/classroom/classroom';
+import { ClassroomTemplateModel } from '@server/database';
 
 export const initializeClassroomRoutes = (app: express.Application) => {
     const classroomRouter = express.Router();

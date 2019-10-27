@@ -11,6 +11,7 @@ export const initializeApp = async () => {
     const app = express();
 
     app.use(bodyParser.json());
+
     initializeRoutes(app);
 
     await connectToDB();

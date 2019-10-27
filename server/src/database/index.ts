@@ -2,11 +2,10 @@ import mongoose from 'mongoose';
 
 export {
     GeneratedProblemsModel as GeneratedProblemModel,
-} from './models/math/generatedProblem';
-export { ProblemTemplateModel } from './models/math/problemTemplate';
-export { UserModel } from './models/users/users';
-export { AuthInfoModel } from './models/users/auth';
-export { ClassroomTemplateModel } from './models/classroom/classroom';
+} from './math/generatedProblem';
+export { ProblemTemplateModel } from './math/problemTemplate';
+export { UserModel } from './users/users';
+export { ClassroomTemplateModel } from './classroom/classroom';
 
 const DB_CONNECTION =
     process.env.DB_CONNECTION || 'mongodb://localhost:27017/test';

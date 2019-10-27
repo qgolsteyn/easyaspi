@@ -17,7 +17,7 @@ export interface IUserState {
 
 // And provide a default value for initialization
 const defaultState: IUserState = {
-    loading: true,
+    loading: false,
 };
 
 // Selectors are responsible for getting values in the state

@@ -10,157 +10,37 @@ import {
     CLIENT_ID,
 } from 'react-native-dotenv';
 
-import { IUserCreation, UserType } from '@shared/index';
-
 import { actions, selectors } from '../reducers';
 import { baseApi } from './api';
 
-const AUTH_TOKEN_KEY = 'auth_token';
-
 export default function* init() {
-    yield call(fetchUser);
-
     yield takeLatest(actions.user.login, login);
     yield takeLatest(actions.user.register, register);
-    yield takeLatest(actions.user.setAuthToken, saveAuthenticationInfo);
-}
-
-function* fetchUser() {
-    const authToken = JSON.parse(
-        yield call(AsyncStorage.getItem, AUTH_TOKEN_KEY)
-    );
-
-    if (!authToken || !(yield call(getUserInfo, authToken))) {
-        yield put(actions.user.setLoading(false));
-    }
-}
-
-function* saveAuthenticationInfo(
-    action: ReturnType<typeof actions.user.setAuthToken>
-) {
-    yield call(
-        AsyncStorage.setItem,
-        AUTH_TOKEN_KEY,
-        JSON.stringify(action.payload.authToken)
-    );
 }
 
 function* login() {
     yield put(actions.user.setLoading(true));
 
-    const googleResponse = (yield call(loginWithGoogle)) as Google.GoogleUser;
-    if (googleResponse === undefined) {
-        yield put(actions.user.setLoading(false));
-        return;
-    } else {
-        yield put(actions.user.setAuthToken(googleResponse.id || ''));
+    const idToken = (yield call(loginWithGoogle)) as Google.GoogleUser;
 
-        const isFound = yield call(getUserInfo, googleResponse.id || '');
+    yield call([baseApi, baseApi.post], `/auth`, { idToken });
 
-        if (!isFound) {
-            yield put(actions.nav.goToScreen('UserSelection'));
-            yield delay(500);
-            yield put(actions.user.setLoading(false));
-            yield put(
-                actions.user.setCurrentUser({
-                    name: googleResponse.name,
-                })
-            );
-        }
-    }
+    yield put(actions.user.setLoading(false));
 }
 
-function* getUserInfo(authToken: string) {
-    try {
-        const userResponse = (yield call(
-            [baseApi, baseApi.get],
-            `/users/auth/${authToken}`
-        )) as AxiosResponse;
-
-        const { id, user } = userResponse.data;
-
-        if (user) {
-            yield put(actions.user.setCurrentUserId(id));
-            yield put(actions.user.setCurrentUser(user));
-            if (user.userType === UserType.STUDENT) {
-                yield put(actions.problems.fetchNextProblem());
-                yield put(actions.nav.goToScreen('Student'));
-            } else if (user.userType === UserType.TEACHER) {
-                yield put(actions.classroom.fetchClassroom());
-                yield put(actions.nav.goToScreen('Teacher'));
-            }
-            return true;
-        } else {
-            return false;
-        }
-    } catch (e) {
-        return false;
-    }
-}
-
-function* register(action: ReturnType<typeof actions.user.register>) {
-    const values = action.payload;
-
-    yield put(actions.user.setLoading(true));
-
-    const authToken = (yield select(selectors.user.getAuthToken)) as string;
-    if (!authToken) {
-        yield put(actions.user.setLoading(true));
-        yield put(actions.nav.goToScreen('Welcome'));
-        return;
-    }
-
-    try {
-        const userResponse = (yield call(
-            [baseApi, baseApi.post],
-            '/users/auth/register',
-            {
-                authToken,
-                classroomName: values.classroomName,
-                classroomPasscode: values.classroomPasscode,
-                pushToken: yield call(Notifications.getExpoPushTokenAsync),
-                user: {
-                    id: 'placeholder',
-                    name: values.name,
-                    userType: values.userType,
-                    virtualClassroomUid: 'placeholder',
-                },
-            } as IUserCreation
-        )) as AxiosResponse;
-
-        const { id, user } = userResponse.data;
-
-        if (user) {
-            yield put(actions.user.setCurrentUserId(id));
-            yield put(actions.user.setCurrentUser(user));
-            if (user.userType === UserType.STUDENT) {
-                yield put(actions.problems.fetchNextProblem());
-                yield put(actions.nav.goToScreen('Student'));
-            } else if (user.userType === UserType.TEACHER) {
-                yield put(actions.classroom.fetchClassroom());
-                yield put(actions.nav.goToScreen('Teacher'));
-            }
-        } else {
-            alert('Invalid user format');
-            yield put(actions.user.setLoading(false));
-        }
-    } catch (e) {
-        alert(e);
-        yield put(actions.user.setLoading(false));
-    }
-}
+function* register(action: ReturnType<typeof actions.user.register>) {}
 
 function* loginWithGoogle() {
     try {
-        const result = yield call(Google.logInAsync, {
+        const result = (yield call(Google.logInAsync, {
             androidClientId: ANDROID_CLIENT_ID,
             androidStandaloneAppClientId: ANDROID_STANDALONE_CLIENT_ID,
             clientId: CLIENT_ID,
             scopes: ['profile', 'email'],
-        });
+        })) as Google.LogInResult;
 
         if (result.type === 'success') {
-            return result.user as Google.GoogleUser;
+            return result.idToken;
         } else {
             return undefined;
         }
