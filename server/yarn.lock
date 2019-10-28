@@ -10,6 +10,11 @@
     "@types/connect" "*"
     "@types/node" "*"
 
+"@types/boom@^7.3.0":
+  version "7.3.0"
+  resolved "https://registry.yarnpkg.com/@types/boom/-/boom-7.3.0.tgz#33280c5552d4cfabc21b8b7e0f6d29292decd985"
+  integrity sha512-PH7bfkt1nu4pnlxz+Ws+wwJJF1HE12W3ia+Iace2JT7q56DLH3hbyjOJyNHJYRxk3PkKaC36fHfHKyeG1rMgCA==
+
 "@types/bson@*":
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/@types/bson/-/bson-4.0.0.tgz#9073772679d749116eb1dfca56f8eaac6d59cc7a"
@@ -36,6 +41,13 @@
   dependencies:
     "@types/node" "*"
 
+"@types/express-boom@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@types/express-boom/-/express-boom-3.0.0.tgz#0e11da803e3c36933dccf7133dfd24f1cc5bf64f"
+  integrity sha512-dXBpvtBT1dFPy9PowFk9q19N2PJOyZG0I+u+uJIYTBsJ+gO3k5pAtbx8vEZacZrJYU4bJ+g5juoOvNiwhPyA1g==
+  dependencies:
+    "@types/express" "*"
+
 "@types/express-serve-static-core@*":
   version "4.16.10"
   resolved "https://registry.yarnpkg.com/@types/express-serve-static-core/-/express-serve-static-core-4.16.10.tgz#3c1313c6e6b75594561b473a286f016a9abf2132"
@@ -44,7 +56,7 @@
     "@types/node" "*"
     "@types/range-parser" "*"
 
-"@types/express@^4.17.1":
+"@types/express@*", "@types/express@^4.17.1":
   version "4.17.1"
   resolved "https://registry.yarnpkg.com/@types/express/-/express-4.17.1.tgz#4cf7849ae3b47125a567dfee18bfca4254b88c5c"
   integrity sha512-VfH/XCP0QbQk5B5puLqTLEeFgR8lfCJHZJKkInZ9mkYd+u8byX0kztXEQxEk4wZXJs8HI+7km2ALXjn4YKcX9w==
@@ -535,7 +547,7 @@ body-parser@1.19.0, body-parser@^1.19.0:
     raw-body "2.4.0"
     type-is "~1.6.17"
 
-boom@^7.3.0:
+boom@^7.3.0, boom@^7.3.x:
   version "7.3.0"
   resolved "https://registry.yarnpkg.com/boom/-/boom-7.3.0.tgz#733a6d956d33b0b1999da3fe6c12996950d017b9"
   integrity sha512-Swpoyi2t5+GhOEGw8rEsKvTxFLIDiiKoUc2gsoV6Lyr43LHBIzch3k2MvYUs8RTROrIkVJ3Al0TkaOGjnb+B6A==
@@ -1391,6 +1403,13 @@ expo-server-sdk@^3.3.0:
   dependencies:
     node-fetch "^2.3.0"
     promise-limit "^2.7.0"
+
+express-boom@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/express-boom/-/express-boom-3.0.0.tgz#d8146f1eea1bf6611f622141c6689ca6defa09f0"
+  integrity sha512-/esN6Am8YE1rzRsi+vBpJkdr8O+GX+oBjRE/hEuBu6Y3uyS9y026XptRZduAMYS8KxyLzXM5Qh+RlnqLOR1pVQ==
+  dependencies:
+    boom "^7.3.x"
 
 express@^4.17.1:
   version "4.17.1"
