@@ -2,16 +2,18 @@ import Boom from 'boom';
 import express from 'express';
 
 import { authService, userService } from '@server/services';
-import { enhanceHandler } from '@server/utils/boom';
+import { enhanceHandler } from '@server/utils/routeEnhancer';
 
-export const initializeUsersRoutes = (app: express.Application) => {
+export const initializeAuthRoutes = (app: express.Application) => {
     const usersRouter = express.Router();
     app.use('/', usersRouter);
 
-    /* Retrieves a user profile by auth id */
+    /**
+     * Retrieves an access token from a Google auth token
+     */
     usersRouter.post(
         '/auth',
-        enhanceHandler(async (req, res) => {
+        enhanceHandler({ protect: false })(async req => {
             const { idToken } = req.body;
 
             if (!idToken) {
@@ -19,12 +21,11 @@ export const initializeUsersRoutes = (app: express.Application) => {
             }
 
             await authService.verifyAuthToken(idToken);
-            const authInfo = authService.getAuthInfo(idToken);
+            const authInfo = authService.getAuthTokenInfo(idToken);
 
-            let user = await userService.getUserFromAuthInfo(authInfo);
+            let user = await userService.getUserFromId(String(authInfo.sub));
             if (user) {
-                res.status(200);
-                res.json({
+                return {
                     accessToken: authService.generateAccessToken({
                         registered: user.registered,
                         sub: user.id,
@@ -32,17 +33,16 @@ export const initializeUsersRoutes = (app: express.Application) => {
                         virtualClassroomUid: user.virtualClassroomUid,
                     }),
                     user,
-                });
+                };
             } else {
                 user = await userService.createUserFromAuthInfo(authInfo);
-                res.status(200);
-                res.json({
+                return {
                     accessToken: authService.generateAccessToken({
                         registered: false,
                         sub: String(authInfo.sub),
                     }),
                     user,
-                });
+                };
             }
         })
     );

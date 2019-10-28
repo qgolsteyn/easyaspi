@@ -5,7 +5,7 @@ export {
 } from './math/generatedProblem';
 export { ProblemTemplateModel } from './math/problemTemplate';
 export { UserModel } from './users/users';
-export { ClassroomTemplateModel } from './classroom/classroom';
+export { ClassroomModel } from './classroom/classroom';
 
 const DB_CONNECTION =
     process.env.DB_CONNECTION || 'mongodb://localhost:27017/test';

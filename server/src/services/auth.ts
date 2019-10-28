@@ -1,6 +1,8 @@
 import axios from 'axios';
 import Boom from 'boom';
-import { decode, sign } from 'jsonwebtoken';
+import { decode, sign, verify } from 'jsonwebtoken';
+
+import { getUserFromId } from './user';
 
 export interface IAuthInfo {
     aud: string;
@@ -27,7 +29,7 @@ export const verifyAuthToken = async (token: string) => {
     }
 };
 
-export const getAuthInfo = (token: string) => {
+export const getAuthTokenInfo = (token: string) => {
     const data = decode(token) as IAuthInfo;
 
     if (
@@ -44,4 +46,25 @@ export const generateAccessToken = (
     accessTokenPayload: IAccessTokenPayload
 ) => {
     return sign(accessTokenPayload, 'easyaspi');
+};
+
+export const verifyAccessToken = async (accessToken: string) => {
+    const accessTokenPayload = verify(
+        accessToken,
+        'easyaspi'
+    ) as IAccessTokenPayload;
+
+    const user = await getUserFromId(accessTokenPayload.sub);
+
+    if (
+        user &&
+        user.id === accessTokenPayload.sub &&
+        user.registered === accessTokenPayload.registered &&
+        user.virtualClassroomUid === accessTokenPayload.virtualClassroomUid &&
+        user.userType === accessTokenPayload.userType
+    ) {
+        return user;
+    } else {
+        throw Boom.unauthorized();
+    }
 };

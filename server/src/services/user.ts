@@ -1,3 +1,5 @@
+import Boom from 'boom';
+
 import { UserModel } from '@server/database';
 import { cleanMongoDocument } from '@server/utils/mongo';
 
@@ -17,9 +19,50 @@ export const createUserFromAuthInfo = async (authInfo: IAuthInfo) => {
     return cleanMongoDocument(user) as IUser;
 };
 
-export const getUserFromAuthInfo = async (authInfo: IAuthInfo) => {
-    console.log(String(authInfo.sub));
-    const user = await UserModel.findOne({ id: String(authInfo.sub) });
+export const updateUser = async (userPayload: IUser) => {
+    const user = await UserModel.findOne({ id: userPayload.id });
+
+    if (user) {
+        user.name = userPayload.name || user.name;
+        user.email = userPayload.email || user.email;
+        user.pushToken = userPayload.pushToken || user.pushToken;
+
+        if (!user.userType) {
+            user.userType = userPayload.userType;
+        } else {
+            throw Boom.badRequest('Cannot change userType once it is set');
+        }
+
+        if (!user.virtualClassroomUid) {
+            user.virtualClassroomUid = userPayload.virtualClassroomUid;
+        } else {
+            throw Boom.badRequest(
+                'Cannot change virtual classroom id once it is set'
+            );
+        }
+
+        if (
+            user.name &&
+            user.email &&
+            user.pushToken &&
+            user.userType &&
+            user.virtualClassroomUid
+        ) {
+            user.registered = true;
+        } else {
+            user.registered = false;
+        }
+
+        await user.save();
+
+        return cleanMongoDocument(user) as IUser;
+    } else {
+        throw Boom.internal('Provided an invalid user id');
+    }
+};
+
+export const getUserFromId = async (id: string) => {
+    const user = await UserModel.findOne({ id });
 
     if (user) {
         const userObj = cleanMongoDocument(user);

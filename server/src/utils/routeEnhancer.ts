@@ -1,6 +1,8 @@
 import Boom from 'boom';
 import express from 'express';
 
+import { verifyAccessToken } from '@server/services/auth';
+
 const formatBoomPayload = (error: Boom<any>) => {
     return {
         ...error.output.payload,
@@ -8,19 +10,32 @@ const formatBoomPayload = (error: Boom<any>) => {
     };
 };
 
-export const enhanceHandler = (handler: express.RequestHandler) => {
+export const enhanceHandler = (options: { protect: boolean }) => (
+    handler: (req: express.Request) => object
+) => {
     return async (
         req: express.Request,
         res: express.Response,
         next: express.NextFunction
     ) => {
         try {
-            const result = await handler(req, res, next);
-            if (result instanceof Error && Boom.isBoom(result)) {
-                res.status(result.output.statusCode).send(
-                    formatBoomPayload(result)
-                );
+            let user;
+            if (options.protect) {
+                const token = req.headers.authorization
+                    ? req.headers.authorization.replace('Bearer ', '')
+                    : undefined;
+
+                if (!token) {
+                    throw Boom.unauthorized();
+                }
+
+                user = await verifyAccessToken(token);
             }
+
+            (req as any).user = user;
+
+            res.status(200);
+            res.json(await handler(req));
         } catch (error) {
             if (Boom.isBoom(error)) {
                 res.status(error.output.statusCode).send(
