@@ -125,6 +125,7 @@ function* loginWithGoogle() {
         if (result.type === 'success') {
             return result.idToken as Google.GoogleUser;
         } else {
+            alert(result);
             return undefined;
         }
     } catch (e) {
