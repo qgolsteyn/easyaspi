@@ -24,7 +24,7 @@ export interface IProblemState {
 const defaultState: IProblemState = {
     currentProblem: 0,
     problemSetCount: 10,
-    problems: [],
+    problems: [null],
     solvedProblems: 0,
 };
 

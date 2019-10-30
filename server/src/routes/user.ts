@@ -1,7 +1,7 @@
 import Boom from 'boom';
 import express from 'express';
 
-import { classroomService, userService, authService } from '@server/services';
+import { authService, classroomService, userService } from '@server/services';
 import { enhanceHandler } from '@server/utils/routeEnhancer';
 
 import { IClassroom, IUser, UserType } from '@shared/index';
@@ -10,8 +10,11 @@ export const initializeUsersRoutes = (app: express.Application) => {
     const usersRouter = express.Router();
     app.use('/user', usersRouter);
 
+    /**
+     * Get current user
+     */
     usersRouter.get(
-        '/',
+        '/current',
         enhanceHandler({ protect: true })(async (_, user) => {
             if (user) {
                 return user;
@@ -21,6 +24,9 @@ export const initializeUsersRoutes = (app: express.Application) => {
         })
     );
 
+    /**
+     * Register user. Creates a classroom if necessary.
+     */
     usersRouter.post(
         '/register',
         enhanceHandler({ protect: true })(async req => {

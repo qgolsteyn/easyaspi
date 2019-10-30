@@ -21,10 +21,14 @@ export default function* init() {
     yield takeLatest(actions.user.register, register);
 }
 
+/**
+ * Fetches the user profile using the saved access token
+ * Fails if no access token is saved
+ */
 function* silentLogin() {
     yield put(actions.user.updateAuthStage(AuthStage.AUTH_CHECK_LOADING));
 
-    const user = (yield call(api.getUser)) as IUser | undefined;
+    const user = (yield call(api.auth.getUser)) as IUser | undefined;
 
     if (user) {
         yield call(navigateToNextScreen, user);
@@ -33,24 +37,32 @@ function* silentLogin() {
     }
 }
 
+/**
+ * Performs a login with the server using the Google id token
+ * Retrieves an access token and the user profile
+ */
 function* login() {
     yield put(actions.user.updateAuthStage(AuthStage.AUTH_CHECK_LOADING));
 
+    // Show Google sign in screen to user
     const idToken = (yield call(loginWithGoogle)) as string;
-    if (idToken === undefined) {
-        yield put(actions.user.updateAuthStage(AuthStage.AUTH_START));
-        return;
-    } else {
-        const user = (yield call(api.auth, idToken)) as IUser | undefined;
+
+    if (idToken) {
+        const user = (yield call(api.auth.auth, idToken)) as IUser | undefined;
 
         if (user) {
             yield call(navigateToNextScreen, user);
         } else {
             yield put(actions.user.updateAuthStage(AuthStage.AUTH_START));
         }
+    } else {
+        yield put(actions.user.updateAuthStage(AuthStage.AUTH_START));
     }
 }
 
+/**
+ * Registers the user with server (updates user info)
+ */
 function* register(action: ReturnType<typeof actions.user.register>) {
     const { name, userType, classroomName, classroomPasscode } = action.payload;
 
@@ -75,7 +87,7 @@ function* register(action: ReturnType<typeof actions.user.register>) {
         passcode: classroomPasscode,
     };
 
-    const newUser = (yield call(api.register, user, classroom)) as IUser;
+    const newUser = (yield call(api.auth.register, user, classroom)) as IUser;
 
     if (newUser) {
         yield call(navigateToNextScreen, newUser);
@@ -84,6 +96,9 @@ function* register(action: ReturnType<typeof actions.user.register>) {
     }
 }
 
+/**
+ * Uses the user object to determine the next screen to display
+ */
 function* navigateToNextScreen(user: IUser) {
     yield put(actions.user.updateUserInfo(user));
     if (user.registered && user.userType === UserType.STUDENT) {

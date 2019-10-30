@@ -4,8 +4,8 @@ export {
     GeneratedProblemsModel as GeneratedProblemModel,
 } from './math/generatedProblem';
 export { ProblemTemplateModel } from './math/problemTemplate';
-export { UserModel } from './users/users';
-export { ClassroomModel } from './classroom/classroom';
+export { UserModel } from './users';
+export { ClassroomModel } from './classroom';
 
 const DB_CONNECTION =
     process.env.DB_CONNECTION || 'mongodb://localhost:27017/test';

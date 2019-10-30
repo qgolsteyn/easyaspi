@@ -23,6 +23,8 @@ export const enhanceHandler = (options: { protect: boolean }) => (
             let user;
 
             console.log(req.url);
+            console.log(JSON.stringify(req.headers, null, 2));
+            console.log(JSON.stringify(req.body, null, 2));
 
             if (options.protect) {
                 const token = req.headers.authorization
@@ -35,8 +37,6 @@ export const enhanceHandler = (options: { protect: boolean }) => (
 
                 user = await verifyAccessToken(token);
             }
-
-            console.log(JSON.stringify(req.body, null, 2));
 
             const response = await handler(req, user);
 

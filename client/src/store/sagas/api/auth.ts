@@ -1,16 +1,11 @@
-import axios from 'axios';
 import { AsyncStorage } from 'react-native';
 import { call, put, select } from 'redux-saga/effects';
-import { SERVER_URL } from 'react-native-dotenv';
 
 import { IClassroom, IUser } from '@shared/index';
-import { actions, selectors } from '../reducers';
+import { actions, selectors } from '../../reducers';
+import { baseApi } from './url';
 
 const ACCESS_TOKEN_KEY = 'access_token';
-
-export const baseApi = axios.create({
-    baseURL: 'http://192.168.0.107:8080',
-});
 
 export function* auth(idToken: string) {
     try {
@@ -63,7 +58,7 @@ export function* getUser() {
 
     if (accessToken) {
         try {
-            const user = (yield call([baseApi, baseApi.get], '/user', {
+            const user = (yield call([baseApi, baseApi.get], '/user/current', {
                 headers: { Authorization: `Bearer ${accessToken}` },
             })).data as { user: IUser };
             return user;
@@ -76,7 +71,7 @@ export function* getUser() {
     }
 }
 
-function* getAccessToken() {
+export function* getAccessToken() {
     const accessToken = (yield select(selectors.user.getAccessToken)) as string;
 
     if (accessToken.length === 0) {

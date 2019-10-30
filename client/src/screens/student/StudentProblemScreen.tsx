@@ -29,9 +29,11 @@ export const StudentProblem = () => {
     const dispatch = useDispatch();
 
     const currentProblem = useSelector(selectors.problems.getCurrentProblem);
+
     const currentProblemNumber = useSelector(
         selectors.problems.getCurrentProblemNumber
     );
+
     const numberOfProblems = useSelector(
         selectors.problems.getNumberOfProblems
     );

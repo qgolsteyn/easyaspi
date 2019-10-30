@@ -6,6 +6,7 @@
 import { delay, spawn } from 'redux-saga/effects';
 
 import navInit from './nav';
+import problemInit from './problems';
 import userInit from './user';
 
 export function* initializeSagas() {
@@ -13,4 +14,5 @@ export function* initializeSagas() {
 
     yield delay(100);
     yield spawn(userInit);
+    yield spawn(problemInit);
 }
