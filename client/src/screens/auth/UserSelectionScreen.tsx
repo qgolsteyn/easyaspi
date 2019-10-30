@@ -1,25 +1,19 @@
-/**
- * This file specifies a demo component for demonstration purposes
- */
-
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import { useDispatch } from 'react-redux';
 
 import { Background } from '@client/components/Background';
 import { StyledButton } from '@client/components/Button';
 import { StyledHeader } from '@client/components/Header';
 import { colors } from '@client/constants/colors';
+import { actions } from '@client/store';
+
+import { UserType } from '@shared/index';
 
 import bg2 from '../../../assets/bg2.png';
 
-interface IUserSelectionScreenProps {
-    navigation: any;
-}
-
-export const UserSelectionScreen = (props: IUserSelectionScreenProps) => {
-    const navigateTo = (screen: string) => () => {
-        props.navigation.navigate(screen);
-    };
+export const UserSelectionScreen = () => {
+    const dispatch = useDispatch();
 
     return (
         <Background backgroundImage={bg2} backgroundColor={colors.bg}>
@@ -30,13 +24,17 @@ export const UserSelectionScreen = (props: IUserSelectionScreenProps) => {
                 <View style={styles.container}>
                     <StyledButton
                         text="a student"
-                        onPress={navigateTo('StudentSignUp')}
+                        onPress={() =>
+                            dispatch(actions.nav.goToScreen('StudentSignUp'))
+                        }
                     />
                 </View>
                 <View style={styles.container}>
                     <StyledButton
                         text="a teacher"
-                        onPress={navigateTo('TeacherSignUp')}
+                        onPress={() =>
+                            dispatch(actions.nav.goToScreen('TeacherSignUp'))
+                        }
                     />
                 </View>
             </View>

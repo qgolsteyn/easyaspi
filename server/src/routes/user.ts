@@ -1,7 +1,7 @@
 import Boom from 'boom';
 import express from 'express';
 
-import { classroomService, userService } from '@server/services';
+import { classroomService, userService, authService } from '@server/services';
 import { enhanceHandler } from '@server/utils/routeEnhancer';
 
 import { IClassroom, IUser, UserType } from '@shared/index';
@@ -9,6 +9,17 @@ import { IClassroom, IUser, UserType } from '@shared/index';
 export const initializeUsersRoutes = (app: express.Application) => {
     const usersRouter = express.Router();
     app.use('/user', usersRouter);
+
+    usersRouter.get(
+        '/',
+        enhanceHandler({ protect: true })(async (_, user) => {
+            if (user) {
+                return user;
+            } else {
+                throw Boom.internal('User should not be undefined');
+            }
+        })
+    );
 
     usersRouter.post(
         '/register',
@@ -43,7 +54,12 @@ export const initializeUsersRoutes = (app: express.Application) => {
 
             await userService.updateUser(user);
 
-            return { user };
+            const accessToken = authService.generateAccessToken({
+                registered: user.registered,
+                sub: user.id,
+            });
+
+            return { accessToken, user };
         })
     );
 };

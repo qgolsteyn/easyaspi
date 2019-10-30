@@ -8,7 +8,7 @@ import { IClassroom } from '@shared/index';
 export const createClassroom = async (classroomPayload: IClassroom) => {
     const classroom = new ClassroomModel({
         name: classroomPayload.name,
-        password: classroomPayload.passcode,
+        passcode: classroomPayload.passcode,
     });
 
     await classroom.save();

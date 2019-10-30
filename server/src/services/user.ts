@@ -1,9 +1,10 @@
 import Boom from 'boom';
+import Expo from 'expo-server-sdk';
 
 import { UserModel } from '@server/database';
 import { cleanMongoDocument } from '@server/utils/mongo';
 
-import { IUser } from '@shared/index';
+import { IMessage, IUser } from '@shared/index';
 
 import { IAuthInfo } from './auth';
 
@@ -57,7 +58,7 @@ export const updateUser = async (userPayload: IUser) => {
 
         return cleanMongoDocument(user) as IUser;
     } else {
-        throw Boom.internal('Provided an invalid user id');
+        throw Boom.badRequest('Provided an invalid user id');
     }
 };
 
@@ -69,5 +70,34 @@ export const getUserFromId = async (id: string) => {
         return userObj as IUser;
     } else {
         return undefined;
+    }
+};
+
+export const sendPushNotification = async (
+    id: string,
+    classroomId: string,
+    message: IMessage
+) => {
+    const user = await getUserFromId(id);
+
+    if (user) {
+        if (user.virtualClassroomUid !== classroomId) {
+            throw Boom.badRequest(
+                'Not allowed to send push notification to this user'
+            );
+        } else if (!user.pushToken || !user.registered) {
+            throw Boom.badRequest('User is not registered');
+        }
+
+        const expo = new Expo();
+        await expo.sendPushNotificationsAsync([
+            {
+                body: message.message,
+                title: 'New message',
+                to: user.pushToken,
+            },
+        ]);
+    } else {
+        throw Boom.badRequest('User does not exist');
     }
 };

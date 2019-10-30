@@ -1,91 +1,92 @@
 /**
- * Demo reducer and actions for reference purposes
+ * User reducer and actions
  */
 
 import produce from 'immer';
 import { ActionType, createAction, getType } from 'typesafe-actions';
 
-import { IUser, UserType } from '@shared/index';
+import { IClassroom, IUser, UserType } from '@shared/index';
+
+export enum AuthStage {
+    AUTH_CHECK_LOADING,
+    AUTH_START,
+    AUTH_REGISTER,
+    AUTH_LOGGED_IN,
+}
 
 // We specify the shape of the state in an interface
 export interface IUserState {
-    loading: boolean;
-    authToken?: string;
-    user?: Partial<IUser>;
-    userId?: string;
+    accessToken: string;
+    authStage: AuthStage;
+    user: IUser;
+    classroom: IClassroom;
 }
 
 // And provide a default value for initialization
 const defaultState: IUserState = {
-    loading: false,
+    accessToken: '',
+    authStage: AuthStage.AUTH_START,
+    classroom: {
+        name: '',
+        passcode: '',
+    },
+    user: {
+        id: '',
+        registered: false,
+    },
 };
 
 // Selectors are responsible for getting values in the state
 export const userSelectors = {
-    getAuthToken: (state: { user: IUserState }) => state.user.authToken,
+    getAccessToken: (state: { user: IUserState }) => state.user.accessToken,
+    getAuthStage: (state: { user: IUserState }) => state.user.authStage,
+    getCurrentClassroom: (state: { user: IUserState }) => state.user.classroom,
     getCurrentUser: (state: { user: IUserState }) => state.user.user,
-    getCurrentUserId: (state: { user: IUserState }) => state.user.userId,
-    isLoading: (state: { user: IUserState }) => state.user.loading,
 };
 
 // And actions allow us to mutate the state
 export const userActions = {
-    login: createAction('user_login'),
+    login: createAction('auth_login'),
     register: createAction(
-        'user_register',
+        'auth_register',
         resolve => (
             name: string,
             userType: UserType,
             classroomName: string,
             classroomPasscode: string
-        ) =>
-            resolve({
-                classroomName,
-                classroomPasscode,
-                name,
-                userType,
-            })
+        ) => resolve({ name, userType, classroomName, classroomPasscode })
     ),
-    setAuthToken: createAction('user_setAuth', resolve => (authToken: string) =>
-        resolve({ authToken })
+    setAccessToken: createAction(
+        'auth_accessToken',
+        resolve => (accessToken: string) => resolve({ accessToken })
     ),
-    setCurrentUser: createAction(
-        'user_setUser',
+    signout: createAction('user_signout'),
+    updateAuthStage: createAction(
+        'auth_update_auth_stage',
+        resolve => (authStage: AuthStage) => resolve({ authStage })
+    ),
+    updateUserInfo: createAction(
+        'auth_update',
         resolve => (user: Partial<IUser>) => resolve({ user })
     ),
-    setCurrentUserId: createAction('user_setUserId', resolve => (id: string) =>
-        resolve({ id })
-    ),
-    setLoading: createAction('user_setLoading', resolve => (loading: boolean) =>
-        resolve({ loading })
-    ),
-    signout: createAction('user_signout', resolve => () => resolve()),
 };
 
-export type UserAction = ActionType<typeof userActions>;
+export type AuthAction = ActionType<typeof userActions>;
 
 // The reducer is responsible for changing the state based on actions received
-export const userReducer = produce((draft: IUserState, action: UserAction) => {
+export const userReducer = produce((draft: IUserState, action: AuthAction) => {
     // We switch based on the type of action
     switch (action.type) {
-        case getType(userActions.setCurrentUser): {
-            const { user } = action.payload;
-            draft.user = { ...draft.user, ...user };
+        case getType(userActions.setAccessToken): {
+            draft.accessToken = action.payload.accessToken;
             break;
         }
-        case getType(userActions.setCurrentUserId): {
-            const { id } = action.payload;
-            draft.userId = id;
+        case getType(userActions.updateUserInfo): {
+            draft.user = { ...draft.user, ...action.payload.user };
             break;
         }
-        case getType(userActions.setAuthToken): {
-            const { authToken } = action.payload;
-            draft.authToken = authToken;
-            break;
-        }
-        case getType(userActions.setLoading): {
-            const { loading } = action.payload;
-            draft.loading = loading;
+        case getType(userActions.updateAuthStage): {
+            draft.authStage = action.payload.authStage;
             break;
         }
     }
