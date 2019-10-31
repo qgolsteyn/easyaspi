@@ -41,13 +41,6 @@ const config = {
                 test: /\.ts$/,
                 use: ['ts-loader'],
             },
-            {
-                test: /\.(?!(tsx?|jsx?|json)$)(.*)$/i,
-                loader: 'file-loader',
-                options: {
-                    name: '[name].[ext]',
-                },
-            },
         ],
     },
     plugins: [
