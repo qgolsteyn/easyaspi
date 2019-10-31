@@ -2,6 +2,7 @@
  * This script initializes the repo
  */
 
+const fs = require('fs');
 const { resolve } = require('path');
 const { execSync } = require('child_process');
 const { platform } = require('os');
@@ -15,7 +16,7 @@ if (osType == 'win32') {
 
 try {
     console.log('Update submodules');
-    execSync('git submodule update --remote', {
+    execSync('git submodule init && git submodule update --remote', {
         ...options,
         cwd: resolve(__dirname, '.'),
         stdio: [process.stdin, process.stdout, process.stderr],
@@ -30,6 +31,22 @@ execSync('yarn setup', {
     cwd: resolve(__dirname, '../secrets'),
     stdio: [process.stdin, process.stdout, process.stderr],
 });
+
+console.log('Copy app.yaml');
+const move = (file, dest) => {
+    fs.copyFile(resolve(__dirname, file), resolve(__dirname, dest), err => {
+        if (err) throw err;
+        console.log(`${file} was moved to destination`);
+    });
+};
+
+execSync('mkdir dist', {
+    ...options,
+    cwd: resolve(__dirname, '../server'),
+    stdio: [process.stdin, process.stdout, process.stderr],
+});
+
+move('../server/app.yaml', '../server/dist/app.yaml');
 
 // Get server dependencies
 console.log('Get dependencies for server');
