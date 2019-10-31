@@ -5,6 +5,7 @@
 const { resolve } = require('path');
 const { execSync } = require('child_process');
 const { platform } = require('os');
+const fs = require('fs');
 
 osType = platform();
 
@@ -12,6 +13,13 @@ let options = {};
 if (osType == 'win32') {
     options.shell = true;
 }
+
+const move = (file, dest) => {
+    fs.copyFile(resolve(__dirname, file), resolve(__dirname, dest), err => {
+        if (err) throw err;
+        console.log(`${file} was moved to destination`);
+    });
+};
 
 try {
     console.log('Update submodules');
@@ -30,6 +38,9 @@ execSync('yarn setup', {
     cwd: resolve(__dirname, '../secrets'),
     stdio: [process.stdin, process.stdout, process.stderr],
 });
+
+console.log('Copy app.yaml');
+move('../server/app.yaml', '../server/dist/app.yaml');
 
 // Get server dependencies
 console.log('Get dependencies for server');
