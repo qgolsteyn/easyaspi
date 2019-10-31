@@ -8,8 +8,6 @@ import { StyledHeader } from '@client/components/Header';
 import { colors } from '@client/constants/colors';
 import { actions } from '@client/store';
 
-import { UserType } from '@shared/index';
-
 import bg2 from '../../../assets/bg2.png';
 
 export const UserSelectionScreen = () => {

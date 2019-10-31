@@ -1,7 +1,3 @@
-/**
- * User reducer and actions
- */
-
 import produce from 'immer';
 import { ActionType, createAction, getType } from 'typesafe-actions';
 

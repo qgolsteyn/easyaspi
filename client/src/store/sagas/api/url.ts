@@ -8,8 +8,6 @@ const localip =
         ? `http://${manifest.debuggerHost.split(`:`).shift()}:8080`
         : 'http://localhost:8080';
 
-alert(localip);
-
 export const baseApi = axios.create({
     baseURL: __DEV__ ? localip : SERVER_URL,
 });

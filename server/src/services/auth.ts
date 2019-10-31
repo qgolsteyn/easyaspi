@@ -32,10 +32,7 @@ export const verifyAuthToken = async (token: string) => {
 export const getAuthTokenInfo = (token: string) => {
     const data = decode(token) as IAuthInfo;
 
-    if (
-        data.aud !==
-        '1045897314106-fds1dsf16nesvidoscda541jq3rt2622.apps.googleusercontent.com'
-    ) {
+    if (data.aud !== process.env.CLIENT_ID) {
         throw Boom.badRequest('Token is invalid');
     }
 
@@ -45,26 +42,39 @@ export const getAuthTokenInfo = (token: string) => {
 export const generateAccessToken = (
     accessTokenPayload: IAccessTokenPayload
 ) => {
-    return sign(accessTokenPayload, 'easyaspi');
+    if (process.env.ACCESS_TOKEN_SECRET === undefined) {
+        throw Boom.internal('Need to have a defined access token');
+    }
+
+    return sign(accessTokenPayload, process.env.ACCESS_TOKEN_SECRET);
 };
 
 export const verifyAccessToken = async (accessToken: string) => {
-    const accessTokenPayload = verify(
-        accessToken,
-        'easyaspi'
-    ) as IAccessTokenPayload;
+    if (process.env.ACCESS_TOKEN_SECRET === undefined) {
+        throw Boom.internal('Need to have a defined access token');
+    }
 
-    const user = await getUserFromId(accessTokenPayload.sub);
+    try {
+        const accessTokenPayload = verify(
+            accessToken,
+            process.env.ACCESS_TOKEN_SECRET
+        ) as IAccessTokenPayload;
 
-    if (
-        user &&
-        user.id === accessTokenPayload.sub &&
-        user.registered === accessTokenPayload.registered &&
-        user.virtualClassroomUid === accessTokenPayload.virtualClassroomUid &&
-        user.userType === accessTokenPayload.userType
-    ) {
-        return user;
-    } else {
+        const user = await getUserFromId(accessTokenPayload.sub);
+
+        if (
+            user &&
+            user.id === accessTokenPayload.sub &&
+            user.registered === accessTokenPayload.registered &&
+            user.virtualClassroomUid ===
+                accessTokenPayload.virtualClassroomUid &&
+            user.userType === accessTokenPayload.userType
+        ) {
+            return user;
+        } else {
+            throw Boom.unauthorized();
+        }
+    } catch (e) {
         throw Boom.unauthorized();
     }
 };
