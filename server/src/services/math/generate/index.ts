@@ -1,6 +1,6 @@
 import { computeAssignments, generateNumbers } from './generateNumbers';
 
-interface IProblemDefinition {
+export interface IVariableDefinition {
     controlledVariables: { [name: string]: IDomain };
     derivedVariables?: { [name: string]: Assignment };
 }
@@ -25,9 +25,9 @@ type Assignment = string;
  * @param definition specifies the controlled and derived variables the algorithm needs to generate values for
  * @param seed
  */
-export const generateProblemValues = (
-    definition: IProblemDefinition,
-    seed: string = 'seed'
+export const generateVariableValues = (
+    definition: IVariableDefinition,
+    seed: string = String(Date.now())
 ) => {
     const controlledAssignments = generateNumbers(
         definition.controlledVariables,

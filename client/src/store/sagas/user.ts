@@ -1,8 +1,6 @@
-import { AxiosResponse } from 'axios';
 import { Notifications } from 'expo';
 import * as Google from 'expo-google-app-auth';
-import { AsyncStorage } from 'react-native';
-import { call, delay, put, select, takeLatest } from 'redux-saga/effects';
+import { call, put, select, takeLatest } from 'redux-saga/effects';
 
 import {
     ANDROID_CLIENT_ID,
@@ -10,143 +8,108 @@ import {
     CLIENT_ID,
 } from 'react-native-dotenv';
 
-import { IUserCreation, UserType } from '@shared/index';
+import { IClassroom, IUser, UserType } from '@shared/index';
 
 import { actions, selectors } from '../reducers';
-import { baseApi } from './api';
-
-const AUTH_TOKEN_KEY = 'auth_token';
+import { AuthStage } from '../reducers/user';
+import * as api from './api';
 
 export default function* init() {
-    yield call(fetchUser);
+    yield call(silentLogin);
 
     yield takeLatest(actions.user.login, login);
     yield takeLatest(actions.user.register, register);
-    yield takeLatest(actions.user.setAuthToken, saveAuthenticationInfo);
 }
 
-function* fetchUser() {
-    const authToken = JSON.parse(
-        yield call(AsyncStorage.getItem, AUTH_TOKEN_KEY)
-    );
+/**
+ * Fetches the user profile using the saved access token
+ * Fails if no access token is saved
+ */
+function* silentLogin() {
+    yield put(actions.user.updateAuthStage(AuthStage.AUTH_CHECK_LOADING));
 
-    if (!authToken || !(yield call(getUserInfo, authToken))) {
-        yield put(actions.user.setLoading(false));
-    }
-}
+    const user = (yield call(api.auth.getUser)) as IUser | undefined;
 
-function* saveAuthenticationInfo(
-    action: ReturnType<typeof actions.user.setAuthToken>
-) {
-    yield call(
-        AsyncStorage.setItem,
-        AUTH_TOKEN_KEY,
-        JSON.stringify(action.payload.authToken)
-    );
-}
-
-function* login() {
-    yield put(actions.user.setLoading(true));
-
-    const googleResponse = (yield call(loginWithGoogle)) as Google.GoogleUser;
-    if (googleResponse === undefined) {
-        yield put(actions.user.setLoading(false));
-        return;
+    if (user) {
+        yield call(navigateToNextScreen, user);
     } else {
-        yield put(actions.user.setAuthToken(googleResponse.id || ''));
-
-        const isFound = yield call(getUserInfo, googleResponse.id || '');
-
-        if (!isFound) {
-            yield put(actions.nav.goToScreen('UserSelection'));
-            yield delay(500);
-            yield put(actions.user.setLoading(false));
-            yield put(
-                actions.user.setCurrentUser({
-                    name: googleResponse.name,
-                })
-            );
-        }
+        yield put(actions.user.updateAuthStage(AuthStage.AUTH_START));
     }
 }
 
-function* getUserInfo(authToken: string) {
-    try {
-        const userResponse = (yield call(
-            [baseApi, baseApi.get],
-            `/users/auth/${authToken}`
-        )) as AxiosResponse;
+/**
+ * Performs a login with the server using the Google id token
+ * Retrieves an access token and the user profile
+ */
+function* login() {
+    yield put(actions.user.updateAuthStage(AuthStage.AUTH_CHECK_LOADING));
 
-        const { id, user } = userResponse.data;
+    // Show Google sign in screen to user
+    const idToken = (yield call(loginWithGoogle)) as string;
+
+    if (idToken) {
+        const user = (yield call(api.auth.auth, idToken)) as IUser | undefined;
 
         if (user) {
-            yield put(actions.user.setCurrentUserId(id));
-            yield put(actions.user.setCurrentUser(user));
-            if (user.userType === UserType.STUDENT) {
-                yield put(actions.problems.fetchNextProblem());
-                yield put(actions.nav.goToScreen('Student'));
-            } else if (user.userType === UserType.TEACHER) {
-                yield put(actions.classroom.fetchClassroom());
-                yield put(actions.nav.goToScreen('Teacher'));
-            }
-            return true;
+            yield call(navigateToNextScreen, user);
         } else {
-            return false;
+            yield put(actions.user.updateAuthStage(AuthStage.AUTH_START));
         }
-    } catch (e) {
-        return false;
+    } else {
+        yield put(actions.user.updateAuthStage(AuthStage.AUTH_START));
     }
 }
 
+/**
+ * Registers the user with server (updates user info)
+ */
 function* register(action: ReturnType<typeof actions.user.register>) {
-    const values = action.payload;
+    const { name, userType, classroomName, classroomPasscode } = action.payload;
 
-    yield put(actions.user.setLoading(true));
+    yield put(actions.user.updateAuthStage(AuthStage.AUTH_CHECK_LOADING));
 
-    const authToken = (yield select(selectors.user.getAuthToken)) as string;
-    if (!authToken) {
-        yield put(actions.user.setLoading(true));
-        yield put(actions.nav.goToScreen('Welcome'));
-        return;
+    const { id, email } = (yield select(
+        selectors.user.getCurrentUser
+    )) as IUser;
+
+    const user: IUser = {
+        email,
+        id,
+        name,
+        pushToken: yield call(Notifications.getExpoPushTokenAsync),
+        registered: true,
+        userType,
+        virtualClassroomUid: classroomName,
+    };
+
+    const classroom: IClassroom = {
+        name: classroomName,
+        passcode: classroomPasscode,
+    };
+
+    const newUser = (yield call(api.auth.register, user, classroom)) as IUser;
+
+    if (newUser) {
+        yield call(navigateToNextScreen, newUser);
+    } else {
+        yield put(actions.user.updateAuthStage(AuthStage.AUTH_REGISTER));
     }
+}
 
-    try {
-        const userResponse = (yield call(
-            [baseApi, baseApi.post],
-            '/users/auth/register',
-            {
-                authToken,
-                classroomName: values.classroomName,
-                classroomPasscode: values.classroomPasscode,
-                pushToken: yield call(Notifications.getExpoPushTokenAsync),
-                user: {
-                    id: 'placeholder',
-                    name: values.name,
-                    userType: values.userType,
-                    virtualClassroomUid: 'placeholder',
-                },
-            } as IUserCreation
-        )) as AxiosResponse;
-
-        const { id, user } = userResponse.data;
-
-        if (user) {
-            yield put(actions.user.setCurrentUserId(id));
-            yield put(actions.user.setCurrentUser(user));
-            if (user.userType === UserType.STUDENT) {
-                yield put(actions.problems.fetchNextProblem());
-                yield put(actions.nav.goToScreen('Student'));
-            } else if (user.userType === UserType.TEACHER) {
-                yield put(actions.classroom.fetchClassroom());
-                yield put(actions.nav.goToScreen('Teacher'));
-            }
-        } else {
-            alert('Invalid user format');
-            yield put(actions.user.setLoading(false));
-        }
-    } catch (e) {
-        alert(e);
-        yield put(actions.user.setLoading(false));
+/**
+ * Uses the user object to determine the next screen to display
+ */
+function* navigateToNextScreen(user: IUser) {
+    yield put(actions.user.updateUserInfo(user));
+    if (user.registered && user.userType === UserType.STUDENT) {
+        yield put(actions.user.updateAuthStage(AuthStage.AUTH_LOGGED_IN));
+        yield put(actions.nav.goToScreen('Student'));
+    } else if (user.registered && user.userType === UserType.TEACHER) {
+        yield put(actions.user.updateAuthStage(AuthStage.AUTH_LOGGED_IN));
+        yield put(actions.nav.goToScreen('Teacher'));
+    } else if (!user.registered) {
+        yield put(actions.user.updateAuthStage(AuthStage.AUTH_REGISTER));
+        yield put(actions.nav.goToScreen('UserSelection'));
     }
 }
 
@@ -160,12 +123,13 @@ function* loginWithGoogle() {
         });
 
         if (result.type === 'success') {
-            return result.user as Google.GoogleUser;
+            return result.idToken as Google.GoogleUser;
         } else {
+            alert(result);
             return undefined;
         }
     } catch (e) {
-        alert('Oops! Login failed!');
+        alert(e);
         return undefined;
     }
 }

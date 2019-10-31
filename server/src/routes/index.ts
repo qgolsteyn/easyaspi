@@ -1,13 +1,11 @@
 import express from 'express';
 
-import { initializeClassroomRoutes } from './classroom';
+import { initializeAuthRoutes } from './auth';
 import { initializeMathRoutes } from './math';
-import { initializeNotificationRoutes } from './notification';
-import { initializeUsersRoutes } from './users';
+import { initializeUsersRoutes } from './user';
 
 export const initializeRoutes = (app: express.Application) => {
     initializeMathRoutes(app);
+    initializeAuthRoutes(app);
     initializeUsersRoutes(app);
-    initializeNotificationRoutes(app);
-    initializeClassroomRoutes(app);
 };

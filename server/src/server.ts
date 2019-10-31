@@ -1,5 +1,6 @@
 import bodyParser from 'body-parser';
 import express from 'express';
+import boom from 'express-boom';
 import { Server } from 'http';
 
 import { connectToDB } from './database';
@@ -11,6 +12,8 @@ export const initializeApp = async () => {
     const app = express();
 
     app.use(bodyParser.json());
+    app.use(boom());
+
     initializeRoutes(app);
 
     await connectToDB();

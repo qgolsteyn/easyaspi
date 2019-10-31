@@ -1,12 +1,21 @@
-import { AxiosResponse } from 'axios';
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 
 import { IProblem } from '@shared/index';
 
 import { actions, selectors } from '../reducers';
-import { baseApi } from './api';
+import * as api from './api';
 
 export default function* init() {
+    yield takeLatest(actions.nav.goToScreen, function*(action) {
+        if (action.payload.screen === 'Problem') {
+            const loading =
+                (yield select(selectors.problems.getCurrentProblem)) === null;
+
+            if (loading) {
+                yield call(fetchNextProblem);
+            }
+        }
+    });
     yield takeLatest(actions.problems.solveCurrentProblem, solveCurrentProblem);
     yield takeLatest(actions.problems.fetchNextProblem, fetchNextProblem);
 }
@@ -27,38 +36,18 @@ function* fetchNextProblem() {
         return;
     }
 
-    try {
-        const studentId = (yield select(
-            selectors.user.getCurrentUserId
-        )) as string;
+    const problem = (yield call(api.math.getNextMathProblem)) as IProblem;
 
-        const problemResponse = (yield call(
-            [baseApi, baseApi.get],
-            `/math/nextProblem`,
-            {
-                headers: {
-                    studentid: studentId,
-                },
-            }
-        )) as AxiosResponse;
-
-        const problem = problemResponse.data as IProblem;
-
-        if (problem) {
-            yield put(
-                actions.problems.setProblem({
-                    problem: problem.problem,
-                    prompt: 'What is',
-                    solution: problem.solution[0],
-                    solved: false,
-                })
-            );
-        } else {
-            alert('Error');
-        }
-    } catch (e) {
-        alert(e);
+    if (problem) {
+        yield put(
+            actions.problems.setProblem({
+                problem: problem.problem,
+                prompt: 'What is',
+                solution: problem.solution[0],
+                solved: false,
+            })
+        );
+    } else {
+        alert('Error');
     }
-
-    yield put(actions.classroom.setLoading(false));
 }

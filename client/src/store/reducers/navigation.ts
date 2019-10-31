@@ -1,7 +1,3 @@
-/**
- * Demo reducer and actions for reference purposes
- */
-
 import { NavigationContainerComponent } from 'react-navigation';
 import { ActionType, createAction } from 'typesafe-actions';
 

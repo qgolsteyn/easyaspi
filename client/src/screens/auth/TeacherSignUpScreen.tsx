@@ -1,7 +1,3 @@
-/**
- * This file specifies a demo component for demonstration purposes
- */
-
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -23,6 +19,7 @@ import {
 } from '@client/constants/validations';
 
 import { actions, selectors } from '@client/store';
+import { AuthStage } from '@client/store/reducers/user';
 
 validate.validators.presence.options = { message: "can't be empty." };
 const constraints = {
@@ -33,8 +30,9 @@ const constraints = {
 
 export const TeacherSignUpScreen = () => {
     const dispatch = useDispatch();
+
+    const authStage = useSelector(selectors.user.getAuthStage);
     const currentUser = useSelector(selectors.user.getCurrentUser);
-    const loading = useSelector(selectors.user.isLoading);
 
     const [state, setState] = useState({
         errors: {
@@ -109,7 +107,7 @@ export const TeacherSignUpScreen = () => {
                     <StyledButton
                         text="Submit!"
                         onPress={onSubmit}
-                        loading={loading}
+                        loading={authStage === AuthStage.AUTH_CHECK_LOADING}
                         styles={{ marginBottom: 32 }}
                     />
                 </StyledForm>

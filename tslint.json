@@ -5,7 +5,8 @@
     "rules": {
         "quotemark": [true, "single", "jsx-double", "avoid-escape"],
         "jsx-no-lambda": false,
-        "no-console": false
+        "no-console": false,
+        "no-unused-expression": true
     },
     "linterOptions": {
         "exclude": [

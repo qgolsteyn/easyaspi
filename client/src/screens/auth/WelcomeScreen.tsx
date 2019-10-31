@@ -1,7 +1,3 @@
-/**
- * This file specifies a demo component for demonstration purposes
- */
-
 import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,12 +7,13 @@ import { StyledButton } from '@client/components/Button';
 
 import { colors } from '@client/constants/colors';
 import { actions, selectors } from '@client/store';
+import { AuthStage } from '@client/store/reducers/user';
 
 import logo from '../../../assets/logo.png';
 import welcome from '../../../assets/welcome.png';
 
 export const WelcomeScreen = () => {
-    const loading = useSelector(selectors.user.isLoading);
+    const authStage = useSelector(selectors.user.getAuthStage);
     const dispatch = useDispatch();
 
     return (
@@ -42,8 +39,8 @@ export const WelcomeScreen = () => {
                 </View>
                 <View style={styles.buttonContainer}>
                     <StyledButton
-                        text="Let's start!"
-                        loading={loading}
+                        text="Sign in with Google"
+                        loading={authStage === AuthStage.AUTH_CHECK_LOADING}
                         onPress={() => dispatch(actions.user.login())}
                     />
                 </View>
