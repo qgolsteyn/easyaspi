@@ -40,11 +40,15 @@ const move = (file, dest) => {
     });
 };
 
-execSync('mkdir dist', {
-    ...options,
-    cwd: resolve(__dirname, '../server'),
-    stdio: [process.stdin, process.stdout, process.stderr],
-});
+try {
+    execSync('mkdir dist', {
+        ...options,
+        cwd: resolve(__dirname, '../server'),
+        stdio: [process.stdin, process.stdout, process.stderr],
+    });
+} catch (e) {
+    console.warn('Directory dist already exists');
+}
 
 move('../server/app.yaml', '../server/dist/app.yaml');
 

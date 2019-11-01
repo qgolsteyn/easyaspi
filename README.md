@@ -24,5 +24,7 @@ cd easyaspi
 yarn
 ```
 
-From there, you can start the server and the client by running `yarn start` and
-you can test the project by running `yarn test`.
+You can run the server by going to the `server` folder and running `yarn dev`. You can also run the client in another terminal
+and running `yarn dev`.
+
+This project also provides linting with `yarn lint` and testing with `yarn test`. 
