@@ -1,11 +1,8 @@
-import {
-    NavigationActions,
-    NavigationContainerComponent,
-} from 'react-navigation';
+import { NavigationActions, NavigationContainerComponent } from 'react-navigation';
 import { takeLatest } from 'redux-saga/effects';
 import { getType } from 'typesafe-actions';
-
 import { actions } from '../reducers';
+
 
 export default function* init() {
     yield takeLatest(

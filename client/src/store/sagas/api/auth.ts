@@ -1,9 +1,9 @@
+import { IClassroom, IUser } from '@shared/index';
 import { AsyncStorage } from 'react-native';
 import { call, put, select } from 'redux-saga/effects';
-
-import { IClassroom, IUser } from '@shared/index';
 import { actions, selectors } from '../../reducers';
 import { baseApi } from './url';
+
 
 const ACCESS_TOKEN_KEY = 'access_token';
 

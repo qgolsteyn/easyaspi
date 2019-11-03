@@ -1,18 +1,14 @@
+import { IClassroom, IUser, UserType } from '@shared/index';
 import { Notifications } from 'expo';
 import * as Google from 'expo-google-app-auth';
+import { ANDROID_CLIENT_ID, ANDROID_STANDALONE_CLIENT_ID, CLIENT_ID } from 'react-native-dotenv';
 import { call, put, select, takeLatest } from 'redux-saga/effects';
-
-import {
-    ANDROID_CLIENT_ID,
-    ANDROID_STANDALONE_CLIENT_ID,
-    CLIENT_ID,
-} from 'react-native-dotenv';
-
-import { IClassroom, IUser, UserType } from '@shared/index';
-
 import { actions, selectors } from '../reducers';
 import { AuthStage } from '../reducers/user';
 import * as api from './api';
+
+
+
 
 export default function* init() {
     yield call(silentLogin);
