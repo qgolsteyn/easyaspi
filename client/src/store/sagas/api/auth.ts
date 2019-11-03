@@ -49,6 +49,7 @@ export function* register(user: IUser, classroom: IClassroom) {
             return undefined;
         }
     } else {
+        alert("Error : could not retrieve the access token")
         return undefined;
     }
 }
@@ -67,6 +68,7 @@ export function* getUser() {
             return undefined;
         }
     } else {
+        alert("Error : could not retrieve the access token")
         return undefined;
     }
 }

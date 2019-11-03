@@ -48,6 +48,6 @@ function* fetchNextProblem() {
             })
         );
     } else {
-        alert('Error');
+        alert('Error : could not retrieve the problem from the server');
     }
 }

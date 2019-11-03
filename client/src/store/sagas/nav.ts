@@ -27,5 +27,7 @@ function* goToScreen(action: ReturnType<typeof actions.nav.goToScreen>) {
         navigator.dispatch(
             NavigationActions.navigate({ routeName: action.payload.screen })
         );
+    }else{
+        alert("Navigator is undefined")
     }
 }
