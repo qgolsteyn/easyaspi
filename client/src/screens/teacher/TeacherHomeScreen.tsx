@@ -19,7 +19,7 @@ export const TeacherHome = () => {
     return (
         <Background backgroundColor={colors.bg} backgroundImage={bg1}>
             <View style={styles.wrapper}>
-                <StyledHeader>Hi {userName.split(' ')[0]}!</StyledHeader>
+                <StyledHeader>Hi {userName}!</StyledHeader>
                 <StyledCard title="Loading..." />
             </View>
         </Background>

@@ -1,4 +1,5 @@
 import bodyParser from 'body-parser';
+import debug from 'debug';
 import express from 'express';
 import boom from 'express-boom';
 import { Server } from 'http';
@@ -6,7 +7,11 @@ import { Server } from 'http';
 import { connectToDB } from './database';
 import { initializeRoutes } from './routes';
 
-const PORT = process.env.PORT || 8080;
+const DEFAULT_PORT = 8080;
+
+const PORT = process.env.PORT || DEFAULT_PORT;
+
+const log = debug('server');
 
 export const initializeApp = async () => {
     const app = express();
@@ -21,9 +26,8 @@ export const initializeApp = async () => {
     let server: Server;
     try {
         server = app.listen(PORT);
-        console.log(`Server listening on port ${PORT}`);
+        log(`Server listening on port ${PORT}`);
     } catch (e) {
-        console.error(e);
         throw e;
     }
 

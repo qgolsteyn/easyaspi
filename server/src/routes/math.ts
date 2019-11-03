@@ -13,7 +13,7 @@ export const initializeMathRoutes = (app: express.Application) => {
         enhanceHandler({ protect: true })(async () => {
             const problem = mathService.generateProblem();
             return problem;
-        })
+        }),
     );
 
     /* get all templates */
@@ -22,6 +22,6 @@ export const initializeMathRoutes = (app: express.Application) => {
         enhanceHandler({ protect: true })(async () => {
             const templates = await ProblemTemplateModel.find();
             return templates;
-        })
+        }),
     );
 };

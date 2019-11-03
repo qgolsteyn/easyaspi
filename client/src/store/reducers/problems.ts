@@ -46,11 +46,11 @@ export const problemActions = {
     goToNextProblem: createAction('problem_NEXT_PROBLEM'),
     setProblem: createAction(
         'problem_SET_PROBLEM',
-        resolve => (problem: IProblem) => resolve({ problem })
+        resolve => (problem: IProblem) => resolve({ problem }),
     ),
     solveCurrentProblem: createAction(
         'problem_SOLVE_CURRENT_PROBLEM',
-        resolve => (successful: boolean) => resolve({ successful })
+        resolve => (successful: boolean) => resolve({ successful }),
     ),
 };
 
@@ -79,7 +79,10 @@ export const problemReducer = produce(
                 break;
             }
             case getType(problemActions.solveCurrentProblem): {
-                draft.problems[draft.currentProblem]!.solved = true;
+                const problem = draft.problems[draft.currentProblem];
+                if (problem !== null) {
+                    problem.solved = true;
+                }
                 break;
             }
         }
@@ -87,5 +90,5 @@ export const problemReducer = produce(
         // Redux requires us to return the state in case the action does not match
         return draft;
     },
-    defaultState
+    defaultState,
 );

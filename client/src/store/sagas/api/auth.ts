@@ -7,24 +7,27 @@ import { baseApi } from './url';
 
 const ACCESS_TOKEN_KEY = 'access_token';
 
-export function* auth(idToken: string) {
+export function* auth(idToken: string): Generator<any, IUser | undefined, any> {
     try {
         const { accessToken, user } = (yield call(
             [baseApi, baseApi.post],
             '/auth',
-            { idToken }
+            { idToken },
         )).data as { accessToken: string; user: IUser };
 
         yield call(saveAccessToken, accessToken);
 
         return user;
     } catch (e) {
-        handleError(e);
+        alert(e);
         return undefined;
     }
 }
 
-export function* register(user: IUser, classroom: IClassroom) {
+export function* register(
+    user: IUser,
+    classroom: IClassroom,
+): Generator<any, IUser | undefined, any> {
     const accessToken = (yield call(getAccessToken)) as string | undefined;
 
     if (accessToken) {
@@ -38,7 +41,7 @@ export function* register(user: IUser, classroom: IClassroom) {
                 },
                 {
                     headers: { Authorization: `Bearer ${accessToken}` },
-                }
+                },
             )).data as { accessToken: string; user: IUser };
 
             yield call(saveAccessToken, result.accessToken);
@@ -53,14 +56,18 @@ export function* register(user: IUser, classroom: IClassroom) {
     }
 }
 
-export function* getUser() {
+export function* getUser(): Generator<any, IUser | undefined, any> {
     const accessToken = (yield call(getAccessToken)) as string | undefined;
 
     if (accessToken) {
         try {
-            const user = (yield call([baseApi, baseApi.get], '/user/current', {
-                headers: { Authorization: `Bearer ${accessToken}` },
-            })).data as { user: IUser };
+            const { user } = (yield call(
+                [baseApi, baseApi.get],
+                '/user/current',
+                {
+                    headers: { Authorization: `Bearer ${accessToken}` },
+                },
+            )).data as { user: IUser };
             return user;
         } catch (e) {
             alert(e);
@@ -71,10 +78,10 @@ export function* getUser() {
     }
 }
 
-export function* getAccessToken() {
+export function* getAccessToken(): Generator<any, string | undefined, any> {
     const accessToken = (yield select(selectors.user.getAccessToken)) as string;
 
-    if (accessToken.length === 0) {
+    if (accessToken) {
         return (yield call(AsyncStorage.getItem, ACCESS_TOKEN_KEY)) as
             | string
             | undefined;
@@ -83,11 +90,7 @@ export function* getAccessToken() {
     }
 }
 
-function* saveAccessToken(accessToken: string) {
+function* saveAccessToken(accessToken: string): Generator<any, void, any> {
     yield put(actions.user.setAccessToken(accessToken));
     yield call(AsyncStorage.setItem, ACCESS_TOKEN_KEY, accessToken);
-}
-
-export function* handleError(e: Error) {
-    alert(e);
 }

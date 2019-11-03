@@ -16,8 +16,8 @@ type Assignment = string;
  * Algorithm used to generate a random set of values for a set of specified variables. Variables can be split into two
  * categories: controlled and derived variables.
  *
- * Controlled variables are specified by their requested domain, and the algorithm picks a random value within the specified
- * domain
+ * Controlled variables are specified by their requested domain, and the algorithm picks a random value
+ * within the specified domain
  *
  * Derived variables are specified by an equation using controlled variables, and the algorithm calculates the derived
  * variable's value using the value of the controlled variables.
@@ -27,11 +27,11 @@ type Assignment = string;
  */
 export const generateVariableValues = (
     definition: IVariableDefinition,
-    seed: string = String(Date.now())
+    seed: string = String(Date.now()),
 ) => {
     const controlledAssignments = generateNumbers(
         definition.controlledVariables,
-        seed
+        seed,
     );
     const derivedAssignments = definition.derivedVariables
         ? computeAssignments(definition.derivedVariables, controlledAssignments)

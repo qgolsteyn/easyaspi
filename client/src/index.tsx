@@ -34,7 +34,13 @@ const Entry = () => {
         <AppLoading />
     ) : (
         <Provider store={store}>
-            <App ref={nav => store.dispatch(actions.nav.setNavigator(nav!))} />
+            <App
+                ref={nav =>
+                    nav !== null
+                        ? store.dispatch(actions.nav.setNavigator(nav))
+                        : undefined
+                }
+            />
         </Provider>
     );
 };

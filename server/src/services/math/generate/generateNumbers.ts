@@ -19,7 +19,7 @@ type Assignment = string;
  */
 export const generateNumbers = (
     variables: { [name: string]: IRange },
-    seed: string = 'seed'
+    seed = 'seed',
 ) => {
     seedrandom(seed, { global: true });
 
@@ -48,7 +48,7 @@ export const generateNumber = (min: number, max: number) => {
  */
 export const computeAssignments = (
     variables: { [name: string]: Assignment },
-    scope: { [name: string]: number }
+    scope: { [name: string]: number },
 ) => {
     const assignments: { [name: string]: number } = {};
     Object.keys(variables).forEach(key => {

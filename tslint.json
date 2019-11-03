@@ -1,12 +1,20 @@
 {
     "defaultSeverity": "error",
     "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
-    "jsRules": {},
+    "jsRules": {
+        "quotemark": [true, "single", "jsx-double", "avoid-escape"]
+    },
     "rules": {
         "quotemark": [true, "single", "jsx-double", "avoid-escape"],
         "jsx-no-lambda": false,
-        "no-console": false,
-        "no-unused-expression": true
+        "typedef": [
+            true,
+            "call-signature",
+            "parameter",
+            "member-variable-declaration"
+        ],
+        "no-magic-numbers": [true, -1, 0, 1],
+        "no-non-null-assertion": true
     },
     "linterOptions": {
         "exclude": [
