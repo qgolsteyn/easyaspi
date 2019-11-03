@@ -580,6 +580,20 @@ Fetching the next math problem
 </details>
 
 
+<details>
+<summary>
+Learning Algorithm for students
+</summary>
+
+### Learning Algorithm Idea
+
+  - First of all, we need a new field, "prerequisites" in ProblemTemplates. "prerequisites" will be an array of type prereq which will have two fields, "problem-type" and "difficulty"
+  
+  - For the algorithm, we first look at student's mastery array. More specifically, we look at the student's curDifficultyPoints and difficulty for each problem-type
+  
+  - Second, we look at ProblemTemplates and figure out what problemtypes and difficulty level the student can have next based on the result from previous result and prereq fields. The problemtypes (that can be shown) missing in the mastery will have a curDifficultyPoints of 0. We sort it in increading order based on the curDifficultyPoints.
+  
+  - Finally, we show the problem with least curDifficultyPoints next
 
 ## Bibliography
 
