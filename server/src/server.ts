@@ -11,7 +11,7 @@ const DEFAULT_PORT = 8080;
 
 const PORT = process.env.PORT || DEFAULT_PORT;
 
-const log = debug('server');
+const log = debug('pi:server');
 
 export const initializeApp = async () => {
     const app = express();

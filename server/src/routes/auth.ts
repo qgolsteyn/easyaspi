@@ -2,7 +2,7 @@ import Boom from 'boom';
 import express from 'express';
 
 import { authService, userService } from '@server/services';
-import { enhanceHandler } from '@server/utils/routeEnhancer';
+import { CODE_CREATED, enhanceHandler } from '@server/utils/routeEnhancer';
 
 export const initializeAuthRoutes = (app: express.Application) => {
     const usersRouter = express.Router();
@@ -25,24 +25,30 @@ export const initializeAuthRoutes = (app: express.Application) => {
 
             let user = await userService.getUserFromId(String(authInfo.sub));
             if (user) {
-                return {
-                    accessToken: authService.generateAccessToken({
-                        registered: user.registered,
-                        sub: user.id,
-                        userType: user.userType,
-                        virtualClassroomUid: user.virtualClassroomUid,
-                    }),
-                    user,
-                };
+                return [
+                    CODE_CREATED,
+                    {
+                        accessToken: authService.generateAccessToken({
+                            registered: user.registered,
+                            sub: user.id,
+                            userType: user.userType,
+                            virtualClassroomUid: user.virtualClassroomUid,
+                        }),
+                        user,
+                    },
+                ];
             } else {
                 user = await userService.createUserFromAuthInfo(authInfo);
-                return {
-                    accessToken: authService.generateAccessToken({
-                        registered: false,
-                        sub: String(authInfo.sub),
-                    }),
-                    user,
-                };
+                return [
+                    CODE_CREATED,
+                    {
+                        accessToken: authService.generateAccessToken({
+                            registered: false,
+                            sub: String(authInfo.sub),
+                        }),
+                        user,
+                    },
+                ];
             }
         }),
     );

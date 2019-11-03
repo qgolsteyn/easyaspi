@@ -2,7 +2,11 @@ import Boom from 'boom';
 import express from 'express';
 
 import { authService, classroomService, userService } from '@server/services';
-import { enhanceHandler } from '@server/utils/routeEnhancer';
+import {
+    CODE_CREATED,
+    CODE_OK,
+    enhanceHandler,
+} from '@server/utils/routeEnhancer';
 
 import { IClassroom, IUser, UserType } from '@shared/index';
 
@@ -17,7 +21,7 @@ export const initializeUsersRoutes = (app: express.Application) => {
         '/current',
         enhanceHandler({ protect: true })(async (_, user) => {
             if (user) {
-                return user;
+                return [CODE_OK, user];
             } else {
                 throw Boom.internal('User should not be undefined');
             }
@@ -65,7 +69,7 @@ export const initializeUsersRoutes = (app: express.Application) => {
                 sub: user.id,
             });
 
-            return { accessToken, user };
+            return [CODE_CREATED, { accessToken, user }];
         }),
     );
 };

@@ -72,7 +72,6 @@ export function* getUser(): Generator<unknown, IUser | undefined, {}> {
             return undefined;
         }
     } else {
-        alert('Error : could not retrieve the access token');
         return undefined;
     }
 }
