@@ -23,7 +23,7 @@ try {
         stdio: [process.stdin, process.stdout, process.stderr],
     });
 } catch (e) {
-    console.warn('Unable to update submodule');
+    log('Unable to update submodule');
 }
 
 log('Copy secrets');
