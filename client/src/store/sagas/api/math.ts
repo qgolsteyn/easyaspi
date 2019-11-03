@@ -6,15 +6,15 @@ import { getAccessToken } from './auth';
 import { baseApi } from './url';
 
 export function* getNextMathProblem(): Generator<
-    any,
+    unknown,
     IProblem | undefined,
-    any
+    {}
 > {
     const accessToken = (yield call(getAccessToken)) as string | undefined;
 
     if (accessToken) {
         try {
-            const problem = (yield call(
+            const problem = ((yield call(
                 [baseApi, baseApi.get],
                 `/math/nextProblem`,
                 {
@@ -22,7 +22,7 @@ export function* getNextMathProblem(): Generator<
                         Authorization: `Bearer ${accessToken}`,
                     },
                 },
-            )).data;
+            )) as { data: IProblem }).data;
             return problem;
         } catch (e) {
             alert(e);

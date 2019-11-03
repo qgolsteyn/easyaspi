@@ -11,7 +11,7 @@ const INTERNAL_CODE = 500;
 const log = debug('route');
 const err = debug('route:error');
 
-const formatBoomPayload = (error: Boom<any>) => {
+const formatBoomPayload = (error: Boom<unknown>) => {
     return {
         ...error.output.payload,
         ...(error.data ? {} : { data: error.data }),

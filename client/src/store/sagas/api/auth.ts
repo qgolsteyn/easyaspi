@@ -1,13 +1,14 @@
+import { IClassroom, IUser } from '@shared/index';
 import { AsyncStorage } from 'react-native';
 import { call, put, select } from 'redux-saga/effects';
-
-import { IClassroom, IUser } from '@shared/index';
 import { actions, selectors } from '../../reducers';
 import { baseApi } from './url';
 
 const ACCESS_TOKEN_KEY = 'access_token';
 
-export function* auth(idToken: string): Generator<any, IUser | undefined, any> {
+export function* auth(
+    idToken: string,
+): Generator<unknown, IUser | undefined, { data: {} }> {
     try {
         const { accessToken, user } = (yield call(
             [baseApi, baseApi.post],
@@ -27,12 +28,12 @@ export function* auth(idToken: string): Generator<any, IUser | undefined, any> {
 export function* register(
     user: IUser,
     classroom: IClassroom,
-): Generator<any, IUser | undefined, any> {
+): Generator<unknown, IUser | undefined, unknown> {
     const accessToken = (yield call(getAccessToken)) as string | undefined;
 
     if (accessToken) {
         try {
-            const result = (yield call(
+            const result = ((yield call(
                 [baseApi, baseApi.post],
                 '/user/register',
                 {
@@ -42,7 +43,7 @@ export function* register(
                 {
                     headers: { Authorization: `Bearer ${accessToken}` },
                 },
-            )).data as { accessToken: string; user: IUser };
+            )) as { data: { accessToken: string; user: IUser } }).data;
 
             yield call(saveAccessToken, result.accessToken);
 
@@ -52,33 +53,35 @@ export function* register(
             return undefined;
         }
     } else {
+        alert('Error : could not retrieve the access token');
         return undefined;
     }
 }
 
-export function* getUser(): Generator<any, IUser | undefined, any> {
+export function* getUser(): Generator<unknown, IUser | undefined, {}> {
     const accessToken = (yield call(getAccessToken)) as string | undefined;
 
     if (accessToken) {
         try {
-            const { user } = (yield call(
-                [baseApi, baseApi.get],
-                '/user/current',
-                {
-                    headers: { Authorization: `Bearer ${accessToken}` },
-                },
-            )).data as { user: IUser };
+            const user = ((yield call([baseApi, baseApi.get], '/user/current', {
+                headers: { Authorization: `Bearer ${accessToken}` },
+            })) as { data: IUser }).data;
             return user;
         } catch (e) {
             alert(e);
             return undefined;
         }
     } else {
+        alert('Error : could not retrieve the access token');
         return undefined;
     }
 }
 
-export function* getAccessToken(): Generator<any, string | undefined, any> {
+export function* getAccessToken(): Generator<
+    unknown,
+    string | undefined,
+    string
+> {
     const accessToken = (yield select(selectors.user.getAccessToken)) as string;
 
     if (accessToken) {
@@ -90,7 +93,9 @@ export function* getAccessToken(): Generator<any, string | undefined, any> {
     }
 }
 
-function* saveAccessToken(accessToken: string): Generator<any, void, any> {
+function* saveAccessToken(
+    accessToken: string,
+): Generator<unknown, void, unknown> {
     yield put(actions.user.setAccessToken(accessToken));
     yield call(AsyncStorage.setItem, ACCESS_TOKEN_KEY, accessToken);
 }

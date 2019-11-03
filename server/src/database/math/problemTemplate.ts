@@ -35,5 +35,5 @@ const ProblemTemplateSchema = new mongoose.Schema({
 // there is a way to change this but its not a priority
 export const ProblemTemplateModel = mongoose.model<IProblemTemplateSchema>(
     'problemtemplate',
-    ProblemTemplateSchema
+    ProblemTemplateSchema,
 );

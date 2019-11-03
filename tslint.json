@@ -14,7 +14,8 @@
             "member-variable-declaration"
         ],
         "no-magic-numbers": [true, -1, 0, 1],
-        "no-non-null-assertion": true
+        "no-non-null-assertion": true,
+        "no-any": true
     },
     "linterOptions": {
         "exclude": [

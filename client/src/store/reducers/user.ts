@@ -49,21 +49,21 @@ export const userActions = {
             name: string,
             userType: UserType,
             classroomName: string,
-            classroomPasscode: string
-        ) => resolve({ name, userType, classroomName, classroomPasscode })
+            classroomPasscode: string,
+        ) => resolve({ name, userType, classroomName, classroomPasscode }),
     ),
     setAccessToken: createAction(
         'auth_accessToken',
-        resolve => (accessToken: string) => resolve({ accessToken })
+        resolve => (accessToken: string) => resolve({ accessToken }),
     ),
     signout: createAction('user_signout'),
     updateAuthStage: createAction(
         'auth_update_auth_stage',
-        resolve => (authStage: AuthStage) => resolve({ authStage })
+        resolve => (authStage: AuthStage) => resolve({ authStage }),
     ),
     updateUserInfo: createAction(
         'auth_update',
-        resolve => (user: Partial<IUser>) => resolve({ user })
+        resolve => (user: Partial<IUser>) => resolve({ user }),
     ),
 };
 

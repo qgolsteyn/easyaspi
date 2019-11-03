@@ -3,12 +3,12 @@ import { ActionType, createAction } from 'typesafe-actions';
 
 export const navActions = {
     goToScreen: createAction('nav_GOTO_SCREEN', resolve => (screen: string) =>
-        resolve({ screen })
+        resolve({ screen }),
     ),
     setNavigator: createAction(
         'nav_SET_NAVIGATOR',
         resolve => (navigator: NavigationContainerComponent) =>
-            resolve({ navigator })
+            resolve({ navigator }),
     ),
 };
 

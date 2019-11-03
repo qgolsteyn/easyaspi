@@ -28,5 +28,5 @@ const GeneratedProblemsSchema = new mongoose.Schema({
 
 export const GeneratedProblemsModel = mongoose.model<IGeneratedProblemsSchema>(
     'generatedproblems',
-    GeneratedProblemsSchema
+    GeneratedProblemsSchema,
 );

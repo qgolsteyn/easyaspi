@@ -1,14 +1,12 @@
-import { call, put, select, takeLatest } from 'redux-saga/effects';
-
 import { IProblem } from '@shared/index';
-
+import { call, put, select, takeLatest } from 'redux-saga/effects';
 import { actions, selectors } from '../reducers';
 import * as api from './api';
 
-export function* initProblem(): Generator<any, void, any> {
+export function* initProblem(): Generator<unknown, void, unknown> {
     yield takeLatest(actions.nav.goToScreen, function*(
         action: ReturnType<typeof actions.nav.goToScreen>,
-    ): Generator<any, void, any> {
+    ): Generator<unknown, void, unknown> {
         if (action.payload.screen === 'Problem') {
             const loading =
                 (yield select(selectors.problems.getCurrentProblem)) === null;
@@ -22,17 +20,17 @@ export function* initProblem(): Generator<any, void, any> {
     yield takeLatest(actions.problems.fetchNextProblem, fetchNextProblem);
 }
 
-function* solveCurrentProblem(): Generator<any, void, any> {
+function* solveCurrentProblem(): Generator<unknown, void, unknown> {
     yield put(actions.problems.fetchNextProblem());
 }
 
-function* fetchNextProblem(): Generator<any, void, any> {
-    const currentProblem = yield select(
+function* fetchNextProblem(): Generator<unknown, void, unknown> {
+    const currentProblem = (yield select(
         selectors.problems.getCurrentProblemNumber,
-    );
-    const numberOfProblems = yield select(
+    )) as number;
+    const numberOfProblems = (yield select(
         selectors.problems.getNumberOfProblems,
-    );
+    )) as number;
 
     if (currentProblem >= numberOfProblems) {
         return;
@@ -50,6 +48,6 @@ function* fetchNextProblem(): Generator<any, void, any> {
             }),
         );
     } else {
-        alert('Error');
+        alert('Error : could not retrieve the problem from the server');
     }
 }

@@ -48,7 +48,7 @@ export const StudentSignUpScreen = () => {
     }));
 
     const onValue = (key: 'name' | 'classroomName' | 'classroomPasscode') => (
-        val: string
+        val: string,
     ) => {
         setState({
             ...state,
@@ -67,8 +67,8 @@ export const StudentSignUpScreen = () => {
                     state.values.name || '',
                     UserType.STUDENT,
                     state.values.classroomName || '',
-                    state.values.classroomPasscode || ''
-                )
+                    state.values.classroomPasscode || '',
+                ),
             );
         }
     };

@@ -11,7 +11,7 @@ import { initUser } from './user';
 
 const NAV_SETUP_TIME = 100;
 
-export function* initializeSagas(): Generator<any, void, any> {
+export function* initializeSagas(): Generator<unknown, void, unknown> {
     yield spawn(initNav);
 
     yield delay(NAV_SETUP_TIME);
