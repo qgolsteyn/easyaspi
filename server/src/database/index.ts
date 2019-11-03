@@ -1,7 +1,7 @@
 import debug from 'debug';
 import mongoose from 'mongoose';
 
-const log = debug('db');
+const log = debug('pi:db');
 
 export {
     GeneratedProblemsModel as GeneratedProblemModel,

@@ -4,8 +4,8 @@ import express from 'express';
 import { authService, classroomService, userService } from '@server/services';
 import {
     CODE_CREATED,
-    enhanceHandler,
     CODE_OK,
+    enhanceHandler,
 } from '@server/utils/routeEnhancer';
 
 import { IClassroom, IUser, UserType } from '@shared/index';

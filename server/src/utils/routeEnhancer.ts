@@ -9,8 +9,8 @@ export const CODE_OK = 200;
 export const CODE_CREATED = 201;
 export const CODE_INTERNAL = 500;
 
-const log = debug('route');
-const err = debug('route:error');
+const log = debug('pi:route');
+const err = debug('pi:route:error');
 
 const formatBoomPayload = (error: Boom<unknown>) => {
     return {
