@@ -107,7 +107,7 @@ function* navigateToNextScreen(user: IUser) {
         yield put(actions.user.updateAuthStage(AuthStage.AUTH_REGISTER));
         yield put(actions.nav.goToScreen('UserSelection'));
     }else{
-        alert("Error: Invalid user type")
+        alert('Error: Invalid user type')
     }
 }
 
