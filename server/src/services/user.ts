@@ -38,7 +38,7 @@ export const updateUser = async (userPayload: IUser) => {
             user.virtualClassroomUid = userPayload.virtualClassroomUid;
         } else {
             throw Boom.badRequest(
-                'Cannot change virtual classroom id once it is set'
+                'Cannot change virtual classroom id once it is set',
             );
         }
 
@@ -76,14 +76,14 @@ export const getUserFromId = async (id: string) => {
 export const sendPushNotification = async (
     id: string,
     classroomId: string,
-    message: IMessage
+    message: IMessage,
 ) => {
     const user = await getUserFromId(id);
 
     if (user) {
         if (user.virtualClassroomUid !== classroomId) {
             throw Boom.badRequest(
-                'Not allowed to send push notification to this user'
+                'Not allowed to send push notification to this user',
             );
         } else if (!user.pushToken || !user.registered) {
             throw Boom.badRequest('User is not registered');

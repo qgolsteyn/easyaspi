@@ -23,7 +23,7 @@ export const StudentHome = () => {
     return (
         <Background backgroundColor={colors.bg} backgroundImage={bg1}>
             <View style={styles.wrapper}>
-                <StyledHeader>Hi {userName.split(' ')[0]}!</StyledHeader>
+                <StyledHeader>Hi {userName}!</StyledHeader>
                 <StyledCard title="Today's math exercises">
                     <View style={styles.typeList}>
                         <Icon backgroundColor={colors.inputs} text="+" />

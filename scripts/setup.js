@@ -7,10 +7,10 @@ const { resolve } = require('path');
 const { execSync } = require('child_process');
 const { platform } = require('os');
 
-osType = platform();
+const osType = platform();
 
 let options = {};
-if (osType == 'win32') {
+if (osType === 'win32') {
     options.shell = true;
 }
 
@@ -35,7 +35,9 @@ execSync('yarn setup', {
 console.log('Copy app.yaml');
 const move = (file, dest) => {
     fs.copyFile(resolve(__dirname, file), resolve(__dirname, dest), err => {
-        if (err) throw err;
+        if (err) {
+            throw err;
+        }
         console.log(`${file} was moved to destination`);
     });
 };

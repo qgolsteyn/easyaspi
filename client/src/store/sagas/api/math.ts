@@ -1,9 +1,15 @@
 import { call } from 'redux-saga/effects';
 
+import { IProblem } from '@client/store/reducers/problems';
+
 import { getAccessToken } from './auth';
 import { baseApi } from './url';
 
-export function* getNextMathProblem() {
+export function* getNextMathProblem(): Generator<
+    any,
+    IProblem | undefined,
+    any
+> {
     const accessToken = (yield call(getAccessToken)) as string | undefined;
 
     if (accessToken) {
@@ -15,7 +21,7 @@ export function* getNextMathProblem() {
                     headers: {
                         Authorization: `Bearer ${accessToken}`,
                     },
-                }
+                },
             )).data;
             return problem;
         } catch (e) {

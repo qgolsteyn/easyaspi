@@ -14,7 +14,7 @@ import { actions, selectors } from '../reducers';
 import { AuthStage } from '../reducers/user';
 import * as api from './api';
 
-export default function* init() {
+export function* initUser(): Generator<any, void, any> {
     yield call(silentLogin);
 
     yield takeLatest(actions.user.login, login);
@@ -25,7 +25,7 @@ export default function* init() {
  * Fetches the user profile using the saved access token
  * Fails if no access token is saved
  */
-function* silentLogin() {
+function* silentLogin(): Generator<any, void, any> {
     yield put(actions.user.updateAuthStage(AuthStage.AUTH_CHECK_LOADING));
 
     const user = (yield call(api.auth.getUser)) as IUser | undefined;
@@ -41,7 +41,7 @@ function* silentLogin() {
  * Performs a login with the server using the Google id token
  * Retrieves an access token and the user profile
  */
-function* login() {
+function* login(): Generator<any, void, any> {
     yield put(actions.user.updateAuthStage(AuthStage.AUTH_CHECK_LOADING));
 
     // Show Google sign in screen to user
@@ -63,13 +63,15 @@ function* login() {
 /**
  * Registers the user with server (updates user info)
  */
-function* register(action: ReturnType<typeof actions.user.register>) {
+function* register(
+    action: ReturnType<typeof actions.user.register>,
+): Generator<any, void, any> {
     const { name, userType, classroomName, classroomPasscode } = action.payload;
 
     yield put(actions.user.updateAuthStage(AuthStage.AUTH_CHECK_LOADING));
 
     const { id, email } = (yield select(
-        selectors.user.getCurrentUser
+        selectors.user.getCurrentUser,
     )) as IUser;
 
     const user: IUser = {
@@ -99,7 +101,7 @@ function* register(action: ReturnType<typeof actions.user.register>) {
 /**
  * Uses the user object to determine the next screen to display
  */
-function* navigateToNextScreen(user: IUser) {
+function* navigateToNextScreen(user: IUser): Generator<any, void, any> {
     yield put(actions.user.updateUserInfo(user));
     if (user.registered && user.userType === UserType.STUDENT) {
         yield put(actions.user.updateAuthStage(AuthStage.AUTH_LOGGED_IN));
@@ -113,7 +115,11 @@ function* navigateToNextScreen(user: IUser) {
     }
 }
 
-function* loginWithGoogle() {
+function* loginWithGoogle(): Generator<
+    any,
+    Google.GoogleUser | undefined,
+    any
+> {
     try {
         const result = yield call(Google.logInAsync, {
             androidClientId: ANDROID_CLIENT_ID,

@@ -1,8 +1,15 @@
 import Boom from 'boom';
+import debug from 'debug';
 import express from 'express';
 
 import { verifyAccessToken } from '@server/services/auth';
 import { IUser } from '@shared/index';
+
+const SUCCESS_CODE = 200;
+const INTERNAL_CODE = 500;
+
+const log = debug('route');
+const err = debug('route:error');
 
 const formatBoomPayload = (error: Boom<any>) => {
     return {
@@ -12,19 +19,19 @@ const formatBoomPayload = (error: Boom<any>) => {
 };
 
 export const enhanceHandler = (options: { protect: boolean }) => (
-    handler: (req: express.Request, user?: IUser) => Promise<object>
+    handler: (req: express.Request, user?: IUser) => Promise<object>,
 ) => {
     return async (
         req: express.Request,
         res: express.Response,
-        next: express.NextFunction
+        next: express.NextFunction,
     ) => {
         try {
             let user;
 
-            console.log(req.url);
-            console.log(JSON.stringify(req.headers, null, 2));
-            console.log(JSON.stringify(req.body, null, 2));
+            log(`${req.method} ${req.url}`);
+            log(req.headers);
+            log(req.body);
 
             if (options.protect) {
                 const token = req.headers.authorization
@@ -40,19 +47,19 @@ export const enhanceHandler = (options: { protect: boolean }) => (
 
             const response = await handler(req, user);
 
-            console.log(JSON.stringify(response, null, 2));
+            log(response);
 
-            res.status(200);
+            res.status(SUCCESS_CODE);
             res.json(response);
         } catch (error) {
             if (Boom.isBoom(error)) {
-                console.error(error);
+                err(error);
                 res.status(error.output.statusCode).send(
-                    formatBoomPayload(error)
+                    formatBoomPayload(error),
                 );
             } else {
-                console.error(error);
-                res.status(500).send(Boom.internal().output.payload);
+                err(error);
+                res.status(INTERNAL_CODE).send(Boom.internal().output.payload);
             }
         }
         next();

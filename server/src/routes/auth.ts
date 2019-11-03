@@ -44,6 +44,6 @@ export const initializeAuthRoutes = (app: express.Application) => {
                     user,
                 };
             }
-        })
+        }),
     );
 };

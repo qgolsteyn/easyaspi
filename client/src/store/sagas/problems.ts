@@ -5,8 +5,10 @@ import { IProblem } from '@shared/index';
 import { actions, selectors } from '../reducers';
 import * as api from './api';
 
-export default function* init() {
-    yield takeLatest(actions.nav.goToScreen, function*(action) {
+export function* initProblem(): Generator<any, void, any> {
+    yield takeLatest(actions.nav.goToScreen, function*(
+        action: ReturnType<typeof actions.nav.goToScreen>,
+    ): Generator<any, void, any> {
         if (action.payload.screen === 'Problem') {
             const loading =
                 (yield select(selectors.problems.getCurrentProblem)) === null;
@@ -20,16 +22,16 @@ export default function* init() {
     yield takeLatest(actions.problems.fetchNextProblem, fetchNextProblem);
 }
 
-function* solveCurrentProblem() {
+function* solveCurrentProblem(): Generator<any, void, any> {
     yield put(actions.problems.fetchNextProblem());
 }
 
-function* fetchNextProblem() {
+function* fetchNextProblem(): Generator<any, void, any> {
     const currentProblem = yield select(
-        selectors.problems.getCurrentProblemNumber
+        selectors.problems.getCurrentProblemNumber,
     );
     const numberOfProblems = yield select(
-        selectors.problems.getNumberOfProblems
+        selectors.problems.getNumberOfProblems,
     );
 
     if (currentProblem >= numberOfProblems) {
@@ -45,7 +47,7 @@ function* fetchNextProblem() {
                 prompt: 'What is',
                 solution: problem.solution[0],
                 solved: false,
-            })
+            }),
         );
     } else {
         alert('Error');

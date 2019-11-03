@@ -22,7 +22,7 @@ export interface IAccessTokenPayload {
 export const verifyAuthToken = async (token: string) => {
     try {
         await axios.get(
-            'https://oauth2.googleapis.com/tokeninfo?id_token=' + token
+            'https://oauth2.googleapis.com/tokeninfo?id_token=' + token,
         );
     } catch (e) {
         throw Boom.badRequest('Token is invalid');
@@ -40,7 +40,7 @@ export const getAuthTokenInfo = (token: string) => {
 };
 
 export const generateAccessToken = (
-    accessTokenPayload: IAccessTokenPayload
+    accessTokenPayload: IAccessTokenPayload,
 ) => {
     if (process.env.ACCESS_TOKEN_SECRET === undefined) {
         throw Boom.internal('Need to have a defined access token');
@@ -57,7 +57,7 @@ export const verifyAccessToken = async (accessToken: string) => {
     try {
         const accessTokenPayload = verify(
             accessToken,
-            process.env.ACCESS_TOKEN_SECRET
+            process.env.ACCESS_TOKEN_SECRET,
         ) as IAccessTokenPayload;
 
         const user = await getUserFromId(accessTokenPayload.sub);

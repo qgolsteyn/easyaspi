@@ -21,7 +21,7 @@ export const initializeUsersRoutes = (app: express.Application) => {
             } else {
                 throw Boom.internal('User should not be undefined');
             }
-        })
+        }),
     );
 
     /**
@@ -43,7 +43,7 @@ export const initializeUsersRoutes = (app: express.Application) => {
                 case UserType.STUDENT:
                     {
                         await classroomService.authenticateToClassroom(
-                            classroom
+                            classroom,
                         );
                     }
                     break;
@@ -66,6 +66,6 @@ export const initializeUsersRoutes = (app: express.Application) => {
             });
 
             return { accessToken, user };
-        })
+        }),
     );
 };
