@@ -6,6 +6,7 @@ const fs = require('fs');
 const { resolve } = require('path');
 const { execSync } = require('child_process');
 const { platform } = require('os');
+const log = require('debug')('setup');
 
 const osType = platform();
 
@@ -15,7 +16,7 @@ if (osType === 'win32') {
 }
 
 try {
-    console.log('Update submodules');
+    log('Update submodules');
     execSync('git submodule init && git submodule update --remote', {
         ...options,
         cwd: resolve(__dirname, '.'),
@@ -25,20 +26,20 @@ try {
     console.warn('Unable to update submodule');
 }
 
-console.log('Copy secrets');
+log('Copy secrets');
 execSync('yarn setup', {
     ...options,
     cwd: resolve(__dirname, '../secrets'),
     stdio: [process.stdin, process.stdout, process.stderr],
 });
 
-console.log('Copy app.yaml');
+log('Copy app.yaml');
 const move = (file, dest) => {
     fs.copyFile(resolve(__dirname, file), resolve(__dirname, dest), err => {
         if (err) {
             throw err;
         }
-        console.log(`${file} was moved to destination`);
+        log(`${file} was moved to destination`);
     });
 };
 
@@ -49,13 +50,13 @@ try {
         stdio: [process.stdin, process.stdout, process.stderr],
     });
 } catch (e) {
-    console.warn('Directory dist already exists');
+    log('Directory dist already exists');
 }
 
 move('../server/app.yaml', '../server/dist/app.yaml');
 
 // Get server dependencies
-console.log('Get dependencies for server');
+log('Get dependencies for server');
 execSync('yarn', {
     ...options,
     cwd: resolve(__dirname, '../server'),
@@ -63,7 +64,7 @@ execSync('yarn', {
 });
 
 // Get client dependencies
-console.log('Get dependencies for client');
+log('Get dependencies for client');
 execSync('yarn', {
     ...options,
     cwd: resolve(__dirname, '../client'),
