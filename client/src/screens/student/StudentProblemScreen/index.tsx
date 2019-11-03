@@ -13,13 +13,15 @@ import { ProblemFragment } from './ProblemFragment';
 import bg1 from '../../../../assets/bg1.png';
 import { SolutionFragment } from './SolutionFragment';
 
+const UNSOLVED_PROBLEM_SCORE_REDUCTION = 0.5;
+
 export const StudentProblem = () => {
     const currentProblem = useSelector(selectors.problems.getCurrentProblem);
     const currentProblemNumber = useSelector(
-        selectors.problems.getCurrentProblemNumber
+        selectors.problems.getCurrentProblemNumber,
     );
     const numberOfProblems = useSelector(
-        selectors.problems.getNumberOfProblems
+        selectors.problems.getNumberOfProblems,
     );
     const isDone = currentProblemNumber > numberOfProblems;
 
@@ -38,8 +40,10 @@ export const StudentProblem = () => {
                             color="#FFF"
                             indeterminate={false}
                             progress={
-                                (currentProblemNumber -
-                                    (currentProblem.solved ? 0 : 0.5)) /
+                                (currentProblem.solved
+                                    ? currentProblemNumber
+                                    : currentProblemNumber -
+                                      UNSOLVED_PROBLEM_SCORE_REDUCTION) /
                                 numberOfProblems
                             }
                         />

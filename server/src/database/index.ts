@@ -1,4 +1,7 @@
+import debug from 'debug';
 import mongoose from 'mongoose';
+
+const log = debug('db');
 
 export {
     GeneratedProblemsModel as GeneratedProblemModel,
@@ -16,5 +19,8 @@ export const connectToDB = () => {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         })
-        .then(() => console.log('Db connected...'));
+        .then(() => log('Db connected...'))
+        .catch(() => {
+            throw new Error('Unable to connect to DB');
+        });
 };

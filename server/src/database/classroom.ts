@@ -20,5 +20,5 @@ const ClassroomSchema = new mongoose.Schema({
 // there is a way to change this but its not a priority
 export const ClassroomModel = mongoose.model<IClassroomSchema>(
     'classrooms',
-    ClassroomSchema
+    ClassroomSchema,
 );

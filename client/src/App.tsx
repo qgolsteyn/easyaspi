@@ -31,7 +31,7 @@ const AuthStack = createStackNavigator(
             screen: WelcomeScreen,
         },
     },
-    { initialRouteName: 'Welcome', transitionConfig: () => fromRight() }
+    { initialRouteName: 'Welcome', transitionConfig: () => fromRight() },
 );
 
 const StudentStack = createStackNavigator(
@@ -46,7 +46,7 @@ const StudentStack = createStackNavigator(
     {
         initialRouteName: 'StudentHome',
         transitionConfig: () => fromRight(),
-    }
+    },
 );
 
 const SwitchNavigator = createSwitchNavigator(
@@ -57,7 +57,7 @@ const SwitchNavigator = createSwitchNavigator(
     },
     {
         initialRouteName: 'Auth',
-    }
+    },
 );
 
 export const App = createAppContainer(SwitchNavigator);
