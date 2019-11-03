@@ -594,6 +594,8 @@ Learning Algorithm for students
   - Second, we look at ProblemTemplates and figure out what problemtypes and difficulty level the student can have next based on the result from previous result and prereq fields. The problemtypes (that can be shown) missing in the mastery will have a curDifficultyPoints of 0. We sort it in increading order based on the curDifficultyPoints.
   
   - Finally, we show the problem with least curDifficultyPoints next
+  
+</details>
 
 ## Bibliography
 
