@@ -5,8 +5,9 @@ import express from 'express';
 import { verifyAccessToken } from '@server/services/auth';
 import { IUser } from '@shared/index';
 
-const SUCCESS_CODE = 200;
-const INTERNAL_CODE = 500;
+export const CODE_OK = 200;
+export const CODE_CREATED = 201;
+export const CODE_INTERNAL = 500;
 
 const log = debug('route');
 const err = debug('route:error');
@@ -19,7 +20,7 @@ const formatBoomPayload = (error: Boom<unknown>) => {
 };
 
 export const enhanceHandler = (options: { protect: boolean }) => (
-    handler: (req: express.Request, user?: IUser) => Promise<object>,
+    handler: (req: express.Request, user?: IUser) => Promise<[number, object]>,
 ) => {
     return async (
         req: express.Request,
@@ -49,8 +50,8 @@ export const enhanceHandler = (options: { protect: boolean }) => (
 
             log(response);
 
-            res.status(SUCCESS_CODE);
-            res.json(response);
+            res.status(response[0]);
+            res.json(response[1]);
         } catch (error) {
             if (Boom.isBoom(error)) {
                 err(error);
@@ -59,7 +60,7 @@ export const enhanceHandler = (options: { protect: boolean }) => (
                 );
             } else {
                 err(error);
-                res.status(INTERNAL_CODE).send(Boom.internal().output.payload);
+                res.status(CODE_INTERNAL).send(Boom.internal().output.payload);
             }
         }
         next();
