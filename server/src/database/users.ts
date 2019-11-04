@@ -1,6 +1,7 @@
 import * as mongoose from 'mongoose';
 
 import { IUser } from '@shared/index';
+import { ObjectId } from 'bson';
 
 export type IUserSchema = IUser & mongoose.Document;
 
@@ -12,7 +13,7 @@ const UserSchema = new mongoose.Schema({
         required: true,
         type: String,
         unique: true,
-    },
+    },  
     name: {
         type: String,
     },
@@ -27,7 +28,7 @@ const UserSchema = new mongoose.Schema({
         type: String,
     },
     virtualClassroomUid: {
-        type: String,
+        type: ObjectId,
     },
 });
 
