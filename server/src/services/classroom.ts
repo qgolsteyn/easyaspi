@@ -1,8 +1,6 @@
 import Boom from 'boom';
 
 import { ClassroomModel } from '@server/database';
-import { cleanMongoDocument } from '@server/utils/mongo';
-
 import { IClassroom } from '@shared/index';
 
 export const createClassroom = async (classroomPayload: IClassroom) => {
@@ -11,9 +9,12 @@ export const createClassroom = async (classroomPayload: IClassroom) => {
         passcode: classroomPayload.passcode,
     });
 
-    await classroom.save();
-
-    return cleanMongoDocument(classroom) as IClassroom;
+    let newClassroom = await classroom.save();
+    if (newClassroom) {
+        return newClassroom;
+    } else {
+        throw Boom.badRequest("A classroom already exists with this given name and passcode");
+    }
 };
 
 export const authenticateToClassroom = async (classroomPayload: IClassroom) => {
@@ -22,7 +23,7 @@ export const authenticateToClassroom = async (classroomPayload: IClassroom) => {
     });
 
     if (classroom && classroom.passcode === classroomPayload.passcode) {
-        return true;
+        return classroom.id;
     } else {
         throw Boom.unauthorized('Invalid classroom name or passcode');
     }

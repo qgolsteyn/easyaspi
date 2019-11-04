@@ -9,6 +9,7 @@ import {
 } from '@server/utils/routeEnhancer';
 
 import { IClassroom, IUser, UserType } from '@shared/index';
+import { ClassroomModel } from '@server/database';
 
 export const initializeUsersRoutes = (app: express.Application) => {
     const usersRouter = express.Router();
@@ -43,27 +44,32 @@ export const initializeUsersRoutes = (app: express.Application) => {
                 throw Boom.badRequest('Invalid parameters');
             }
 
+            let classroomId;
             switch (user.userType) {
                 case UserType.STUDENT:
                     {
-                        await classroomService.authenticateToClassroom(
-                            classroom,
-                        );
+                        classroomId = await classroomService.authenticateToClassroom(classroom);
                     }
                     break;
                 case UserType.TEACHER:
                     {
-                        await classroomService.createClassroom(classroom);
+                        let newClassroom = await classroomService.createClassroom(classroom);
+                        classroomId = newClassroom.id;
                     }
                     break;
                 default:
                     throw Boom.badRequest('Invalid userType');
             }
 
-            user.virtualClassroomUid = classroom.name;
+            user.virtualClassroomUid = classroomId;
 
-            await userService.updateUser(user);
-
+            try {
+                await userService.updateUser(user);
+            } catch (e) {
+                ClassroomModel.findByIdAndDelete(classroomId);
+                throw e;
+            }
+            
             const accessToken = authService.generateAccessToken({
                 registered: user.registered,
                 sub: user.id,
