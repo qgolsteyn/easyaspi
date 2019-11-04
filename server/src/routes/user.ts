@@ -53,7 +53,7 @@ export const initializeUsersRoutes = (app: express.Application) => {
                     break;
                 case UserType.TEACHER:
                     {
-                        let newClassroom = await classroomService.createClassroom(classroom);
+                        const newClassroom = await classroomService.createClassroom(classroom);
                         classroomId = newClassroom.id;
                     }
                     break;

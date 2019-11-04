@@ -9,11 +9,11 @@ export const createClassroom = async (classroomPayload: IClassroom) => {
         passcode: classroomPayload.passcode,
     });
 
-    let newClassroom = await classroom.save();
+    const newClassroom = await classroom.save();
     if (newClassroom) {
         return newClassroom;
     } else {
-        throw Boom.badRequest("A classroom already exists with this given name and passcode");
+        throw Boom.badRequest('A classroom already exists with this given name and passcode');
     }
 };
 
