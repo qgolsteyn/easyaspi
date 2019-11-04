@@ -1,6 +1,7 @@
 import Boom from 'boom';
 import express from 'express';
 
+import { ClassroomModel } from '@server/database';
 import { authService, classroomService, userService } from '@server/services';
 import {
     CODE_CREATED,
@@ -9,7 +10,6 @@ import {
 } from '@server/utils/routeEnhancer';
 
 import { IClassroom, IUser, UserType } from '@shared/index';
-import { ClassroomModel } from '@server/database';
 
 export const initializeUsersRoutes = (app: express.Application) => {
     const usersRouter = express.Router();
