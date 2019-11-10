@@ -587,13 +587,24 @@ Learning Algorithm for students
 
 ### Learning Algorithm Idea
 
-  - First of all, we need a new field, "prerequisites" in ProblemTemplates. "prerequisites" will be an array of type prereq which will have two fields, "problem-type" and "difficulty"
+First, we need to make some changes to our collections for making necessaty data available to the learning algorithm
+
+  - First of all, classrooms need 2 additonal fields.
+      - ProblemsForToday (Which can be set by teacher if he/she wants the students to do some specific type of problems)
+      - ProblemsForGrades (e.g. g1 -> addition, subtraction, g2 -> addition, subtraction, multiplication)
   
-  - For the algorithm, we first look at student's mastery array. More specifically, we look at the student's curDifficultyPoints and difficulty for each problem-type
+  - Second, Masteries will also have 3 additional fields
+      - CurrentGrade (Which will tell what is the current grade level for the student)
+      - Attempted (#of times attempted the problemType) for each problemTypes in progress
+      - classRoomId (Id of the classroom for the student)
   
-  - Second, we look at ProblemTemplates and figure out what problemtypes and difficulty level the student can have next based on the result from previous result and prereq fields. The problemtypes (that can be shown) missing in the mastery will have a curDifficultyPoints of 0. We sort it in increading order based on the curDifficultyPoints.
+  - Third, Mastery's progress should have all the problem types the student can do next. It can be easily figured out from the students currentGrade from Mastery + ProblemsForGrades from the classroom. 
   
-  - Finally, we show the problem with least curDifficultyPoints next
+Now comes the learning algorithm
+
+  - First, we look at mastery's progress array for each type of problem and check if they are all in the same difficulty level. If not, we pick the lowest difficulty level ones. If they are all in the same difficulty level, we pick all of them. The picked problem types will be saved in an array, "NextProblemTypes". Then we sort them in an increasding order using the formula (CurDifPoints + attempted)
+  
+  - Second, we check problemsForToday from the classroom and if problemsForToday is not empty, we show the first matching of NextProblemTypes and problemsForToday (With difficulty currentGrade from mastery). If problemsForToday is empty, we show the first entry in NextProblemTypes with difficulty currentGrade. If entries in problemsForToday do not match any entries of NextProblemTypes, we show the first entry in NextProblemTypes with difficulty currentGrade.
   
 </details>
 
