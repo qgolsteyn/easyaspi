@@ -13,6 +13,12 @@ import { colors } from '@client/constants/colors';
 import { actions, selectors } from '@client/store';
 
 import bg1 from '../../../assets/bg1.png';
+import { StyledIconButton } from '@client/components/ButtonCard';
+import {
+    faPaperPlane,
+    faTrophy,
+    faInfo,
+} from '@fortawesome/free-solid-svg-icons';
 
 export const StudentHome = () => {
     const dispatch = useDispatch();
@@ -24,7 +30,10 @@ export const StudentHome = () => {
         <Background backgroundColor={colors.bg} backgroundImage={bg1}>
             <View style={styles.wrapper}>
                 <StyledHeader>Hi {userName}!</StyledHeader>
-                <StyledCard title="Today's math exercises">
+                <StyledCard
+                    title="Today's math exercises"
+                    style={{ marginBottom: 16 }}
+                >
                     <View style={styles.typeList}>
                         <Icon backgroundColor={colors.inputs} text="+" />
                         <Icon backgroundColor={colors.inputs} text="-" />
@@ -36,6 +45,22 @@ export const StudentHome = () => {
                         }
                     />
                 </StyledCard>
+                <StyledIconButton
+                    text="Classroom chat"
+                    icon={faPaperPlane}
+                    styles={{ marginBottom: 8 }}
+                />
+                <StyledIconButton
+                    text="Achievements"
+                    icon={faTrophy}
+                    styleAttr="secondary"
+                    styles={{ marginBottom: 8 }}
+                />
+                <StyledIconButton
+                    text="Get more help"
+                    icon={faInfo}
+                    styleAttr="success"
+                />
             </View>
         </Background>
     );

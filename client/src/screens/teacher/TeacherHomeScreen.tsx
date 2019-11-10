@@ -1,9 +1,10 @@
+import { faUsers, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { Background } from '@client/components/Background';
-import { StyledCard } from '@client/components/Card';
+import { StyledIconButton } from '@client/components/ButtonCard';
 import { StyledHeader } from '@client/components/Header';
 
 import { colors } from '@client/constants/colors';
@@ -20,7 +21,16 @@ export const TeacherHome = () => {
         <Background backgroundColor={colors.bg} backgroundImage={bg1}>
             <View style={styles.wrapper}>
                 <StyledHeader>Hi {userName}!</StyledHeader>
-                <StyledCard title="Loading..." />
+                <StyledIconButton
+                    icon={faPaperPlane}
+                    text="Classroom chat"
+                    styles={{ marginBottom: 8 }}
+                />
+                <StyledIconButton
+                    icon={faUsers}
+                    text="Students list"
+                    styleAttr="secondary"
+                />
             </View>
         </Background>
     );

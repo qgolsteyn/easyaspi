@@ -83,7 +83,7 @@ export function* getAccessToken(): Generator<
 > {
     const accessToken = (yield select(selectors.user.getAccessToken)) as string;
 
-    if (accessToken) {
+    if (!accessToken) {
         return (yield call(AsyncStorage.getItem, ACCESS_TOKEN_KEY)) as
             | string
             | undefined;
