@@ -3,11 +3,12 @@ import { StyleSheet, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { Background } from '@client/components/Background';
+import { StyledBackHeader } from '@client/components/BackHeader';
 import { StyledCard } from '@client/components/Card';
-
 import { colors } from '@client/constants/colors';
-
 import { selectors } from '@client/store';
+
+import { StudentItem } from './StudentItem';
 
 import bg1 from '../../../../assets/bg1.png';
 
@@ -17,9 +18,14 @@ export const StudentList = () => {
     return (
         <Background backgroundColor={colors.bg} backgroundImage={bg1}>
             <View style={styles.wrapper}>
-                <StyledCard title="Students" style={{ marginBottom: 16 }}>
+                <StyledBackHeader title="Student List" />
+                <StyledCard style={styles.studentList}>
                     {students.map(student => (
-                        <Text key={student.id}>{student.name}</Text>
+                        <StudentItem
+                            key={student.id}
+                            id={student.id}
+                            name={student.name || ''}
+                        />
                     ))}
                 </StyledCard>
             </View>
@@ -41,5 +47,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         paddingVertical: 16,
         width: '100%',
+    },
+    studentList: {
+        flex: 1,
     },
 });

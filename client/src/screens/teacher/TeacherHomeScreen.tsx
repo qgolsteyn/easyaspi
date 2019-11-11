@@ -1,40 +1,56 @@
-import { faUsers, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import {
+    faUsers,
+    faCalculator,
+    faChartLine,
+    faCog,
+} from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { Background } from '@client/components/Background';
-import { StyledIconButton } from '@client/components/ButtonCard';
+import { StyledCardButton } from '@client/components/ButtonCard';
+import { StyledCard } from '@client/components/Card';
 import { StyledHeader } from '@client/components/Header';
 
 import { colors } from '@client/constants/colors';
 
 import { actions, selectors } from '@client/store';
 
-import bg1 from '../../../assets/bg1.png';
-
 export const TeacherHome = () => {
     const dispatch = useDispatch();
 
-    const currentUser = useSelector(selectors.user.getCurrentUser);
-    const userName = (currentUser ? currentUser.name : '') || '';
+    const name = useSelector(selectors.user.getUserFirstName) || '';
 
     return (
-        <Background backgroundColor={colors.bg} backgroundImage={bg1}>
+        <Background backgroundColor={colors.bg}>
             <View style={styles.wrapper}>
-                <StyledHeader>Hi {userName}!</StyledHeader>
-                <StyledIconButton
-                    icon={faPaperPlane}
-                    text="Classroom chat"
+                <StyledHeader>Hi {name}!</StyledHeader>
+                <StyledCard style={styles.card} />
+                <StyledCardButton
+                    icon={faCalculator}
+                    text="Set Daily Problems"
                     styles={{ marginBottom: 8 }}
                 />
-                <StyledIconButton
+                <StyledCardButton
                     icon={faUsers}
-                    text="Students list"
+                    text="Student List"
                     styleAttr="secondary"
+                    styles={{ marginBottom: 8 }}
                     onPress={() =>
                         dispatch(actions.nav.goToScreen('StudentsList'))
                     }
+                />
+                <StyledCardButton
+                    icon={faChartLine}
+                    text="View Classroom Progress"
+                    styleAttr="success"
+                    styles={{ marginBottom: 8 }}
+                />
+                <StyledCardButton
+                    icon={faCog}
+                    text="Settings"
+                    styleAttr="error"
                 />
             </View>
         </Background>
@@ -47,12 +63,15 @@ TeacherHome.navigationOptions = () => ({
 
 const styles = StyleSheet.create({
     wrapper: {
-        alignItems: 'center',
         display: 'flex',
         flexDirection: 'column',
         height: '100%',
-        justifyContent: 'flex-start',
+        paddingBottom: 16,
         paddingHorizontal: 16,
         width: '100%',
+    },
+    card: {
+        flex: 1,
+        marginBottom: 16,
     },
 });

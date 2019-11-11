@@ -1,9 +1,15 @@
+import {
+    faPaperPlane,
+    faTrophy,
+    faInfo,
+} from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Background } from '@client/components/Background';
 import { StyledButton } from '@client/components/Button';
+import { StyledCardButton } from '@client/components/ButtonCard';
 import { StyledCard } from '@client/components/Card';
 import { StyledHeader } from '@client/components/Header';
 import { Icon } from '@client/components/Icon';
@@ -12,27 +18,18 @@ import { colors } from '@client/constants/colors';
 
 import { actions, selectors } from '@client/store';
 
-import bg1 from '../../../assets/bg1.png';
-import { StyledIconButton } from '@client/components/ButtonCard';
-import {
-    faPaperPlane,
-    faTrophy,
-    faInfo,
-} from '@fortawesome/free-solid-svg-icons';
-
 export const StudentHome = () => {
     const dispatch = useDispatch();
 
-    const currentUser = useSelector(selectors.user.getCurrentUser);
-    const userName = (currentUser ? currentUser.name : '') || '';
+    const name = useSelector(selectors.user.getUserFirstName) || '';
 
     return (
-        <Background backgroundColor={colors.bg} backgroundImage={bg1}>
+        <Background backgroundColor={colors.bg}>
             <View style={styles.wrapper}>
-                <StyledHeader>Hi {userName}!</StyledHeader>
+                <StyledHeader>Hi {name}!</StyledHeader>
                 <StyledCard
                     title="Today's math exercises"
-                    style={{ marginBottom: 16 }}
+                    style={{ flex: 1, marginBottom: 16 }}
                 >
                     <View style={styles.typeList}>
                         <Icon backgroundColor={colors.inputs} text="+" />
@@ -45,18 +42,18 @@ export const StudentHome = () => {
                         }
                     />
                 </StyledCard>
-                <StyledIconButton
+                <StyledCardButton
                     text="Classroom chat"
                     icon={faPaperPlane}
                     styles={{ marginBottom: 8 }}
                 />
-                <StyledIconButton
+                <StyledCardButton
                     text="Achievements"
                     icon={faTrophy}
                     styleAttr="secondary"
                     styles={{ marginBottom: 8 }}
                 />
-                <StyledIconButton
+                <StyledCardButton
                     text="Get more help"
                     icon={faInfo}
                     styleAttr="success"
@@ -84,11 +81,10 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     wrapper: {
-        alignItems: 'center',
         display: 'flex',
         flexDirection: 'column',
         height: '100%',
-        justifyContent: 'flex-start',
+        paddingBottom: 16,
         paddingHorizontal: 16,
         width: '100%',
     },

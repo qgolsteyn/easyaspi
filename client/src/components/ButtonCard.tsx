@@ -14,7 +14,7 @@ interface IStyledIconButton {
     onPress?: () => void;
 }
 
-export const StyledIconButton = (props: IStyledIconButton) => {
+export const StyledCardButton = (props: IStyledIconButton) => {
     const [focus, setFocus] = React.useState(false);
 
     const color = React.useMemo(() => {

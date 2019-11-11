@@ -14,7 +14,7 @@ interface IStyledButton {
     loading?: boolean;
     text: string;
     styles?: object;
-    styleAttr?: 'primary' | 'secondary' | 'success' | 'error';
+    styleAttr?: 'primary' | 'secondary' | 'success' | 'error' | 'transparent';
     onPress?: () => void;
 }
 
@@ -29,6 +29,8 @@ export const StyledButton = (props: IStyledButton) => {
                 return colors.error;
             case 'success':
                 return colors.success;
+            case 'transparent':
+                return 'transparent';
             default:
                 return colors.primary;
         }
@@ -42,6 +44,8 @@ export const StyledButton = (props: IStyledButton) => {
                 return colors.errorDark;
             case 'success':
                 return colors.successDark;
+            case 'transparent':
+                return 'transparent';
             default:
                 return colors.primaryDark;
         }
