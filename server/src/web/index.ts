@@ -1,8 +1,8 @@
 import express from 'express';
 
-import { initializeAuthRoutes } from './auth';
-import { initializeMathRoutes } from './math';
-import { initializeUsersRoutes } from './user';
+import { initializeAuthRoutes } from './authRoutes';
+import { initializeMathRoutes } from './mathRoutes';
+import { initializeUsersRoutes } from './userRoutes';
 
 export const initializeRoutes = (app: express.Application) => {
     initializeMathRoutes(app);

@@ -1,8 +1,8 @@
 import Boom from 'boom';
 import express from 'express';
 
-import { authService, userService } from '@server/services';
-import { enhanceHandler, HTTP_CODE } from '@server/utils/routeEnhancer';
+import { authService, userService } from '@server/service';
+import { enhanceHandler, HTTP_CODE } from '@server/service/utils/routeEnhancer';
 
 export const initializeAuthRoutes = (app: express.Application) => {
     const usersRouter = express.Router();

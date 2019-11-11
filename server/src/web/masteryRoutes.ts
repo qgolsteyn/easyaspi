@@ -1,8 +1,8 @@
 import { ObjectId } from 'bson';
 import express from 'express';
 import { convertStringToProblemType, ProblemType } from '@shared/models/problem';
-import { updateMastery } from '@server/services/mastery/problemResult';
-import { enhanceHandler, HTTP_CODE } from '@server/utils/routeEnhancer';
+import { updateMastery } from '@server/service/masteryService';
+import { enhanceHandler, HTTP_CODE } from '@server/service/utils/routeEnhancer';
 import Boom from 'boom';
 
 export const initializeMasteryRoutes = (app: express.Application) => {

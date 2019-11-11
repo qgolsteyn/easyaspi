@@ -2,7 +2,7 @@ import Boom from 'boom';
 import debug from 'debug';
 import express from 'express';
 
-import { verifyAccessToken } from '@server/services/auth';
+import { verifyAccessToken } from '@server/service/authService';
 import { IUser } from '@shared/index';
 
 export const HTTP_CODE = {

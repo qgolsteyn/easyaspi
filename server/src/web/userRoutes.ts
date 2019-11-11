@@ -2,8 +2,8 @@ import Boom from 'boom';
 import express from 'express';
 
 import { ClassroomModel } from '@server/database';
-import { authService, classroomService, userService } from '@server/services';
-import { enhanceHandler, HTTP_CODE } from '@server/utils/routeEnhancer';
+import { authService, classroomService, userService } from '@server/service';
+import { enhanceHandler, HTTP_CODE } from '@server/service/utils/routeEnhancer';
 
 import { IClassroom, IUser, UserType } from '@shared/index';
 

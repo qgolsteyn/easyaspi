@@ -5,7 +5,7 @@ import boom from 'express-boom';
 import { Server } from 'http';
 
 import { connectToDB } from './database';
-import { initializeRoutes } from './routes';
+import { initializeRoutes } from './web';
 
 const DEFAULT_PORT = 8080;
 
