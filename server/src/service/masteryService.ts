@@ -1,5 +1,5 @@
 import { ObjectId } from "bson";
-import { ProblemType, ProblemDifficulty } from "@shared/models/problem";
+import { ProblemType, ProblemDifficulty, getPreviousProblemDifficulty, getNextProblemDifficulty } from "@shared/models/problem";
 import { MasteryModel, IProblemTypeProgress } from "@server/database/mastery";
 
 const PointsThresholdPerDifficulty = 9;
@@ -91,38 +91,5 @@ function createProblemTypeProgression(isSuccess: boolean): IProblemTypeProgress 
             totalPoints: 0
         };
         return newProblemTypeProgress;
-    }
-}
-
-// Could not figure out if it's possible to create sequential enums
-function getNextProblemDifficulty(difficulty:ProblemDifficulty):ProblemDifficulty {
-    switch(difficulty) {
-        case ProblemDifficulty.G1E: return ProblemDifficulty.G1M;
-        case ProblemDifficulty.G1M: return ProblemDifficulty.G1H2E;
-        case ProblemDifficulty.G1H2E: return ProblemDifficulty.G2M;
-        case ProblemDifficulty.G2M: return ProblemDifficulty.G2H3E;
-        case ProblemDifficulty.G2H3E: return ProblemDifficulty.G3M;
-        case ProblemDifficulty.G3M: return ProblemDifficulty.G3H4E;
-        case ProblemDifficulty.G3H4E: return ProblemDifficulty.G4M;
-        case ProblemDifficulty.G4M: return ProblemDifficulty.G4H5E;
-        case ProblemDifficulty.G4H5E: return ProblemDifficulty.G5M;
-        case ProblemDifficulty.G5M: return ProblemDifficulty.G5H;
-        case ProblemDifficulty.G5H: return ProblemDifficulty.G5H;
-    }
-}
-
-function getPreviousProblemDifficulty(difficulty:ProblemDifficulty):ProblemDifficulty {
-    switch(difficulty) {
-        case ProblemDifficulty.G5H: return ProblemDifficulty.G5M;
-        case ProblemDifficulty.G5M: return ProblemDifficulty.G4H5E;
-        case ProblemDifficulty.G4H5E: return ProblemDifficulty.G4M;
-        case ProblemDifficulty.G4M: return ProblemDifficulty.G3H4E;
-        case ProblemDifficulty.G3H4E: return ProblemDifficulty.G3M;
-        case ProblemDifficulty.G3M: return ProblemDifficulty.G2H3E;
-        case ProblemDifficulty.G2H3E: return ProblemDifficulty.G2M;
-        case ProblemDifficulty.G2M: return ProblemDifficulty.G1H2E;
-        case ProblemDifficulty.G1H2E: return ProblemDifficulty.G1M;
-        case ProblemDifficulty.G1M: return ProblemDifficulty.G1E;
-        case ProblemDifficulty.G1E: return ProblemDifficulty.G1E;
     }
 }
