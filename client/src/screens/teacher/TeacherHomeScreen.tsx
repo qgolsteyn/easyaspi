@@ -1,7 +1,7 @@
 import { faUsers, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { Background } from '@client/components/Background';
 import { StyledIconButton } from '@client/components/ButtonCard';
@@ -9,11 +9,13 @@ import { StyledHeader } from '@client/components/Header';
 
 import { colors } from '@client/constants/colors';
 
-import { selectors } from '@client/store';
+import { actions, selectors } from '@client/store';
 
 import bg1 from '../../../assets/bg1.png';
 
 export const TeacherHome = () => {
+    const dispatch = useDispatch();
+
     const currentUser = useSelector(selectors.user.getCurrentUser);
     const userName = (currentUser ? currentUser.name : '') || '';
 
@@ -30,6 +32,9 @@ export const TeacherHome = () => {
                     icon={faUsers}
                     text="Students list"
                     styleAttr="secondary"
+                    onPress={() =>
+                        dispatch(actions.nav.goToScreen('StudentsList'))
+                    }
                 />
             </View>
         </Background>
@@ -41,12 +46,6 @@ TeacherHome.navigationOptions = () => ({
 });
 
 const styles = StyleSheet.create({
-    studentItem: {
-        display: 'flex',
-        flexDirection: 'row',
-        marginTop: 8,
-        width: '100%',
-    },
     wrapper: {
         alignItems: 'center',
         display: 'flex',

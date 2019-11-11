@@ -15,6 +15,7 @@ import { StudentHome } from './screens/student/StudentHomeScreen';
 import { StudentProblem } from './screens/student/StudentProblemScreen';
 
 import { TeacherHome } from './screens/teacher/TeacherHomeScreen';
+import { StudentList } from './screens/teacher/StudentListScreen';
 
 const AuthStack = createStackNavigator(
     {
@@ -49,11 +50,26 @@ const StudentStack = createStackNavigator(
     },
 );
 
+const TeacherStack = createStackNavigator(
+    {
+        StudentsList: {
+            screen: StudentList,
+        },
+        TeacherHome: {
+            screen: TeacherHome,
+        },
+    },
+    {
+        initialRouteName: 'TeacherHome',
+        transitionConfig: () => fromRight(),
+    },
+);
+
 const SwitchNavigator = createSwitchNavigator(
     {
         Auth: AuthStack,
         Student: StudentStack,
-        Teacher: TeacherHome,
+        Teacher: TeacherStack,
     },
     {
         initialRouteName: 'Auth',

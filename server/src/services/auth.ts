@@ -66,8 +66,6 @@ export const verifyAccessToken = async (accessToken: string) => {
             user &&
             user.id === accessTokenPayload.sub &&
             user.registered === accessTokenPayload.registered &&
-            user.virtualClassroomUid ===
-                accessTokenPayload.virtualClassroomUid &&
             user.userType === accessTokenPayload.userType
         ) {
             return user;
