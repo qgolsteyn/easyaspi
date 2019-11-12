@@ -5,7 +5,8 @@ import { ProblemType, ProblemDifficulty } from '@shared/models/problem';
 export interface IProblemTypeProgress extends mongoose.Types.Subdocument {
     difficulty: ProblemDifficulty,
     currentDifficultyPoints: number,
-    totalPoints: number
+    totalPoints: number,
+    attempted: number,
 }
 
 export const ProblemTypeSchema = new mongoose.Schema({
@@ -37,7 +38,7 @@ export const MasterySchema = new mongoose.Schema({
         type: Map,
         of: ProblemTypeSchema,
         required: true,
-    },
+    }
 });
 
 export const MasteryModel = mongoose.model<IMastery>('masteries', MasterySchema);
