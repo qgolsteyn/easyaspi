@@ -24,11 +24,11 @@ export const ProblemTypeSchema = new mongoose.Schema({
         required: true,
         type: ProblemDifficulty
     },
-    currentDifficultyPoints: {
+    currentDifficultyAttempts: {
         required: true,
         type: Number
     },
-    currentDifficultyAttempts: {
+    currentDifficultyPoints: {
         required: true,
         type: Number
     },
@@ -44,15 +44,15 @@ export interface IMastery extends mongoose.Document {
 }
 
 export const MasterySchema = new mongoose.Schema({
-    studentId: {
-        required: true,
-        type: String
-    },
     progress: {
         of: ProblemTypeSchema,
         required: true,
         type: Map
     },
+    studentId: {
+        required: true,
+        type: String
+    }
 });
 
 export const MasteryModel = mongoose.model<IMastery>('masteries', MasterySchema);

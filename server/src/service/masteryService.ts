@@ -1,21 +1,21 @@
-import { ProblemType, ProblemDifficulty, getPreviousProblemDifficulty, getNextProblemDifficulty } from "@shared/models/problem";
-import { MasteryModel, IProblemTypeProgress } from "@server/database/mastery";
+import { IProblemTypeProgress, MasteryModel,  } from '@server/database/mastery';
+import { getNextProblemDifficulty, getPreviousProblemDifficulty, ProblemDifficulty, ProblemType } from '@shared/models/problem';
 
 const PointsThresholdPerDifficulty = 9;
 
 export async function updateMastery(
-    studentId: string, 
+    student_id: string, 
     problemType: ProblemType, 
     isSuccess: boolean
 ) {
     let mastery = await MasteryModel.findOne({
-        studentId: studentId
+        studentId: student_id
     })
 
     if (!mastery) {
-        let newMastery = new MasteryModel({
-            studentId: studentId,
-            progress: new Map<string, IProblemTypeProgress>()
+        const newMastery = new MasteryModel({
+            progress: new Map<string, IProblemTypeProgress>(),
+            studentId: student_id
         });
         mastery = await newMastery.save();
     }
@@ -84,21 +84,21 @@ function updateProblemTypeProgression(isSuccess: boolean, problemTypeProgress: I
  * @param isSuccess whether or not the user got the question correct or not
  */
 function createProblemTypeProgression(isSuccess: boolean): IProblemTypeProgress {
+    let newProblemTypeProgress;
     if (isSuccess) {
-        const newProblemTypeProgress = <IProblemTypeProgress> {
+        newProblemTypeProgress = {
             difficulty: ProblemDifficulty.G1E,
+            currentDifficultyAttempts: 1,
             currentDifficultyPoints: 1,
-            currentDifficultyAttempts: 1,
             totalPoints: 1
-        };
-        return newProblemTypeProgress;
+        } as IProblemTypeProgress; 
     } else {
-        const newProblemTypeProgress = <IProblemTypeProgress> {
+        newProblemTypeProgress = {
             difficulty: ProblemDifficulty.G1E,
-            currentDifficultyPoints: 0,
             currentDifficultyAttempts: 1,
+            currentDifficultyPoints: 0,
             totalPoints: 0
-        };
-        return newProblemTypeProgress;
+        } as IProblemTypeProgress;
     }
+    return newProblemTypeProgress;
 }
