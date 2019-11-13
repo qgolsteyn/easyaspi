@@ -1,11 +1,10 @@
-import { ObjectId } from "bson";
 import { ProblemType, ProblemDifficulty, getPreviousProblemDifficulty, getNextProblemDifficulty } from "@shared/models/problem";
 import { MasteryModel, IProblemTypeProgress } from "@server/database/mastery";
 
 const PointsThresholdPerDifficulty = 9;
 
 export async function updateMastery(
-    studentId: ObjectId, 
+    studentId: string, 
     problemType: ProblemType, 
     isSuccess: boolean
 ) {
@@ -23,6 +22,7 @@ export async function updateMastery(
 
     let problemTypeProgress = mastery.progress.get(problemType);
     if (typeof problemTypeProgress === 'undefined') {
+        // if app is working correclty, this case should never happen
         const newProblemTypeProgress = createProblemTypeProgression(isSuccess);
         mastery.progress.set(problemType, newProblemTypeProgress);
     } else {
@@ -47,23 +47,30 @@ function updateProblemTypeProgression(isSuccess: boolean, problemTypeProgress: I
             && problemTypeProgress.difficulty !== ProblemDifficulty.G5H) {
 
             problemTypeProgress.currentDifficultyPoints = 0;
+            problemTypeProgress.currentDifficultyAttempts = 0;
             problemTypeProgress.totalPoints++;
             problemTypeProgress.difficulty = getNextProblemDifficulty(problemTypeProgress.difficulty);
         } else {
             problemTypeProgress.currentDifficultyPoints++;
+            problemTypeProgress.currentDifficultyAttempts++;
             problemTypeProgress.totalPoints++;
         }
     } else {
-        // if user has lost all their points in the current difficulty and has not reached the lowest
-        // difficulty, kick them down to the previous difficulty
-        if (problemTypeProgress.currentDifficultyPoints === 0
-            && problemTypeProgress.difficulty !== ProblemDifficulty.G1E) {
-
-            problemTypeProgress.currentDifficultyPoints = PointsThresholdPerDifficulty;
-            problemTypeProgress.totalPoints--;
-            problemTypeProgress.difficulty = getPreviousProblemDifficulty(problemTypeProgress.difficulty);
+        if (problemTypeProgress.currentDifficultyPoints === 0) {
+            // if user has lost all their points in the current difficulty and has not reached the lowest
+            // difficulty, kick them down to the previous difficulty
+            if (problemTypeProgress.difficulty !== ProblemDifficulty.G1E) {
+                problemTypeProgress.currentDifficultyPoints = PointsThresholdPerDifficulty;
+                problemTypeProgress.currentDifficultyAttempts = 0;
+                problemTypeProgress.totalPoints--;
+                problemTypeProgress.difficulty = getPreviousProblemDifficulty(problemTypeProgress.difficulty);
+            } else {
+                // if student is at 0 points and is in g1e, only attempts is updated
+                problemTypeProgress.currentDifficultyAttempts++;
+            }
         } else {
             problemTypeProgress.currentDifficultyPoints--;
+            problemTypeProgress.currentDifficultyAttempts++;
             problemTypeProgress.totalPoints--;
         }
     }
@@ -81,6 +88,7 @@ function createProblemTypeProgression(isSuccess: boolean): IProblemTypeProgress 
         const newProblemTypeProgress = <IProblemTypeProgress> {
             difficulty: ProblemDifficulty.G1E,
             currentDifficultyPoints: 1,
+            currentDifficultyAttempts: 1,
             totalPoints: 1
         };
         return newProblemTypeProgress;
@@ -88,6 +96,7 @@ function createProblemTypeProgression(isSuccess: boolean): IProblemTypeProgress 
         const newProblemTypeProgress = <IProblemTypeProgress> {
             difficulty: ProblemDifficulty.G1E,
             currentDifficultyPoints: 0,
+            currentDifficultyAttempts: 1,
             totalPoints: 0
         };
         return newProblemTypeProgress;
