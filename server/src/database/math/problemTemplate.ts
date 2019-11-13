@@ -1,10 +1,9 @@
 import * as mongoose from 'mongoose';
 
-import { ProblemArchetype, ProblemType } from '@shared/index';
+import { ProblemType } from '@shared/index';
 import { IArithmeticDifficulty } from './arithmeticDifficulty';
 
 export interface IProblemTemplate {
-    problemArchetype: ProblemArchetype;
     problemType: ProblemType;
     operators: string[];
     difficultyMap: Map<string, IArithmeticDifficulty>;
@@ -20,10 +19,6 @@ const ProblemTemplateSchema = new mongoose.Schema({
     operators: {
         required: true,
         type: Array,
-    },
-    problemArchetype: {
-        required: true,
-        type: String,
     },
     problemType: {
         required: true,
