@@ -3,15 +3,17 @@ import Boom from 'boom';
 import { IUser } from '@shared/index';
 import { ClassroomModel, MasteryModel } from '@server/database';
 
-
 /*
  * Learning Algorithm method
  * @params: UserPayload: IUser
  * @returns: An object with the next problem type and difficulty
  */
 export const nextProblemTypeAndDifficulty = async (userPayload: IUser) => {
-    if(userPayload.userType.toString().toLowerCase() !== 'student')
-        throw Boom.badRequest('can not get nextProblem for teacher');
+    if (!userPayload)
+        throw Boom.badRequest('Parameter userPayload to the method nextProblemTypeAndDifficulty can not be empty');
+
+    if(userPayload.userType !== 'student')
+        throw Boom.badRequest('UserType must be student');
 
     if(!userPayload.virtualClassroomUid)
         throw Boom.badData('virtualClassroomUid can not be null');
@@ -61,7 +63,7 @@ const findPossibleNextProblemTypes = (studentId: string) => {
 
     // find minimum difficulty
     for (const item of problemTypes){
-        let difficulty = progress.item.difficulty;
+        let difficulty = progress[item].difficulty;
         if(map.indexOf(difficulty) < map.indexOf(minDifficulty))
             minDifficulty = difficulty;
     }
@@ -88,5 +90,9 @@ const findPossibleNextProblemTypes = (studentId: string) => {
 
 const getProblemsForClass = (virtualClassroomUid: string) => {
     const classroom = ClassroomModel.findById(virtualClassroomUid);
+
+    if(!classroom)
+        throw Boom.notFound(`classroom not found with id ${virtualClassroomUid}`);
+
     return classroom.problemsForToday;
 };
