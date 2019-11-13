@@ -2,6 +2,7 @@ import Boom from 'boom';
 
 import { IUser } from '@shared/index';
 import { ClassroomModel, MasteryModel } from '@server/database';
+import { convertStringToProblemType } from '@shared/models/problem';
 
 /*
  * Learning Algorithm method
@@ -21,12 +22,12 @@ export const nextProblemTypeAndDifficulty = async (userPayload: IUser) => {
     if(!userPayload.id)
         throw Boom.badData('user id can not be null');
 
-    let nextProblemTypes = findPossibleNextProblemTypes(userPayload.id);
+    let nextProblemTypes = await findPossibleNextProblemTypes(userPayload.id);
 
     // last element of nextProblemTypes is the difficulty
     const difficulty = nextProblemTypes.pop();
 
-    const problemsForToday = getProblemsForClass(userPayload.virtualClassroomUid);
+    const problemsForToday = await getProblemsForClass(userPayload.virtualClassroomUid);
 
     // send the first matching between problemsForToday and nextProblemTypes
     if(problemsForToday.length !== 0){
@@ -43,8 +44,8 @@ export const nextProblemTypeAndDifficulty = async (userPayload: IUser) => {
 };
 
 
-const findPossibleNextProblemTypes = (studentId: string) => {
-    const mastery = MasteryModel.findById(studentId);
+const findPossibleNextProblemTypes = async (studentId: string) => {
+    const mastery = await MasteryModel.findById(studentId);
     if (!mastery)
         throw Boom.notFound('could not find mastery associated with the student id');
 
@@ -63,7 +64,14 @@ const findPossibleNextProblemTypes = (studentId: string) => {
 
     // find minimum difficulty
     for (const item of problemTypes){
-        let difficulty = progress[item].difficulty;
+        const problemType = convertStringToProblemType(item);
+        const progressForProblemType = progress.get(problemType);
+
+        if(typeof progressForProblemType === 'undefined')
+            throw Boom.badData('progress can not be undefined');
+
+        const difficulty = progressForProblemType.difficulty.toLowerCase();
+
         if(map.indexOf(difficulty) < map.indexOf(minDifficulty))
             minDifficulty = difficulty;
     }
@@ -72,15 +80,30 @@ const findPossibleNextProblemTypes = (studentId: string) => {
 
     // find all the problemTypes with minimum difficulty
     for (const item of problemTypes){
-        let difficulty = progress.item.difficulty;
+        const problemType = convertStringToProblemType(item);
+        const progressForProblemType = progress.get(problemType);
+
+        if(typeof progressForProblemType === 'undefined')
+            throw Boom.badData('progress can not be undefined');
+
+        const difficulty = progressForProblemType.difficulty;
         if(difficulty.toLowerCase() === minDifficulty.toLowerCase())
             nextProblemTypes.push(item);
     }
 
     // sort it in ascending order using the formula CurDifPoints + attempted
-    nextProblemTypes.sort((a,b) =>
-        (progress[a].currentDifficultyPoints + progress[a].attempted) -
-        (progress[b].currentDifficultyPoints + progress[b].attempted));
+    nextProblemTypes.sort((a,b) => {
+        const aProblemType = convertStringToProblemType(a);
+        const bProblemType = convertStringToProblemType(b);
+        const aProgress = progress.get(aProblemType);
+        const bProgress = progress.get(bProblemType);
+
+        if(typeof aProgress === 'undefined' || typeof bProgress === 'undefined')
+            throw Boom.badData('progress can not be undefined');
+
+        return (aProgress.currentDifficultyPoints + aProgress.currentDifficultyAttempts) -
+        (bProgress.currentDifficultyPoints + bProgress.currentDifficultyAttempts);
+    });
 
     // last element is the minDifficulty
     nextProblemTypes.push(minDifficulty);
@@ -88,8 +111,8 @@ const findPossibleNextProblemTypes = (studentId: string) => {
     return nextProblemTypes;
 };
 
-const getProblemsForClass = (virtualClassroomUid: string) => {
-    const classroom = ClassroomModel.findById(virtualClassroomUid);
+const getProblemsForClass = async (virtualClassroomUid: string) => {
+    const classroom = await ClassroomModel.findById(virtualClassroomUid);
 
     if(!classroom)
         throw Boom.notFound(`classroom not found with id ${virtualClassroomUid}`);

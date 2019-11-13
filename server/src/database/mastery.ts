@@ -6,7 +6,7 @@ export interface IProblemTypeProgress extends mongoose.Types.Subdocument {
     difficulty: ProblemDifficulty,
     currentDifficultyPoints: number,
     totalPoints: number,
-    attempted: number,
+    currentDifficultyAttempts: number,
 }
 
 export const ProblemTypeSchema = new mongoose.Schema({
