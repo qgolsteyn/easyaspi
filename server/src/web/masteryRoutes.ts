@@ -1,8 +1,8 @@
+import Boom from 'boom';
 import express from 'express';
-import { convertStringToProblemType, ProblemType } from '@shared/models/problem';
 import { updateMastery } from '@server/service/masteryService';
 import { enhanceHandler, HTTP_CODE } from '@server/service/utils/routeEnhancer';
-import Boom from 'boom';
+import { convertStringToProblemType, ProblemType } from '@shared/models/problem';
 
 export const initializeMasteryRoutes = (app: express.Application) => {
     const masteryRouter = express.Router();
@@ -21,7 +21,6 @@ export const initializeMasteryRoutes = (app: express.Application) => {
                         return [HTTP_CODE.NO_CONTENT, null];
                     }
                 } catch (e) {
-                    console.error(e);
                     throw Boom.internal();
                 }
             } else {

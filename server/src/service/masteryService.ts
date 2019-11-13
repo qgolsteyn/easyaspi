@@ -4,18 +4,18 @@ import { getNextProblemDifficulty, getPreviousProblemDifficulty, ProblemDifficul
 const PointsThresholdPerDifficulty = 9;
 
 export async function updateMastery(
-    student_id: string, 
+    studentIdent: string, 
     problemType: ProblemType, 
     isSuccess: boolean
-) {
+): Promise<void> {
     let mastery = await MasteryModel.findOne({
-        studentId: student_id
+        studentId: studentIdent
     })
 
     if (!mastery) {
         const newMastery = new MasteryModel({
             progress: new Map<string, IProblemTypeProgress>(),
-            studentId: student_id
+            studentId: studentIdent
         });
         mastery = await newMastery.save();
     }
@@ -87,16 +87,16 @@ function createProblemTypeProgression(isSuccess: boolean): IProblemTypeProgress 
     let newProblemTypeProgress;
     if (isSuccess) {
         newProblemTypeProgress = {
-            difficulty: ProblemDifficulty.G1E,
             currentDifficultyAttempts: 1,
             currentDifficultyPoints: 1,
+            difficulty: ProblemDifficulty.G1E,
             totalPoints: 1
         } as IProblemTypeProgress; 
     } else {
         newProblemTypeProgress = {
-            difficulty: ProblemDifficulty.G1E,
             currentDifficultyAttempts: 1,
             currentDifficultyPoints: 0,
+            difficulty: ProblemDifficulty.G1E,
             totalPoints: 0
         } as IProblemTypeProgress;
     }

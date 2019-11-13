@@ -1,9 +1,9 @@
 import express from 'express';
 
 import { initializeAuthRoutes } from './authRoutes';
+import { initializeMasteryRoutes } from './masteryRoutes';
 import { initializeMathRoutes } from './mathRoutes';
 import { initializeUsersRoutes } from './userRoutes';
-import { initializeMasteryRoutes } from './masteryRoutes';
 
 export const initializeRoutes = (app: express.Application) => {
     initializeMathRoutes(app);

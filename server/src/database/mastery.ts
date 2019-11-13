@@ -13,17 +13,13 @@ import * as mongoose from 'mongoose';
  * totalPoints - same as currentDifficultyPoints but never gets reset
  */
 export interface IProblemTypeProgress extends mongoose.Types.Subdocument {
-    difficulty: ProblemDifficulty,
-    currentDifficultyPoints: number,
     currentDifficultyAttempts: number,
+    currentDifficultyPoints: number,
+    difficulty: ProblemDifficulty,
     totalPoints: number
 }
 
 export const ProblemTypeSchema = new mongoose.Schema({
-    difficulty: {
-        required: true,
-        type: ProblemDifficulty
-    },
     currentDifficultyAttempts: {
         required: true,
         type: Number
@@ -32,6 +28,10 @@ export const ProblemTypeSchema = new mongoose.Schema({
         required: true,
         type: Number
     },
+    difficulty: {
+        required: true,
+        type: ProblemDifficulty
+    },
     totalPoints: {
         required: true,
         type: Number
@@ -39,8 +39,8 @@ export const ProblemTypeSchema = new mongoose.Schema({
 });
 
 export interface IMastery extends mongoose.Document {
-    studentId: string;
     progress: Map<ProblemType, IProblemTypeProgress>;
+    studentId: string;
 }
 
 export const MasterySchema = new mongoose.Schema({

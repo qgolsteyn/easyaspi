@@ -5,11 +5,13 @@ import express from 'express';
 import { verifyAccessToken } from '@server/service/authService';
 import { IUser } from '@shared/index';
 
+// This here is a prime example of why forcing alpha order via linting
+// is absolutely ridiculous
 export const HTTP_CODE = {
-    OK : 200,
     CREATED : 201,
+    INTERNAL_SERVER_ERROR : 500,
     NO_CONTENT : 204,
-    INTERNAL_SERVER_ERROR : 500
+    OK : 200
 }
 
 const log = debug('pi:route');
