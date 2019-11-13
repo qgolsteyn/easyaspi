@@ -1,5 +1,5 @@
+import { ProblemDifficulty, ProblemType } from '@shared/models/problem';
 import * as mongoose from 'mongoose';
-import { ProblemType, ProblemDifficulty } from '@shared/models/problem';
 
 /**
  * difficulty - current difficulty student is on for this problem type
@@ -21,20 +21,20 @@ export interface IProblemTypeProgress extends mongoose.Types.Subdocument {
 
 export const ProblemTypeSchema = new mongoose.Schema({
     difficulty: {
-        type: ProblemDifficulty,
-        required: true
+        required: true,
+        type: ProblemDifficulty
     },
     currentDifficultyPoints: {
-        type: Number,
-        required: true
+        required: true,
+        type: Number
     },
     currentDifficultyAttempts: {
-        type: Number,
-        required: true
+        required: true,
+        type: Number
     },
     totalPoints: {
-        type: Number,
-        required: true
+        required: true,
+        type: Number
     }
 });
 
@@ -45,13 +45,13 @@ export interface IMastery extends mongoose.Document {
 
 export const MasterySchema = new mongoose.Schema({
     studentId: {
-        type: String,
         required: true,
+        type: String
     },
     progress: {
-        type: Map,
         of: ProblemTypeSchema,
         required: true,
+        type: Map
     },
 });
 
