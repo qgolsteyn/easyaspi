@@ -2,12 +2,17 @@ import Boom from 'boom';
 import debug from 'debug';
 import express from 'express';
 
-import { verifyAccessToken } from '@server/services/auth';
+import { verifyAccessToken } from '@server/service/authService';
 import { IUser } from '@shared/index';
 
-export const CODE_OK = 200;
-export const CODE_CREATED = 201;
-export const CODE_INTERNAL = 500;
+// This here is a prime example of why forcing alpha order via linting
+// is absolutely ridiculous
+export const HTTP_CODE = {
+    CREATED: 201,
+    INTERNAL_SERVER_ERROR: 500,
+    NO_CONTENT: 204,
+    OK: 200,
+};
 
 const log = debug('pi:route');
 const err = debug('pi:route:error');
@@ -20,7 +25,10 @@ const formatBoomPayload = (error: Boom<unknown>) => {
 };
 
 export const enhanceHandler = (options: { protect: boolean }) => (
-    handler: (req: express.Request, user?: IUser) => Promise<[number, object]>,
+    handler: (
+        req: express.Request,
+        user?: IUser,
+    ) => Promise<[number, object | null]>,
 ) => {
     return async (
         req: express.Request,
@@ -51,7 +59,9 @@ export const enhanceHandler = (options: { protect: boolean }) => (
             log(response);
 
             res.status(response[0]);
-            res.json(response[1]);
+            if (response[1] !== null) {
+                res.json(response[1]);
+            }
         } catch (error) {
             if (Boom.isBoom(error)) {
                 err(error);
@@ -60,7 +70,9 @@ export const enhanceHandler = (options: { protect: boolean }) => (
                 );
             } else {
                 err(error);
-                res.status(CODE_INTERNAL).send(Boom.internal().output.payload);
+                res.status(HTTP_CODE.INTERNAL_SERVER_ERROR).send(
+                    Boom.internal().output.payload,
+                );
             }
         }
         next();

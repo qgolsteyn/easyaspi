@@ -49,7 +49,7 @@ const config = {
         }),
         new GeneratePackageJsonPlugin(
             distPackage,
-            path.resolve(__dirname, './package.json')
+            path.resolve(__dirname, './package.json'),
         ),
     ],
     externals: [
@@ -62,7 +62,7 @@ if (watch) {
     config.plugins.push(
         new WebpackShellPlugin({
             onBuildEnd: ['nodemon dist/index.js --watch dist'],
-        })
+        }),
     );
 }
 

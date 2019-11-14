@@ -27,20 +27,21 @@
 
 ## Project goals
 
-  - To offer a platform for students in Grade 1 to 5 to practice their math skills daily.
-  
-  - To offer a platform for teachers to track their students' progress and offer insights
-  on where additional support from the teacher is needed.
-###  Defining project success
+-   To offer a platform for students in Grade 1 to 5 to practice their math skills daily.
 
-  - Generate math problems of varying difficulty in 5 domain areas.
-  - Accurately determine the ability level of the student in those 5 domain areas.
-  - Provide recommendations for the teacher on which skills the student needs to improve in.
+-   To offer a platform for teachers to track their students' progress and offer insights
+    on where additional support from the teacher is needed.
+
+### Defining project success
+
+-   Generate math problems of varying difficulty in 5 domain areas.
+-   Accurately determine the ability level of the student in those 5 domain areas.
+-   Provide recommendations for the teacher on which skills the student needs to improve in.
 
 ### Additional requirements
 
-  - Must have a real-time aspect
-  - Must include third-party integration
+-   Must have a real-time aspect
+-   Must include third-party integration
 
 ## Scoping
 
@@ -129,17 +130,17 @@ She wants him to learn how to study, but she doesn't know where to start and is 
 
 #### Opportunity statements
 
-  - How might we make authenticating simple for students?
-  - How might we make creating a classroom simple for teachers?
-  - How might we provide enough math problems for students to practice on?
-  - How might we make sure that the problems are at the correct level of difficulty?
-  - How might we adapt the app to particular student's deficiencies?
-  - How can we inform students regarding their performance?
-  - How can we ensure that students remain engaged in the app ?
-  - How can we inform the teacher on the areas that students need more help?
-  - How can we inform the teacher on the students that are ahead/behind the rest of the class?
-  - How can we let the teacher influence the problems the students are working on?
-</details>
+-   How might we make authenticating simple for students?
+-   How might we make creating a classroom simple for teachers?
+-   How might we provide enough math problems for students to practice on?
+-   How might we make sure that the problems are at the correct level of difficulty?
+-   How might we adapt the app to particular student's deficiencies?
+-   How can we inform students regarding their performance?
+-   How can we ensure that students remain engaged in the app ?
+-   How can we inform the teacher on the areas that students need more help?
+-   How can we inform the teacher on the students that are ahead/behind the rest of the class?
+-   How can we let the teacher influence the problems the students are working on?
+    </details>
 
 <details>
 <summary>BC Math curriculum (1-5)</summary>
@@ -148,14 +149,14 @@ She wants him to learn how to study, but she doesn't know where to start and is 
 
 The BC math curriculum from grade 1 to 5 is focused on building mathematic literacy in the following areas:
 
-  - Counting, and number decomposition
-  - Fractions and decimals
-  - Patterns (repeating, increasing, decreasing)
-  - Addition, substraction, multiplication and division
-  - Financial literacy
-  - Equations with an unknown number
-  - Probability
-  - 2D shapes (describing them, perimeter)
+-   Counting, and number decomposition
+-   Fractions and decimals
+-   Patterns (repeating, increasing, decreasing)
+-   Addition, substraction, multiplication and division
+-   Financial literacy
+-   Equations with an unknown number
+-   Probability
+-   2D shapes (describing them, perimeter)
 
 Generally, those concepts remain in focus for each year level, with increased complexity. The curriculum is very precise
 regarding the scope of learning for each year level (eg. addition to 20 in Grade 1).
@@ -198,17 +199,17 @@ of a particular type will vary depending on the student's assigned category.
 
 Each rule of a particular problem type can be formulated as a set of controlled and derived variables.
 
-For example, for addition in Grade 1, students are expected to be able to add a "large" number with 
+For example, for addition in Grade 1, students are expected to be able to add a "large" number with
 a "small" number to values up to 9. This can be formulated as such, assuming an addition takes the form a + b = c.
 
 Controlled variables:
 
-  - `5 < c < 9`
-  - `0 < b < 3`
+-   `5 < c < 9`
+-   `0 < b < 3`
 
 Derived variables:
 
-  - `a = c - b`
+-   `a = c - b`
 
 Controlled variables have their domain specified, while derived variables are formulated as an equation consisting of
 controlled variables.
@@ -228,7 +229,7 @@ Depending on the student performance, we can adjust the category the student is 
 a good balance between giving problems that are not too difficult, and problems that are not too easy.
 
 Students score or loose points depending on whether they get problems right or wrong.
-Performance categories (eg. Grade 3 medium level) each allow students a score up to 10 points. 
+Performance categories (eg. Grade 3 medium level) each allow students a score up to 10 points.
 If a students exceeds these 10 points, they "graduate" to the next category (here, Grade 3 high level).
 If a students goes below zero point, they are demoted to the level below (here Grade 3 low level).
 
@@ -246,42 +247,47 @@ Fetching the next math problem
 
 ### Generating and Fetching Problems (take from Q8 of M2)
 
-  - MathProblemsDB with 2 collections: problemTemplates, generatedProblems
+-   MathProblemsDB with 2 collections: problemTemplates, generatedProblems
 
-  - Retrieve all templates of all problemTypes
+-   Retrieve all templates of all problemTypes
 
-  - Generate n problems for each difficulty of each problemType
-    
-  - Store genereated problems in generatedProblems collection
-    
-  - Call GET endpoint to retrieve user's next problem, will pull from this collection
-    
-  - Each user has an index for each problem type
-    
-  - UI calls POST endpoint to tell backend if user got question right or wrong
-    
-  - Update user's index, points and difficulty for this problem type based on the result
-    
-  - If GET endpoint returns the n-1th problem, trigger async generation to create another
+-   Generate n problems for each difficulty of each problemType
+
+-   Store genereated problems in generatedProblems collection
+
+-   Call GET endpoint to retrieve user's next problem, will pull from this collection
+
+-   Each user has an index for each problem type
+
+-   UI calls POST endpoint to tell backend if user got question right or wrong
+
+-   Update user's index, points and difficulty for this problem type based on the result
+
+-   If GET endpoint returns the n-1th problem, trigger async generation to create another
     n problems only for this difficulty tier
 
 #### API
 
 1.  `GET /math/nextProblem`
 
-    - Description:    Retrieves the next problem for a specific user
-    - URL:            http://localhost:3000/math/nextProblem
-    - Headers:        
-        ```json
+    -   Description: Retrieves the next problem for a specific user
+    -   URL: http://localhost:3000/math/nextProblem
+    -   Headers:
+
+        ````json
             {
                 studentId: ObjectId
             }
             ```
 
-    - Response:       
-        - `HTTP/1.1 200 OK`
+        ````
+
+    -   Response:
+
+        -   `HTTP/1.1 200 OK`
             Content-Type: application/json
-            ```json 
+
+            ```json
             {
                 "problemArchetype": "arithmetic",
                 "problemType": "addition",
@@ -290,28 +296,34 @@ Fetching the next math problem
                 "difficulty": "g1m"
             }
             ```
+
             if query not matched, empty json will be returned
 
-        - `HTTP/1.1 500 Internal Server Error`
-    
-    - Notes:          
-        *  "solution" is an array because we could support solution steps in the future
+        -   `HTTP/1.1 500 Internal Server Error`
+
+    -   Notes:
+        -   "solution" is an array because we could support solution steps in the future
 
 2.  `POST /users/student/result`
 
-    - Description:    Informs the backend whether the user got the previous question right or wrong
-    - URL:            http://localhost:3000/users/student/result
-    - Headers:        
-        ```json
+    -   Description: Informs the backend whether the user got the previous question right or wrong
+    -   URL: http://localhost:3000/users/student/result
+    -   Headers:
+
+        ````json
             {
                 userId: ObjectId
             }
             ```
 
-    - Response:       
-        - `HTTP/1.1 200 OK`
+        ````
+
+    -   Response:
+
+        -   `HTTP/1.1 200 OK`
             Content-Type: application/json
-            ```json 
+
+            ```json
             {
                 "problemArchetype": "arithmetic",
                 "problemType": "addition",
@@ -320,18 +332,20 @@ Fetching the next math problem
             }
             ```
 
-        - `HTTP/1.1 500 Internal Server Error`
+        -   `HTTP/1.1 500 Internal Server Error`
 
 3.  `GET /users/teacher/{teacherId}`
 
-    - Description:    Retrieves a teacher profile by their id
-    - URL:            http://localhost:3000/users/teacher/{teacherId}
-    - Headers:        N/A
+    -   Description: Retrieves a teacher profile by their id
+    -   URL: http://localhost:3000/users/teacher/{teacherId}
+    -   Headers: N/A
 
-    - Response:       
-        - `HTTP/1.1 200 OK`
-          Content-Type: application/json
-            ```json 
+    -   Response:
+
+        -   `HTTP/1.1 200 OK`
+            Content-Type: application/json
+
+            ```json
             {
                 "name": "Obi-wan Kenobi",
                 "email": "jedi@gmail.com",
@@ -339,23 +353,26 @@ Fetching the next math problem
             }
             ```
 
-        - `HTTP/1.1 404 Not Found`
-            *  when teacherId does not
+        -   `HTTP/1.1 404 Not Found`
 
-        - `HTTP/1.1 500 Internal Server Error`
+            -   when teacherId does not
+
+        -   `HTTP/1.1 500 Internal Server Error`
 
 4.  `POST /users/teacher`
 
-    - Description:    Creates a new Teacher user
-    - URL:            http://localhost:3000/users/teacher
-    - Headers:        
+    -   Description: Creates a new Teacher user
+    -   URL: http://localhost:3000/users/teacher
+    -   Headers:
+
         ```json
         {
             Content-Type: application/json
         }
         ```
-    
-    - Request Body:
+
+    -   Request Body:
+
         ```json
         {
             "name": "Obi-wan Kenobi",
@@ -363,27 +380,31 @@ Fetching the next math problem
         }
         ```
 
-    - Response:       
-        - `HTTP/1.1 201 Created`
-          Location: /user/teacher/5d946f761c9d440000d525ff
+    -   Response:
 
-        - `HTTP/1.1 400 Bad Request`
-            *  when either name or email is empty or blank
+        -   `HTTP/1.1 201 Created`
+            Location: /user/teacher/5d946f761c9d440000d525ff
 
-        - `HTTP/1.1 500 Internal Server Error`
+        -   `HTTP/1.1 400 Bad Request`
+
+            -   when either name or email is empty or blank
+
+        -   `HTTP/1.1 500 Internal Server Error`
 
 5.  `PUT /users/teacher/{teacherId}`
 
-    - Description:    Updates an existing Teacher user
-    - URL:            http://localhost:3000/users/teacher/{teacherId}
-    - Headers:        
+    -   Description: Updates an existing Teacher user
+    -   URL: http://localhost:3000/users/teacher/{teacherId}
+    -   Headers:
+
         ```json
         {
             Content-Type: application/json
         }
         ```
-    
-    - Request Body:
+
+    -   Request Body:
+
         ```json
         {
             "name": "Master Yoda",
@@ -392,41 +413,48 @@ Fetching the next math problem
         }
         ```
 
-    - Response:       
-        - `HTTP/1.1 204 No Content`
+    -   Response:
 
-        - `HTTP/1.1 400 Bad Request`
-            *  when either name, email, or virtualClassroomId is empty or blank
+        -   `HTTP/1.1 204 No Content`
 
-        - `HTTP/1.1 404 Not Found`
-            *  when teacherId does not exist
+        -   `HTTP/1.1 400 Bad Request`
 
-        - `HTTP/1.1 500 Internal Server Error`
+            -   when either name, email, or virtualClassroomId is empty or blank
+
+        -   `HTTP/1.1 404 Not Found`
+
+            -   when teacherId does not exist
+
+        -   `HTTP/1.1 500 Internal Server Error`
 
 6.  `DELETE /users/teacher/{teacherId}`
 
-    - Description:    Deletes a teacher profile by their id
-    - URL:            http://localhost:3000/users/teacher/{teacherId}
-    - Headers:        N/A
+    -   Description: Deletes a teacher profile by their id
+    -   URL: http://localhost:3000/users/teacher/{teacherId}
+    -   Headers: N/A
 
-    - Response:       
-        - `HTTP/1.1 204 No Content`
+    -   Response:
 
-        - `HTTP/1.1 404 Not Found`
-            *  when teacherId does not exist
+        -   `HTTP/1.1 204 No Content`
 
-        - `HTTP/1.1 500 Internal Server Error`
+        -   `HTTP/1.1 404 Not Found`
+
+            -   when teacherId does not exist
+
+        -   `HTTP/1.1 500 Internal Server Error`
 
 7.  `GET /users/student/{studentId}`
 
-    - Description:    Retrieves a student profile by their id
-    - URL:            http://localhost:3000/users/student/{studentId}
-    - Headers:        N/A
+    -   Description: Retrieves a student profile by their id
+    -   URL: http://localhost:3000/users/student/{studentId}
+    -   Headers: N/A
 
-    - Response:       
-        - `HTTP/1.1 200 OK`
-          Content-Type: application/json
-            ```json 
+    -   Response:
+
+        -   `HTTP/1.1 200 OK`
+            Content-Type: application/json
+
+            ```json
             {
                 "name": "Anakin Skywalker",
                 "virtualClassroomId": "5d9991271c9d440000d47e08",
@@ -436,152 +464,162 @@ Fetching the next math problem
                         "difficulty": "g1m",
                         "index": 7,
                         "currentDifficultyPoints": 3,
-                        "totalPoints": 13 
+                        "totalPoints": 13
                     },
                     {
                         "problemType": "subtraction",
                         "difficulty": "g1e",
                         "index": 2,
                         "currentDifficultyPoints": 2,
-                        "totalPoints": 2 
+                        "totalPoints": 2
                     }
                 ]
             }
             ```
 
-        - `HTTP/1.1 404 Not Found`
-            *  when studentId does not exist
+        -   `HTTP/1.1 404 Not Found`
 
-        - `HTTP/1.1 500 Internal Server Error`
+            -   when studentId does not exist
+
+        -   `HTTP/1.1 500 Internal Server Error`
 
 8.  `POST /users/student`
 
-    - Description:    Creates a new Student user
-    - URL:            http://localhost:3000/users/student
-    - Headers:        
+    -   Description: Creates a new Student user
+    -   URL: http://localhost:3000/users/student
+    -   Headers:
+
         ```json
         {
             Content-Type: application/json
         }
         ```
-    
-    - Request Body:
+
+    -   Request Body:
+
         ```json
         {
-            "name": "Anakin Skywalker",
+            "name": "Anakin Skywalker"
         }
         ```
 
-    - Response:       
-        - `HTTP/1.1 201 Created`
-          Location: /user/student/5d980fa0c5edee2d50cd5a82
+    -   Response:
 
-        - `HTTP/1.1 400 Bad Request`
-            *  when name is empty or blank
+        -   `HTTP/1.1 201 Created`
+            Location: /user/student/5d980fa0c5edee2d50cd5a82
 
-        - `HTTP/1.1 500 Internal Server Error` 
+        -   `HTTP/1.1 400 Bad Request`
+
+            -   when name is empty or blank
+
+        -   `HTTP/1.1 500 Internal Server Error`
 
 9.  `PUT /users/student/{studentId}`
 
-    - Description:    Updates a Student user
-    - URL:            http://localhost:3000/users/student/{studentId}
-    - Headers:        
+    -   Description: Updates a Student user
+    -   URL: http://localhost:3000/users/student/{studentId}
+    -   Headers:
+
         ```json
         {
             Content-Type: application/json
         }
         ```
-    
-    - Request Body:
+
+    -   Request Body:
+
         ```json
         {
             "name": "Anakin Skywalker",
             "virtualClassroomId": "5d9991271c9d440000d47e08",
             "mastery": [
-                    {
-                        "problemType": "addition",
-                        "difficulty": "g1h",
-                        "index": 5,
-                        "currentDifficultyPoints": 1,
-                        "totalPoints": 21 
-                    },
-                    {
-                        "problemType": "subtraction",
-                        "difficulty": "g1m",
-                        "index": 4,
-                        "currentDifficultyPoints": 4,
-                        "totalPoints": 14 
-                    }
-                ]
+                {
+                    "problemType": "addition",
+                    "difficulty": "g1h",
+                    "index": 5,
+                    "currentDifficultyPoints": 1,
+                    "totalPoints": 21
+                },
+                {
+                    "problemType": "subtraction",
+                    "difficulty": "g1m",
+                    "index": 4,
+                    "currentDifficultyPoints": 4,
+                    "totalPoints": 14
+                }
+            ]
         }
         ```
 
-    - Response:       
-        - `HTTP/1.1 204 No Content`
+    -   Response:
 
-        - `HTTP/1.1 400 Bad Request`
-            *  when name, virtualClassroomId is empty or blank
-            *  when mastery is null or missing fields
+        -   `HTTP/1.1 204 No Content`
 
-        - `HTTP/1.1 404 Not Found`
-            *  when studentId does not exist
+        -   `HTTP/1.1 400 Bad Request`
 
-        - `HTTP/1.1 500 Internal Server Error` 
+            -   when name, virtualClassroomId is empty or blank
+            -   when mastery is null or missing fields
+
+        -   `HTTP/1.1 404 Not Found`
+
+            -   when studentId does not exist
+
+        -   `HTTP/1.1 500 Internal Server Error`
 
 10. `DELETE /users/student/{studentId}`
 
-    - Description:    Updates a Student user
-    - URL:            http://localhost:3000/users/student/{studentId}
-    - Headers:        N/A
+    -   Description: Updates a Student user
+    -   URL: http://localhost:3000/users/student/{studentId}
+    -   Headers: N/A
 
-    - Response:       
-        - `HTTP/1.1 204 No Content`
+    -   Response:
 
-        - `HTTP/1.1 404 Not Found`
-            *  when studentId does not exist
+        -   `HTTP/1.1 204 No Content`
 
-        - `HTTP/1.1 500 Internal Server Error` 
+        -   `HTTP/1.1 404 Not Found`
+
+            -   when studentId does not exist
+
+        -   `HTTP/1.1 500 Internal Server Error`
 
 11. `POST /virtual-classroom`
 
-    - Description:    Creates a virtual classroom
-    - URL:            http://localhost:3000/virtual-classroom
-    - Headers:
-        ```json
-        {
-            teacherId: ObjectId
+        - Description:    Creates a virtual classroom
+        - URL:            http://localhost:3000/virtual-classroom
+        - Headers:
+            ```json
+            {
+                teacherId: ObjectId
+                Content-Type: application/json
+            }
+            ```
+
+            - Request Body:
+            ```json
+            {
+                "name": "Obi Wan's Grade 3 Classroom",
+                "passcode": "MayTheForceBeWithYou",
+            }
+            ```
+
+        - Response:
+            - `HTTP/1.1 201 Created`
             Content-Type: application/json
-        }
-        ```
+            ```json
+            {
+                "virtualClassroomId": "5d9991271c9d440000d47e08"
+            }
+            ```
+            - `HTTP/1.1 400 Bad Request`
+                *  when name or passcode are empty or null
 
-        - Request Body:
-        ```json
-        {
-            "name": "Obi Wan's Grade 3 Classroom",
-            "passcode": "MayTheForceBeWithYou",
-        }
-        ```
+            - `HTTP/1.1 404 Not Found`
+                *  when teacherId does not exist
 
-    - Response:       
-        - `HTTP/1.1 201 Created`
-        Content-Type: application/json
-        ```json
-        {
-            "virtualClassroomId": "5d9991271c9d440000d47e08"
-        }
-        ```
-        - `HTTP/1.1 400 Bad Request`
-            *  when name or passcode are empty or null
+            - `HTTP/1.1 500 Internal Server Error`
 
-        - `HTTP/1.1 404 Not Found`
-            *  when teacherId does not exist
-
-        - `HTTP/1.1 500 Internal Server Error` 
-</details>
-
-
+    </details>
 
 ## Bibliography
 
 Project planning approach inspired by https://medium.com/@ClrMobile/planning-a-minimum-viable-product-a-step-by-step-guide-6f387d657870
-
