@@ -1,6 +1,9 @@
 import { updateMastery } from '@server/service/masteryService';
 import { enhanceHandler, HTTP_CODE } from '@server/service/utils/routeEnhancer';
-import { convertStringToProblemType, ProblemType } from '@shared/models/problem';
+import {
+    convertStringToProblemType,
+    ProblemType,
+} from '@shared/models/problem';
 import Boom from 'boom';
 import express from 'express';
 
@@ -13,11 +16,22 @@ export const initializeMasteryRoutes = (app: express.Application) => {
         enhanceHandler({ protect: true })(async (req, user) => {
             if (user) {
                 try {
-                    const problemType = convertStringToProblemType(req.body.problemType);
-                    if (problemType === ProblemType.UNKNOWN || typeof req.body.isSuccess !== 'boolean') {
-                        throw Boom.badRequest('Either problemType or isSuccess is invalid');
+                    const problemType = convertStringToProblemType(
+                        req.body.problemType,
+                    );
+                    if (
+                        problemType === ProblemType.UNKNOWN ||
+                        typeof req.body.isSuccess !== 'boolean'
+                    ) {
+                        throw Boom.badRequest(
+                            'Either problemType or isSuccess is invalid',
+                        );
                     } else {
-                        await updateMastery(user.id, problemType, req.body.isSuccess);
+                        await updateMastery(
+                            user.id,
+                            problemType,
+                            req.body.isSuccess,
+                        );
                         return [HTTP_CODE.NO_CONTENT, null];
                     }
                 } catch (e) {
@@ -25,7 +39,7 @@ export const initializeMasteryRoutes = (app: express.Application) => {
                 }
             } else {
                 throw Boom.internal('User is undefined');
-            }         
+            }
         }),
     );
 };

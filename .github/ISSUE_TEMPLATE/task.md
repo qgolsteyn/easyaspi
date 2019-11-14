@@ -11,6 +11,6 @@ about: Use this template to specify a task
 
 **Acceptance criteria**
 
-  - [ ] --
-  - [ ] --
-  - [ ] --
+-   [ ] --
+-   [ ] --
+-   [ ] --
