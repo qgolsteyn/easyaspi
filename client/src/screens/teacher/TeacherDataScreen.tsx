@@ -14,25 +14,18 @@ import {BarChart} from '@client/components/Barchart';
 
 import bg1 from '../../../assets/bg1.png';
 
-export const TeacherHome = () => {
+export const TeacherData = () => {
     const currentUser = useSelector(selectors.user.getCurrentUser);
     const userName = (currentUser ? currentUser.name : '') || '';
 
-    state = {
-        data: [12, 5, 6, 6, 9, 10],
-        width: 700,
-        height: 500,
-        id: root
-    }
-
     return (
         <div className="App">
-        <BarChart data={this.state.data} width={this.state.width} height={this.state.height} />
+        <BarChart/>
         </div>
     );
 };
 
-TeacherHome.navigationOptions = () => ({
+TeacherData.navigationOptions = () => ({
     header: null,
 });
 

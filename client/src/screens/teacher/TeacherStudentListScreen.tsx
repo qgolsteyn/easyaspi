@@ -37,7 +37,7 @@ function Item({ id, title, selected, onSelect }) {
   );
 }
 
-export default function App() {
+export function TeacherStudentList(){
   const [selected, setSelected] = React.useState(new Map());
 
   const onSelect = React.useCallback(

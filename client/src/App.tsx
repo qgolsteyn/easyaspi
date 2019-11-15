@@ -15,7 +15,8 @@ import { StudentHome } from './screens/student/StudentHomeScreen';
 import { StudentProblem } from './screens/student/StudentProblemScreen';
 
 import { TeacherHome } from './screens/teacher/TeacherHomeScreen';
-import { TeacherDataScreen} from './screens/teacher/TeacherHomeScreen'
+import { TeacherData} from './screens/teacher/TeacherDataScreen'
+import {TeacherStudentList} from './screens/teacher/TeacherStudentListScreen'
 
 const AuthStack = createStackNavigator(
     {
@@ -32,10 +33,10 @@ const AuthStack = createStackNavigator(
             screen: WelcomeScreen,
         },
         TeacherData: {
-            screen: TeacherDataScreen,
+            screen: TeacherData,
         }
     },
-    { initialRouteName: 'Welcome', transitionConfig: () => fromRight() },
+    { initialRouteName: 'TeacherData', transitionConfig: () => fromRight() },
 );
 
 const StudentStack = createStackNavigator(
