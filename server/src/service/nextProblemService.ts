@@ -54,6 +54,7 @@ const findPossibleNextProblemTypes = async (studentId: string) => {
     }
 
     const progress = mastery.progress;
+
     if(!progress) {
         throw Boom.badData('progress should not be empty');
     }
