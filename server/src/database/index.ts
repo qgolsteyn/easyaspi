@@ -9,6 +9,7 @@ export {
 export { ProblemTemplateModel } from './math/problemTemplate';
 export { UserModel } from './users';
 export { ClassroomModel } from './classroom';
+export { MasteryModel } from './mastery';
 
 const DB_CONNECTION =
     process.env.DB_CONNECTION || 'mongodb://localhost:27017/test';
