@@ -36,8 +36,9 @@ export const nextProblemTypeAndDifficulty = async (userPayload: IUser) => {
     // send the first matching between problemsForToday and nextProblemTypes
     if(problemsForToday.length !== 0){
         for(const item of nextProblemTypes){
-            if(problemsForToday.indexOf(item) !== -1)
+            if(problemsForToday.indexOf(item) !== -1) {
                 return {difficulty, problemType: item};
+            }
         }
     }
 
@@ -88,12 +89,14 @@ const findPossibleNextProblemTypes = async (studentId: string) => {
         const problemType = convertStringToProblemType(item);
         const progressForProblemType = progress.get(problemType);
 
-        if(typeof progressForProblemType === 'undefined')
+        if(typeof progressForProblemType === 'undefined') {
             throw Boom.badData('progress can not be undefined');
+        }
 
         const difficulty = progressForProblemType.difficulty;
-        if(difficulty.toLowerCase() === minDifficulty.toLowerCase())
+        if(difficulty.toLowerCase() === minDifficulty.toLowerCase()) {
             nextProblemTypes.push(item);
+        }
     }
 
     // sort it in ascending order using the formula CurDifPoints + attempted
@@ -120,8 +123,9 @@ const findPossibleNextProblemTypes = async (studentId: string) => {
 const getProblemsForClass = async (virtualClassroomUid: string) => {
     const classroom = await ClassroomModel.findById(virtualClassroomUid);
 
-    if(!classroom)
+    if(!classroom) {
         throw Boom.notFound(`classroom not found with id ${virtualClassroomUid}`);
+    }
 
     return classroom.problemsForToday;
 };
