@@ -1,5 +1,5 @@
 import debug from 'debug';
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 
 const log = debug('pi:db');
 
