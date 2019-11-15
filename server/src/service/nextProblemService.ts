@@ -72,8 +72,9 @@ const findPossibleNextProblemTypes = async (studentId: string) => {
         const problemType = convertStringToProblemType(item);
         const progressForProblemType = progress.get(problemType);
 
-        if(typeof progressForProblemType === 'undefined')
+        if(typeof progressForProblemType === 'undefined') {
             throw Boom.badData('progress can not be undefined');
+        }
 
         const difficulty = progressForProblemType.difficulty.toLowerCase();
 
