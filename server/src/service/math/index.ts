@@ -1,4 +1,4 @@
-import { IProblem, ProblemArchetype, ProblemType } from '@shared/index';
+import { IProblem, ProblemType } from '@shared/index';
 
 import { generateVariableValues, IVariableDefinition } from './generate';
 
@@ -19,7 +19,6 @@ export const generateProblem = () => {
 
     const problem: IProblem = {
         problem: `${scope.a} + ${scope.b} = ?`,
-        problemArchetype: ProblemArchetype.ARITHMETIC,
         problemType: ProblemType.ADDITION,
         solution: [String(scope.c)],
     };

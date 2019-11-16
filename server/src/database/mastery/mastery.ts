@@ -19,7 +19,7 @@ export interface IProblemTypeProgress extends mongoose.Types.Subdocument {
     totalPoints: number;
 }
 
-export const ProblemTypeSchema = new mongoose.Schema({
+export const ProblemTypeProgressSchema = new mongoose.Schema({
     currentDifficultyAttempts: {
         required: true,
         type: Number,
@@ -45,7 +45,7 @@ export interface IMastery extends mongoose.Document {
 
 export const MasterySchema = new mongoose.Schema({
     progress: {
-        of: ProblemTypeSchema,
+        of: ProblemTypeProgressSchema,
         required: true,
         type: Map,
     },

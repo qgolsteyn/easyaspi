@@ -1,13 +1,32 @@
-import { IProblemTypeProgress, MasteryModel } from '@server/database/mastery';
+import {
+    IMastery,
+    IProblemTypeProgress,
+    MasteryModel,
+} from '@server/database/mastery/mastery';
+import { ProblemMinimumDifficultiesModel } from '@server/database/mastery/problemMinimumDifficulties';
 import {
     getNextProblemDifficulty,
     getPreviousProblemDifficulty,
+    minProblemDifficulty,
     ProblemDifficulty,
     ProblemType,
 } from '@shared/models/problem';
 
-const PointsThresholdPerDifficulty = 9;
+import debug from 'debug';
+const log = debug('pi:mastery');
 
+// student must get 10 questions right before moving to next difficulty
+const MAX_POINTS_PER_DIFFICULTY = 9;
+
+/**
+ * Update the mastery based on the student's result for a problem type.
+ * When student has completed pre-reqs for a problem type they 'unlock' it
+ * and it will show up in their mastery
+ *
+ * @param studentIdent studentId, renamed because of a conflict with mastery studentId field
+ * @param problemType problem type to update mastery for
+ * @param isSuccess whether or not student got problem correct
+ */
 export async function updateMastery(
     studentIdent: string,
     problemType: ProblemType,
@@ -25,17 +44,18 @@ export async function updateMastery(
         mastery = await newMastery.save();
     }
 
-    let problemTypeProgress = mastery.progress.get(problemType);
+    const problemTypeProgress = mastery.progress.get(problemType);
     if (typeof problemTypeProgress === 'undefined') {
         // if app is working correclty, this case should never happen
         const newProblemTypeProgress = createProblemTypeProgression(isSuccess);
         mastery.progress.set(problemType, newProblemTypeProgress);
     } else {
-        problemTypeProgress = updateProblemTypeProgression(
+        await updateProblemTypeProgression(
             isSuccess,
+            problemType,
             problemTypeProgress,
+            mastery,
         );
-        mastery.progress.set(problemType, problemTypeProgress);
     }
     await mastery.save();
 }
@@ -47,16 +67,18 @@ export async function updateMastery(
  * @param isSuccess whether or not the user got the question correct or not
  * @param problemTypeProgress the IProblemTypeProgress object to update
  */
-function updateProblemTypeProgression(
+async function updateProblemTypeProgression(
     isSuccess: boolean,
+    problemType: ProblemType,
     problemTypeProgress: IProblemTypeProgress,
-): IProblemTypeProgress {
+    mastery: IMastery,
+): Promise<void> {
     if (isSuccess) {
         // if user has reached the threshold for their current difficulty and has not reached
         // max difficulty, bump them up to the next difficulty
         if (
             problemTypeProgress.currentDifficultyPoints ===
-                PointsThresholdPerDifficulty &&
+                MAX_POINTS_PER_DIFFICULTY &&
             problemTypeProgress.difficulty !== ProblemDifficulty.G5H
         ) {
             problemTypeProgress.currentDifficultyPoints = 0;
@@ -65,33 +87,93 @@ function updateProblemTypeProgression(
             problemTypeProgress.difficulty = getNextProblemDifficulty(
                 problemTypeProgress.difficulty,
             );
+
+            // updated progress needs to be set before attempting to insert unlocked problem types
+            mastery.progress.set(problemType, problemTypeProgress);
+
+            // if any problem types have been unlocked, add them to the progress map
+            await insertUnlockedProblemTypes(mastery);
         } else {
             problemTypeProgress.currentDifficultyPoints++;
             problemTypeProgress.currentDifficultyAttempts++;
             problemTypeProgress.totalPoints++;
+
+            mastery.progress.set(problemType, problemTypeProgress);
         }
     } else {
         if (problemTypeProgress.currentDifficultyPoints === 0) {
-            // if user has lost all their points in the current difficulty and has not reached the lowest
-            // difficulty, kick them down to the previous difficulty
-            if (problemTypeProgress.difficulty !== ProblemDifficulty.G1E) {
-                problemTypeProgress.currentDifficultyPoints = PointsThresholdPerDifficulty;
-                problemTypeProgress.currentDifficultyAttempts = 0;
-                problemTypeProgress.totalPoints--;
-                problemTypeProgress.difficulty = getPreviousProblemDifficulty(
-                    problemTypeProgress.difficulty,
-                );
+            const problemDifficultyMapping = await ProblemMinimumDifficultiesModel.findOne(
+                {
+                    problemTypes: problemType.valueOf(),
+                },
+            );
+            if (problemDifficultyMapping) {
+                // if user has lost all their points in the current difficulty and has not reached the lowest
+                // difficulty for that problem type, kick them down to the previous difficulty
+                if (
+                    problemTypeProgress.difficulty !==
+                    problemDifficultyMapping.difficulty
+                ) {
+                    problemTypeProgress.currentDifficultyPoints = MAX_POINTS_PER_DIFFICULTY;
+                    problemTypeProgress.currentDifficultyAttempts = 0;
+                    problemTypeProgress.totalPoints--;
+                    problemTypeProgress.difficulty = getPreviousProblemDifficulty(
+                        problemTypeProgress.difficulty,
+                    );
+                } else {
+                    // if student is at 0 points and is in the lowest difficulty for
+                    // this problem type, only attempts is updated
+                    problemTypeProgress.currentDifficultyAttempts++;
+                }
             } else {
-                // if student is at 0 points and is in g1e, only attempts is updated
+                // this function and overarching endpoint should not fail because
+                // of this data error. In the event this error happens, continue so
+                // user experience is not disrupted
                 problemTypeProgress.currentDifficultyAttempts++;
+                log(
+                    'No problem difficulty mapping found for ' +
+                        problemType.valueOf(),
+                );
             }
         } else {
             problemTypeProgress.currentDifficultyPoints--;
             problemTypeProgress.currentDifficultyAttempts++;
             problemTypeProgress.totalPoints--;
         }
+
+        mastery.progress.set(problemType, problemTypeProgress);
     }
-    return problemTypeProgress;
+}
+
+async function insertUnlockedProblemTypes(mastery: IMastery): Promise<void> {
+    let lowestDifficulty: ProblemDifficulty = ProblemDifficulty.G5H;
+    for (const problemTypeProgress of mastery.progress.values()) {
+        lowestDifficulty = minProblemDifficulty(
+            lowestDifficulty,
+            problemTypeProgress.difficulty,
+        );
+    }
+
+    const problemDifficultyMapping = await ProblemMinimumDifficultiesModel.findOne(
+        {
+            difficulty: lowestDifficulty,
+        },
+    );
+
+    if (problemDifficultyMapping) {
+        problemDifficultyMapping.problemTypes.forEach(problemType => {
+            if (!mastery.progress.has(problemType)) {
+                const newProblemTypeProgress = {
+                    currentDifficultyAttempts: 0,
+                    currentDifficultyPoints: 0,
+                    difficulty: lowestDifficulty,
+                    totalPoints: 0,
+                } as IProblemTypeProgress;
+
+                mastery.progress.set(problemType, newProblemTypeProgress);
+            }
+        });
+    }
 }
 
 /**

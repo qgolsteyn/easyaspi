@@ -289,7 +289,6 @@ Fetching the next math problem
 
             ```json
             {
-                "problemArchetype": "arithmetic",
                 "problemType": "addition",
                 "problem": "3 + 4 =",
                 "solution": ["7"],
@@ -325,7 +324,6 @@ Fetching the next math problem
 
             ```json
             {
-                "problemArchetype": "arithmetic",
                 "problemType": "addition",
                 "difficulty": "g1m",
                 "isCorrect": true

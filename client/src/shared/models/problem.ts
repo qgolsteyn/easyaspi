@@ -1,13 +1,14 @@
-export enum ProblemArchetype {
-    ARITHMETIC = 'arithmetic',
-    UNKNOWN = 'unknown',
-}
-
 export enum ProblemType {
     ADDITION = 'addition',
     SUBTRACTION = 'subtraction',
     MULTIPLICATION = 'multiplication',
     DIVISION = 'division',
+    EQUATION = 'equation',
+    FRACTION = 'fraction',
+    DECIMAL = 'decimal',
+    PERIMETER = 'perimeter',
+    AREA = 'area',
+    VOLUME = 'volume',
     UNKNOWN = 'unknown',
 }
 
@@ -35,6 +36,18 @@ export function convertStringToProblemType(type: string): ProblemType {
             return ProblemType.MULTIPLICATION;
         case ProblemType.DIVISION.valueOf():
             return ProblemType.DIVISION;
+        case ProblemType.EQUATION.valueOf():
+            return ProblemType.EQUATION;
+        case ProblemType.FRACTION.valueOf():
+            return ProblemType.FRACTION;
+        case ProblemType.DECIMAL.valueOf():
+            return ProblemType.DECIMAL;
+        case ProblemType.PERIMETER.valueOf():
+            return ProblemType.PERIMETER;
+        case ProblemType.AREA.valueOf():
+            return ProblemType.AREA;
+        case ProblemType.VOLUME.valueOf():
+            return ProblemType.VOLUME;
         default:
             return ProblemType.UNKNOWN;
     }
@@ -99,8 +112,39 @@ export function getPreviousProblemDifficulty(
     }
 }
 
+export function minProblemDifficulty(
+    difficulty1: ProblemDifficulty,
+    difficulty2: ProblemDifficulty,
+): ProblemDifficulty {
+    // way to get around "no magic numbers" linting complaint
+    const two = 2;
+    const easy = 'e';
+    const med = 'm';
+    const hard = 'h';
+    const diff1String = difficulty1.valueOf();
+    const diff2String = difficulty2.valueOf();
+
+    // character at index 1 is the grade number
+    if (diff1String.charCodeAt(1) < diff2String.charCodeAt(1)) {
+        return difficulty1;
+    } else if (diff1String.charCodeAt(1) > diff2String.charCodeAt(1)) {
+        return difficulty2;
+    } else {
+        // character at index 2 is the difficulty tier for the specific grade
+        if (diff1String.charAt(two) === easy) {
+            return difficulty1;
+        } else if (
+            diff1String.charAt(two) === med &&
+            diff2String.charAt(two) === hard
+        ) {
+            return difficulty1;
+        } else {
+            return difficulty2;
+        }
+    }
+}
+
 export interface IProblem {
-    problemArchetype: ProblemArchetype;
     problemType: ProblemType;
     problem: string;
     solution: string[];
