@@ -1,8 +1,8 @@
 import Boom from 'boom';
 import express from 'express';
 
-import { authService, userService } from '@server/services';
-import { CODE_CREATED, enhanceHandler } from '@server/utils/routeEnhancer';
+import { authService, userService } from '@server/service';
+import { enhanceHandler, HTTP_CODE } from '@server/service/utils/routeEnhancer';
 
 export const initializeAuthRoutes = (app: express.Application) => {
     const usersRouter = express.Router();
@@ -26,7 +26,7 @@ export const initializeAuthRoutes = (app: express.Application) => {
             let user = await userService.getUserFromId(String(authInfo.sub));
             if (user) {
                 return [
-                    CODE_CREATED,
+                    HTTP_CODE.CREATED,
                     {
                         accessToken: authService.generateAccessToken({
                             registered: user.registered,
@@ -40,7 +40,7 @@ export const initializeAuthRoutes = (app: express.Application) => {
             } else {
                 user = await userService.createUserFromAuthInfo(authInfo);
                 return [
-                    CODE_CREATED,
+                    HTTP_CODE.CREATED,
                     {
                         accessToken: authService.generateAccessToken({
                             registered: false,

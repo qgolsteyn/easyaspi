@@ -2,11 +2,11 @@ import Boom from 'boom';
 import Expo from 'expo-server-sdk';
 
 import { UserModel } from '@server/database';
-import { cleanMongoDocument } from '@server/utils/mongo';
+import { cleanMongoDocument } from '@server/service/utils/mongo';
 
 import { IMessage, IUser } from '@shared/index';
 
-import { IAuthInfo } from './auth';
+import { IAuthInfo } from './authService';
 
 export const createUserFromAuthInfo = async (authInfo: IAuthInfo) => {
     const user = new UserModel({

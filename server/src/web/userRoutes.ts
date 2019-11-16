@@ -2,12 +2,8 @@ import Boom from 'boom';
 import express from 'express';
 
 import { ClassroomModel } from '@server/database';
-import { authService, classroomService, userService } from '@server/services';
-import {
-    CODE_CREATED,
-    CODE_OK,
-    enhanceHandler,
-} from '@server/utils/routeEnhancer';
+import { authService, classroomService, userService } from '@server/service';
+import { enhanceHandler, HTTP_CODE } from '@server/service/utils/routeEnhancer';
 
 import { IClassroom, IUser, UserType } from '@shared/index';
 
@@ -22,7 +18,7 @@ export const initializeUsersRoutes = (app: express.Application) => {
         '/current',
         enhanceHandler({ protect: true })(async (_, user) => {
             if (user) {
-                return [CODE_OK, user];
+                return [HTTP_CODE.OK, user];
             } else {
                 throw Boom.internal('User should not be undefined');
             }
@@ -48,12 +44,16 @@ export const initializeUsersRoutes = (app: express.Application) => {
             switch (user.userType) {
                 case UserType.STUDENT:
                     {
-                        classroomId = await classroomService.authenticateToClassroom(classroom);
+                        classroomId = await classroomService.authenticateToClassroom(
+                            classroom,
+                        );
                     }
                     break;
                 case UserType.TEACHER:
                     {
-                        const newClassroom = await classroomService.createClassroom(classroom);
+                        const newClassroom = await classroomService.createClassroom(
+                            classroom,
+                        );
                         classroomId = newClassroom.id;
                     }
                     break;
@@ -69,13 +69,13 @@ export const initializeUsersRoutes = (app: express.Application) => {
                 ClassroomModel.findByIdAndDelete(classroomId);
                 throw e;
             }
-            
+
             const accessToken = authService.generateAccessToken({
                 registered: user.registered,
                 sub: user.id,
             });
 
-            return [CODE_CREATED, { accessToken, user }];
+            return [HTTP_CODE.CREATED, { accessToken, user }];
         }),
     );
 };

@@ -2,7 +2,7 @@ import axios from 'axios';
 import Boom from 'boom';
 import { decode, sign, verify } from 'jsonwebtoken';
 
-import { getUserFromId } from './user';
+import { getUserFromId } from './userService';
 
 export interface IAuthInfo {
     aud: string;
