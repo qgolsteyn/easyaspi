@@ -116,8 +116,11 @@ export function minProblemDifficulty(
     difficulty1: ProblemDifficulty,
     difficulty2: ProblemDifficulty,
 ): ProblemDifficulty {
-    let diff1String = difficulty1.valueOf();
-    let diff2String = difficulty2.valueOf();
+    const easy = 'e';
+    const med = 'm';
+    const hard = 'h';
+    const diff1String = difficulty1.valueOf();
+    const diff2String = difficulty2.valueOf();
 
     // character at index 1 is the grade number
     if (diff1String.charCodeAt(1) < diff2String.charCodeAt(1)) {
@@ -126,11 +129,11 @@ export function minProblemDifficulty(
         return difficulty2;
     } else {
         // character at index 2 is the difficulty tier for the specific grade
-        if (diff1String.charAt(2) === 'e') {
+        if (diff1String.charAt(2) === easy) {
             return difficulty1;
         } else if (
-            diff1String.charAt(2) === 'm' &&
-            diff2String.charAt(2) === 'h'
+            diff1String.charAt(2) === med &&
+            diff2String.charAt(2) === hard
         ) {
             return difficulty1;
         } else {
