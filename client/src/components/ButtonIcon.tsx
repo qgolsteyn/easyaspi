@@ -5,6 +5,8 @@ import { StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 
 import { colors } from '@client/constants/colors';
 
+const ICON_SIZE = 24;
+
 interface IStyledButton {
     icon: unknown;
     styles?: object;
@@ -68,7 +70,7 @@ export const StyledIconButton = (props: IStyledButton) => {
             >
                 <FontAwesomeIcon
                     icon={props.icon}
-                    size={24}
+                    size={ICON_SIZE}
                     color="#fff"
                     style={{ marginRight: 4 }}
                 />

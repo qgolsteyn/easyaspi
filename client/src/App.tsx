@@ -14,8 +14,8 @@ import { WelcomeScreen } from './screens/auth/WelcomeScreen';
 import { StudentHome } from './screens/student/StudentHomeScreen';
 import { StudentProblem } from './screens/student/StudentProblemScreen';
 
-import { TeacherHome } from './screens/teacher/TeacherHomeScreen';
 import { StudentList } from './screens/teacher/StudentListScreen';
+import { TeacherHome } from './screens/teacher/TeacherHomeScreen';
 
 const AuthStack = createStackNavigator(
     {

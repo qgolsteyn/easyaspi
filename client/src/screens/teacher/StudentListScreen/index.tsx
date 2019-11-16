@@ -38,6 +38,9 @@ StudentList.navigationOptions = () => ({
 });
 
 const styles = StyleSheet.create({
+    studentList: {
+        flex: 1,
+    },
     wrapper: {
         alignItems: 'center',
         display: 'flex',
@@ -47,8 +50,5 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         paddingVertical: 16,
         width: '100%',
-    },
-    studentList: {
-        flex: 1,
     },
 });

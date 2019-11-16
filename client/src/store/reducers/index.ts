@@ -2,8 +2,8 @@ import { combineReducers } from 'redux';
 
 import { navActions } from './navigation';
 import { problemActions, problemReducer, problemSelectors } from './problems';
-import { userActions, userReducer, userSelectors } from './user';
 import { teacherActions, teacherReducer, teacherSelectors } from './teacher';
+import { userActions, userReducer, userSelectors } from './user';
 
 export const actions = {
     nav: navActions,

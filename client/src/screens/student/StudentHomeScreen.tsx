@@ -1,7 +1,7 @@
 import {
+    faInfo,
     faPaperPlane,
     faTrophy,
-    faInfo,
 } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';

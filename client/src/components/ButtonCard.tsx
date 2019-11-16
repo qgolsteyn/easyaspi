@@ -6,6 +6,9 @@ import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
 
 import { colors } from '@client/constants/colors';
 
+const ICON_SIZE = 24;
+const CARRET_SIZE = 16;
+
 interface IStyledIconButton {
     styles?: object;
     text: string;
@@ -59,14 +62,14 @@ export const StyledCardButton = (props: IStyledIconButton) => {
                 >
                     <FontAwesomeIcon
                         icon={props.icon}
-                        size={24}
+                        size={ICON_SIZE}
                         color={color}
                         style={{ marginRight: 16 }}
                     />
                     <Text style={styles.text}>{props.text}</Text>
                     <FontAwesomeIcon
                         icon={faChevronRight}
-                        size={16}
+                        size={CARRET_SIZE}
                         color="#333"
                         style={{ marginLeft: 'auto' }}
                     />

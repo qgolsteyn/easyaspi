@@ -1,12 +1,11 @@
 import {
-    faUsers,
     faCalculator,
     faChartLine,
-    faCog,
+    faUsers,
 } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Background } from '@client/components/Background';
 import { StyledCardButton } from '@client/components/ButtonCard';
@@ -47,11 +46,6 @@ export const TeacherHome = () => {
                     styleAttr="success"
                     styles={{ marginBottom: 8 }}
                 />
-                <StyledCardButton
-                    icon={faCog}
-                    text="Settings"
-                    styleAttr="error"
-                />
             </View>
         </Background>
     );
@@ -62,6 +56,10 @@ TeacherHome.navigationOptions = () => ({
 });
 
 const styles = StyleSheet.create({
+    card: {
+        flex: 1,
+        marginBottom: 16,
+    },
     wrapper: {
         display: 'flex',
         flexDirection: 'column',
@@ -69,9 +67,5 @@ const styles = StyleSheet.create({
         paddingBottom: 16,
         paddingHorizontal: 16,
         width: '100%',
-    },
-    card: {
-        flex: 1,
-        marginBottom: 16,
     },
 });
