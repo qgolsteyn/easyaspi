@@ -44,12 +44,16 @@ export const initializeUsersRoutes = (app: express.Application) => {
             switch (user.userType) {
                 case UserType.STUDENT:
                     {
-                        classroomId = await classroomService.authenticateToClassroom(classroom);
+                        classroomId = await classroomService.authenticateToClassroom(
+                            classroom,
+                        );
                     }
                     break;
                 case UserType.TEACHER:
                     {
-                        const newClassroom = await classroomService.createClassroom(classroom);
+                        const newClassroom = await classroomService.createClassroom(
+                            classroom,
+                        );
                         classroomId = newClassroom.id;
                     }
                     break;
@@ -65,7 +69,7 @@ export const initializeUsersRoutes = (app: express.Application) => {
                 ClassroomModel.findByIdAndDelete(classroomId);
                 throw e;
             }
-            
+
             const accessToken = authService.generateAccessToken({
                 registered: user.registered,
                 sub: user.id,

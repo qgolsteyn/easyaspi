@@ -14,6 +14,10 @@ const ClassroomSchema = new mongoose.Schema({
         required: true,
         type: String,
     },
+    problemsForToday: {
+        type: Array,
+        unique: true,
+    }
 });
 
 // TODO: by default mongoose only looks for lowercase collection names,

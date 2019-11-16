@@ -13,7 +13,9 @@ export const createClassroom = async (classroomPayload: IClassroom) => {
     if (newClassroom) {
         return newClassroom;
     } else {
-        throw Boom.badRequest('A classroom already exists with this given name and passcode');
+        throw Boom.badRequest(
+            'A classroom already exists with this given name and passcode',
+        );
     }
 };
 

@@ -1,7 +1,16 @@
-import { IProblemTypeProgress, MasteryModel, IMastery,  } from '@server/database/mastery/mastery';
+import {
+    IProblemTypeProgress,
+    IMastery,
+    MasteryModel,
+} from '@server/database/mastery/mastery';
 import { ViewableProblemTypesModel } from '@server/database/mastery/viewableProblemTypes';
-import { getNextProblemDifficulty, getPreviousProblemDifficulty, 
-    minProblemDifficulty, ProblemDifficulty, ProblemType } from '@shared/models/problem';
+import {
+    getNextProblemDifficulty,
+    getPreviousProblemDifficulty,
+    ProblemDifficulty,
+    ProblemType,
+    minProblemDifficulty,
+} from '@shared/models/problem';
 
 import debug from 'debug';
 
@@ -14,24 +23,24 @@ const MAX_POINTS_PER_DIFFICULTY = 9;
  * Update the mastery based on the student's result for a problem type.
  * When student has completed pre-reqs for a problem type they 'unlock' it
  * and it will show up in their mastery
- * 
+ *
  * @param studentIdent studentId, renamed because of a conflict with mastery studentId field
  * @param problemType problem type to update mastery for
  * @param isSuccess whether or not student got problem correct
  */
 export async function updateMastery(
-    studentIdent: string, 
-    problemType: ProblemType, 
-    isSuccess: boolean
+    studentIdent: string,
+    problemType: ProblemType,
+    isSuccess: boolean,
 ): Promise<void> {
     let mastery = await MasteryModel.findOne({
-        studentId: studentIdent
-    })
+        studentId: studentIdent,
+    });
 
     if (!mastery) {
         const newMastery = new MasteryModel({
             progress: new Map<string, IProblemTypeProgress>(),
-            studentId: studentIdent
+            studentId: studentIdent,
         });
         mastery = await newMastery.save();
     }
@@ -42,7 +51,12 @@ export async function updateMastery(
         const newProblemTypeProgress = createProblemTypeProgression(isSuccess);
         mastery.progress.set(problemType, newProblemTypeProgress);
     } else {
-        await updateProblemTypeProgression(isSuccess, problemType, problemTypeProgress, mastery);
+        await updateProblemTypeProgression(
+            isSuccess,
+            problemType,
+            problemTypeProgress,
+            mastery,
+        );
     }
     await mastery.save();
 }
@@ -50,26 +64,30 @@ export async function updateMastery(
 /**
  * Takes in an object of type IProblemTypeProgress and updates the mastery entry depending
  * on whether or not the user go the question right or wrong
- * 
+ *
  * @param isSuccess whether or not the user got the question correct or not
  * @param problemTypeProgress the IProblemTypeProgress object to update
  */
 async function updateProblemTypeProgression(
-    isSuccess: boolean, 
-    problemType: ProblemType, 
-    problemTypeProgress: IProblemTypeProgress, 
-    mastery: IMastery
+    isSuccess: boolean,
+    problemType: ProblemType,
+    problemTypeProgress: IProblemTypeProgress,
+    mastery: IMastery,
 ): Promise<void> {
     if (isSuccess) {
         // if user has reached the threshold for their current difficulty and has not reached
         // max difficulty, bump them up to the next difficulty
-        if (problemTypeProgress.currentDifficultyPoints === MAX_POINTS_PER_DIFFICULTY 
-            && problemTypeProgress.difficulty !== ProblemDifficulty.G5H) {
-
+        if (
+            problemTypeProgress.currentDifficultyPoints ===
+                MAX_POINTS_PER_DIFFICULTY &&
+            problemTypeProgress.difficulty !== ProblemDifficulty.G5H
+        ) {
             problemTypeProgress.currentDifficultyPoints = 0;
             problemTypeProgress.currentDifficultyAttempts = 0;
             problemTypeProgress.totalPoints++;
-            problemTypeProgress.difficulty = getNextProblemDifficulty(problemTypeProgress.difficulty);
+            problemTypeProgress.difficulty = getNextProblemDifficulty(
+                problemTypeProgress.difficulty,
+            );
 
             // updated progress needs to be set before attempting to insert unlocked problem types
             mastery.progress.set(problemType, problemTypeProgress);
@@ -91,7 +109,9 @@ async function updateProblemTypeProgression(
                 problemTypeProgress.currentDifficultyPoints = MAX_POINTS_PER_DIFFICULTY;
                 problemTypeProgress.currentDifficultyAttempts = 0;
                 problemTypeProgress.totalPoints--;
-                problemTypeProgress.difficulty = getPreviousProblemDifficulty(problemTypeProgress.difficulty);
+                problemTypeProgress.difficulty = getPreviousProblemDifficulty(
+                    problemTypeProgress.difficulty,
+                );
             } else {
                 // if student is at 0 points and is in g1e, only attempts is updated
                 problemTypeProgress.currentDifficultyAttempts++;
@@ -109,52 +129,60 @@ async function updateProblemTypeProgression(
 async function insertUnlockedProblemTypes(mastery: IMastery): Promise<void> {
     let lowestDifficulty: ProblemDifficulty = ProblemDifficulty.G5H;
     for (let problemTypeProgress of mastery.progress.values()) {
-        lowestDifficulty = minProblemDifficulty(lowestDifficulty, problemTypeProgress.difficulty);
+        lowestDifficulty = minProblemDifficulty(
+            lowestDifficulty,
+            problemTypeProgress.difficulty,
+        );
     }
 
     let viewableProblemTypes = await ViewableProblemTypesModel.findOne({
-        difficulty: lowestDifficulty
+        difficulty: lowestDifficulty,
     });
 
     if (viewableProblemTypes) {
-        viewableProblemTypes.problemTypes.forEach( problemType => {
+        viewableProblemTypes.problemTypes.forEach(problemType => {
             if (!mastery.progress.has(problemType)) {
                 const newProblemTypeProgress = {
                     currentDifficultyAttempts: 0,
                     currentDifficultyPoints: 0,
                     difficulty: lowestDifficulty,
-                    totalPoints: 0
+                    totalPoints: 0,
                 } as IProblemTypeProgress;
 
                 mastery.progress.set(problemType, newProblemTypeProgress);
             }
         });
     } else {
-        log('No viewableProblemTypes document found for ' + lowestDifficulty.valueOf());
+        log(
+            'No viewableProblemTypes document found for ' +
+                lowestDifficulty.valueOf(),
+        );
     }
 }
 
 /**
  * Creates a new object of type IProblemTypeProgress and populates fields
  * based on whether student got previous answer right or wrong
- * 
+ *
  * @param isSuccess whether or not the user got the question correct or not
  */
-function createProblemTypeProgression(isSuccess: boolean): IProblemTypeProgress {
+function createProblemTypeProgression(
+    isSuccess: boolean,
+): IProblemTypeProgress {
     let newProblemTypeProgress;
     if (isSuccess) {
         newProblemTypeProgress = {
             currentDifficultyAttempts: 1,
             currentDifficultyPoints: 1,
             difficulty: ProblemDifficulty.G1E,
-            totalPoints: 1
-        } as IProblemTypeProgress; 
+            totalPoints: 1,
+        } as IProblemTypeProgress;
     } else {
         newProblemTypeProgress = {
             currentDifficultyAttempts: 1,
             currentDifficultyPoints: 0,
             difficulty: ProblemDifficulty.G1E,
-            totalPoints: 0
+            totalPoints: 0,
         } as IProblemTypeProgress;
     }
     return newProblemTypeProgress;

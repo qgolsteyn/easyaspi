@@ -8,11 +8,11 @@ import { IUser } from '@shared/index';
 // This here is a prime example of why forcing alpha order via linting
 // is absolutely ridiculous
 export const HTTP_CODE = {
-    CREATED : 201,
-    INTERNAL_SERVER_ERROR : 500,
-    NO_CONTENT : 204,
-    OK : 200
-}
+    CREATED: 201,
+    INTERNAL_SERVER_ERROR: 500,
+    NO_CONTENT: 204,
+    OK: 200,
+};
 
 const log = debug('pi:route');
 const err = debug('pi:route:error');
@@ -25,7 +25,10 @@ const formatBoomPayload = (error: Boom<unknown>) => {
 };
 
 export const enhanceHandler = (options: { protect: boolean }) => (
-    handler: (req: express.Request, user?: IUser) => Promise<[number, object | null]>,
+    handler: (
+        req: express.Request,
+        user?: IUser,
+    ) => Promise<[number, object | null]>,
 ) => {
     return async (
         req: express.Request,
@@ -67,7 +70,9 @@ export const enhanceHandler = (options: { protect: boolean }) => (
                 );
             } else {
                 err(error);
-                res.status(HTTP_CODE.INTERNAL_SERVER_ERROR).send(Boom.internal().output.payload);
+                res.status(HTTP_CODE.INTERNAL_SERVER_ERROR).send(
+                    Boom.internal().output.payload,
+                );
             }
         }
         next();
