@@ -38,6 +38,8 @@ export const userSelectors = {
     getAuthStage: (state: { user: IUserState }) => state.user.authStage,
     getCurrentClassroom: (state: { user: IUserState }) => state.user.classroom,
     getCurrentUser: (state: { user: IUserState }) => state.user.user,
+    getUserFirstName: (state: { user: IUserState }) =>
+        state.user.user.name ? state.user.user.name.split(' ').shift() : '',
 };
 
 // And actions allow us to mutate the state

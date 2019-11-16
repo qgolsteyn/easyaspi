@@ -4,36 +4,30 @@ import { StyleSheet, Text, View } from 'react-native';
 interface IStyledCard {
     title?: string;
     style?: object;
-    height?: string | number;
     children?: React.ReactNode | React.ReactNode[];
 }
 
 export const StyledCard = (props: IStyledCard) => {
     return (
         <View style={{ ...styles.cardWrapper, ...props.style }}>
-            <View style={styles.cardContainer}>
-                <View style={{ ...styles.cardContent, height: props.height }}>
-                    {props.title ? (
-                        <Text style={styles.title}>{props.title}</Text>
-                    ) : (
-                        undefined
-                    )}
-                    {props.children}
-                </View>
+            <View style={styles.cardContent}>
+                {props.title ? (
+                    <Text style={styles.title}>{props.title}</Text>
+                ) : (
+                    undefined
+                )}
+                {props.children}
             </View>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
-    cardContainer: {
-        display: 'flex',
-        width: '100%',
-    },
     cardContent: {
         backgroundColor: '#FFF',
         borderRadius: 8,
         display: 'flex',
+        height: '100%',
         padding: 16,
         width: '100%',
     },

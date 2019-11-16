@@ -7,6 +7,7 @@ import { delay, spawn } from 'redux-saga/effects';
 
 import { initNav } from './nav';
 import { initProblem } from './problems';
+import { initTeacher } from './teacher';
 import { initUser } from './user';
 
 const NAV_SETUP_TIME = 100;
@@ -17,4 +18,5 @@ export function* initializeSagas(): Generator<unknown, void, unknown> {
     yield delay(NAV_SETUP_TIME);
     yield spawn(initUser);
     yield spawn(initProblem);
+    yield spawn(initTeacher);
 }

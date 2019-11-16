@@ -1,24 +1,23 @@
+import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import * as Haptic from 'expo-haptics';
 import * as React from 'react';
-import {
-    ActivityIndicator,
-    StyleSheet,
-    Text,
-    TouchableWithoutFeedback,
-    View,
-} from 'react-native';
+import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
 
 import { colors } from '@client/constants/colors';
 
-interface IStyledButton {
-    loading?: boolean;
-    text: string;
+const ICON_SIZE = 24;
+const CARRET_SIZE = 16;
+
+interface IStyledIconButton {
     styles?: object;
-    styleAttr?: 'primary' | 'secondary' | 'success' | 'error' | 'transparent';
+    text: string;
+    icon: unknown;
+    styleAttr?: 'primary' | 'secondary' | 'success' | 'error';
     onPress?: () => void;
 }
 
-export const StyledButton = (props: IStyledButton) => {
+export const StyledCardButton = (props: IStyledIconButton) => {
     const [focus, setFocus] = React.useState(false);
 
     const color = React.useMemo(() => {
@@ -29,25 +28,8 @@ export const StyledButton = (props: IStyledButton) => {
                 return colors.error;
             case 'success':
                 return colors.success;
-            case 'transparent':
-                return 'transparent';
             default:
                 return colors.primary;
-        }
-    }, [props.styleAttr]);
-
-    const colorDark = React.useMemo(() => {
-        switch (props.styleAttr) {
-            case 'secondary':
-                return colors.secondaryDark;
-            case 'error':
-                return colors.errorDark;
-            case 'success':
-                return colors.successDark;
-            case 'transparent':
-                return 'transparent';
-            default:
-                return colors.primaryDark;
         }
     }, [props.styleAttr]);
 
@@ -64,27 +46,33 @@ export const StyledButton = (props: IStyledButton) => {
             style={{
                 ...styles.wrapper,
                 ...props.styles,
-                backgroundColor: colorDark,
             }}
         >
             <TouchableWithoutFeedback
                 style={styles.button}
                 onPressIn={onButtonPressIn}
                 onPressOut={onButtonPressOut}
-                onPress={!props.loading ? props.onPress : undefined}
+                onPress={props.onPress}
             >
                 <View
                     style={{
                         ...styles.textContainer,
-                        backgroundColor:
-                            focus || props.loading ? colorDark : color,
+                        backgroundColor: focus ? '#CCC' : 'white',
                     }}
                 >
-                    {props.loading ? (
-                        <ActivityIndicator size="large" color="#FFF" />
-                    ) : (
-                        <Text style={styles.text}>{props.text}</Text>
-                    )}
+                    <FontAwesomeIcon
+                        icon={props.icon}
+                        size={ICON_SIZE}
+                        color={color}
+                        style={{ marginRight: 16 }}
+                    />
+                    <Text style={styles.text}>{props.text}</Text>
+                    <FontAwesomeIcon
+                        icon={faChevronRight}
+                        size={CARRET_SIZE}
+                        color="#333"
+                        style={{ marginLeft: 'auto' }}
+                    />
                 </View>
             </TouchableWithoutFeedback>
         </View>
@@ -98,20 +86,23 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     text: {
-        color: '#fff',
-        fontFamily: 'josefin-sans-bold',
-        fontSize: 24,
-        paddingBottom: 4,
+        color: '#333',
+        fontFamily: 'josefin-sans',
+        fontSize: 20,
+        paddingBottom: 6,
     },
     textContainer: {
         alignItems: 'center',
         borderRadius: 8,
         display: 'flex',
+        flexDirection: 'row',
         height: '100%',
         justifyContent: 'center',
+        padding: 16,
         width: '100%',
     },
     wrapper: {
+        backgroundColor: '#CCC',
         borderRadius: 8,
         height: 64,
         marginBottom: 4,

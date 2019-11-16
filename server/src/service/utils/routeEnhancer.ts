@@ -54,6 +54,8 @@ export const enhanceHandler = (options: { protect: boolean }) => (
                 user = await verifyAccessToken(token);
             }
 
+            log(user);
+
             const response = await handler(req, user);
 
             log(response);

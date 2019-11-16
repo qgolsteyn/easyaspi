@@ -8,6 +8,7 @@ import { actions } from '../reducers';
 
 export function* initNav(): Generator<unknown, void, unknown> {
     yield takeLatest(actions.nav.setNavigator, startListeningToNavActions);
+    yield takeLatest(actions.nav.goBack, goBack);
     yield takeLatest(actions.nav.goToScreen, goToScreen);
 }
 
@@ -16,6 +17,14 @@ function* startListeningToNavActions(
     action: ReturnType<typeof actions.nav.setNavigator>,
 ): Generator<unknown, void, unknown> {
     navigator = action.payload.navigator;
+}
+
+function* goBack(): Generator<unknown, void, unknown> {
+    if (navigator) {
+        navigator.dispatch(NavigationActions.back());
+    } else {
+        alert('Navigator is undefined');
+    }
 }
 
 function* goToScreen(
