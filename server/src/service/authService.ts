@@ -62,18 +62,18 @@ export const verifyAccessToken = async (accessToken: string) => {
 
         const user = await getUserFromId(accessTokenPayload.sub);
 
-        // if (
-        //     user &&
-        //     user.id === accessTokenPayload.sub &&
-        //     user.registered === accessTokenPayload.registered &&
-        //     user.virtualClassroomUid ===
-        //         accessTokenPayload.virtualClassroomUid &&
-        //     user.userType === accessTokenPayload.userType
-        // ) {
+        if (
+            user &&
+            user.id === accessTokenPayload.sub &&
+            user.registered === accessTokenPayload.registered &&
+            user.virtualClassroomUid ===
+                accessTokenPayload.virtualClassroomUid &&
+            user.userType === accessTokenPayload.userType
+        ) {
             return user;
-        // } else {
-        //     throw Boom.unauthorized();
-        // }
+        } else {
+            throw Boom.unauthorized();
+        }
     } catch (e) {
         throw Boom.unauthorized();
     }
