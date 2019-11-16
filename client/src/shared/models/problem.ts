@@ -1,3 +1,7 @@
+const EASY = 'e';
+const MEDIUM = 'm';
+const HARD = 'h';
+
 export enum ProblemType {
     ADDITION = 'addition',
     SUBTRACTION = 'subtraction',
@@ -116,9 +120,6 @@ export function minProblemDifficulty(
     difficulty1: ProblemDifficulty,
     difficulty2: ProblemDifficulty,
 ): ProblemDifficulty {
-    const easy = 'e';
-    const med = 'm';
-    const hard = 'h';
     const diff1String = difficulty1.valueOf();
     const diff2String = difficulty2.valueOf();
 
@@ -129,11 +130,11 @@ export function minProblemDifficulty(
         return difficulty2;
     } else {
         // character at index 2 is the difficulty tier for the specific grade
-        if (diff1String.charAt(2) === easy) {
+        if (diff1String.charAt(2) === EASY) {
             return difficulty1;
         } else if (
-            diff1String.charAt(2) === med &&
-            diff2String.charAt(2) === hard
+            diff1String.charAt(2) === MEDIUM &&
+            diff2String.charAt(2) === HARD
         ) {
             return difficulty1;
         } else {
