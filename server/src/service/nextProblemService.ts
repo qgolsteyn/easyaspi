@@ -2,7 +2,7 @@ import Boom from 'boom';
 
 import { ClassroomModel, MasteryModel } from '@server/database';
 import { IUser } from '@shared/index';
-import { convertStringToProblemType } from '@shared/models/problem';
+import { convertStringToProblemType, minProblemDifficulty, ProblemDifficulty } from '@shared/models/problem';
 
 /*
  * Learning Algorithm method
@@ -36,7 +36,7 @@ export const nextProblemTypeAndDifficulty = async (userPayload: IUser) => {
     // send the first matching between problemsForToday and nextProblemTypes
     if(problemsForToday.length !== 0){
         for(const item of nextProblemTypes){
-            if(problemsForToday.indexOf(item) !== -1) {
+            if(problemsForToday.indexOf(item.valueOf()) !== -1) {
                 return {difficulty, problemType: item};
             }
         }
@@ -59,12 +59,7 @@ const findPossibleNextProblemTypes = async (studentId: string) => {
         throw Boom.badData('progress should not be empty');
     }
 
-    let minDifficulty = 'g11h';
-
-    const map = ['g1e','g1m','g1h','g2e','g2m','g2h','g3e','g3m','g3h',
-                'g4e','g4m','g4h','g5e','g5m','g5h','g6e','g6m','g6h',
-                'g7e','g7m','g7h','g8e','g8m','g8h','g9e','g9m','g9h',
-                'g10e','g10m','g10h','g11e','g11m','g11h'];
+    let minDifficulty = ProblemDifficulty.G5M;
 
     const problemTypes = Object.keys(progress);
 
@@ -77,11 +72,9 @@ const findPossibleNextProblemTypes = async (studentId: string) => {
             throw Boom.badData('progress can not be undefined');
         }
 
-        const difficulty = progressForProblemType.difficulty.toLowerCase();
+        const difficulty = progressForProblemType.difficulty;
 
-        if(map.indexOf(difficulty) < map.indexOf(minDifficulty)) {
-            minDifficulty = difficulty;
-        }
+        minDifficulty = minProblemDifficulty(difficulty, minDifficulty);
     }
 
     const nextProblemTypes = [];
@@ -96,7 +89,8 @@ const findPossibleNextProblemTypes = async (studentId: string) => {
         }
 
         const difficulty = progressForProblemType.difficulty;
-        if(difficulty.toLowerCase() === minDifficulty.toLowerCase()) {
+
+        if(difficulty.valueOf() === minDifficulty.valueOf()) {
             nextProblemTypes.push(item);
         }
     }
