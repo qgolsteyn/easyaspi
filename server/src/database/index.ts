@@ -3,10 +3,7 @@ import mongoose from 'mongoose';
 
 const log = debug('pi:db');
 
-export {
-    GeneratedProblemsModel as GeneratedProblemModel,
-} from './math/generatedProblem';
-export { ProblemTemplateModel } from './math/problemTemplate';
+export { ProblemTemplateModel } from './problemTemplate';
 export { UserModel } from './users';
 export { ClassroomModel } from './classroom';
 export { MasteryModel } from './mastery/mastery';
