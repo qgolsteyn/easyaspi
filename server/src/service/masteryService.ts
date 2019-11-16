@@ -3,7 +3,7 @@ import {
     IMastery,
     MasteryModel,
 } from '@server/database/mastery/mastery';
-import { ViewableProblemTypesModel } from '@server/database/mastery/viewableProblemTypes';
+import { ProblemMinimumDifficultiesModel } from '@server/database/mastery/problemMinimumDifficulties';
 import {
     getNextProblemDifficulty,
     getPreviousProblemDifficulty,
@@ -13,7 +13,6 @@ import {
 } from '@shared/models/problem';
 
 import debug from 'debug';
-
 const log = debug('pi:mastery');
 
 // student must get 10 questions right before moving to next difficulty
@@ -103,18 +102,38 @@ async function updateProblemTypeProgression(
         }
     } else {
         if (problemTypeProgress.currentDifficultyPoints === 0) {
-            // if user has lost all their points in the current difficulty and has not reached the lowest
-            // difficulty, kick them down to the previous difficulty
-            if (problemTypeProgress.difficulty !== ProblemDifficulty.G1E) {
-                problemTypeProgress.currentDifficultyPoints = MAX_POINTS_PER_DIFFICULTY;
-                problemTypeProgress.currentDifficultyAttempts = 0;
-                problemTypeProgress.totalPoints--;
-                problemTypeProgress.difficulty = getPreviousProblemDifficulty(
-                    problemTypeProgress.difficulty,
-                );
+            const problemDifficultyMapping = await ProblemMinimumDifficultiesModel.findOne(
+                {
+                    problemTypes: problemType.valueOf(),
+                },
+            );
+            if (problemDifficultyMapping) {
+                // if user has lost all their points in the current difficulty and has not reached the lowest
+                // difficulty for that problem type, kick them down to the previous difficulty
+                if (
+                    problemTypeProgress.difficulty !==
+                    problemDifficultyMapping.difficulty
+                ) {
+                    problemTypeProgress.currentDifficultyPoints = MAX_POINTS_PER_DIFFICULTY;
+                    problemTypeProgress.currentDifficultyAttempts = 0;
+                    problemTypeProgress.totalPoints--;
+                    problemTypeProgress.difficulty = getPreviousProblemDifficulty(
+                        problemTypeProgress.difficulty,
+                    );
+                } else {
+                    // if student is at 0 points and is in the lowest difficulty for
+                    // this problem type, only attempts is updated
+                    problemTypeProgress.currentDifficultyAttempts++;
+                }
             } else {
-                // if student is at 0 points and is in g1e, only attempts is updated
+                // this function and overarching endpoint should not fail because
+                // of this data error. In the event this error happens, continue so
+                // user experience is not disrupted
                 problemTypeProgress.currentDifficultyAttempts++;
+                log(
+                    'No problem difficulty mapping found for ' +
+                        problemType.valueOf(),
+                );
             }
         } else {
             problemTypeProgress.currentDifficultyPoints--;
@@ -128,19 +147,21 @@ async function updateProblemTypeProgression(
 
 async function insertUnlockedProblemTypes(mastery: IMastery): Promise<void> {
     let lowestDifficulty: ProblemDifficulty = ProblemDifficulty.G5H;
-    for (let problemTypeProgress of mastery.progress.values()) {
+    for (const problemTypeProgress of mastery.progress.values()) {
         lowestDifficulty = minProblemDifficulty(
             lowestDifficulty,
             problemTypeProgress.difficulty,
         );
     }
 
-    let viewableProblemTypes = await ViewableProblemTypesModel.findOne({
-        difficulty: lowestDifficulty,
-    });
+    const problemDifficultyMapping = await ProblemMinimumDifficultiesModel.findOne(
+        {
+            difficulty: lowestDifficulty,
+        },
+    );
 
-    if (viewableProblemTypes) {
-        viewableProblemTypes.problemTypes.forEach(problemType => {
+    if (problemDifficultyMapping) {
+        problemDifficultyMapping.problemTypes.forEach(problemType => {
             if (!mastery.progress.has(problemType)) {
                 const newProblemTypeProgress = {
                     currentDifficultyAttempts: 0,
@@ -152,11 +173,6 @@ async function insertUnlockedProblemTypes(mastery: IMastery): Promise<void> {
                 mastery.progress.set(problemType, newProblemTypeProgress);
             }
         });
-    } else {
-        log(
-            'No viewableProblemTypes document found for ' +
-                lowestDifficulty.valueOf(),
-        );
     }
 }
 
