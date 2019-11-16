@@ -1,15 +1,15 @@
 import {
-    IProblemTypeProgress,
     IMastery,
+    IProblemTypeProgress,
     MasteryModel,
 } from '@server/database/mastery/mastery';
 import { ProblemMinimumDifficultiesModel } from '@server/database/mastery/problemMinimumDifficulties';
 import {
     getNextProblemDifficulty,
     getPreviousProblemDifficulty,
+    minProblemDifficulty,
     ProblemDifficulty,
     ProblemType,
-    minProblemDifficulty,
 } from '@shared/models/problem';
 
 import debug from 'debug';
@@ -44,7 +44,7 @@ export async function updateMastery(
         mastery = await newMastery.save();
     }
 
-    let problemTypeProgress = mastery.progress.get(problemType);
+    const problemTypeProgress = mastery.progress.get(problemType);
     if (typeof problemTypeProgress === 'undefined') {
         // if app is working correclty, this case should never happen
         const newProblemTypeProgress = createProblemTypeProgression(isSuccess);
