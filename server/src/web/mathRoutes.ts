@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { ProblemTemplateModel } from '@server/database';
+import { ArithmeticProblemTemplateModel } from '@server/database';
 import { mathService } from '@server/service';
 import { enhanceHandler, HTTP_CODE } from '@server/service/utils/routeEnhancer';
 
@@ -11,7 +11,7 @@ export const initializeMathRoutes = (app: express.Application) => {
     mathRouter.get(
         '/nextProblem',
         enhanceHandler({ protect: true })(async () => {
-            const problem = mathService.generateProblem();
+            const problem = await mathService.fetchNextMathProblem();
             return [HTTP_CODE.OK, problem];
         }),
     );
@@ -20,7 +20,9 @@ export const initializeMathRoutes = (app: express.Application) => {
     mathRouter.get(
         '/templates',
         enhanceHandler({ protect: true })(async () => {
-            const templates = await ProblemTemplateModel.find();
+            const templates = await ArithmeticProblemTemplateModel.findOne({
+                problemType: 'addition',
+            });
             return [HTTP_CODE.OK, templates];
         }),
     );
