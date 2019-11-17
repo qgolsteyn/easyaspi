@@ -18,6 +18,27 @@ export const masteryDoc1 = {
             difficulty: 'g1h2e',
             totalPoints: 123
         },
+        division: {
+            _id: '5dcfa2aa72e21e4adca02e32',
+            currentDifficultyAttempts: 0,
+            currentDifficultyPoints: 0,
+            difficulty: 'g4m',
+            totalPoints: 90,
+        },
+        equation: {
+            _id: '5dcfa2aa72e21e4adca02e32',
+            currentDifficultyAttempts: 0,
+            currentDifficultyPoints: 0,
+            difficulty: 'g3h4e',
+            totalPoints: 90,
+        },
+        multiplication: {
+            _id: '5dcfa2aa72e21e4adca02ea2',
+            currentDifficultyAttempts: 3,
+            currentDifficultyPoints: 9,
+            difficulty: 'g1h2e',
+            totalPoints: 90,
+        },
         subtraction: {
             _id: '5dcfa2aa72e21e4adca02ea1',
             currentDifficultyAttempts: 0,
@@ -25,30 +46,8 @@ export const masteryDoc1 = {
             difficulty: 'g5m',
             totalPoints: 90
         },
-        // tslint:disable-next-line:object-literal-sort-keys
-        multiplication: {
-            _id: '5dcfa2aa72e21e4adca02ea2',
-            currentDifficultyAttempts: 3,
-            currentDifficultyPoints: 9,
-            difficulty: 'g1h2e',
-            totalPoints: 90
-        },
-        division: {
-            _id: '5dcfa2aa72e21e4adca02e32',
-            currentDifficultyAttempts: 0,
-            currentDifficultyPoints: 0,
-            difficulty: 'g4m',
-            totalPoints: 90
-        },
-        equation: {
-            _id: '5dcfa2aa72e21e4adca02e32',
-            currentDifficultyAttempts: 0,
-            currentDifficultyPoints: 0,
-            difficulty: 'g3h4e',
-            totalPoints: 90
-        },
     },
-    studentId: '113015909143620944320'
+    studentId: '113015909143620944320',
 };
 
 export const masteryDoc2 = {
@@ -61,21 +60,6 @@ export const masteryDoc2 = {
             difficulty: 'g1h2e',
             totalPoints: 123,
         },
-        subtraction: {
-            _id: '5dcfa2aa72e21e4adca02ea1',
-            currentDifficultyAttempts: 11,
-            currentDifficultyPoints: 5,
-            difficulty: 'g1m',
-            totalPoints: 90,
-        },
-        // tslint:disable-next-line:object-literal-sort-keys
-        multiplication: {
-            _id: '5dcfa2aa72e21e4adca02ea2',
-            currentDifficultyAttempts: 10,
-            currentDifficultyPoints: 5,
-            difficulty: 'g1m',
-            totalPoints: 90,
-        },
         division: {
             _id: '5dcfa2aa72e21e4adca02e32',
             currentDifficultyAttempts: 9,
@@ -86,6 +70,20 @@ export const masteryDoc2 = {
         equation: {
             _id: '5dcfa2aa72e21e4adca02e32',
             currentDifficultyAttempts: 8,
+            currentDifficultyPoints: 5,
+            difficulty: 'g1m',
+            totalPoints: 90,
+        },
+        multiplication: {
+            _id: '5dcfa2aa72e21e4adca02ea2',
+            currentDifficultyAttempts: 10,
+            currentDifficultyPoints: 5,
+            difficulty: 'g1m',
+            totalPoints: 90,
+        },
+        subtraction: {
+            _id: '5dcfa2aa72e21e4adca02ea1',
+            currentDifficultyAttempts: 11,
             currentDifficultyPoints: 5,
             difficulty: 'g1m',
             totalPoints: 90,

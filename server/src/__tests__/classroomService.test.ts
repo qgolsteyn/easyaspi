@@ -15,7 +15,8 @@ test('Check if createClassroom creates classroom correctly', async () => {
 });
 
 test('Check if authenticateToClassroom returns classroomId properly', async () => {
-    mockingoose(ClassroomModel).toReturn({_id: '5dd0ddeaa1608611fdb1bb40' ,name: 'Test100', passcode: '12345', problemsForToday: []}, 'findOne');
+    mockingoose(ClassroomModel).
+    toReturn({_id: '5dd0ddeaa1608611fdb1bb40' ,name: 'Test100', passcode: '12345', problemsForToday: []}, 'findOne');
     try{
         const classRoomId = await authenticateToClassroom(classRoomDoc4);
         expect(classRoomId).toEqual('5dd0ddeaa1608611fdb1bb40');
