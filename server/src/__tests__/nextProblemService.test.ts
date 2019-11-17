@@ -1,123 +1,12 @@
 import mockingoose from 'mockingoose';
-import { ClassroomModel, MasteryModel, UserModel } from '../database';
+import { ClassroomModel, MasteryModel } from '../database';
 import {
     findPossibleNextProblemTypes,
     getProblemsForClass,
     nextProblemTypeAndDifficulty,
 } from '../service/nextProblemService';
 
-const user1 = new UserModel();
-user1.virtualClassroomUid = '113015909143620944320';
-user1.id = '113015909143620944320';
-user1.userType = 'student';
-
-const masteryDoc1 = {
-    _id: '5dcfa29372e21e4adca02e93',
-    progress: {
-        addition: {
-            _id: '5dcfa29372e21e4adca02e94',
-            currentDifficultyAttempts: 9,
-            currentDifficultyPoints: 4,
-            difficulty: 'g1h2e',
-            totalPoints: 123
-        },
-        subtraction: {
-            _id: '5dcfa2aa72e21e4adca02ea1',
-            currentDifficultyAttempts: 0,
-            currentDifficultyPoints: 0,
-            difficulty: 'g5m',
-            totalPoints: 90
-        },
-        // tslint:disable-next-line:object-literal-sort-keys
-        multiplication: {
-            _id: '5dcfa2aa72e21e4adca02ea2',
-            currentDifficultyAttempts: 3,
-            currentDifficultyPoints: 9,
-            difficulty: 'g1h2e',
-            totalPoints: 90
-        },
-        division: {
-            _id: '5dcfa2aa72e21e4adca02e32',
-            currentDifficultyAttempts: 0,
-            currentDifficultyPoints: 0,
-            difficulty: 'g4m',
-            totalPoints: 90
-        },
-        equation: {
-            _id: '5dcfa2aa72e21e4adca02e32',
-            currentDifficultyAttempts: 0,
-            currentDifficultyPoints: 0,
-            difficulty: 'g3h4e',
-            totalPoints: 90
-        },
-    },
-    studentId: '113015909143620944320'
-};
-
-const masteryDoc2 = {
-    _id: '5dcfa29372e21e4adca02e93',
-    progress: {
-        addition: {
-            _id: '5dcfa29372e21e4adca02e94',
-            currentDifficultyAttempts: 23,
-            currentDifficultyPoints: 23,
-            difficulty: 'g1h2e',
-            totalPoints: 123
-        },
-        subtraction: {
-            _id: '5dcfa2aa72e21e4adca02ea1',
-            currentDifficultyAttempts: 11,
-            currentDifficultyPoints: 5,
-            difficulty: 'g1m',
-            totalPoints: 90
-        },
-        // tslint:disable-next-line:object-literal-sort-keys
-        multiplication: {
-            _id: '5dcfa2aa72e21e4adca02ea2',
-            currentDifficultyAttempts: 10,
-            currentDifficultyPoints: 5,
-            difficulty: 'g1m',
-            totalPoints: 90
-        },
-        division: {
-            _id: '5dcfa2aa72e21e4adca02e32',
-            currentDifficultyAttempts: 9,
-            currentDifficultyPoints: 5,
-            difficulty: 'g1m',
-            totalPoints: 90
-        },
-        equation: {
-            _id: '5dcfa2aa72e21e4adca02e32',
-            currentDifficultyAttempts: 8,
-            currentDifficultyPoints: 5,
-            difficulty: 'g1m',
-            totalPoints: 90
-        },
-    },
-    studentId: '113015909143620944320'
-};
-
-
-const classRoomDoc1 = {
-    _id: '113015909143620944320',
-    name: 'Test101',
-    passcode: '12345',
-    problemsForToday: ['addition', 'subtraction']
-};
-
-const classRoomDoc2 = {
-    _id: '113015909143620944320',
-    name: 'Test101',
-    passcode: '12345',
-    problemsForToday: []
-};
-
-const classRoomDoc3 = {
-    _id: '113015909143620944320',
-    name: 'Test101',
-    passcode: '12345',
-    problemsForToday: ['addition', 'volumes']
-};
+import { classRoomDoc1, classRoomDoc2, classRoomDoc3, masteryDoc1, masteryDoc2, user1 } from '../database/mockData';
 
 test('Check if ProblemsForToday returns the right object', async () => {
     mockingoose(ClassroomModel).toReturn(classRoomDoc1, 'findOne');
