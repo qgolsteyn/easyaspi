@@ -1,4 +1,4 @@
-import { ProblemType, ProblemDifficulty } from '@shared/models/problem';
+import { ProblemDifficulty, ProblemType } from '@shared/models/problem';
 import { generateArithmeticProblem } from './generateArithmeticProblem';
 import { generateNumber } from './generateNumbers';
 
