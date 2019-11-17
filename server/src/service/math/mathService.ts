@@ -1,9 +1,12 @@
-import { ProblemDifficulty, ProblemType } from '@shared/models/problem';
+import {
+    ProblemDifficulty,
+    ProblemType,
+} from '../../../../client/src/shared/models/problem';
 import { generateArithmeticProblem } from './generateArithmeticProblem';
 import { generateNumber } from './generateNumbers';
 
-import debug from 'debug';
-const log = debug('pi:route');
+// import debug from 'debug';
+// const log = debug('pi:route');
 
 export const fetchNextMathProblem = async () => {
     // call next problem algo using user object
@@ -47,12 +50,12 @@ export const fetchNextMathProblem = async () => {
         difficulty = subDiffs[difficultiesIndex];
     }
 
-    log(
-        'problemType: ' +
-            supportedTypes[supportedTypesIndex] +
-            ' difficulty: ' +
-            difficulty,
-    );
+    // log(
+    //     'problemType: ' +
+    //         supportedTypes[supportedTypesIndex] +
+    //         ' difficulty: ' +
+    //         difficulty,
+    // );
 
     const problem = await generateArithmeticProblem(
         difficulty,

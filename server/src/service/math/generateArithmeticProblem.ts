@@ -1,12 +1,12 @@
 import {
     ArithmeticProblemTemplateModel,
     IArithmeticProblemDefinition,
-} from '@server/database/arithmeticProblemTemplate';
+} from '../../database/arithmeticProblemTemplate';
 import {
     IProblem,
     ProblemDifficulty,
     ProblemType,
-} from '@shared/models/problem';
+} from '../../../../client/src/shared/models/problem';
 import Boom from 'boom';
 import {
     generateIncorrectWholeNumberSolutions,
@@ -37,10 +37,6 @@ export async function generateArithmeticProblem(
                 );
             } else if (problemType === ProblemType.SUBTRACTION) {
                 operands = generateSubtractionOperands(problemDefinition);
-            } else {
-                Boom.notFound(
-                    'Problem type is not of Addition, or Subtraction',
-                );
             }
 
             // for now we just deal with 1 operator per problem
@@ -90,7 +86,7 @@ export async function generateArithmeticProblem(
             } as IProblem;
         } else {
             throw Boom.notFound(
-                'no problem definition found for:' +
+                'no problem definition found for: ' +
                     problemType.valueOf() +
                     ', ' +
                     difficulty.valueOf(),

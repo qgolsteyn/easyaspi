@@ -37,7 +37,7 @@ test('Check if generateIncorrectWholeNumberSolutions generates 3 values distinct
     }
 });
 
-test('Check if generateIncorrectWholeNumberSolutions generates values that adhere to multiplesOf', async () => {
+test('Check if generateIncorrectWholeNumberSolutions generates values that adhere to multiplesOf', () => {
     const solution = 100;
     const multiplesOf = 5;
 
@@ -52,7 +52,7 @@ test('Check if generateIncorrectWholeNumberSolutions generates values that adher
     }
 });
 
-test('Check if generateIncorrectWholeNumberSolutions generates 1, 2, 3 if solution is 0', async () => {
+test('Check if generateIncorrectWholeNumberSolutions generates 1, 2, 3 if solution is 0', () => {
     const multiplesOf = 1;
 
     const values = generateIncorrectWholeNumberSolutions(0, multiplesOf);
@@ -63,7 +63,7 @@ test('Check if generateIncorrectWholeNumberSolutions generates 1, 2, 3 if soluti
     expect(values).toContain('3');
 });
 
-test('Check if generateIncorrectWholeNumberSolutions generates non negative values', async () => {
+test('Check if generateIncorrectWholeNumberSolutions generates non negative values', () => {
     const solution = 1;
     const multiplesOf = 1;
 
