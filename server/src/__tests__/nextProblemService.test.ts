@@ -88,7 +88,8 @@ test('1 Check if nextProblemTypeAndDifficulty finds the matching with ProblemsFo
     expect(JSON.parse(JSON.stringify(nextProblem))).toMatchObject({difficulty: 'g1h2e', problemType: 'addition'});
 });
 
-test('2 Check if nextProblemTypeAndDifficulty returns correctly when ProblemsForToday is empty from classroom', async () => {
+test('2 Check if nextProblemTypeAndDifficulty returns correctly when ProblemsForToday is empty from classroom',
+    async () => {
     mockingoose(MasteryModel).toReturn(masteryDoc1, 'findOne');
     mockingoose(ClassroomModel).toReturn(classRoomDoc2, 'findOne');
 

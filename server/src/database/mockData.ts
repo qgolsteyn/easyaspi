@@ -1,9 +1,11 @@
 import { IClassroom } from '@shared/models/classroom';
+import { IUser } from '@shared/models/users';
 
-export const user1 = {
+export const user1: IUser = {
     id: '113015909143620944320',
+    registered: true,
     userType: 'student',
-    virtualClassroomUid: '113015909143620944320'
+    virtualClassroomUid: '113015909143620944320',
 };
 
 export const masteryDoc1 = {
@@ -57,14 +59,14 @@ export const masteryDoc2 = {
             currentDifficultyAttempts: 23,
             currentDifficultyPoints: 23,
             difficulty: 'g1h2e',
-            totalPoints: 123
+            totalPoints: 123,
         },
         subtraction: {
             _id: '5dcfa2aa72e21e4adca02ea1',
             currentDifficultyAttempts: 11,
             currentDifficultyPoints: 5,
             difficulty: 'g1m',
-            totalPoints: 90
+            totalPoints: 90,
         },
         // tslint:disable-next-line:object-literal-sort-keys
         multiplication: {
@@ -72,24 +74,24 @@ export const masteryDoc2 = {
             currentDifficultyAttempts: 10,
             currentDifficultyPoints: 5,
             difficulty: 'g1m',
-            totalPoints: 90
+            totalPoints: 90,
         },
         division: {
             _id: '5dcfa2aa72e21e4adca02e32',
             currentDifficultyAttempts: 9,
             currentDifficultyPoints: 5,
             difficulty: 'g1m',
-            totalPoints: 90
+            totalPoints: 90,
         },
         equation: {
             _id: '5dcfa2aa72e21e4adca02e32',
             currentDifficultyAttempts: 8,
             currentDifficultyPoints: 5,
             difficulty: 'g1m',
-            totalPoints: 90
+            totalPoints: 90,
         },
     },
-    studentId: '113015909143620944320'
+    studentId: '113015909143620944320',
 };
 
 
@@ -97,31 +99,31 @@ export const classRoomDoc1 = {
     _id: '113015909143620944320',
     name: 'Test101',
     passcode: '12345',
-    problemsForToday: ['addition', 'subtraction']
+    problemsForToday: ['addition', 'subtraction'],
 };
 
 export const classRoomDoc2 = {
     _id: '113015909143620944320',
     name: 'Test101',
     passcode: '12345',
-    problemsForToday: []
+    problemsForToday: [],
 };
 
 export const classRoomDoc3 = {
     _id: '113015909143620944320',
     name: 'Test101',
     passcode: '12345',
-    problemsForToday: ['addition', 'volumes']
+    problemsForToday: ['addition', 'volumes'],
 };
 
-export const classRoomDoc4:IClassroom = {
+export const classRoomDoc4: IClassroom = {
     name: 'Test100',
     passcode: '12345',
-    problemsForToday: []
+    problemsForToday: [],
 };
 
-export const classRoomDoc5:IClassroom = {
+export const classRoomDoc5: IClassroom = {
     name: 'Test105',
     passcode: '11122',
-    problemsForToday: ['addition']
+    problemsForToday: ['addition'],
 };

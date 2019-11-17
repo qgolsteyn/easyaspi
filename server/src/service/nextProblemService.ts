@@ -2,7 +2,11 @@ import Boom from 'boom';
 
 import { IProblemTypeProgress } from '@server/database/mastery/mastery';
 import { IUser, ProblemType } from '../../../client/src/shared/index';
-import { convertStringToProblemType, minProblemDifficulty, ProblemDifficulty } from '../../../client/src/shared/models/problem';
+import {
+    convertStringToProblemType,
+    minProblemDifficulty,
+    ProblemDifficulty }
+    from '../../../client/src/shared/models/problem';
 import { ClassroomModel, MasteryModel } from '../database';
 
 /*
