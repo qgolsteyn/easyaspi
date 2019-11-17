@@ -1,8 +1,8 @@
 import express from 'express';
 
+import { ArithmeticProblemTemplateModel } from '@server/database';
 import { mathService } from '@server/service';
 import { enhanceHandler, HTTP_CODE } from '@server/service/utils/routeEnhancer';
-import { ArithmeticProblemTemplateModel } from '@server/database';
 
 export const initializeMathRoutes = (app: express.Application) => {
     const mathRouter = express.Router();

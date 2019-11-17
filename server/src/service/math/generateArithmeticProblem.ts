@@ -1,14 +1,14 @@
+import { ArithmeticProblemTemplateModel } from '@server/database/arithmeticProblemTemplate';
 import {
     IProblem,
-    ProblemType,
     ProblemDifficulty,
+    ProblemType,
 } from '@shared/models/problem';
-import { ArithmeticProblemTemplateModel } from '@server/database/arithmeticProblemTemplate';
+import Boom from 'boom';
 import {
     generateIncorrectWholeNumberSolutions,
     generateNumber,
 } from './generateNumbers';
-import Boom from 'boom';
 
 export async function generateArithmeticProblem(
     difficulty: ProblemDifficulty,
@@ -36,7 +36,7 @@ export async function generateArithmeticProblem(
             );
 
             // generate the operands
-            let operands = new Array<number>(numOperands);
+            const operands = new Array<number>(numOperands);
             for (let i = 0; i < numOperands; i++) {
                 // if i is less than the number of defined operand ranges, use the corresponding range
                 if (i < problemDefinition.operands.length) {
@@ -95,12 +95,12 @@ export async function generateArithmeticProblem(
             }
 
             return {
-                incorrectSolutions: incorrectSolutions,
-                operands: operands,
+                incorrectSolutions,
+                operands,
                 operators: [template.operator],
-                problem: problem,
-                problemType: problemType,
-                solution: solution,
+                problem,
+                problemType,
+                solution,
             } as IProblem;
         } else {
             throw Boom.notFound(

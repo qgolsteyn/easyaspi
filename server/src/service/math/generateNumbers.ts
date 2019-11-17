@@ -1,3 +1,5 @@
+const INCORRECT_SOLUTIONS_VARIANCE = 0.1;
+
 export const generateNumber = (
     min: number,
     max: number,
@@ -18,13 +20,13 @@ export const generateIncorrectWholeNumberSolutions = (
     solution: number,
     multiplesOf: number,
 ) => {
-    let incorrectSolutions = [];
+    const incorrectSolutions = [];
 
     if (solution === 0) {
         incorrectSolutions.push('1', '2', '3');
     } else {
         // rounded up value of 10%
-        let diff = Math.ceil(solution * 0.1);
+        let diff = Math.ceil(solution * INCORRECT_SOLUTIONS_VARIANCE);
 
         if (multiplesOf > 1) {
             while (diff % multiplesOf !== 0) {
@@ -32,18 +34,21 @@ export const generateIncorrectWholeNumberSolutions = (
             }
         }
 
+        const two = 2;
+        const three = 3;
+
         // pretty simple incorrect solutions just take ~10% differences
         if (solution - diff < 1) {
             incorrectSolutions.push(
                 String(solution + diff),
-                String(solution + 2 * diff),
-                String(solution + 3 * diff),
+                String(solution + two * diff),
+                String(solution + three * diff),
             );
         } else {
             incorrectSolutions.push(
                 String(solution - diff),
                 String(solution + diff),
-                String(solution + 2 * diff),
+                String(solution + two * diff),
             );
         }
     }
