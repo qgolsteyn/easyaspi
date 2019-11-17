@@ -1,16 +1,16 @@
 import {
-    IMastery,
-    IProblemTypeProgress,
-    MasteryModel,
-} from '@server/database/mastery/mastery';
-import { ProblemMinimumDifficultiesModel } from '@server/database/mastery/problemMinimumDifficulties';
-import {
     getNextProblemDifficulty,
     getPreviousProblemDifficulty,
     minProblemDifficulty,
     ProblemDifficulty,
     ProblemType,
-} from '@shared/models/problem';
+} from '../../../client/src/shared/models/problem';
+import {
+    IMastery,
+    IProblemTypeProgress,
+    MasteryModel,
+} from '../database/mastery/mastery';
+import { ProblemMinimumDifficultiesModel } from '../database/mastery/problemMinimumDifficulties';
 
 import debug from 'debug';
 const log = debug('pi:mastery');

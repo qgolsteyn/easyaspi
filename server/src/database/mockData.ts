@@ -1,6 +1,6 @@
+import { IAuthInfo } from '@server/service/authService';
 import { IClassroom } from '@shared/models/classroom';
 import { IUser } from '@shared/models/users';
-import { IAuthInfo } from '@server/service/authService';
 
 export const user1: IUser = {
     id: '113015909143620944320',

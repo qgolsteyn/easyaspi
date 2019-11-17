@@ -16,7 +16,6 @@ const ClassroomSchema = new mongoose.Schema({
     },
     problemsForToday: {
         type: Array,
-        unique: true,
     }
 });
 

@@ -1,11 +1,11 @@
-import { updateMastery } from '@server/service/masteryService';
-import { enhanceHandler, HTTP_CODE } from '@server/service/utils/routeEnhancer';
 import {
     convertStringToProblemType,
     ProblemType,
-} from '@shared/models/problem';
+} from '../../../client/src/shared/models/problem';
 import Boom from 'boom';
 import express from 'express';
+import { updateMastery } from '../service/masteryService';
+import { enhanceHandler, HTTP_CODE } from '../service/utils/routeEnhancer';
 
 export const initializeMasteryRoutes = (app: express.Application) => {
     const masteryRouter = express.Router();

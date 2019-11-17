@@ -1,4 +1,4 @@
-import { IProblem, ProblemType } from '@shared/index';
+import { IProblem, ProblemType } from '../../../../client/src/shared/index';
 
 import { generateVariableValues, IVariableDefinition } from './generate';
 
