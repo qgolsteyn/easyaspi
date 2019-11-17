@@ -60,12 +60,11 @@ export const ArithmeticProblemDefinitionSchema = new mongoose.Schema({
  * types that are introduced early will start at g1e, however problem types that are
  * introduced later like fractions will start at g3m
  *
- * operators is a string in case we support math problems with multiple operators
- * in the future
+ * operator is the symbol of the math operation
  */
 export interface IArithmeticProblemTemplate extends mongoose.Document {
     difficultyMap: Map<string, IArithmeticProblemDefinition>;
-    operators: string[];
+    operator: string;
     problemType: ProblemType;
 }
 
@@ -75,9 +74,9 @@ export const ArithmeticProblemTemplateSchema = new mongoose.Schema({
         required: true,
         type: Map,
     },
-    operators: {
+    operator: {
         required: true,
-        type: [String],
+        type: String,
     },
     optExtraOperands: {
         required: true,

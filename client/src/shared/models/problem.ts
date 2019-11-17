@@ -145,10 +145,10 @@ export function minProblemDifficulty(
 }
 
 export interface IProblem {
-    problemType: ProblemType;
-    problem: string;
+    incorrectSolutions: string[];
     operands: number[];
     operators: string[];
+    problem: string;
+    problemType: ProblemType;
     solution: string[];
-    incorrectSolution: string[];
 }
