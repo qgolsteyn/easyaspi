@@ -16,7 +16,7 @@ export const masteryDoc1 = {
             currentDifficultyAttempts: 9,
             currentDifficultyPoints: 4,
             difficulty: 'g1h2e',
-            totalPoints: 123
+            totalPoints: 123,
         },
         division: {
             _id: '5dcfa2aa72e21e4adca02e32',
@@ -44,7 +44,7 @@ export const masteryDoc1 = {
             currentDifficultyAttempts: 0,
             currentDifficultyPoints: 0,
             difficulty: 'g5m',
-            totalPoints: 90
+            totalPoints: 90,
         },
     },
     studentId: '113015909143620944320',
