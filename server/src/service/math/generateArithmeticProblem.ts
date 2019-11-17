@@ -1,13 +1,13 @@
-import {
-    ArithmeticProblemTemplateModel,
-    IArithmeticProblemDefinition,
-} from '@server/database/arithmeticProblemTemplate';
+import Boom from 'boom';
 import {
     IProblem,
     ProblemDifficulty,
     ProblemType,
-} from '@shared/models/problem';
-import Boom from 'boom';
+} from '../../../../client/src/shared/models/problem';
+import {
+    ArithmeticProblemTemplateModel,
+    IArithmeticProblemDefinition,
+} from '../../database/arithmeticProblemTemplate';
 import {
     generateIncorrectWholeNumberSolutions,
     generateNumber,
