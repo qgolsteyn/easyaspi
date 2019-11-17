@@ -1,3 +1,4 @@
+import { useCavy } from 'cavy';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch } from 'react-redux';
@@ -13,6 +14,8 @@ import bg2 from '../../../assets/bg2.png';
 export const UserSelectionScreen = () => {
     const dispatch = useDispatch();
 
+    const testHook = useCavy();
+
     return (
         <Background backgroundImage={bg2} backgroundColor={colors.bg}>
             <View style={styles.wrapper}>
@@ -25,6 +28,7 @@ export const UserSelectionScreen = () => {
                         onPress={() =>
                             dispatch(actions.nav.goToScreen('StudentSignUp'))
                         }
+                        ref={testHook('UserSelection.Student')}
                     />
                 </View>
                 <View style={styles.container}>
@@ -33,6 +37,7 @@ export const UserSelectionScreen = () => {
                         onPress={() =>
                             dispatch(actions.nav.goToScreen('TeacherSignUp'))
                         }
+                        ref={testHook('UserSelection.Teacher')}
                     />
                 </View>
             </View>

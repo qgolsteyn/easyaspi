@@ -1,3 +1,4 @@
+import { useCavy } from 'cavy';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -33,6 +34,8 @@ export const StudentSignUpScreen = () => {
 
     const authStage = useSelector(selectors.user.getAuthStage);
     const currentUser = useSelector(selectors.user.getCurrentUser);
+
+    const testHook = useCavy();
 
     const [state, setState] = useState(() => ({
         errors: {
@@ -86,6 +89,7 @@ export const StudentSignUpScreen = () => {
                         error={state.errors.name}
                         style={{ marginBottom: 16 }}
                         onChangeText={onValue('name')}
+                        ref={testHook('StudentRegister.Name')}
                     />
                     <StyledInput
                         label="The class name is..."
@@ -95,6 +99,7 @@ export const StudentSignUpScreen = () => {
                         error={state.errors.classroomName}
                         style={{ marginBottom: 16 }}
                         onChangeText={onValue('classroomName')}
+                        ref={testHook('StudentRegister.ClassroomName')}
                     />
                     <StyledInput
                         label="What is the teacher password?"
@@ -103,12 +108,14 @@ export const StudentSignUpScreen = () => {
                         keyboardType="number-pad"
                         style={{ marginBottom: 32 }}
                         onChangeText={onValue('classroomPasscode')}
+                        ref={testHook('StudentRegister.ClassroomPasscode')}
                     />
                     <StyledButton
                         text="Submit!"
                         onPress={onSubmit}
                         loading={authStage === AuthStage.AUTH_CHECK_LOADING}
                         styles={{ marginBottom: 32 }}
+                        ref={testHook('StudentRegister.Submit')}
                     />
                 </StyledForm>
             </View>

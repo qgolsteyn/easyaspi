@@ -22,7 +22,6 @@ export const SolutionFragment = (props: ISolutionFragmentProps) => {
             <StyledCard
                 title={`Question ${props.currentProblemNumber}`}
                 style={styles.problemCard}
-                height="100%"
             >
                 <View style={styles.cardContent}>
                     <Text style={styles.problemText}>

@@ -1,3 +1,4 @@
+import { useCavy } from 'cavy';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -33,6 +34,8 @@ export const TeacherSignUpScreen = () => {
 
     const authStage = useSelector(selectors.user.getAuthStage);
     const currentUser = useSelector(selectors.user.getCurrentUser);
+
+    const testHook = useCavy();
 
     const [state, setState] = useState({
         errors: {
@@ -86,6 +89,7 @@ export const TeacherSignUpScreen = () => {
                         value={state.values.name}
                         error={state.errors.name}
                         onChangeText={onValue('name')}
+                        ref={testHook('TeacherRegister.Name')}
                     />
                     <StyledInput
                         label="Classroom"
@@ -95,6 +99,7 @@ export const TeacherSignUpScreen = () => {
                         value={state.values.classroomName}
                         error={state.errors.classroomName}
                         onChangeText={onValue('classroomName')}
+                        ref={testHook('TeacherRegister.ClassroomName')}
                     />
                     <StyledInput
                         placeholder="Student registration code"
@@ -103,12 +108,14 @@ export const TeacherSignUpScreen = () => {
                         value={state.values.classroomPasscode}
                         error={state.errors.classroomPasscode}
                         onChangeText={onValue('classroomPasscode')}
+                        ref={testHook('TeacherRegister.ClassroomPasscode')}
                     />
                     <StyledButton
                         text="Submit!"
                         onPress={onSubmit}
                         loading={authStage === AuthStage.AUTH_CHECK_LOADING}
                         styles={{ marginBottom: 32 }}
+                        ref={testHook('TeacherRegister.Submit')}
                     />
                 </StyledForm>
             </View>

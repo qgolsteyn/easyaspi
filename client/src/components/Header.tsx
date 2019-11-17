@@ -1,3 +1,4 @@
+import { wrap } from 'cavy';
 import * as React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
@@ -5,13 +6,13 @@ interface IStyledHeader {
     children: string | string[];
 }
 
-export const StyledHeader = (props: IStyledHeader) => {
+export const StyledHeader = wrap((props: IStyledHeader) => {
     return (
         <View style={styles.header}>
             <Text style={styles.headerText}>{props.children}</Text>
         </View>
     );
-};
+});
 
 const styles = StyleSheet.create({
     header: {

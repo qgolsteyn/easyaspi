@@ -1,5 +1,6 @@
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { wrap } from 'cavy';
 import * as Haptic from 'expo-haptics';
 import * as React from 'react';
 import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
@@ -17,7 +18,7 @@ interface IStyledIconButton {
     onPress?: () => void;
 }
 
-export const StyledCardButton = (props: IStyledIconButton) => {
+export const StyledCardButton = wrap((props: IStyledIconButton) => {
     const [focus, setFocus] = React.useState(false);
 
     const color = React.useMemo(() => {
@@ -77,7 +78,7 @@ export const StyledCardButton = (props: IStyledIconButton) => {
             </TouchableWithoutFeedback>
         </View>
     );
-};
+});
 
 const styles = StyleSheet.create({
     button: {

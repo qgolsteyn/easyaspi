@@ -1,4 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { wrap } from 'cavy';
 import * as Haptic from 'expo-haptics';
 import * as React from 'react';
 import { StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
@@ -14,7 +15,7 @@ interface IStyledButton {
     onPress?: () => void;
 }
 
-export const StyledIconButton = (props: IStyledButton) => {
+export const StyledIconButton = wrap((props: IStyledButton) => {
     const [focus, setFocus] = React.useState(false);
 
     const color = React.useMemo(() => {
@@ -77,7 +78,7 @@ export const StyledIconButton = (props: IStyledButton) => {
             </View>
         </TouchableWithoutFeedback>
     );
-};
+});
 
 const styles = StyleSheet.create({
     wrapper: {
