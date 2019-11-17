@@ -20,9 +20,7 @@ export const initializeMathRoutes = (app: express.Application) => {
     mathRouter.get(
         '/templates',
         enhanceHandler({ protect: true })(async () => {
-            const templates = await ArithmeticProblemTemplateModel.findOne({
-                problemType: 'addition',
-            });
+            const templates = await ArithmeticProblemTemplateModel.find();
             return [HTTP_CODE.OK, templates];
         }),
     );
