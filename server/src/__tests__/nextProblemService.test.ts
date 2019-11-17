@@ -39,10 +39,10 @@ test('Check if findPossibleNextProblemTypes finds lowest grade correctly', async
 });
 
 test('Check if findPossibleNextProblemTypes finds lowest grade correctly', async () => {
-    mockingoose(MasteryModel).toReturn(masteryDoc1, 'findOne');
+    mockingoose(MasteryModel).toReturn(masteryDoc2, 'findOne');
 
     const nextProblemTypes = await findPossibleNextProblemTypes('113015909143620944320');
-    expect(nextProblemTypes[nextProblemTypes.length - 1]).toEqual('g1h2e');
+    expect(nextProblemTypes[nextProblemTypes.length - 1]).toEqual('g1m');
 });
 
 
