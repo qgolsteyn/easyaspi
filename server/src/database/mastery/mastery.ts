@@ -1,5 +1,5 @@
-import { ProblemDifficulty, ProblemType } from '@shared/models/problem';
 import * as mongoose from 'mongoose';
+import { ProblemDifficulty, ProblemType } from '../../../../client/src/shared/models/problem';
 
 /**
  * difficulty - current difficulty student is on for this problem type

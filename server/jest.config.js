@@ -4,11 +4,10 @@
 
 const path = require('path');
 require('dotenv').config({
-    path: path.resolve(__dirname, './server/.env'),
+    path: path.resolve(__dirname, './.env'),
 });
 
 module.exports = {
-    roots: ['<rootDir>/client', '<rootDir>/server'],
     transform: {
         '^.+\\.tsx?$': 'ts-jest',
     },

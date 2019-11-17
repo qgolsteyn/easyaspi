@@ -1,8 +1,9 @@
 import Boom from 'boom';
 
-import { ClassroomModel, MasteryModel } from '@server/database';
-import { IUser } from '@shared/index';
-import { convertStringToProblemType, minProblemDifficulty, ProblemDifficulty } from '@shared/models/problem';
+import { IProblemTypeProgress } from '@server/database/mastery/mastery';
+import { IUser, ProblemType } from '../../../client/src/shared/index';
+import { convertStringToProblemType, minProblemDifficulty, ProblemDifficulty } from '../../../client/src/shared/models/problem';
+import { ClassroomModel, MasteryModel } from '../database';
 
 /*
  * Learning Algorithm method
@@ -47,7 +48,7 @@ export const nextProblemTypeAndDifficulty = async (userPayload: IUser) => {
 };
 
 
-const findPossibleNextProblemTypes = async (studentId: string) => {
+export const findPossibleNextProblemTypes = async (studentId: string) => {
     const mastery = await MasteryModel.findById(studentId);
     if (!mastery) {
         throw Boom.notFound('could not find mastery associated with the student id');
@@ -59,13 +60,11 @@ const findPossibleNextProblemTypes = async (studentId: string) => {
         throw Boom.badData('progress should not be empty');
     }
 
-    let minDifficulty = ProblemDifficulty.G5M;
+    let minDifficulty = ProblemDifficulty.G5H;
 
-    const problemTypes = Object.keys(progress);
-
-    // find minimum difficulty
-    for (const item of problemTypes){
-        const problemType = convertStringToProblemType(item);
+    // @ts-ignore
+    const findMin = (value: IProblemTypeProgress, key: ProblemType) => {
+        const problemType = convertStringToProblemType(key);
         const progressForProblemType = progress.get(problemType);
 
         if(typeof progressForProblemType === 'undefined') {
@@ -75,13 +74,16 @@ const findPossibleNextProblemTypes = async (studentId: string) => {
         const difficulty = progressForProblemType.difficulty;
 
         minDifficulty = minProblemDifficulty(difficulty, minDifficulty);
-    }
+    };
 
-    const nextProblemTypes = [];
+    progress.forEach(findMin);
 
+    const nextProblemTypes: Array<ProblemType | ProblemDifficulty> = [];
+
+    // @ts-ignore
     // find all the problemTypes with minimum difficulty
-    for (const item of problemTypes){
-        const problemType = convertStringToProblemType(item);
+    const findAllProblemTypesMinDifficulty = (value: IProblemTypeProgress, key: ProblemType) => {
+        const problemType = convertStringToProblemType(key);
         const progressForProblemType = progress.get(problemType);
 
         if(typeof progressForProblemType === 'undefined') {
@@ -91,9 +93,11 @@ const findPossibleNextProblemTypes = async (studentId: string) => {
         const difficulty = progressForProblemType.difficulty;
 
         if(difficulty.valueOf() === minDifficulty.valueOf()) {
-            nextProblemTypes.push(item);
+            nextProblemTypes.push(key);
         }
-    }
+    };
+
+    progress.forEach(findAllProblemTypesMinDifficulty);
 
     // sort it in ascending order using the formula CurDifPoints + attempted
     nextProblemTypes.sort((a,b) => {
@@ -116,7 +120,7 @@ const findPossibleNextProblemTypes = async (studentId: string) => {
     return nextProblemTypes;
 };
 
-const getProblemsForClass = async (virtualClassroomUid: string) => {
+export const getProblemsForClass = async (virtualClassroomUid: string) => {
     const classroom = await ClassroomModel.findById(virtualClassroomUid);
 
     if(!classroom) {
