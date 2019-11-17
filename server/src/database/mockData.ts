@@ -1,5 +1,6 @@
 import { IClassroom } from '@shared/models/classroom';
 import { IUser } from '@shared/models/users';
+import { IAuthInfo } from '@server/service/authService';
 
 export const user1: IUser = {
     id: '113015909143620944320',
@@ -7,6 +8,32 @@ export const user1: IUser = {
     userType: 'student',
     virtualClassroomUid: '113015909143620944320',
 };
+
+export const user2: IUser = {
+    email: 'test@gmail.com',
+    id: '1122334455667788',
+    name: 'testUser',
+    registered: false,
+    userType: 'student',
+    virtualClassroomUid: '113015909143620944320',
+};
+
+export const user3: IUser = {
+    email: 'test@gmail.com',
+    id: '1122334455667788',
+    registered: false,
+};
+
+export const user5: IUser = {
+    email: 'test@gmail.com',
+    id: '1122334455667788',
+    name: 'testUser',
+    pushToken: '123456789987654321',
+    registered: true,
+    userType: 'student',
+    virtualClassroomUid: '113015909143620944320',
+};
+
 
 export const masteryDoc1 = {
     _id: '5dcfa29372e21e4adca02e93',
@@ -125,3 +152,12 @@ export const classRoomDoc5: IClassroom = {
     passcode: '11122',
     problemsForToday: ['addition'],
 };
+
+export const authDoc1: IAuthInfo = {
+    aud: 'Test',
+    email: 'test@gmail.com',
+    email_verified: true,
+    name: 'testUser',
+    sub: 1122334455667788,
+};
+

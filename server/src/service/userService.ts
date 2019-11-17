@@ -1,10 +1,10 @@
 import Boom from 'boom';
 import Expo from 'expo-server-sdk';
 
-import { UserModel } from '@server/database';
-import { cleanMongoDocument } from '@server/service/utils/mongo';
+import { UserModel } from '../database';
+import { cleanMongoDocument } from '../service/utils/mongo';
 
-import { IMessage, IUser } from '@shared/index';
+import { IMessage, IUser } from '../../../client/src/shared/index';
 
 import { IAuthInfo } from './authService';
 
@@ -42,17 +42,11 @@ export const updateUser = async (userPayload: IUser) => {
             );
         }
 
-        if (
-            user.name &&
+        user.registered = !!(user.name &&
             user.email &&
             user.pushToken &&
             user.userType &&
-            user.virtualClassroomUid
-        ) {
-            user.registered = true;
-        } else {
-            user.registered = false;
-        }
+            user.virtualClassroomUid);
 
         await user.save();
 
