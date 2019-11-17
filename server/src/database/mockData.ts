@@ -1,7 +1,9 @@
+import { IClassroom } from '@shared/models/classroom';
+
 export const user1 = {
-    virtualClassroomUid: '113015909143620944320',
     id: '113015909143620944320',
-    userType: 'student'
+    userType: 'student',
+    virtualClassroomUid: '113015909143620944320'
 };
 
 export const masteryDoc1 = {
@@ -112,7 +114,14 @@ export const classRoomDoc3 = {
     problemsForToday: ['addition', 'volumes']
 };
 
-export const classRoomDoc4 = {
+export const classRoomDoc4:IClassroom = {
     name: 'Test100',
-    passcode: '12345'
+    passcode: '12345',
+    problemsForToday: []
+};
+
+export const classRoomDoc5:IClassroom = {
+    name: 'Test105',
+    passcode: '11122',
+    problemsForToday: ['addition']
 };

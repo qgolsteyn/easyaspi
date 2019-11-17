@@ -1,7 +1,7 @@
 import Boom from 'boom';
 
-import { ClassroomModel, UserModel } from '@server/database';
-import { IClassroom, UserType } from '@shared/index';
+import { IClassroom, UserType } from '../../../client/src/shared/index';
+import { ClassroomModel, UserModel } from '../database';
 
 export const createClassroom = async (classroomPayload: IClassroom) => {
     const classroom = new ClassroomModel({
@@ -23,7 +23,6 @@ export const authenticateToClassroom = async (classroomPayload: IClassroom) => {
     const classroom = await ClassroomModel.findOne({
         name: classroomPayload.name,
     });
-
     if (classroom && classroom.passcode === classroomPayload.passcode) {
         return classroom.id;
     } else {
