@@ -46,7 +46,7 @@ test('Check if getUserFromId returns correctly', async () => {
 });
 
 // todo fix the spy
-// test('Check if sendPushNotification works correctly', async () => {
+// test.skip('Check if sendPushNotification works correctly', async () => {
 //     mockingoose(UserModel).toReturn(user5, 'findOne');
 //
 //     const spy = jest.spyOn(Expo, 'sendPushNotificationsAsync');

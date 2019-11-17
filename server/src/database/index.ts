@@ -12,7 +12,8 @@ export {
 } from './mastery/problemMinimumDifficulties';
 
 const DB_CONNECTION =
-    process.env.DB_CONNECTION || 'mongodb://localhost:27017/test';
+    process.env.ENV === 'TEST' ? process.env.DB_CONNECTION_TEST || 'mongodb://localhost:27017/test'
+        : process.env.DB_CONNECTION_PROD || 'mongodb://localhost:27017/test';
 
 export const connectToDB = () => {
     return mongoose

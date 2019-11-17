@@ -1,8 +1,8 @@
 import Boom from 'boom';
 import express from 'express';
 
-import { classroomService } from '@server/service';
-import { enhanceHandler, HTTP_CODE } from '@server/service/utils/routeEnhancer';
+import { classroomService } from '../service';
+import { enhanceHandler, HTTP_CODE } from '../service/utils/routeEnhancer';
 
 export const initializeClassroomRoutes = (app: express.Application) => {
     const mathRouter = express.Router();

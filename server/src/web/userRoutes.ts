@@ -1,11 +1,11 @@
 import Boom from 'boom';
 import express from 'express';
 
-import { ClassroomModel } from '@server/database';
-import { authService, classroomService, userService } from '@server/service';
-import { enhanceHandler, HTTP_CODE } from '@server/service/utils/routeEnhancer';
+import { ClassroomModel } from '../database';
+import { authService, classroomService, userService } from '../service';
+import { enhanceHandler, HTTP_CODE } from '../service/utils/routeEnhancer';
 
-import { IClassroom, IUser, UserType } from '@shared/index';
+import { IClassroom, IUser, UserType } from '../../../client/src/shared/index';
 
 export const initializeUsersRoutes = (app: express.Application) => {
     const usersRouter = express.Router();
