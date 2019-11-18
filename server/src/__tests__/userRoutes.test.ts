@@ -6,8 +6,6 @@ import { classRoomDoc4, user3 } from '../database/mockData';
 import mongoose from 'mongoose';
 import { initializeApp } from '../server';
 
-let agent;
-
 describe('user router', () => {
     let app: express.Application;
     let server: Server;
@@ -17,7 +15,6 @@ describe('user router', () => {
 
     beforeAll(async () => {
         [app, server] = await initializeApp();
-        agent = request.agent(app);
     });
 
     it('should GET /user/current', async () => {
@@ -35,19 +32,14 @@ describe('user router', () => {
             user: user3,
         };
 
-        await agent
-            .set('Accept', 'application/json')
+        await request(app)
+            .post('/user/register')
             .send(userPost)
+            .set('Accept', 'application/json')
+            .set('Authorization', token)
             .expect('Content-Type', 'application/json; charset=utf-8')
             // tslint:disable-next-line:no-magic-numbers
-            .expect(200)
-            // tslint:disable-next-line:no-any
-            .end((err: any, res: { status: any; }) =>
-            {
-                expect(err).toBeFalsy();
-                // tslint:disable-next-line:no-magic-numbers
-                expect(res.status).toBe(200);
-            });
+            .expect(200);
     });
 
     afterAll(async done => {
