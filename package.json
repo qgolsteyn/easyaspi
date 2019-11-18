@@ -9,7 +9,8 @@
         "lint:client": "tslint -c ./tslint.json './client/**/*.ts*'",
         "lint:server": "tslint -c ./tslint.json './server/**/*.ts'",
         "lint": "yarn lint:client && yarn lint:server",
-        "codecov": "codecov"
+        "codecov": "codecov",
+        "test": "cd server && yarn test"
     },
     "devDependencies": {
         "codecov": "^3.6.1",
