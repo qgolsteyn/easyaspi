@@ -1,9 +1,9 @@
+import Boom from 'boom';
+import express from 'express';
 import {
     convertStringToProblemType,
     ProblemType,
 } from '../../../client/src/shared/models/problem';
-import Boom from 'boom';
-import express from 'express';
 import { updateMastery } from '../service/masteryService';
 import { enhanceHandler, HTTP_CODE } from '../service/utils/routeEnhancer';
 

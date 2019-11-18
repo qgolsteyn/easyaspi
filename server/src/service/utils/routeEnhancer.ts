@@ -2,8 +2,8 @@ import Boom from 'boom';
 import debug from 'debug';
 import express from 'express';
 
-import { verifyAccessToken } from '../../service/authService';
 import { IUser } from '@shared/index';
+import { verifyAccessToken } from '../../service/authService';
 
 // This here is a prime example of why forcing alpha order via linting
 // is absolutely ridiculous
