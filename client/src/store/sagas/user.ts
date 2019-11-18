@@ -77,7 +77,9 @@ function* register(
     let token = '';
     try {
         token = (yield call(Notifications.getExpoPushTokenAsync)) as string;
-    } catch (e) {}
+    } catch (e) {
+        // do nothing
+    }
 
     const user: IUser = {
         email,

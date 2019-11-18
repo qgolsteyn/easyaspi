@@ -20,6 +20,9 @@ enum CURRENT_STATE {
     WRONG_ANSWER,
 }
 
+const ICON_SIZE = 128;
+const RESULT_DELAY = 1000;
+
 interface IProblemFragmentProps {
     currentProblemNumber: number;
     currentProblem: IProblem;
@@ -36,7 +39,7 @@ export const ProblemFragment = (props: IProblemFragmentProps) => {
             setState(CURRENT_STATE.CORRECT_ANSWER);
             setTimeout(
                 () => dispatch(actions.problems.solveCurrentProblem(true)),
-                1000,
+                RESULT_DELAY,
             );
         }
     };
@@ -46,7 +49,7 @@ export const ProblemFragment = (props: IProblemFragmentProps) => {
             setState(CURRENT_STATE.WRONG_ANSWER);
             setTimeout(
                 () => dispatch(actions.problems.solveCurrentProblem(false)),
-                1000,
+                RESULT_DELAY,
             );
         }
     };
@@ -111,7 +114,7 @@ export const ProblemFragment = (props: IProblemFragmentProps) => {
                 <View ref={testHook('MathProblem.CorrectIcon')}>
                     <FontAwesomeIcon
                         icon={faCheckCircle}
-                        size={128}
+                        size={ICON_SIZE}
                         color={colors.success}
                     />
                 </View>
@@ -122,7 +125,7 @@ export const ProblemFragment = (props: IProblemFragmentProps) => {
                 <View ref={testHook('MathProblem.IncorrectIcon')}>
                     <FontAwesomeIcon
                         icon={faTimesCircle}
-                        size={128}
+                        size={ICON_SIZE}
                         color={colors.error}
                     />
                 </View>

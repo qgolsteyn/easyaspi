@@ -10,6 +10,8 @@ import {
     registerTeacher,
 } from './api';
 
+const SMALL_DELAY = 100;
+
 export const registerSpec = () => (spec: TestScope) => {
     spec.describe('Register', () => {
         spec.it('registers a student', async () => {
@@ -24,7 +26,7 @@ export const registerSpec = () => (spec: TestScope) => {
             await spec.fillIn('StudentRegister.ClassroomPasscode', '1234');
 
             await spec.press('StudentRegister.Submit');
-            await spec.pause(100);
+            await spec.pause(SMALL_DELAY);
 
             await spec.exists('StudentHomeScreen.Header');
         });
@@ -42,7 +44,7 @@ export const registerSpec = () => (spec: TestScope) => {
 
             await spec.press('TeacherRegister.Submit');
 
-            await spec.pause(100);
+            await spec.pause(SMALL_DELAY);
 
             await spec.exists('TeacherHomeScreen.Header');
         });

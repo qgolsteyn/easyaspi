@@ -1,11 +1,15 @@
-import { baseApi } from '@client/store/sagas/api/url';
 import MockAdapter from 'axios-mock-adapter';
+
+import { baseApi } from '@client/store/sagas/api/url';
+
+const NUMBER_OF_STUDENTS = 7;
+export const CODE_OK = 200;
 
 const appData = {
     classroom: {
         name: 'APSC100',
         passcode: '1234',
-        students: new Array(7).fill(undefined).map((_, i) => ({
+        students: new Array(NUMBER_OF_STUDENTS).fill(undefined).map((_, i) => ({
             email: 'test@test.com',
             id: String(i),
             name: `Test Student ${i}`,
@@ -41,19 +45,19 @@ export const apiMockSetup = () => {
     const mock = new MockAdapter(baseApi);
 
     mock.onGet('/classroom/students').reply(() => [
-        200,
+        ,
         appData.classroom.students,
     ]);
 
     mock.onGet('/math/nextProblem').reply(() => [
-        200,
+        CODE_OK,
         {
             incorrectSolutions: ['5', '7', '8'],
-            operands: [3, 3],
+            operands: [1, 1],
             operators: ['+'],
-            problem: '3 + 3 =',
+            problem: '1 + 1 =',
             problemType: 'addition',
-            solution: ['6'],
+            solution: ['2'],
         },
     ]);
 
@@ -61,9 +65,9 @@ export const apiMockSetup = () => {
 };
 
 export const noCurrentUser = (mock: MockAdapter) => {
-    mock.onGet('/user/current').reply(200, undefined);
+    mock.onGet('/user/current').reply(CODE_OK, undefined);
 
-    mock.onPost('/auth').reply(200, {
+    mock.onPost('/auth').reply(CODE_OK, {
         accessToken: 'access_token',
         user: {
             id: '12345678910',
@@ -76,7 +80,7 @@ export const noCurrentUser = (mock: MockAdapter) => {
 export const registerStudent = (mock: MockAdapter) => {
     mock.onPost('/user/register').reply(() => {
         return [
-            200,
+            CODE_OK,
             {
                 accessToken: 'access_token',
                 user: {
@@ -94,7 +98,7 @@ export const registerStudent = (mock: MockAdapter) => {
 export const registerTeacher = (mock: MockAdapter) => {
     mock.onPost('/user/register').reply(() => {
         return [
-            200,
+            CODE_OK,
             {
                 accessToken: 'access_token',
                 user: {
@@ -110,18 +114,18 @@ export const registerTeacher = (mock: MockAdapter) => {
 };
 
 export const loginStudent = (mock: MockAdapter) => {
-    mock.onGet('/user/current').reply(200, undefined);
+    mock.onGet('/user/current').reply(CODE_OK, undefined);
 
-    mock.onPost('/auth').reply(200, {
+    mock.onPost('/auth').reply(CODE_OK, {
         accessToken: 'access_token',
         user: appData.user[0],
     });
 };
 
 export const loginTeacher = (mock: MockAdapter) => {
-    mock.onGet('/user/current').reply(200, undefined);
+    mock.onGet('/user/current').reply(CODE_OK, undefined);
 
-    mock.onPost('/auth').reply(200, {
+    mock.onPost('/auth').reply(CODE_OK, {
         accessToken: 'access_token',
         user: appData.user[1],
     });
