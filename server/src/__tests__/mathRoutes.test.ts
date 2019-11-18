@@ -13,11 +13,11 @@ describe('math router', () => {
     const timeout = 30000;
 
     beforeAll(async () => {
-        [app, server] = await initializeApp();
-        jest.setTimeout(timeout);
+        [app, server] = await initializeApp()
     });
 
     it('should GET /math/templates', async () => {
+        jest.setTimeout(timeout);
         const res = await request(app)
             .get('/math/templates')
             .set('Authorization', token);
@@ -27,6 +27,7 @@ describe('math router', () => {
     }, timeout);
 
     it('should GET /math/nextProblem', async () => {
+        jest.setTimeout(timeout);
         const res = await request(app)
             .get('/math/nextProblem')
             .set('Authorization', token);
