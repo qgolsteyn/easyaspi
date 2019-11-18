@@ -24,7 +24,7 @@ describe('user router', () => {
         expect(res.status).toBe(200);
     });
 
-    it('should POST /user/register', async () => {
+    it('should POST /user/register return 400', async () => {
         const userPost = {
             classroom: classRoomDoc4,
             user: user3,
@@ -37,7 +37,7 @@ describe('user router', () => {
             .set('Authorization', token)
             .expect('Content-Type', 'application/json; charset=utf-8')
             // tslint:disable-next-line:no-magic-numbers
-            .expect(200);
+            .expect(400);
     });
 
     afterAll(async done => {
