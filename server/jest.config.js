@@ -12,5 +12,4 @@ module.exports = {
         '^.+\\.tsx?$': 'ts-jest',
     },
     testEnvironment: 'node',
-    timeout:'30000',
 };
