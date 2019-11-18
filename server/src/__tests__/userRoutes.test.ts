@@ -18,7 +18,6 @@ describe('user router', () => {
     });
 
     it('should GET /user/current', async () => {
-        jest.setTimeout(timeout);
         const res = await request(app)
             .get('/user/current')
             .set('Authorization', token);
@@ -28,7 +27,6 @@ describe('user router', () => {
     },timeout);
 
     it('should POST /user/register return 400', async () => {
-        jest.setTimeout(timeout);
         const userPost = {
             classroom: classRoomDoc4,
             user: user3,
