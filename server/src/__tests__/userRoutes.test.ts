@@ -14,6 +14,8 @@ describe('user router', () => {
     const timeout = 30000;
 
     beforeAll(async () => {
+        // tslint:disable-next-line:no-magic-numbers
+        jest.setTimeout(40000);
         [app, server] = await initializeApp();
     });
 
