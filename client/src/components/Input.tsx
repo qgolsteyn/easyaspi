@@ -1,3 +1,4 @@
+import { wrap } from 'cavy';
 import * as React from 'react';
 import {
     StyleSheet,
@@ -15,7 +16,7 @@ interface IStyledInput extends TextInputProps {
     error?: string;
 }
 
-export const StyledInput = (props: IStyledInput) => {
+export const StyledInput = wrap((props: IStyledInput) => {
     return (
         <View
             style={{
@@ -51,7 +52,7 @@ export const StyledInput = (props: IStyledInput) => {
             {props.error && <Text style={styles.error}>{props.error}</Text>}
         </View>
     );
-};
+});
 
 const styles = StyleSheet.create({
     error: {

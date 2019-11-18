@@ -10,5 +10,6 @@ npm-debug.*
 web-build/
 web-report/
 app.json
+app.test.json
 google-services.json
 .env.*

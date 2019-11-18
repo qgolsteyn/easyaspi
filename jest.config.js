@@ -13,4 +13,9 @@ module.exports = {
         '^.+\\.tsx?$': 'ts-jest',
     },
     testEnvironment: 'node',
+    moduleNameMapper: {
+        '@server/(.*)$': '<rootDir>/server/src/$1',
+        '@client/(.*)$': '<rootDir>/client/src/$1',
+        '@shared/(.*)$': '<rootDir>/client/src/shared/$1',
+    },
 };

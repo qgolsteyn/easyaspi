@@ -13,7 +13,7 @@
             "parameter",
             "member-variable-declaration"
         ],
-        "no-magic-numbers": [true, -1, 0, 1],
+        "no-magic-numbers": [true, -1, 0, 0.5, 1, 2],
         "no-non-null-assertion": true,
         "no-any": true
     },

@@ -3,6 +3,7 @@ import {
     faPaperPlane,
     faTrophy,
 } from '@fortawesome/free-solid-svg-icons';
+import { useCavy } from 'cavy';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -23,10 +24,14 @@ export const StudentHome = () => {
 
     const name = useSelector(selectors.user.getUserFirstName) || '';
 
+    const testHook = useCavy();
+
     return (
         <Background backgroundColor={colors.bg}>
             <View style={styles.wrapper}>
-                <StyledHeader>Hi {name}!</StyledHeader>
+                <StyledHeader ref={testHook('StudentHomeScreen.Header')}>
+                    Hi {name}!
+                </StyledHeader>
                 <StyledCard
                     title="Today's math exercises"
                     style={{ flex: 1, marginBottom: 16 }}
@@ -40,6 +45,7 @@ export const StudentHome = () => {
                         onPress={() =>
                             dispatch(actions.nav.goToScreen('Problem'))
                         }
+                        ref={testHook('StudentHomeScreen.DailyProblem')}
                     />
                 </StyledCard>
                 <StyledCardButton

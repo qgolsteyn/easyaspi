@@ -3,6 +3,7 @@ import {
     faChartLine,
     faUsers,
 } from '@fortawesome/free-solid-svg-icons';
+import { useCavy } from 'cavy';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,10 +22,14 @@ export const TeacherHome = () => {
 
     const name = useSelector(selectors.user.getUserFirstName) || '';
 
+    const testHook = useCavy();
+
     return (
         <Background backgroundColor={colors.bg}>
             <View style={styles.wrapper}>
-                <StyledHeader>Hi {name}!</StyledHeader>
+                <StyledHeader ref={testHook('TeacherHomeScreen.Header')}>
+                    Hi {name}!
+                </StyledHeader>
                 <StyledCard style={styles.card} />
                 <StyledCardButton
                     icon={faCalculator}

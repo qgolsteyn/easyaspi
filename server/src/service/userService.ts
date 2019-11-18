@@ -45,7 +45,6 @@ export const updateUser = async (userPayload: IUser) => {
         if (
             user.name &&
             user.email &&
-            user.pushToken &&
             user.userType &&
             user.virtualClassroomUid
         ) {

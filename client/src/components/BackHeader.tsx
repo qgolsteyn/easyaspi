@@ -1,4 +1,5 @@
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import { useCavy } from 'cavy';
 import * as React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useDispatch } from 'react-redux';
@@ -12,12 +13,15 @@ interface IStyledBackHeaderProps {
 
 export const StyledBackHeader = (props: IStyledBackHeaderProps) => {
     const dispatch = useDispatch();
+    const testHook = useCavy();
+
     return (
         <View style={styles.header}>
             <StyledIconButton
                 icon={faChevronLeft}
                 styleAttr="primary"
                 onPress={() => dispatch(actions.nav.goBack())}
+                ref={testHook('Screen.Back')}
             />
             <Text style={styles.text}>{props.title}</Text>
         </View>

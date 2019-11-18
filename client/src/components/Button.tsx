@@ -1,3 +1,4 @@
+import { wrap } from 'cavy';
 import * as Haptic from 'expo-haptics';
 import * as React from 'react';
 import {
@@ -18,7 +19,7 @@ interface IStyledButton {
     onPress?: () => void;
 }
 
-export const StyledButton = (props: IStyledButton) => {
+export const StyledButton = wrap((props: IStyledButton) => {
     const [focus, setFocus] = React.useState(false);
 
     const color = React.useMemo(() => {
@@ -89,7 +90,7 @@ export const StyledButton = (props: IStyledButton) => {
             </TouchableWithoutFeedback>
         </View>
     );
-};
+});
 
 const styles = StyleSheet.create({
     button: {

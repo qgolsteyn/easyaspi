@@ -14,6 +14,7 @@ import { actions, createStore } from './store';
 import AmaticSC from '../assets/fonts/AmaticSC-Regular.ttf';
 import JosefinSansBold from '../assets/fonts/JosefinSans-Bold.ttf';
 import JosefinSans from '../assets/fonts/JosefinSans-Regular.ttf';
+import { TestHarness } from './testHarness';
 
 const store = createStore();
 
@@ -33,15 +34,17 @@ const Entry = () => {
     return loading ? (
         <AppLoading />
     ) : (
-        <Provider store={store}>
-            <App
-                ref={nav =>
-                    nav !== null
-                        ? store.dispatch(actions.nav.setNavigator(nav))
-                        : undefined
-                }
-            />
-        </Provider>
+        <TestHarness store={store}>
+            <Provider store={store}>
+                <App
+                    ref={nav =>
+                        nav !== null
+                            ? store.dispatch(actions.nav.setNavigator(nav))
+                            : undefined
+                    }
+                />
+            </Provider>
+        </TestHarness>
     );
 };
 

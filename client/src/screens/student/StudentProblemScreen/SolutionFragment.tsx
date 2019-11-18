@@ -1,3 +1,4 @@
+import { useCavy } from 'cavy';
 import * as React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useDispatch } from 'react-redux';
@@ -14,22 +15,38 @@ interface ISolutionFragmentProps {
 
 export const SolutionFragment = (props: ISolutionFragmentProps) => {
     const dispatch = useDispatch();
+    const testHook = useCavy();
 
     const [showSolution, setShowSolution] = React.useState(true);
 
     return (
         <>
-            <StyledCard
-                title={`Question ${props.currentProblemNumber}`}
-                style={styles.problemCard}
-                height="100%"
-            >
-                <View style={styles.cardContent}>
-                    <Text style={styles.problemText}>
-                        {props.currentProblem.problem}
-                    </Text>
-                </View>
-            </StyledCard>
+            {showSolution ? (
+                <StyledCard title="The solution is" style={styles.problemCard}>
+                    <View
+                        style={styles.cardContent}
+                        ref={testHook('MathSolution.Solution')}
+                    >
+                        <Text style={styles.problemText}>
+                            {props.currentProblem.solution}
+                        </Text>
+                    </View>
+                </StyledCard>
+            ) : (
+                <StyledCard
+                    title={`Question ${props.currentProblemNumber}`}
+                    style={styles.problemCard}
+                >
+                    <View
+                        style={styles.cardContent}
+                        ref={testHook('MathSolution.Problem')}
+                    >
+                        <Text style={styles.problemText}>
+                            {props.currentProblem.problem}
+                        </Text>
+                    </View>
+                </StyledCard>
+            )}
             <View style={styles.buttonRow}>
                 <StyledButton
                     text={showSolution ? 'See problem' : 'See solution'}
@@ -39,6 +56,7 @@ export const SolutionFragment = (props: ISolutionFragmentProps) => {
                         flex: 2,
                         marginRight: 8,
                     }}
+                    ref={testHook('MathSolution.SwitchView')}
                 />
                 <StyledButton
                     text="Next >"
@@ -50,6 +68,7 @@ export const SolutionFragment = (props: ISolutionFragmentProps) => {
                         ...styles.button,
                         marginLeft: 8,
                     }}
+                    ref={testHook('MathSolution.NextProblem')}
                 />
             </View>
         </>

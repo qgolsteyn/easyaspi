@@ -1,5 +1,6 @@
 import { IClassroom, IUser, UserType } from '@shared/index';
 import { Notifications } from 'expo';
+import Constants from 'expo-constants';
 import * as Google from 'expo-google-app-auth';
 import {
     ANDROID_CLIENT_ID,
@@ -10,6 +11,8 @@ import { call, put, select, takeLatest } from 'redux-saga/effects';
 import { actions, selectors } from '../reducers';
 import { AuthStage } from '../reducers/user';
 import * as api from './api';
+
+const { manifest } = Constants;
 
 export function* initUser(): Generator<unknown, void, unknown> {
     yield call(silentLogin);
@@ -71,11 +74,18 @@ function* register(
         selectors.user.getCurrentUser,
     )) as IUser;
 
+    let token = '';
+    try {
+        token = (yield call(Notifications.getExpoPushTokenAsync)) as string;
+    } catch (e) {
+        // do nothing
+    }
+
     const user: IUser = {
         email,
         id,
         name,
-        pushToken: (yield call(Notifications.getExpoPushTokenAsync)) as string,
+        pushToken: token,
         registered: true,
         userType,
         virtualClassroomUid: classroomName,
@@ -84,6 +94,7 @@ function* register(
     const classroom: IClassroom = {
         name: classroomName,
         passcode: classroomPasscode,
+        problemsForToday: [],
     };
 
     const newUser = (yield call(api.auth.register, user, classroom)) as IUser;
@@ -115,22 +126,28 @@ function* navigateToNextScreen(user: IUser): Generator<unknown, void, unknown> {
 }
 
 function* loginWithGoogle(): Generator<unknown, string | undefined, unknown> {
-    try {
-        const result = (yield call(Google.logInAsync, {
-            androidClientId: ANDROID_CLIENT_ID,
-            androidStandaloneAppClientId: ANDROID_STANDALONE_CLIENT_ID,
-            clientId: CLIENT_ID,
-            scopes: ['profile', 'email'],
-        })) as Google.LogInResult;
+    const isTest = manifest.name && manifest.name.endsWith('test');
 
-        if (result.type === 'success') {
-            return result.idToken as string;
-        } else {
-            alert(result);
+    if (isTest) {
+        return '12345678910';
+    } else {
+        try {
+            const result = (yield call(Google.logInAsync, {
+                androidClientId: ANDROID_CLIENT_ID,
+                androidStandaloneAppClientId: ANDROID_STANDALONE_CLIENT_ID,
+                clientId: CLIENT_ID,
+                scopes: ['profile', 'email'],
+            })) as Google.LogInResult;
+
+            if (result.type === 'success') {
+                return result.idToken as string;
+            } else {
+                alert(result);
+                return undefined;
+            }
+        } catch (e) {
+            alert(e);
             return undefined;
         }
-    } catch (e) {
-        alert(e);
-        return undefined;
     }
 }

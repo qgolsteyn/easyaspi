@@ -1,3 +1,4 @@
+import { useCavy } from 'cavy';
 import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,6 +16,8 @@ import welcome from '../../../assets/welcome.png';
 export const WelcomeScreen = () => {
     const authStage = useSelector(selectors.user.getAuthStage);
     const dispatch = useDispatch();
+
+    const testHook = useCavy();
 
     return (
         <Background>
@@ -42,6 +45,7 @@ export const WelcomeScreen = () => {
                         text="Sign in with Google"
                         loading={authStage === AuthStage.AUTH_CHECK_LOADING}
                         onPress={() => dispatch(actions.user.login())}
+                        ref={testHook('Welcome.SignIn')}
                     />
                 </View>
             </View>
