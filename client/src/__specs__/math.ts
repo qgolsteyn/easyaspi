@@ -69,5 +69,12 @@ export const mathSpec = (store: Store) => (spec: TestScope) => {
                 await spec.exists('StudentHomeScreen.Header');
             },
         );
+
+        spec.it('handle no internet connection', async () => {
+            await spec.press('Welcome.SignIn');
+            await spec.press('StudentHomeScreen.DailyProblem');
+
+            await spec.exists('NoWifi.Header');
+        });
     });
 };

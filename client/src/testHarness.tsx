@@ -19,7 +19,7 @@ export const TestHarness = (props: ITestHarnessProps) => {
     const isTest = manifest.name && manifest.name.endsWith('test');
     return isTest ? (
         <Tester
-            specs={[registerSpec(props.store), mathSpec(props.store)]}
+            specs={[registerSpec(), mathSpec(props.store)]}
             store={testHookStore}
         >
             {props.children}

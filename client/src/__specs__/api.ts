@@ -45,7 +45,7 @@ export const apiMockSetup = () => {
     const mock = new MockAdapter(baseApi);
 
     mock.onGet('/classroom/students').reply(() => [
-        ,
+        CODE_OK,
         appData.classroom.students,
     ]);
 

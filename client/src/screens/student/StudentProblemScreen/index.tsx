@@ -12,6 +12,7 @@ import { ProblemFragment } from './ProblemFragment';
 
 import bg1 from '../../../../assets/bg1.png';
 import { SolutionFragment } from './SolutionFragment';
+import { StyledBackHeader } from '@client/components/BackHeader';
 
 const UNSOLVED_PROBLEM_SCORE_REDUCTION = 0.5;
 
@@ -34,29 +35,13 @@ export const StudentProblem = () => {
                     <LoadingFragment />
                 ) : (
                     <>
-                        <ProgressBarAndroid
-                            style={styles.progressBar}
-                            styleAttr="Horizontal"
-                            color="#FFF"
-                            indeterminate={false}
-                            progress={
-                                (currentProblem.solved
-                                    ? currentProblemNumber
-                                    : currentProblemNumber -
-                                      UNSOLVED_PROBLEM_SCORE_REDUCTION) /
-                                numberOfProblems
-                            }
+                        <StyledBackHeader
+                            title={`Problem ${currentProblemNumber}`}
                         />
                         {currentProblem.solved ? (
-                            <SolutionFragment
-                                currentProblemNumber={currentProblemNumber}
-                                currentProblem={currentProblem}
-                            />
+                            <SolutionFragment currentProblem={currentProblem} />
                         ) : (
-                            <ProblemFragment
-                                currentProblemNumber={currentProblemNumber}
-                                currentProblem={currentProblem}
-                            />
+                            <ProblemFragment currentProblem={currentProblem} />
                         )}
                     </>
                 )}

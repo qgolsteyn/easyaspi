@@ -5,9 +5,17 @@
 import produce from 'immer';
 import { ActionType, createAction, getType } from 'typesafe-actions';
 
+export enum ProblemSetState {
+    LOADING,
+    NOT_STARTED,
+    IN_PROGRESS,
+    DONE,
+}
+
 export interface IProblem {
     prompt: string;
-    problem: string;
+    operators: string[];
+    operands: number[];
     answers: string[];
     solution: string;
     solved: boolean;
@@ -15,6 +23,7 @@ export interface IProblem {
 
 // We specify the shape of the state in an interface
 export interface IProblemState {
+    problemSetState: ProblemSetState;
     problemSetCount: number;
     solvedProblems: number;
     currentProblem: number;
@@ -25,6 +34,7 @@ export interface IProblemState {
 const defaultState: IProblemState = {
     currentProblem: 0,
     problemSetCount: 10,
+    problemSetState: ProblemSetState.NOT_STARTED,
     problems: [null],
     solvedProblems: 0,
 };
@@ -37,6 +47,8 @@ export const problemSelectors = {
         state.problems.currentProblem + 1,
     getNumberOfProblems: (state: { problems: IProblemState }) =>
         state.problems.problemSetCount,
+    getProblemSetState: (state: { problems: IProblemState }) =>
+        state.problems.problemSetState,
     isLoading: (state: { problems: IProblemState }) =>
         state.problems.problems[state.problems.currentProblem] === null,
 };
@@ -49,6 +61,11 @@ export const problemActions = {
     setProblem: createAction(
         'problem_SET_PROBLEM',
         resolve => (problem: IProblem) => resolve({ problem }),
+    ),
+    setProblemSetState: createAction(
+        'problem_SET_PROBLEM_SET_STATE',
+        resolve => (problemSetState: ProblemSetState) =>
+            resolve({ problemSetState }),
     ),
     solveCurrentProblem: createAction(
         'problem_SOLVE_CURRENT_PROBLEM',
@@ -85,6 +102,10 @@ export const problemReducer = produce(
                 if (problem !== null) {
                     problem.solved = true;
                 }
+                break;
+            }
+            case getType(problemActions.setProblemSetState): {
+                draft.problemSetState = action.payload.problemSetState;
                 break;
             }
             case getType(problemActions.reset): {

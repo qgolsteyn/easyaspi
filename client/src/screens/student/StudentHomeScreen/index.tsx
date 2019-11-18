@@ -9,15 +9,13 @@ import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Background } from '@client/components/Background';
-import { StyledButton } from '@client/components/Button';
 import { StyledCardButton } from '@client/components/ButtonCard';
-import { StyledCard } from '@client/components/Card';
 import { StyledHeader } from '@client/components/Header';
-import { Icon } from '@client/components/Icon';
 
 import { colors } from '@client/constants/colors';
 
 import { actions, selectors } from '@client/store';
+import { ProblemSetCard } from './ProblemSetCard';
 
 export const StudentHome = () => {
     const dispatch = useDispatch();
@@ -32,27 +30,7 @@ export const StudentHome = () => {
                 <StyledHeader ref={testHook('StudentHomeScreen.Header')}>
                     Hi {name}!
                 </StyledHeader>
-                <StyledCard
-                    title="Today's math exercises"
-                    style={{ flex: 1, marginBottom: 16 }}
-                >
-                    <View style={styles.typeList}>
-                        <Icon backgroundColor={colors.inputs} text="+" />
-                        <Icon backgroundColor={colors.inputs} text="-" />
-                    </View>
-                    <StyledButton
-                        text="Start!"
-                        onPress={() =>
-                            dispatch(actions.nav.goToScreen('Problem'))
-                        }
-                        ref={testHook('StudentHomeScreen.DailyProblem')}
-                    />
-                </StyledCard>
-                <StyledCardButton
-                    text="Classroom chat"
-                    icon={faPaperPlane}
-                    styles={{ marginBottom: 8 }}
-                />
+                <ProblemSetCard />
                 <StyledCardButton
                     text="Achievements"
                     icon={faTrophy}
@@ -81,12 +59,6 @@ const styles = StyleSheet.create({
         display: 'flex',
         marginBottom: 8,
         marginTop: 8,
-        width: '100%',
-    },
-    typeList: {
-        display: 'flex',
-        flexDirection: 'row',
-        marginBottom: 16,
         width: '100%',
     },
     wrapper: {

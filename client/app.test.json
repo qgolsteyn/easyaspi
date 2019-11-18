@@ -1,6 +1,6 @@
 {
     "expo": {
-        "name": "Easy as π",
+        "name": "Easy as π test",
         "slug": "client",
         "privacy": "public",
         "sdkVersion": "34.0.0",
@@ -18,7 +18,7 @@
         },
         "assetBundlePatterns": ["**/*"],
         "android": {
-            "package": "com.easyaspi.easyaspi.test",
+            "package": "com.easyaspi.easyaspi",
             "googleServicesFile": "./google-services.json",
             "config": {
                 "googleSignIn": {
