@@ -11,6 +11,7 @@ import { TeacherSignUpScreen } from './screens/auth/TeacherSignUpScreen';
 import { UserSelectionScreen } from './screens/auth/UserSelectionScreen';
 import { WelcomeScreen } from './screens/auth/WelcomeScreen';
 
+import { StudentAchievements } from './screens/student/StudentAchievements';
 import { StudentHome } from './screens/student/StudentHomeScreen';
 import { StudentProblem } from './screens/student/StudentProblemScreen';
 
@@ -37,6 +38,9 @@ const AuthStack = createStackNavigator(
 
 const StudentStack = createStackNavigator(
     {
+        Achievements: {
+            screen: StudentAchievements,
+        },
         Problem: {
             screen: StudentProblem,
         },
