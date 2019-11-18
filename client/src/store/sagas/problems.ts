@@ -41,6 +41,10 @@ function* fetchNextProblem(): Generator<unknown, void, unknown> {
     if (problem) {
         yield put(
             actions.problems.setProblem({
+                answers: [
+                    ...problem.incorrectSolutions,
+                    problem.solution[0],
+                ].sort(() => Math.random() - 0.5),
                 problem: problem.problem,
                 prompt: 'What is',
                 solution: problem.solution[0],

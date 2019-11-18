@@ -1,18 +1,19 @@
 import { TestScope } from 'cavy';
+import { Store } from 'redux';
 
 import {
     apiMockSetup,
+    loginStudent,
+    loginTeacher,
     noCurrentUser,
     registerStudent,
     registerTeacher,
-    loginStudent,
-    loginTeacher,
 } from './api';
 
-export default (spec: TestScope) => {
-    const mock = apiMockSetup();
+export const registerSpec = () => (spec: TestScope) => {
     spec.describe('Register', () => {
         spec.it('registers a student', async () => {
+            const mock = apiMockSetup();
             noCurrentUser(mock);
             registerStudent(mock);
 
@@ -23,12 +24,13 @@ export default (spec: TestScope) => {
             await spec.fillIn('StudentRegister.ClassroomPasscode', '1234');
 
             await spec.press('StudentRegister.Submit');
-            await spec.pause(1000);
+            await spec.pause(100);
 
             await spec.exists('StudentHomeScreen.Header');
         });
 
         spec.it('registers a teacher', async () => {
+            const mock = apiMockSetup();
             noCurrentUser(mock);
             registerTeacher(mock);
 
@@ -40,14 +42,15 @@ export default (spec: TestScope) => {
 
             await spec.press('TeacherRegister.Submit');
 
-            await spec.pause(1000);
+            await spec.pause(100);
 
             await spec.exists('TeacherHomeScreen.Header');
         });
     });
 
-    spec.describe('login', () => {
+    spec.describe('Login', () => {
         spec.it('logins a student', async () => {
+            const mock = apiMockSetup();
             loginStudent(mock);
 
             await spec.press('Welcome.SignIn');
@@ -56,6 +59,7 @@ export default (spec: TestScope) => {
         });
 
         spec.it('logins a teacher', async () => {
+            const mock = apiMockSetup();
             loginTeacher(mock);
 
             await spec.press('Welcome.SignIn');

@@ -24,6 +24,7 @@ export const teacherSelectors = {
 
 // And actions allow us to mutate the state
 export const teacherActions = {
+    reset: createAction('reset'),
     setTeacherInfo: createAction(
         'teacher_SET',
         resolve => (students: IUser[]) => resolve({ students }),
@@ -41,6 +42,9 @@ export const teacherReducer = produce(
                 const { students } = action.payload;
                 draft.students = students;
                 break;
+            }
+            case getType(teacherActions.reset): {
+                return defaultState;
             }
         }
 

@@ -8,7 +8,6 @@ const ClassroomSchema = new mongoose.Schema({
     name: {
         required: true,
         type: String,
-        unique: true,
     },
     passcode: {
         required: true,
@@ -16,8 +15,7 @@ const ClassroomSchema = new mongoose.Schema({
     },
     problemsForToday: {
         type: Array,
-        unique: true,
-    }
+    },
 });
 
 // TODO: by default mongoose only looks for lowercase collection names,

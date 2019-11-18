@@ -8,6 +8,7 @@ import { ActionType, createAction, getType } from 'typesafe-actions';
 export interface IProblem {
     prompt: string;
     problem: string;
+    answers: string[];
     solution: string;
     solved: boolean;
 }
@@ -44,6 +45,7 @@ export const problemSelectors = {
 export const problemActions = {
     fetchNextProblem: createAction('problem_FETCH_NEXT_PROBLEM'),
     goToNextProblem: createAction('problem_NEXT_PROBLEM'),
+    reset: createAction('reset'),
     setProblem: createAction(
         'problem_SET_PROBLEM',
         resolve => (problem: IProblem) => resolve({ problem }),
@@ -84,6 +86,9 @@ export const problemReducer = produce(
                     problem.solved = true;
                 }
                 break;
+            }
+            case getType(problemActions.reset): {
+                return defaultState;
             }
         }
 

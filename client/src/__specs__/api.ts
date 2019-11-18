@@ -45,6 +45,18 @@ export const apiMockSetup = () => {
         appData.classroom.students,
     ]);
 
+    mock.onGet('/math/nextProblem').reply(() => [
+        200,
+        {
+            incorrectSolutions: ['5', '7', '8'],
+            operands: [3, 3],
+            operators: ['+'],
+            problem: '3 + 3 =',
+            problemType: 'addition',
+            solution: ['6'],
+        },
+    ]);
+
     return mock;
 };
 

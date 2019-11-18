@@ -1,3 +1,4 @@
+import { useCavy } from 'cavy';
 import * as React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { useDispatch } from 'react-redux';
@@ -10,6 +11,7 @@ import done from '../../../../assets/done.png';
 
 export const DoneFragment = () => {
     const dispatch = useDispatch();
+    const testHook = useCavy();
 
     return (
         <View style={styles.loadingView}>
@@ -25,6 +27,7 @@ export const DoneFragment = () => {
             <StyledButton
                 text="Back"
                 onPress={() => dispatch(actions.nav.goToScreen('StudentHome'))}
+                ref={testHook('MathDone.Back')}
             />
         </View>
     );

@@ -34,8 +34,8 @@ const Entry = () => {
     return loading ? (
         <AppLoading />
     ) : (
-        <Provider store={store}>
-            <TestHarness>
+        <TestHarness store={store}>
+            <Provider store={store}>
                 <App
                     ref={nav =>
                         nav !== null
@@ -43,8 +43,8 @@ const Entry = () => {
                             : undefined
                     }
                 />
-            </TestHarness>
-        </Provider>
+            </Provider>
+        </TestHarness>
     );
 };
 

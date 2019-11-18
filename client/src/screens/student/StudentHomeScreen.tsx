@@ -45,6 +45,7 @@ export const StudentHome = () => {
                         onPress={() =>
                             dispatch(actions.nav.goToScreen('Problem'))
                         }
+                        ref={testHook('StudentHomeScreen.DailyProblem')}
                     />
                 </StyledCard>
                 <StyledCardButton

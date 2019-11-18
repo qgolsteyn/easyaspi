@@ -25,6 +25,7 @@ const defaultState: IUserState = {
     classroom: {
         name: '',
         passcode: '',
+        problemsForToday: [],
     },
     user: {
         id: '',
@@ -54,6 +55,7 @@ export const userActions = {
             classroomPasscode: string,
         ) => resolve({ name, userType, classroomName, classroomPasscode }),
     ),
+    reset: createAction('reset'),
     setAccessToken: createAction(
         'auth_accessToken',
         resolve => (accessToken: string) => resolve({ accessToken }),
@@ -86,6 +88,9 @@ export const userReducer = produce((draft: IUserState, action: AuthAction) => {
         case getType(userActions.updateAuthStage): {
             draft.authStage = action.payload.authStage;
             break;
+        }
+        case getType(userActions.reset): {
+            return defaultState;
         }
     }
 
