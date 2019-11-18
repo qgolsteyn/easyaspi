@@ -8,9 +8,7 @@ import { initializeApp } from '../server';
 describe('math router', () => {
     let app: express.Application;
     let server: Server;
-    const token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZWdpc3RlcmVkIjp0cnVlLCJzdWIiOiIx' +
-        'MTgyNTk0MjY1MTk4OTUyNzI2NTYiLCJ1c2VyVHlwZSI6InN0dWRlbnQiLCJ2aXJ0dWFsQ2xhc3Nyb29tVWlkIj' +
-        'oiNWRkMDg5NDEzMjQ5ODQzODA5M2FiOTMwIiwiaWF0IjoxNTc0MDExNzAxfQ.FRw087jFGP83DfjAbMDNV_CUYp7uIT7m0YnfrtzkJx8';
+    const token =  'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZWdpc3RlcmVkIjpmYWxzZSwic3ViIjoiMTAzMDE1Mzc3MzgwNDQ3NDc3NjE1IiwiaWF0IjoxNTc0MTA1OTU3fQ.r_-mMFFRoCJTtcSjrv5QMqzVyHu_GfQKB_5J8MAaa9k';
 
     beforeAll(async () => {
         [app, server] = await initializeApp();

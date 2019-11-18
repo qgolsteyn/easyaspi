@@ -7,7 +7,7 @@ import { Server } from 'http';
 import { connectToDB } from './database';
 import { initializeRoutes } from './web';
 
-const DEFAULT_PORT = 8095;
+const DEFAULT_PORT = 8097;
 
 const PORT = process.env.PORT || DEFAULT_PORT;
 
