@@ -52,6 +52,9 @@ export const StudentHome = () => {
                     icon={faTrophy}
                     styleAttr="secondary"
                     styles={{ marginBottom: 8 }}
+                    onPress={() =>
+                        dispatch(actions.nav.goToScreen('Achievements'))
+                    }
                 />
                 <StyledCardButton
                     text="Get more help"
