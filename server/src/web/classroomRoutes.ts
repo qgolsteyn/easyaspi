@@ -55,6 +55,6 @@ export const initializeClassroomRoutes = (app: express.Application) => {
             }
 
             return [HTTP_CODE.OK, classroom];
-        })
+        }),
     );
 };
