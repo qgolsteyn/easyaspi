@@ -47,7 +47,7 @@ export const initializeClassroomRoutes = (app: express.Application) => {
             const classroomId = user.virtualClassroomUid;
 
             const classroom = await ClassroomModel.findByIdAndUpdate({
-                classroomId
+                classroomId,
             }, req.body);
 
             if(!classroom){
