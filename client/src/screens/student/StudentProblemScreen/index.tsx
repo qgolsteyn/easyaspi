@@ -1,8 +1,9 @@
 import React from 'react';
-import { ProgressBarAndroid, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { Background } from '@client/components/Background';
+import { StyledBackHeader } from '@client/components/BackHeader';
 import { colors } from '@client/constants/colors';
 import { selectors } from '@client/store';
 
@@ -12,8 +13,6 @@ import { ProblemFragment } from './ProblemFragment';
 
 import bg1 from '../../../../assets/bg1.png';
 import { SolutionFragment } from './SolutionFragment';
-
-const UNSOLVED_PROBLEM_SCORE_REDUCTION = 0.5;
 
 export const StudentProblem = () => {
     const currentProblem = useSelector(selectors.problems.getCurrentProblem);
@@ -34,29 +33,13 @@ export const StudentProblem = () => {
                     <LoadingFragment />
                 ) : (
                     <>
-                        <ProgressBarAndroid
-                            style={styles.progressBar}
-                            styleAttr="Horizontal"
-                            color="#FFF"
-                            indeterminate={false}
-                            progress={
-                                (currentProblem.solved
-                                    ? currentProblemNumber
-                                    : currentProblemNumber -
-                                      UNSOLVED_PROBLEM_SCORE_REDUCTION) /
-                                numberOfProblems
-                            }
+                        <StyledBackHeader
+                            title={`Problem ${currentProblemNumber}`}
                         />
                         {currentProblem.solved ? (
-                            <SolutionFragment
-                                currentProblemNumber={currentProblemNumber}
-                                currentProblem={currentProblem}
-                            />
+                            <SolutionFragment currentProblem={currentProblem} />
                         ) : (
-                            <ProblemFragment
-                                currentProblemNumber={currentProblemNumber}
-                                currentProblem={currentProblem}
-                            />
+                            <ProblemFragment currentProblem={currentProblem} />
                         )}
                     </>
                 )}

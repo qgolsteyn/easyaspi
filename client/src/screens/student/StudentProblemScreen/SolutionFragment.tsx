@@ -1,6 +1,7 @@
 import { useCavy } from 'cavy';
 import * as React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import NumberFormat from 'react-number-format';
 import { useDispatch } from 'react-redux';
 
 import { StyledButton } from '@client/components/Button';
@@ -8,8 +9,9 @@ import { StyledCard } from '@client/components/Card';
 import { actions } from '@client/store';
 import { IProblem } from '@client/store/reducers/problems';
 
+import { MathProblem } from './MathProblem';
+
 interface ISolutionFragmentProps {
-    currentProblemNumber: number;
     currentProblem: IProblem;
 }
 
@@ -27,23 +29,26 @@ export const SolutionFragment = (props: ISolutionFragmentProps) => {
                         style={styles.cardContent}
                         ref={testHook('MathSolution.Solution')}
                     >
-                        <Text style={styles.problemText}>
-                            {props.currentProblem.solution}
-                        </Text>
+                        <NumberFormat
+                            value={props.currentProblem.solution}
+                            displayType="text"
+                            thousandSeparator={true}
+                            renderText={value => (
+                                <Text style={styles.problemText}>{value}</Text>
+                            )}
+                        />
                     </View>
                 </StyledCard>
             ) : (
-                <StyledCard
-                    title={`Question ${props.currentProblemNumber}`}
-                    style={styles.problemCard}
-                >
+                <StyledCard title="Solve" style={styles.problemCard}>
                     <View
                         style={styles.cardContent}
                         ref={testHook('MathSolution.Problem')}
                     >
-                        <Text style={styles.problemText}>
-                            {props.currentProblem.problem}
-                        </Text>
+                        <MathProblem
+                            operands={props.currentProblem.operands}
+                            operators={props.currentProblem.operators}
+                        />
                     </View>
                 </StyledCard>
             )}
@@ -106,7 +111,6 @@ const styles = StyleSheet.create({
     },
     problemText: {
         color: '#333',
-        fontFamily: 'josefin-sans-bold',
         fontSize: 64,
     },
 });

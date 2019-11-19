@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { useCavy } from 'cavy';
 import * as React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import NumberFormat from 'react-number-format';
 import { useDispatch } from 'react-redux';
 
 import { StyledButton } from '@client/components/Button';
@@ -13,6 +14,8 @@ import { StyledCard } from '@client/components/Card';
 import { colors } from '@client/constants/colors';
 import { actions } from '@client/store';
 import { IProblem } from '@client/store/reducers/problems';
+
+import { MathProblem } from './MathProblem';
 
 enum CURRENT_STATE {
     SHOW_PROBLEM,
@@ -24,7 +27,6 @@ const ICON_SIZE = 128;
 const RESULT_DELAY = 1000;
 
 interface IProblemFragmentProps {
-    currentProblemNumber: number;
     currentProblem: IProblem;
 }
 
@@ -88,7 +90,16 @@ export const ProblemFragment = (props: IProblemFragmentProps) => {
                       index % 2 === 0
                           ? { ...styles.button, marginRight: 8 }
                           : { ...styles.button, marginLeft: 8 },
-                  text: answer,
+                  text: (
+                      <NumberFormat
+                          value={answer}
+                          displayType="text"
+                          thousandSeparator={true}
+                          renderText={value => (
+                              <Text style={styles.problemText}>{value}</Text>
+                          )}
+                      />
+                  ),
               })
             : React.cloneElement(IncorrectButton, {
                   key: answer,
@@ -96,7 +107,16 @@ export const ProblemFragment = (props: IProblemFragmentProps) => {
                       index % 2 === 0
                           ? { ...styles.button, marginRight: 8 }
                           : { ...styles.button, marginLeft: 8 },
-                  text: answer,
+                  text: (
+                      <NumberFormat
+                          value={answer}
+                          displayType="text"
+                          thousandSeparator={true}
+                          renderText={value => (
+                              <Text style={styles.problemText}>{value}</Text>
+                          )}
+                      />
+                  ),
               }),
     );
 
@@ -104,9 +124,10 @@ export const ProblemFragment = (props: IProblemFragmentProps) => {
     switch (currentState) {
         case CURRENT_STATE.SHOW_PROBLEM:
             CardContent = (
-                <Text style={styles.problemText}>
-                    {props.currentProblem.problem}
-                </Text>
+                <MathProblem
+                    operands={props.currentProblem.operands}
+                    operators={props.currentProblem.operators}
+                />
             );
             break;
         case CURRENT_STATE.CORRECT_ANSWER:
@@ -135,10 +156,7 @@ export const ProblemFragment = (props: IProblemFragmentProps) => {
 
     return (
         <>
-            <StyledCard
-                title={`Question ${props.currentProblemNumber}`}
-                style={styles.problemCard}
-            >
+            <StyledCard title="Solve" style={styles.problemCard}>
                 <View style={styles.cardContent}>{CardContent}</View>
             </StyledCard>
             <View style={{ ...styles.buttonRow, marginBottom: 8 }}>
@@ -179,8 +197,8 @@ const styles = StyleSheet.create({
         marginBottom: 32,
     },
     problemText: {
-        color: '#333',
-        fontFamily: 'josefin-sans-bold',
-        fontSize: 64,
+        color: 'white',
+        fontSize: 24,
+        fontWeight: '700',
     },
 });
