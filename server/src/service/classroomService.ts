@@ -34,12 +34,10 @@ export const authenticateToClassroom = async (classroomPayload: IClassroom) => {
 };
 
 export const getStudents = async (classroomId: string) => {
-    const students = await UserModel.find({
+    return UserModel.find({
         userType: UserType.STUDENT,
         virtualClassroomUid: classroomId,
     });
-
-    return students;
 };
 
 export const getClassroom = async (classroomId: string) => {

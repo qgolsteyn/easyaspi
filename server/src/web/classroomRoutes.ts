@@ -57,4 +57,21 @@ export const initializeClassroomRoutes = (app: express.Application) => {
             return [HTTP_CODE.OK, classroom];
         }),
     );
+
+    classroomRouter.get(
+        '/', enhanceHandler({ protect: true })(async (_, user) => {
+
+            if (typeof user === 'undefined'){
+                throw Boom.badData('user can not be undefined');
+            }
+
+            if(!user.virtualClassroomUid){
+                Boom.badData('user must have virtualClassroomUid to get classroom')
+            }
+
+            const classroom = classroomService.getClassroom(String(user.virtualClassroomUid));
+
+            return [HTTP_CODE.OK, classroom];
+        }),
+    );
 };
