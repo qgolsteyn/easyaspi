@@ -5,10 +5,10 @@ import { classroomService } from '@server/service';
 import { enhanceHandler, HTTP_CODE } from '@server/service/utils/routeEnhancer';
 
 export const initializeClassroomRoutes = (app: express.Application) => {
-    const mathRouter = express.Router();
-    app.use('/classroom', mathRouter);
+    const classroomRouter = express.Router();
+    app.use('/classroom', classroomRouter);
 
-    mathRouter.get(
+    classroomRouter.get(
         '/students',
         enhanceHandler({ protect: true })(async (_, user) => {
             if (user && user.virtualClassroomUid) {
@@ -21,4 +21,51 @@ export const initializeClassroomRoutes = (app: express.Application) => {
             }
         }),
     );
+
+    classroomRouter.put(
+        '/', enhanceHandler({ protect: true })(async (req, user) => {
+
+            if(!req.body || !req.body.name || !req.body.passcode){
+                throw Boom.badRequest('Invalid Classroom Payload');
+            }
+
+            if (typeof user === 'undefined'){
+                throw Boom.badData('user can not be undefined');
+            }
+
+            req.body._id = user.virtualClassroomUid;
+
+            const classroom = await classroomService.updateClassroom(req.body);
+
+            if(classroom){
+                return [HTTP_CODE.OK, classroom];
+            }
+            else {
+                throw Boom.internal('Could not update the classroom');
+            }
+        }),
+    );
+
+    classroomRouter.get(
+        '/', enhanceHandler({ protect: true })(async (_, user) => {
+
+            if (typeof user === 'undefined'){
+                throw Boom.badData('user can not be undefined');
+            }
+
+            if(!user.virtualClassroomUid){
+                Boom.badData('user must have virtualClassroomUid to get classroom')
+            }
+
+            const classroom = await classroomService.getClassroom(String(user.virtualClassroomUid));
+
+            if(classroom){
+                return [HTTP_CODE.OK, classroom];
+            }
+            else {
+                throw Boom.notFound();
+            }
+        }),
+    );
 };
+
