@@ -10,8 +10,8 @@ import {
 import Boom from 'boom';
 import {
     generateIncorrectWholeNumberSolutions,
-    generateNumber,
     generateIncorrectWholeNumberSolutionsWithRemainder,
+    generateNumber,
 } from './generateNumbers';
 
 /**
