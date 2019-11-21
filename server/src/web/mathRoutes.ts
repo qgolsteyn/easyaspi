@@ -1,10 +1,10 @@
+import Boom from 'boom';
 import express from 'express';
 
 import { ArithmeticProblemTemplateModel } from '@server/database';
 import { mathService } from '@server/service';
 import { getAllProblemTypes } from '@server/service/nextProblemService';
 import { enhanceHandler, HTTP_CODE } from '@server/service/utils/routeEnhancer';
-import Boom = require('boom');
 
 export const initializeMathRoutes = (app: express.Application) => {
     const mathRouter = express.Router();
