@@ -17,8 +17,8 @@ const ClassroomSchema = new mongoose.Schema({
         type: Array,
     },
     resourceWeb: {
-        type: String
-    }
+        type: String,
+    },
 });
 
 // TODO: by default mongoose only looks for lowercase collection names,

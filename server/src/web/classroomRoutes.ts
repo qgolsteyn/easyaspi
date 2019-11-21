@@ -19,7 +19,7 @@ export const initializeClassroomRoutes = (app: express.Application) => {
             } else {
                 throw Boom.unauthorized();
             }
-        })
+        }),
     );
 
     classroomRouter.put(

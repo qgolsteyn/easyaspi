@@ -66,7 +66,7 @@ export const updateClassroom = async (classroomPayload: IClassroomWithId) => {
     const classroom = await ClassroomModel.findByIdAndUpdate(
         classroomPayload._id,
         classroomPayload,
-        {new: true}
+        {new: true},
     );
 
     if(!classroom){
