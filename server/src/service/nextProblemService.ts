@@ -2,7 +2,7 @@ import Boom from 'boom';
 
 import { ClassroomModel, MasteryModel } from '@server/database';
 import { IUser } from '@shared/index';
-import { convertStringToProblemType } from '@shared/models/problem';
+import { convertStringToProblemType, ProblemType } from '@shared/models/problem';
 
 /*
  * Learning Algorithm method
@@ -47,7 +47,7 @@ export const nextProblemTypeAndDifficulty = async (userPayload: IUser) => {
 };
 
 
-const findPossibleNextProblemTypes = async (studentId: string) => {
+export const findPossibleNextProblemTypes = async (studentId: string) => {
     const mastery = await MasteryModel.findById(studentId);
     if (!mastery) {
         throw Boom.notFound('could not find mastery associated with the student id');
@@ -122,7 +122,7 @@ const findPossibleNextProblemTypes = async (studentId: string) => {
     return nextProblemTypes;
 };
 
-const getProblemsForClass = async (virtualClassroomUid: string) => {
+export const getProblemsForClass = async (virtualClassroomUid: string) => {
     const classroom = await ClassroomModel.findById(virtualClassroomUid);
 
     if(!classroom) {
@@ -130,4 +130,11 @@ const getProblemsForClass = async (virtualClassroomUid: string) => {
     }
 
     return classroom.problemsForToday;
+};
+
+export const getAllProblemTypes = async () => {
+    const values = Object.values(ProblemType);
+    values.pop();
+
+    return values;
 };
