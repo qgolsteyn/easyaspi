@@ -18,7 +18,7 @@ export const generateNumber = (
 
 export const generateIncorrectWholeNumberSolutions = (
     solution: number,
-    multiplesOf: number,
+    multiplesOf?: number,
 ) => {
     const incorrectSolutions = [];
 
@@ -28,7 +28,7 @@ export const generateIncorrectWholeNumberSolutions = (
         // rounded up value of 10%
         let diff = Math.ceil(solution * INCORRECT_SOLUTIONS_VARIANCE);
 
-        if (multiplesOf > 1) {
+        if (multiplesOf && multiplesOf > 1) {
             while (diff % multiplesOf !== 0) {
                 diff++;
             }
@@ -51,6 +51,25 @@ export const generateIncorrectWholeNumberSolutions = (
                 String(solution + two * diff),
             );
         }
+    }
+    return incorrectSolutions;
+};
+
+export const generateIncorrectWholeNumberSolutionsWithRemainder = (
+    divisor: number,
+    solution: number,
+    multiplesOf?: number,
+) => {
+    const incorrectSolutions = generateIncorrectWholeNumberSolutions(
+        solution,
+        multiplesOf,
+    );
+
+    for (let i = 0; i < incorrectSolutions.length; i++) {
+        const incorrectRemainder = generateNumber(0, divisor);
+        incorrectSolutions[i] = incorrectSolutions[i].concat(
+            ' R' + incorrectRemainder,
+        );
     }
     return incorrectSolutions;
 };
