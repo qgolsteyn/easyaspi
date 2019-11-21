@@ -7,7 +7,11 @@ const log = debug('pi:route');
 
 export const fetchNextMathProblem = async () => {
     // call next problem algo using user object
-    const supportedTypes = [ProblemType.MULTIPLICATION];
+    const supportedTypes = [
+        ProblemType.ADDITION,
+        ProblemType.SUBTRACTION,
+        ProblemType.MULTIPLICATION,
+    ];
     const additionDiffs = [
         ProblemDifficulty.G1E,
         ProblemDifficulty.G1M,
@@ -47,7 +51,7 @@ export const fetchNextMathProblem = async () => {
     );
 
     const problem = await generateArithmeticProblem(
-        ProblemDifficulty.G3H4E,
+        difficulty,
         supportedTypes[supportedTypesIndex],
     );
 

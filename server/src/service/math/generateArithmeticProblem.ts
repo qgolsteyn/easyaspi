@@ -31,7 +31,10 @@ export async function generateArithmeticProblem(
             const minOperands = 2;
             let operands = new Array<number>(minOperands);
 
-            if (problemType === ProblemType.ADDITION) {
+            if (
+                problemType === ProblemType.ADDITION ||
+                problemType === ProblemType.MULTIPLICATION
+            ) {
                 operands = generateAdditionOrMultiplicationOperands(
                     problemDefinition,
                 );
