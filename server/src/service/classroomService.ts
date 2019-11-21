@@ -2,6 +2,7 @@ import Boom from 'boom';
 
 import { ClassroomModel, UserModel } from '@server/database';
 import { IClassroom, ProblemType, UserType } from '@shared/index';
+import { IClassroomWithId } from '@shared/models/classroom';
 import { convertStringToProblemType } from '@shared/models/problem';
 
 export const createClassroom = async (classroomPayload: IClassroom) => {
@@ -46,11 +47,12 @@ export const getClassroom = async (classroomId: string) => {
     if(!classroom){
         throw Boom.notFound(`No classroom found with the id ${classroomId}`);
     }
-
-    return classroom;
+    else{
+        return classroom;
+    }
 };
 
-export const updateClassroom = async (classroomPayload: IClassroom) => {
+export const updateClassroom = async (classroomPayload: IClassroomWithId) => {
 
     if(classroomPayload.problemsForToday.length !== 0){
         for(const problemTypeStr of classroomPayload.problemsForToday){
@@ -61,14 +63,16 @@ export const updateClassroom = async (classroomPayload: IClassroom) => {
         }
     }
 
-    const classroom = await ClassroomModel.updateOne({
-            name: classroomPayload.name,
-        passcode: classroomPayload.passcode,
-    }, classroomPayload);
+    const classroom = await ClassroomModel.findByIdAndUpdate(
+        classroomPayload._id,
+        classroomPayload,
+        {new: true}
+    );
 
     if(!classroom){
-        throw Boom.notFound('Could not update the classroom');
+        throw Boom.notFound(`Could not update the classroom with id ${classroomPayload._id}`);
     }
-
-    return classroom;
+    else {
+        return classroom;
+    }
 };
