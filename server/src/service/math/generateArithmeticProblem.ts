@@ -31,7 +31,10 @@ export async function generateArithmeticProblem(
             const minOperands = 2;
             let operands = new Array<number>(minOperands);
 
-            if (problemType === ProblemType.ADDITION) {
+            if (
+                problemType === ProblemType.ADDITION ||
+                problemType === ProblemType.MULTIPLICATION
+            ) {
                 operands = generateAdditionOrMultiplicationOperands(
                     problemDefinition,
                 );
@@ -50,6 +53,7 @@ export async function generateArithmeticProblem(
                 operands[1],
             );
 
+            // loop if there are more than 2 operands
             for (let j = 2; j < operands.length; j++) {
                 result = findArithmeticResult(
                     template.operator,
@@ -184,6 +188,8 @@ function findArithmeticResult(
         case '-':
             return operandA - operandB;
         case '*':
+            return operandA * operandB;
+        case '×':
             return operandA * operandB;
         case '/':
             return operandA / operandB;

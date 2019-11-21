@@ -3,12 +3,10 @@ export enum ProblemType {
     SUBTRACTION = 'subtraction',
     MULTIPLICATION = 'multiplication',
     DIVISION = 'division',
-    EQUATION = 'equation',
     FRACTION = 'fraction',
     DECIMAL = 'decimal',
     PERIMETER = 'perimeter',
     AREA = 'area',
-    VOLUME = 'volume',
     UNKNOWN = 'unknown',
 }
 
@@ -36,8 +34,6 @@ export function convertStringToProblemType(type: string): ProblemType {
             return ProblemType.MULTIPLICATION;
         case ProblemType.DIVISION.valueOf():
             return ProblemType.DIVISION;
-        case ProblemType.EQUATION.valueOf():
-            return ProblemType.EQUATION;
         case ProblemType.FRACTION.valueOf():
             return ProblemType.FRACTION;
         case ProblemType.DECIMAL.valueOf():
@@ -46,8 +42,6 @@ export function convertStringToProblemType(type: string): ProblemType {
             return ProblemType.PERIMETER;
         case ProblemType.AREA.valueOf():
             return ProblemType.AREA;
-        case ProblemType.VOLUME.valueOf():
-            return ProblemType.VOLUME;
         default:
             return ProblemType.UNKNOWN;
     }
