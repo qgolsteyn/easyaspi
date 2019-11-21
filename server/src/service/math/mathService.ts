@@ -26,8 +26,9 @@ export const fetchNextMathProblem = async () => {
         ProblemDifficulty.G5H,
     ];
 
+    const six = 6;
     const subDiffs = additionDiffs.slice(1);
-    const multDiffs = additionDiffs.slice(6);
+    const multDiffs = additionDiffs.slice(six);
 
     // for now just randomize this stuff, later on we need to use next problem algo
     const supportedTypesIndex = generateNumber(0, supportedTypes.length - 1);
