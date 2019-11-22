@@ -26,5 +26,6 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontFamily: 'amatic-sc',
         fontSize: 64,
+        textAlign: 'center',
     },
 });

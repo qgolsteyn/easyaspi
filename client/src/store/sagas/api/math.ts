@@ -3,6 +3,7 @@ import { call } from 'redux-saga/effects';
 import { IProblem } from '@client/store/reducers/problems';
 
 import { getAccessToken } from './auth';
+import { handleError } from './errors';
 import { baseApi } from './url';
 
 export function* getNextMathProblem(): Generator<
@@ -20,12 +21,15 @@ export function* getNextMathProblem(): Generator<
                 {
                     headers: {
                         Authorization: `Bearer ${accessToken}`,
+                        'Cache-Control': 'no-cache',
+                        Expires: '0',
+                        Pragma: 'no-cache',
                     },
                 },
             )) as { data: IProblem }).data;
             return problem;
         } catch (e) {
-            alert(e);
+            yield call(handleError, e);
             return undefined;
         }
     }

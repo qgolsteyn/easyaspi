@@ -52,7 +52,5 @@ function* fetchNextProblem(): Generator<unknown, void, unknown> {
                 solved: false,
             }),
         );
-    } else {
-        alert('Error : could not retrieve the problem from the server');
     }
 }

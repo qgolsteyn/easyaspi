@@ -44,6 +44,7 @@ export const StudentHome = () => {
                     text="Get more help"
                     icon={faInfo}
                     styleAttr="success"
+                    onPress={() => dispatch(actions.nav.goToScreen('Error'))}
                 />
             </View>
         </Background>

@@ -57,6 +57,11 @@ export const enhanceHandler = (options: { protect: boolean }) => (
             log(user);
 
             const response = await handler(req, user);
+            res.set(
+                'Cache-Control',
+                'no-store, no-cache, must-revalidate, private',
+            );
+            res.set('Expires', '0');
 
             log(response);
 

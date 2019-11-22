@@ -95,6 +95,7 @@ function* register(
         name: classroomName,
         passcode: classroomPasscode,
         problemsForToday: [],
+        resourceWeb: '',
     };
 
     const newUser = (yield call(api.auth.register, user, classroom)) as IUser;
@@ -121,7 +122,7 @@ function* navigateToNextScreen(user: IUser): Generator<unknown, void, unknown> {
         yield put(actions.user.updateAuthStage(AuthStage.AUTH_REGISTER));
         yield put(actions.nav.goToScreen('UserSelection'));
     } else {
-        alert('Error: Invalid user type');
+        yield put(actions.user.updateAuthStage(AuthStage.AUTH_REGISTER));
     }
 }
 
