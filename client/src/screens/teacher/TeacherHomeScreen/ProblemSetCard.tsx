@@ -1,21 +1,13 @@
-import { useCavy } from 'cavy';
+import { faBell } from '@fortawesome/free-solid-svg-icons';
 import * as React from 'react';
 import { ProgressBarAndroid, StyleSheet, Text, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
 
-import { StyledButton } from '@client/components/Button';
 import { StyledCard } from '@client/components/Card';
 import { Icon } from '@client/components/Icon';
 import { colors } from '@client/constants/colors';
-import { actions, selectors } from '@client/store';
-import { ProblemSetState } from '@client/store/reducers/problems';
+import { StyledIconButton } from '@client/components/ButtonIcon';
 
 export const ProblemSetCard = () => {
-    const dispatch = useDispatch();
-    const testHook = useCavy();
-
-    const problemSetState = useSelector(selectors.problems.getProblemSetState);
-
     return (
         <StyledCard
             title="Today's math exercises"
@@ -42,23 +34,30 @@ export const ProblemSetCard = () => {
                     <Text style={styles.typeText}>Substraction</Text>
                 </View>
             </View>
-            <StyledButton
-                loading={problemSetState === ProblemSetState.LOADING}
-                text={
-                    problemSetState === ProblemSetState.NOT_STARTED
-                        ? 'Start!'
-                        : problemSetState === ProblemSetState.IN_PROGRESS
-                        ? 'Continue!'
-                        : 'See Result!'
-                }
-                onPress={() => dispatch(actions.nav.goToScreen('Problem'))}
-                ref={testHook('StudentHomeScreen.DailyProblem')}
-            />
+            <View style={styles.buttonRow}>
+                <StyledIconButton icon={faBell} />
+                <Text style={styles.completionText}>12/33 students done</Text>
+            </View>
         </StyledCard>
     );
 };
 
 const styles = StyleSheet.create({
+    buttonRow: {
+        alignItems: 'center',
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'nowrap',
+        width: '100%',
+    },
+    completionText: {
+        color: '#333',
+        fontFamily: 'josefin-sans',
+        fontSize: 20,
+        flex: 1,
+        marginLeft: 16,
+        marginBottom: 8,
+    },
     exerciseList: {
         display: 'flex',
         marginBottom: 8,
