@@ -2,10 +2,10 @@ import { faBell } from '@fortawesome/free-solid-svg-icons';
 import * as React from 'react';
 import { ProgressBarAndroid, StyleSheet, Text, View } from 'react-native';
 
+import { StyledIconButton } from '@client/components/ButtonIcon';
 import { StyledCard } from '@client/components/Card';
 import { Icon } from '@client/components/Icon';
 import { colors } from '@client/constants/colors';
-import { StyledIconButton } from '@client/components/ButtonIcon';
 
 export const ProblemSetCard = () => {
     return (
@@ -52,11 +52,11 @@ const styles = StyleSheet.create({
     },
     completionText: {
         color: '#333',
+        flex: 1,
         fontFamily: 'josefin-sans',
         fontSize: 20,
-        flex: 1,
-        marginLeft: 16,
         marginBottom: 8,
+        marginLeft: 16,
     },
     exerciseList: {
         display: 'flex',

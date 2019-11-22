@@ -17,7 +17,6 @@ import { StudentAchievements } from './screens/student/StudentAchievements';
 import { StudentHome } from './screens/student/StudentHomeScreen';
 import { StudentProblem } from './screens/student/StudentProblemScreen';
 
-import { ClassroomStatistics } from './screens/teacher/ClassroomStatisticsScreen';
 import { StudentList } from './screens/teacher/StudentListScreen';
 import { TeacherHome } from './screens/teacher/TeacherHomeScreen';
 
@@ -59,9 +58,6 @@ const StudentStack = createStackNavigator(
 
 const TeacherStack = createStackNavigator(
     {
-        ClassroomStatistics: {
-            screen: ClassroomStatistics,
-        },
         StudentsList: {
             screen: StudentList,
         },
