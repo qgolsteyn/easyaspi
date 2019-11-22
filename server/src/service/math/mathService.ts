@@ -1,6 +1,7 @@
 import { ProblemDifficulty, ProblemType } from '@shared/models/problem';
 import { generateArithmeticProblem } from './generateArithmeticProblem';
 import { generateNumber } from './generateNumbers';
+import Boom from 'boom';
 
 import debug from 'debug';
 const log = debug('pi:route');
@@ -12,6 +13,7 @@ export const fetchNextMathProblem = async () => {
         ProblemType.SUBTRACTION,
         ProblemType.MULTIPLICATION,
         ProblemType.DIVISION,
+        ProblemType.AREA,
     ];
     const additionDiffs = [
         ProblemDifficulty.G1E,
@@ -28,21 +30,39 @@ export const fetchNextMathProblem = async () => {
     ];
 
     const six = 6;
+    const nine = 9;
+
     const subDiffs = additionDiffs.slice(1);
     const multDivDiffs = additionDiffs.slice(six);
+    const areaDiffs = additionDiffs.slice(nine);
 
     // for now just randomize this stuff, later on we need to use next problem algo
     const supportedTypesIndex = generateNumber(0, supportedTypes.length - 1);
 
     let difficulty: ProblemDifficulty;
-    if (supportedTypes[supportedTypesIndex] === ProblemType.ADDITION) {
-        difficulty = additionDiffs[generateNumber(0, additionDiffs.length - 1)];
-    } else if (
-        supportedTypes[supportedTypesIndex] === ProblemType.SUBTRACTION
-    ) {
-        difficulty = subDiffs[generateNumber(0, subDiffs.length - 1)];
-    } else {
-        difficulty = multDivDiffs[generateNumber(0, multDivDiffs.length - 1)];
+    switch (supportedTypes[supportedTypesIndex]) {
+        case ProblemType.ADDITION: {
+            difficulty =
+                additionDiffs[generateNumber(0, additionDiffs.length - 1)];
+            break;
+        }
+        case ProblemType.SUBTRACTION: {
+            difficulty = subDiffs[generateNumber(0, subDiffs.length - 1)];
+            break;
+        }
+        case ProblemType.MULTIPLICATION:
+        case ProblemType.DIVISION: {
+            difficulty =
+                multDivDiffs[generateNumber(0, multDivDiffs.length - 1)];
+            break;
+        }
+        case ProblemType.AREA: {
+            difficulty = areaDiffs[generateNumber(0, areaDiffs.length - 1)];
+            break;
+        }
+        default: {
+            throw Boom.internal('Unsupported problem type');
+        }
     }
 
     log(

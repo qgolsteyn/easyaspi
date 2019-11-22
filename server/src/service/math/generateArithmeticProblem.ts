@@ -1,7 +1,7 @@
 import {
     ArithmeticProblemTemplateModel,
     IArithmeticProblemDefinition,
-} from '@server/database/arithmeticProblemTemplate';
+} from '@server/database/templates/arithmeticProblemTemplate';
 import {
     IProblem,
     ProblemDifficulty,
