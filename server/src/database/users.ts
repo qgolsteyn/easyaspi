@@ -5,6 +5,9 @@ import { IUser } from '@shared/index';
 export type IUserSchema = IUser & mongoose.Document;
 
 const UserSchema = new mongoose.Schema({
+    achievements: {
+        type: [String],
+    },
     email: {
         type: String,
     },

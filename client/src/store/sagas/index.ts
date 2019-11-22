@@ -7,6 +7,7 @@ import { delay, spawn } from 'redux-saga/effects';
 
 import { initNav } from './nav';
 import { initProblem } from './problems';
+import { initStudent } from './student';
 import { initTeacher } from './teacher';
 import { initUser } from './user';
 
@@ -19,4 +20,5 @@ export function* initializeSagas(): Generator<unknown, void, unknown> {
     yield spawn(initUser);
     yield spawn(initProblem);
     yield spawn(initTeacher);
+    yield spawn(initStudent);
 }
