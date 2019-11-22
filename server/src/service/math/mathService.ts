@@ -11,6 +11,7 @@ export const fetchNextMathProblem = async () => {
         ProblemType.ADDITION,
         ProblemType.SUBTRACTION,
         ProblemType.MULTIPLICATION,
+        ProblemType.DIVISION,
     ];
     const additionDiffs = [
         ProblemDifficulty.G1E,
@@ -28,7 +29,7 @@ export const fetchNextMathProblem = async () => {
 
     const six = 6;
     const subDiffs = additionDiffs.slice(1);
-    const multDiffs = additionDiffs.slice(six);
+    const multDivDiffs = additionDiffs.slice(six);
 
     // for now just randomize this stuff, later on we need to use next problem algo
     const supportedTypesIndex = generateNumber(0, supportedTypes.length - 1);
@@ -41,7 +42,7 @@ export const fetchNextMathProblem = async () => {
     ) {
         difficulty = subDiffs[generateNumber(0, subDiffs.length - 1)];
     } else {
-        difficulty = multDiffs[generateNumber(0, multDiffs.length - 1)];
+        difficulty = multDivDiffs[generateNumber(0, multDivDiffs.length - 1)];
     }
 
     log(
