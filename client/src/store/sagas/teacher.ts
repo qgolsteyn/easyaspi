@@ -20,7 +20,5 @@ function* getClassroomInfo(): Generator<unknown, void, unknown> {
 
     if (students) {
         yield put(actions.teacher.setTeacherInfo(students));
-    } else {
-        alert('Unable to fetch classroom info');
     }
 }

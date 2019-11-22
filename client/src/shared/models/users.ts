@@ -12,4 +12,5 @@ export interface IUser {
     email?: string;
     userType?: string;
     virtualClassroomUid?: string;
+    achievements?: string[];
 }

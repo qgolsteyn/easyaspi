@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 
 const log = debug('pi:db');
 
+export { AchievementModel } from './achievements';
 export { ArithmeticProblemTemplateModel } from './arithmeticProblemTemplate';
 export { UserModel } from './users';
 export { ClassroomModel } from './classroom';
