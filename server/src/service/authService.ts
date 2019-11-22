@@ -2,6 +2,8 @@ import axios from 'axios';
 import Boom from 'boom';
 import { decode, sign, verify } from 'jsonwebtoken';
 
+import * as errors from '@shared/errors';
+
 import { getUserFromId } from './userService';
 
 export interface IAuthInfo {
@@ -25,7 +27,7 @@ export const verifyAuthToken = async (token: string) => {
             'https://oauth2.googleapis.com/tokeninfo?id_token=' + token,
         );
     } catch (e) {
-        throw Boom.badRequest('Token is invalid');
+        throw Boom.badRequest(errors.AUTH);
     }
 };
 
@@ -33,7 +35,7 @@ export const getAuthTokenInfo = (token: string) => {
     const data = decode(token) as IAuthInfo;
 
     if (data.aud !== process.env.CLIENT_ID) {
-        throw Boom.badRequest('Token is invalid');
+        throw Boom.badRequest(errors.AUTH);
     }
 
     return data;
@@ -43,7 +45,7 @@ export const generateAccessToken = (
     accessTokenPayload: IAccessTokenPayload,
 ) => {
     if (process.env.ACCESS_TOKEN_SECRET === undefined) {
-        throw Boom.internal('Need to have a defined access token');
+        throw Boom.internal(errors.INTERNAL);
     }
 
     return sign(accessTokenPayload, process.env.ACCESS_TOKEN_SECRET);
@@ -51,7 +53,7 @@ export const generateAccessToken = (
 
 export const verifyAccessToken = async (accessToken: string) => {
     if (process.env.ACCESS_TOKEN_SECRET === undefined) {
-        throw Boom.internal('Need to have a defined access token');
+        throw Boom.internal(errors.INTERNAL);
     }
 
     try {
@@ -70,9 +72,9 @@ export const verifyAccessToken = async (accessToken: string) => {
         ) {
             return user;
         } else {
-            throw Boom.unauthorized();
+            throw Boom.unauthorized(errors.AUTH);
         }
     } catch (e) {
-        throw Boom.unauthorized();
+        throw Boom.unauthorized(errors.AUTH);
     }
 };

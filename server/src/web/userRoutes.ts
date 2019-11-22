@@ -73,6 +73,8 @@ export const initializeUsersRoutes = (app: express.Application) => {
             const accessToken = authService.generateAccessToken({
                 registered: user.registered,
                 sub: user.id,
+                userType: user.userType,
+                virtualClassroomUid: user.virtualClassroomUid,
             });
 
             return [HTTP_CODE.CREATED, { accessToken, user }];

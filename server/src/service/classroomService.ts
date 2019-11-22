@@ -1,6 +1,7 @@
 import Boom from 'boom';
 
 import { ClassroomModel, UserModel } from '@server/database';
+import * as errors from '@shared/errors';
 import { IClassroom, ProblemType, UserType } from '@shared/index';
 import { IClassroomWithId } from '@shared/models/classroom';
 import { convertStringToProblemType } from '@shared/models/problem';
@@ -15,9 +16,7 @@ export const createClassroom = async (classroomPayload: IClassroom) => {
     if (newClassroom) {
         return newClassroom;
     } else {
-        throw Boom.badRequest(
-            'A classroom already exists with this given name and passcode',
-        );
+        throw Boom.badRequest(errors.DUPLICATE_CLASSROOM);
     }
 };
 
@@ -30,7 +29,7 @@ export const authenticateToClassroom = async (classroomPayload: IClassroom) => {
     if (classroom && classroom.passcode === classroomPayload.passcode) {
         return classroom.id;
     } else {
-        throw Boom.unauthorized('Invalid classroom name or passcode');
+        throw Boom.unauthorized(errors.WRONG_CLASS_INFO);
     }
 };
 
@@ -44,21 +43,21 @@ export const getStudents = async (classroomId: string) => {
 export const getClassroom = async (classroomId: string) => {
     const classroom = await ClassroomModel.findById(classroomId);
 
-    if(!classroom){
+    if (!classroom) {
         throw Boom.notFound(`No classroom found with the id ${classroomId}`);
-    }
-    else{
+    } else {
         return classroom;
     }
 };
 
 export const updateClassroom = async (classroomPayload: IClassroomWithId) => {
-
-    if(classroomPayload.problemsForToday.length !== 0){
-        for(const problemTypeStr of classroomPayload.problemsForToday){
+    if (classroomPayload.problemsForToday.length !== 0) {
+        for (const problemTypeStr of classroomPayload.problemsForToday) {
             const problemType = convertStringToProblemType(problemTypeStr);
-            if (problemType === ProblemType.UNKNOWN){
-                throw Boom.badData(`${problemTypeStr} is not a valid problemType`)
+            if (problemType === ProblemType.UNKNOWN) {
+                throw Boom.badData(
+                    `${problemTypeStr} is not a valid problemType`,
+                );
             }
         }
     }
@@ -66,14 +65,14 @@ export const updateClassroom = async (classroomPayload: IClassroomWithId) => {
     const classroom = await ClassroomModel.findByIdAndUpdate(
         classroomPayload._id,
         classroomPayload,
-        {new: true},
+        { new: true },
     );
 
-    if(!classroom){
-        throw Boom.notFound(`Could not update the classroom with id ${classroomPayload._id}`);
-    }
-    else {
+    if (!classroom) {
+        throw Boom.notFound(
+            `Could not update the classroom with id ${classroomPayload._id}`,
+        );
+    } else {
         return classroom;
     }
 };
-

@@ -73,7 +73,7 @@ export const StyledIconButton = wrap((props: IStyledButton) => {
                     icon={props.icon}
                     size={ICON_SIZE}
                     color="#fff"
-                    style={{ marginRight: 4 }}
+                    style={{ marginRight: 2 }}
                 />
             </View>
         </TouchableWithoutFeedback>
