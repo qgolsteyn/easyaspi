@@ -12,7 +12,9 @@ import {
     ProblemType,
 } from '@shared/models/problem';
 
+import Boom from 'boom';
 import debug from 'debug';
+
 const log = debug('pi:mastery');
 
 // student must get 10 questions right before moving to next difficulty tier
@@ -234,3 +236,34 @@ function createProblemTypeProgression(
     }
     return newProblemTypeProgress;
 }
+
+/**
+ * Retrieves the student's stats from their mastery entry
+ *
+ * @param studentId student id
+ */
+export const getStatisticsForStudent = async (studentId: string) => {
+    const mastery = await MasteryModel.findOne({
+        studentId,
+    });
+
+    if (mastery) {
+        const totalsMap: { [key: string]: { [key: string]: number } } = {};
+        mastery.progress.forEach(
+            (value: IProblemTypeProgress, key: ProblemType) => {
+                totalsMap[key] = {
+                    totalAttempts: value.totalAttempts,
+                    totalCorrectAnswers: value.totalCorrectAnswers,
+                };
+            },
+        );
+
+        return {
+            numDailyAttempts: mastery.numDailyAttempts,
+            numDailyCorrectAnswers: mastery.numDailyCorrectAnswers,
+            totals: totalsMap,
+        };
+    } else {
+        throw Boom.notFound('No statistics found for student: ' + studentId);
+    }
+};
