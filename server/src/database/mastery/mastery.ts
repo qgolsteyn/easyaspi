@@ -19,7 +19,8 @@ export interface IProblemTypeProgress extends mongoose.Types.Subdocument {
     currentDifficultyAttempts: number;
     currentDifficultyPoints: number;
     difficulty: ProblemDifficulty;
-    totalPoints: number;
+    totalAttempts: number;
+    totalCorrectAnswers: number;
 }
 
 export const ProblemTypeProgressSchema = new mongoose.Schema({
@@ -35,7 +36,11 @@ export const ProblemTypeProgressSchema = new mongoose.Schema({
         required: true,
         type: ProblemDifficulty,
     },
-    totalPoints: {
+    totalAttempts: {
+        required: true,
+        type: Number,
+    },
+    totalCorrectAnswers: {
         required: true,
         type: Number,
     },
