@@ -133,3 +133,10 @@ export const getProblemsForClass = async (virtualClassroomUid: string) => {
 
     return classroom.problemsForToday;
 };
+
+export const getAllProblemTypes = async () => {
+    const values = Object.values(ProblemType);
+    values.pop();
+
+    return values;
+};
