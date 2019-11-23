@@ -1,7 +1,11 @@
 import Boom from 'boom';
 
 import { IProblemTypeProgress } from '@server/database/mastery/mastery';
-import { convertStringToProblemType, minProblemDifficulty, ProblemDifficulty } from '@shared/models/problem';
+import {
+    convertStringToProblemType,
+    minProblemDifficulty,
+    ProblemDifficulty,
+} from '@shared/models/problem';
 import { IUser, ProblemType } from '../../../client/src/shared/index';
 import { ClassroomModel, MasteryModel } from '../database';
 
@@ -11,66 +15,76 @@ import { ClassroomModel, MasteryModel } from '../database';
  * @returns: An object with the next problem type and difficulty
  */
 export const nextProblemTypeAndDifficulty = async (userPayload: IUser) => {
-    if (!userPayload) {
-        throw Boom.badRequest('Parameter userPayload to the method nextProblemTypeAndDifficulty can not be empty');
-    }
-
-    if(userPayload.userType !== 'student') {
+    if (userPayload.userType !== 'student') {
         throw Boom.badRequest('UserType must be student');
     }
 
-    if(!userPayload.virtualClassroomUid) {
+    if (!userPayload.virtualClassroomUid) {
         throw Boom.badData('virtualClassroomUid can not be null');
     }
 
-    if(!userPayload.id) {
+    if (!userPayload.id) {
         throw Boom.badData('user id can not be null');
     }
 
-    const nextProblemTypesAndMinDifficulty = await findPossibleNextProblemTypes(userPayload);
+    const nextProblemTypesAndMinDifficulty = await findPossibleNextProblemTypes(
+        userPayload,
+    );
 
     const difficulty = nextProblemTypesAndMinDifficulty.minDifficulty;
 
     const nextProblemTypes = nextProblemTypesAndMinDifficulty.nextProblemTypes;
 
-    const problemsForToday = await getProblemsForClass(userPayload.virtualClassroomUid);
+    const problemsForToday = await getProblemsForClass(
+        userPayload.virtualClassroomUid,
+    );
 
     // send the first matching between problemsForToday and nextProblemTypes
-    if(problemsForToday.length !== 0){
-        for(const item of nextProblemTypes){
-            if(problemsForToday.indexOf(item.valueOf()) !== -1) {
-                return {difficulty, problemType: item};
+    if (problemsForToday.length !== 0) {
+        for (const item of nextProblemTypes) {
+            if (problemsForToday.indexOf(item.valueOf()) !== -1) {
+                return { difficulty, problemType: item };
             }
         }
     }
 
     // if there's no match || problemsForToday is empty, send the first type of nextProblemTypes
-    return {difficulty, problemType: nextProblemTypes[0]};
+    return { difficulty, problemType: nextProblemTypes[0] };
 };
 
 /*
 returns an object consists nextProblemTypes and minDifficulty
  */
 export const findPossibleNextProblemTypes = async (userPayload: IUser) => {
-    const mastery = await MasteryModel.findById(userPayload.id);
+    const mastery = await MasteryModel.findOne({
+        studentId: userPayload.id,
+    });
     if (!mastery) {
         const additionProblemType = convertStringToProblemType('addition');
-        return { nextProblemTypes: additionProblemType, minDifficulty: ProblemDifficulty.G1E};
+        return {
+            minDifficulty: ProblemDifficulty.G1E,
+            nextProblemTypes: [additionProblemType],
+        };
     }
 
-    const classroom = await ClassroomModel.findById(userPayload.virtualClassroomUid);
-    if(!classroom) {
-        throw Boom.notFound(`could not find classroom associated with the id ${userPayload.virtualClassroomUid}`);
+    const classroom = await ClassroomModel.findById(
+        userPayload.virtualClassroomUid,
+    );
+    if (!classroom) {
+        throw Boom.notFound(
+            `could not find classroom associated with the id ${userPayload.virtualClassroomUid}`,
+        );
     }
 
-    if(classroom.numDailyProblems <= mastery.numDailyCorrectAnswers){
-        throw Boom.badRequest(`student with id ${userPayload.id} has already answered 
-                                               ${mastery.numDailyCorrectAnswers} questions correctly`);
+    if (classroom.numDailyProblems <= mastery.numDailyCorrectAnswers) {
+        throw Boom.badRequest(
+            `student with id ${userPayload.id} has already answered ${mastery.numDailyCorrectAnswers} questions correctly`,
+        );
     }
 
     const progress = mastery.progress;
 
-    if(!progress) {
+    if (!progress) {
         throw Boom.badData('progress should not be empty');
     }
 
@@ -78,14 +92,11 @@ export const findPossibleNextProblemTypes = async (userPayload: IUser) => {
 
     // @ts-ignore
     const findMin = (value: IProblemTypeProgress, key: ProblemType) => {
-        const problemType = convertStringToProblemType(key);
-        const progressForProblemType = progress.get(problemType);
-
-        if(typeof progressForProblemType === 'undefined') {
+        if (typeof value === 'undefined') {
             throw Boom.badData('progress can not be undefined');
         }
 
-        const difficulty = progressForProblemType.difficulty;
+        const difficulty = value.difficulty;
 
         minDifficulty = minProblemDifficulty(difficulty, minDifficulty);
     };
@@ -96,17 +107,17 @@ export const findPossibleNextProblemTypes = async (userPayload: IUser) => {
 
     // @ts-ignore
     // find all the problemTypes with minimum difficulty
-    const findAllProblemTypesMinDifficulty = (value: IProblemTypeProgress, key: ProblemType) => {
-        const problemType = convertStringToProblemType(key);
-        const progressForProblemType = progress.get(problemType);
-
-        if(typeof progressForProblemType === 'undefined') {
+    const findAllProblemTypesMinDifficulty = (
+        value: IProblemTypeProgress,
+        key: ProblemType,
+    ) => {
+        if (typeof value === 'undefined') {
             throw Boom.badData('progress can not be undefined');
         }
 
-        const difficulty = progressForProblemType.difficulty;
+        const difficulty = value.difficulty;
 
-        if(difficulty.valueOf() === minDifficulty.valueOf()) {
+        if (difficulty.valueOf() === minDifficulty.valueOf()) {
             nextProblemTypes.push(key);
         }
     };
@@ -114,18 +125,25 @@ export const findPossibleNextProblemTypes = async (userPayload: IUser) => {
     progress.forEach(findAllProblemTypesMinDifficulty);
 
     // sort it in ascending order using the formula CurDifPoints + attempted
-    nextProblemTypes.sort((a,b) => {
+    nextProblemTypes.sort((a, b) => {
         const aProblemType = convertStringToProblemType(a);
         const bProblemType = convertStringToProblemType(b);
         const aProgress = progress.get(aProblemType);
         const bProgress = progress.get(bProblemType);
 
-        if(typeof aProgress === 'undefined' || typeof bProgress === 'undefined') {
+        if (
+            typeof aProgress === 'undefined' ||
+            typeof bProgress === 'undefined'
+        ) {
             throw Boom.badData('progress can not be undefined');
         }
 
-        return (aProgress.currentDifficultyPoints + aProgress.currentDifficultyAttempts) -
-            (bProgress.currentDifficultyPoints + bProgress.currentDifficultyAttempts);
+        return (
+            aProgress.currentDifficultyPoints +
+            aProgress.currentDifficultyAttempts -
+            (bProgress.currentDifficultyPoints +
+                bProgress.currentDifficultyAttempts)
+        );
     });
 
     return {
@@ -137,8 +155,10 @@ export const findPossibleNextProblemTypes = async (userPayload: IUser) => {
 export const getProblemsForClass = async (virtualClassroomUid: string) => {
     const classroom = await ClassroomModel.findById(virtualClassroomUid);
 
-    if(!classroom) {
-        throw Boom.notFound(`classroom not found with id ${virtualClassroomUid}`);
+    if (!classroom) {
+        throw Boom.notFound(
+            `classroom not found with id ${virtualClassroomUid}`,
+        );
     }
 
     return classroom.problemsForToday;
@@ -150,4 +170,3 @@ export const getAllProblemTypes = async () => {
 
     return values;
 };
-
