@@ -13,7 +13,9 @@ import * as mongoose from 'mongoose';
  *
  * difficulty - current difficulty student is on for this problem type
  *
- * totalPoints - same as currentDifficultyPoints but never gets reset
+ * totalAttempts - total lifetime math problem attempts irrespective of problem type
+ *
+ * totalCorrectAnswers - total lifetime math problems answered correctly irrespective of problem type
  */
 export interface IProblemTypeProgress extends mongoose.Types.Subdocument {
     currentDifficultyAttempts: number;
