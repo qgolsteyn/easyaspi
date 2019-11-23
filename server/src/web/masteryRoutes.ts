@@ -1,4 +1,7 @@
-import { updateMastery } from '@server/service/masteryService';
+import {
+    updateMastery,
+    getStatisticsForStudent,
+} from '@server/service/masteryService';
 import { enhanceHandler, HTTP_CODE } from '@server/service/utils/routeEnhancer';
 import {
     convertStringToProblemType,
@@ -46,6 +49,18 @@ export const initializeMasteryRoutes = (app: express.Application) => {
                 } else {
                     throw Boom.internal('User does not belong to a classroom');
                 }
+            } else {
+                throw Boom.internal('User is undefined');
+            }
+        }),
+    );
+
+    masteryRouter.get(
+        '/statistics',
+        enhanceHandler({ protect: true })(async (_, user) => {
+            if (user) {
+                const stats = await getStatisticsForStudent(user.id);
+                return [HTTP_CODE.OK, stats];
             } else {
                 throw Boom.internal('User is undefined');
             }
