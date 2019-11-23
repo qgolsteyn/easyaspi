@@ -3,7 +3,9 @@ import { StyleSheet, Text, View } from 'react-native';
 
 interface IIconProps {
     backgroundColor: string;
-    text: string;
+    text: string | number;
+    shape?: 'round' | 'square';
+    font?: 'normal' | 'small';
 }
 
 export const Icon = (props: IIconProps) => {
@@ -12,9 +14,14 @@ export const Icon = (props: IIconProps) => {
             style={{
                 ...styles.wrapper,
                 backgroundColor: props.backgroundColor,
+                borderRadius: props.shape === 'round' ? 24 : 8,
             }}
         >
-            <Text style={styles.text}>{props.text}</Text>
+            <Text
+                style={props.font === 'small' ? styles.textSmall : styles.text}
+            >
+                {props.text}
+            </Text>
         </View>
     );
 };
@@ -24,6 +31,11 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontFamily: 'amatic-sc',
         fontSize: 64,
+    },
+    textSmall: {
+        color: '#fff',
+        fontFamily: 'josefin-sans-bold',
+        fontSize: 24,
     },
     wrapper: {
         alignItems: 'center',

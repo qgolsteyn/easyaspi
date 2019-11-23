@@ -16,6 +16,18 @@ export function* initProblem(): Generator<unknown, void, unknown> {
             }
         }
     });
+
+    yield takeLatest(actions.student.setStudentInfo, function*(
+        action: ReturnType<typeof actions.student.setStudentInfo>,
+    ): Generator<unknown, void, unknown> {
+        yield put(
+            actions.problems.setProblemSetState(
+                action.payload.statistics.numDailyAttempts,
+                action.payload.classroomInfo.numDailyProblems,
+            ),
+        );
+    });
+
     yield takeLatest(actions.problems.solveCurrentProblem, solveCurrentProblem);
     yield takeLatest(actions.problems.fetchNextProblem, fetchNextProblem);
 }

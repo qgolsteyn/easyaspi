@@ -19,10 +19,15 @@ export const DoneFragment = () => {
             <Image
                 source={done}
                 style={{
-                    height: 400,
+                    height: 420,
                     resizeMode: 'contain',
                     width: '100%',
                 }}
+            />
+            <StyledButton
+                text="View results"
+                onPress={() => dispatch(actions.nav.goToScreen('StudentHome'))}
+                ref={testHook('Achievements')}
             />
             <StyledButton
                 text="Back"

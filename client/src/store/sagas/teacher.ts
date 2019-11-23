@@ -1,4 +1,4 @@
-import { IUser, IClassroom } from '@shared/index';
+import { IClassroom, IUser } from '@shared/index';
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { actions } from '../reducers';
 import * as api from './api';

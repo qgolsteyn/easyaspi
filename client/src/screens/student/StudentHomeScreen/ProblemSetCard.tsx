@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { StyledButton } from '@client/components/Button';
 import { StyledCard } from '@client/components/Card';
-import { Icon } from '@client/components/Icon';
+import { ListItem } from '@client/components/ListItem';
 import { colors } from '@client/constants/colors';
 import { actions, selectors } from '@client/store';
 import { ProblemSetState } from '@client/store/reducers/problems';
@@ -33,17 +33,9 @@ export const ProblemSetCard = () => {
                 progress={0.5}
             />
             <View style={styles.typeList}>
-                <View style={styles.type}>
-                    <Icon backgroundColor={colors.inputs} text="+" />
-                    <Text style={styles.typeText}>Addition</Text>
-                </View>
-                <View style={styles.type}>
-                    <Icon backgroundColor={colors.inputs} text="-" />
-                    <Text style={styles.typeText}>Substraction</Text>
-                </View>
+                <ListItem icon="+" text="Addition" extra={[]} />
             </View>
             <StyledButton
-                loading={problemSetState === ProblemSetState.LOADING}
                 text={
                     problemSetState === ProblemSetState.NOT_STARTED
                         ? 'Start!'
@@ -80,23 +72,11 @@ const styles = StyleSheet.create({
         fontFamily: 'josefin-sans',
         fontSize: 14,
     },
-    type: {
-        alignItems: 'center',
-        display: 'flex',
-        flexDirection: 'row',
-    },
     typeList: {
         display: 'flex',
         flex: 1,
         marginBottom: 16,
         width: '100%',
-    },
-    typeText: {
-        color: '#333',
-        fontFamily: 'josefin-sans',
-        fontSize: 20,
-        marginLeft: 8,
-        marginTop: 4,
     },
     wrapper: {
         display: 'flex',

@@ -1,4 +1,4 @@
-import { IAchievement, IClassroom } from '@shared/index';
+import { IAchievement, IClassroom, IStudentStatistic } from '@shared/index';
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { actions } from '../reducers';
 import * as api from './api';
@@ -22,7 +22,17 @@ function* getStudentInfo(): Generator<unknown, void, unknown> {
         api.student.getAchievements,
     )) as IAchievement[];
 
-    if (classroomInfo && achievements) {
-        yield put(actions.student.setStudentInfo(classroomInfo, achievements));
+    const statistics = (yield call(
+        api.student.getStatistics,
+    )) as IStudentStatistic;
+
+    if (classroomInfo && achievements && statistics) {
+        yield put(
+            actions.student.setStudentInfo(
+                classroomInfo,
+                achievements,
+                statistics,
+            ),
+        );
     }
 }

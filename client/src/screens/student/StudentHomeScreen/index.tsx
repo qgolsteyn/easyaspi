@@ -32,7 +32,7 @@ export const StudentHome = () => {
                 </StyledHeader>
                 <ProblemSetCard />
                 <StyledCardButton
-                    text="Achievements"
+                    text="Stats and Achievements"
                     icon={faTrophy}
                     styleAttr="secondary"
                     styles={{ marginBottom: 8 }}
