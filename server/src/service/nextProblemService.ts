@@ -1,11 +1,7 @@
 import Boom from 'boom';
 
 import { IProblemTypeProgress } from '@server/database/mastery/mastery';
-import {
-    convertStringToProblemType,
-    minProblemDifficulty,
-    ProblemDifficulty }
-    from '@shared/models/problem';
+import { convertStringToProblemType, minProblemDifficulty, ProblemDifficulty } from '@shared/models/problem';
 import { IUser, ProblemType } from '../../../client/src/shared/index';
 import { ClassroomModel, MasteryModel } from '../database';
 
@@ -31,10 +27,11 @@ export const nextProblemTypeAndDifficulty = async (userPayload: IUser) => {
         throw Boom.badData('user id can not be null');
     }
 
-    const nextProblemTypes = await findPossibleNextProblemTypes(userPayload);
+    const nextProblemTypesAndMinDifficulty = await findPossibleNextProblemTypes(userPayload);
 
-    // last element of nextProblemTypes is the difficulty
-    const difficulty = nextProblemTypes.pop();
+    const difficulty = nextProblemTypesAndMinDifficulty.minDifficulty;
+
+    const nextProblemTypes = nextProblemTypesAndMinDifficulty.nextProblemTypes;
 
     const problemsForToday = await getProblemsForClass(userPayload.virtualClassroomUid);
 
@@ -51,12 +48,14 @@ export const nextProblemTypeAndDifficulty = async (userPayload: IUser) => {
     return {difficulty, problemType: nextProblemTypes[0]};
 };
 
-
+/*
+returns an object consists nextProblemTypes and minDifficulty
+ */
 export const findPossibleNextProblemTypes = async (userPayload: IUser) => {
     const mastery = await MasteryModel.findById(userPayload.id);
     if (!mastery) {
         const additionProblemType = convertStringToProblemType('addition');
-        return [additionProblemType, ProblemDifficulty.G1E];
+        return { nextProblemTypes: additionProblemType, minDifficulty: ProblemDifficulty.G1E};
     }
 
     const classroom = await ClassroomModel.findById(userPayload.virtualClassroomUid);
@@ -93,7 +92,7 @@ export const findPossibleNextProblemTypes = async (userPayload: IUser) => {
 
     progress.forEach(findMin);
 
-    const nextProblemTypes: Array<ProblemType | ProblemDifficulty> = [];
+    const nextProblemTypes: ProblemType[] = [];
 
     // @ts-ignore
     // find all the problemTypes with minimum difficulty
@@ -129,10 +128,10 @@ export const findPossibleNextProblemTypes = async (userPayload: IUser) => {
             (bProgress.currentDifficultyPoints + bProgress.currentDifficultyAttempts);
     });
 
-    // last element is the minDifficulty
-    nextProblemTypes.push(minDifficulty);
-
-    return nextProblemTypes;
+    return {
+        minDifficulty,
+        nextProblemTypes,
+    };
 };
 
 export const getProblemsForClass = async (virtualClassroomUid: string) => {
