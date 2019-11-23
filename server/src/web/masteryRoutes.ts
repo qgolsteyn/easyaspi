@@ -1,5 +1,6 @@
 import {
     getStatisticsForStudent,
+    getStatisticsForStudentsInClassroom,
     updateMastery,
 } from '@server/service/masteryService';
 import { enhanceHandler, HTTP_CODE } from '@server/service/utils/routeEnhancer';
@@ -56,11 +57,29 @@ export const initializeMasteryRoutes = (app: express.Application) => {
     );
 
     masteryRouter.get(
-        '/statistics',
+        '/student/statistics',
         enhanceHandler({ protect: true })(async (_, user) => {
             if (user) {
                 const stats = await getStatisticsForStudent(user.id);
                 return [HTTP_CODE.OK, stats];
+            } else {
+                throw Boom.internal('User is undefined');
+            }
+        }),
+    );
+
+    masteryRouter.get(
+        '/classroom/statistics',
+        enhanceHandler({ protect: true })(async (_, user) => {
+            if (user) {
+                if (user.virtualClassroomUid) {
+                    const allStats = await getStatisticsForStudentsInClassroom(
+                        user.virtualClassroomUid,
+                    );
+                    return [HTTP_CODE.OK, allStats];
+                } else {
+                    throw Boom.internal('User does not belong to a classroom');
+                }
             } else {
                 throw Boom.internal('User is undefined');
             }

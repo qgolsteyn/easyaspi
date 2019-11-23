@@ -248,22 +248,55 @@ export const getStatisticsForStudent = async (studentId: string) => {
     });
 
     if (mastery) {
-        const totalsMap: { [key: string]: { [key: string]: number } } = {};
-        mastery.progress.forEach(
-            (value: IProblemTypeProgress, key: ProblemType) => {
-                totalsMap[key] = {
-                    totalAttempts: value.totalAttempts,
-                    totalCorrectAnswers: value.totalCorrectAnswers,
-                };
-            },
-        );
-
-        return {
-            numDailyAttempts: mastery.numDailyAttempts,
-            numDailyCorrectAnswers: mastery.numDailyCorrectAnswers,
-            totals: totalsMap,
-        };
+        return curateStudentStatistics(mastery);
     } else {
         throw Boom.notFound('No statistics found for student: ' + studentId);
     }
+};
+
+/**
+ * Retrieves all students' stats that belong to a specific classroom
+ *
+ * @param classroomId classroom id
+ */
+export const getStatisticsForStudentsInClassroom = async (
+    classroomId: string,
+) => {
+    const studentMasteries = await MasteryModel.find({
+        classroomId,
+    });
+
+    if (studentMasteries && studentMasteries.length > 0) {
+        const allStudentStatsMap: { [key: string]: any } = {};
+
+        studentMasteries.forEach(mastery => {
+            allStudentStatsMap[mastery.studentId] = curateStudentStatistics(
+                mastery,
+            );
+        });
+
+        return allStudentStatsMap;
+    } else {
+        throw Boom.notFound(
+            'No student statistics for classroom: ' + classroomId,
+        );
+    }
+};
+
+const curateStudentStatistics = (mastery: IMastery) => {
+    const totalsMap: { [key: string]: { [key: string]: number } } = {};
+    mastery.progress.forEach(
+        (value: IProblemTypeProgress, key: ProblemType) => {
+            totalsMap[key] = {
+                totalAttempts: value.totalAttempts,
+                totalCorrectAnswers: value.totalCorrectAnswers,
+            };
+        },
+    );
+
+    return {
+        numDailyAttempts: mastery.numDailyAttempts,
+        numDailyCorrectAnswers: mastery.numDailyCorrectAnswers,
+        totals: totalsMap,
+    };
 };
