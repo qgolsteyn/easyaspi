@@ -15,31 +15,36 @@ export const initializeMasteryRoutes = (app: express.Application) => {
         '/result',
         enhanceHandler({ protect: true })(async (req, user) => {
             if (user) {
-                try {
-                    const problemType = convertStringToProblemType(
-                        req.body.problemType,
-                    );
-                    if (
-                        problemType === ProblemType.UNKNOWN ||
-                        typeof req.body.isSuccess !== 'boolean'
-                    ) {
-                        throw Boom.badRequest(
-                            'Either problemType or isSuccess is invalid',
+                if (user.virtualClassroomUid) {
+                    try {
+                        const problemType = convertStringToProblemType(
+                            req.body.problemType,
                         );
-                    } else {
-                        await updateMastery(
-                            user.id,
-                            problemType,
-                            req.body.isSuccess,
-                        );
-                        return [HTTP_CODE.NO_CONTENT, null];
+                        if (
+                            problemType === ProblemType.UNKNOWN ||
+                            typeof req.body.isSuccess !== 'boolean'
+                        ) {
+                            throw Boom.badRequest(
+                                'Either problemType or isSuccess is invalid',
+                            );
+                        } else {
+                            await updateMastery(
+                                user.virtualClassroomUid,
+                                user.id,
+                                problemType,
+                                req.body.isSuccess,
+                            );
+                            return [HTTP_CODE.NO_CONTENT, null];
+                        }
+                    } catch (e) {
+                        if (Boom.isBoom(e)) {
+                            throw e;
+                        } else {
+                            throw Boom.internal();
+                        }
                     }
-                } catch (e) {
-                    if (Boom.isBoom(e)) {
-                        throw e;
-                    } else {
-                        throw Boom.internal();
-                    }
+                } else {
+                    throw Boom.internal('User does not belong to a classroom');
                 }
             } else {
                 throw Boom.internal('User is undefined');
