@@ -267,7 +267,7 @@ export const getStatisticsForStudentsInClassroom = async (
     });
 
     if (studentMasteries && studentMasteries.length > 0) {
-        const allStudentStatsMap: { [key: string]: any } = {};
+        const allStudentStatsMap: { [key: string]: object } = {};
 
         studentMasteries.forEach(mastery => {
             allStudentStatsMap[mastery.studentId] = curateStudentStatistics(
