@@ -110,6 +110,7 @@ export const findPossibleNextProblemTypes = async (userPayload: IUser) => {
     // @ts-ignore
     // find all the problemTypes with minimum difficulty
     const findAllProblemTypesMinDifficulty = (
+        //eslint-disable-next-line
         _value: IProblemTypeProgress,
         key: ProblemType,
     ) => {

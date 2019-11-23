@@ -1,8 +1,8 @@
-import { generateArithmeticProblem } from './generateArithmeticProblem';
-
-import debug from 'debug';
 import { IUser } from '@shared/models/users';
+import { generateArithmeticProblem } from './generateArithmeticProblem';
 import { nextProblemTypeAndDifficulty } from '../nextProblemService';
+import debug from 'debug';
+
 const log = debug('pi:route');
 
 export const fetchNextMathProblem = async (user: IUser) => {
