@@ -113,12 +113,15 @@ const generateIncorrectValue = (
 
         // try to generate an incorrect solution with the same last digit as solution to make
         // multiple choice harder
+        const ten = 10;
+
         const sameLastDigitIncorrectValueString =
             incorrectValueString.substring(0, incorrectValueString.length - 1) +
-            (solution % 10);
+            (solution % ten);
 
         const sameLastDigitIncorrectValue = parseInt(
             sameLastDigitIncorrectValueString,
+            ten,
         );
 
         // if incorrect solution with same last digit equals the solution or already exists
