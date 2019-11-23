@@ -35,7 +35,11 @@ export const initializeMasteryRoutes = (app: express.Application) => {
                         return [HTTP_CODE.NO_CONTENT, null];
                     }
                 } catch (e) {
-                    throw Boom.internal();
+                    if (Boom.isBoom(e)) {
+                        throw e;
+                    } else {
+                        throw Boom.internal();
+                    }
                 }
             } else {
                 throw Boom.internal('User is undefined');
