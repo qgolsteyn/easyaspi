@@ -25,7 +25,7 @@ export const initializeClassroomRoutes = (app: express.Application) => {
     classroomRouter.put(
         '/', enhanceHandler({ protect: true })(async (req, user) => {
 
-            if(!req.body || !req.body.name || !req.body.passcode){
+            if(!req.body){
                 throw Boom.badRequest('Invalid Classroom Payload');
             }
 
