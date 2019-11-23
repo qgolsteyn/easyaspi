@@ -26,30 +26,30 @@ const DISABLED_PROBLEM_TYPES = [ProblemType.AREA, ProblemType.PERIMETER];
  * When student has completed pre-reqs for a problem type they 'unlock' it
  * and it will show up in their mastery
  *
- * @param studentIdent studentId, renamed because of a conflict with mastery studentId field
+ * @param studentId studentId
  * @param problemType problem type to update mastery for
  * @param isSuccess whether or not student got problem correct
  */
 export async function updateMastery(
-    studentIdent: string,
+    studentId: string,
     problemType: ProblemType,
     isSuccess: boolean,
 ): Promise<void> {
     let mastery = await MasteryModel.findOne({
-        studentId: studentIdent,
+        studentId,
     });
 
     if (!mastery) {
         const newMastery = new MasteryModel({
             progress: new Map<string, IProblemTypeProgress>(),
-            studentId: studentIdent,
+            studentId: studentId,
         });
         mastery = await newMastery.save();
     }
 
     const problemTypeProgress = mastery.progress.get(problemType);
     if (typeof problemTypeProgress === 'undefined') {
-        // if app is working correclty, this case should never happen
+        // if app is working correctly, this case should never happen
         const newProblemTypeProgress = createProblemTypeProgression(isSuccess);
         mastery.progress.set(problemType, newProblemTypeProgress);
     } else {
@@ -86,7 +86,8 @@ async function updateProblemTypeProgression(
         ) {
             problemTypeProgress.currentDifficultyPoints = 0;
             problemTypeProgress.currentDifficultyAttempts = 0;
-            problemTypeProgress.totalPoints++;
+            problemTypeProgress.totalAttempts++;
+            problemTypeProgress.totalCorrectAnswers++;
             problemTypeProgress.difficulty = getNextProblemDifficulty(
                 problemTypeProgress.difficulty,
             );
@@ -99,7 +100,8 @@ async function updateProblemTypeProgression(
         } else {
             problemTypeProgress.currentDifficultyPoints++;
             problemTypeProgress.currentDifficultyAttempts++;
-            problemTypeProgress.totalPoints++;
+            problemTypeProgress.totalAttempts++;
+            problemTypeProgress.totalCorrectAnswers++;
 
             mastery.progress.set(problemType, problemTypeProgress);
         }
@@ -119,20 +121,22 @@ async function updateProblemTypeProgression(
                 ) {
                     problemTypeProgress.currentDifficultyPoints = MAX_POINTS_PER_DIFFICULTY;
                     problemTypeProgress.currentDifficultyAttempts = 0;
-                    problemTypeProgress.totalPoints--;
+                    problemTypeProgress.totalAttempts++;
                     problemTypeProgress.difficulty = getPreviousProblemDifficulty(
                         problemTypeProgress.difficulty,
                     );
                 } else {
                     // if student is at 0 points and is in the lowest difficulty for
-                    // this problem type, only attempts is updated
+                    // this problem type, only attempts are updated
                     problemTypeProgress.currentDifficultyAttempts++;
+                    problemTypeProgress.totalAttempts++;
                 }
             } else {
                 // this function and overarching endpoint should not fail because
                 // of this data error. In the event this error happens, continue so
                 // user experience is not disrupted
                 problemTypeProgress.currentDifficultyAttempts++;
+                problemTypeProgress.totalAttempts++;
                 log(
                     'No problem difficulty mapping found for ' +
                         problemType.valueOf(),
@@ -141,7 +145,7 @@ async function updateProblemTypeProgression(
         } else {
             problemTypeProgress.currentDifficultyPoints--;
             problemTypeProgress.currentDifficultyAttempts++;
-            problemTypeProgress.totalPoints--;
+            problemTypeProgress.totalAttempts++;
         }
 
         mastery.progress.set(problemType, problemTypeProgress);
@@ -173,7 +177,8 @@ async function insertUnlockedProblemTypes(mastery: IMastery): Promise<void> {
                     currentDifficultyAttempts: 0,
                     currentDifficultyPoints: 0,
                     difficulty: lowestDifficulty,
-                    totalPoints: 0,
+                    totalAttempts: 0,
+                    totalCorrectAnswers: 0,
                 } as IProblemTypeProgress;
 
                 mastery.progress.set(problemType, newProblemTypeProgress);
@@ -197,14 +202,16 @@ function createProblemTypeProgression(
             currentDifficultyAttempts: 1,
             currentDifficultyPoints: 1,
             difficulty: ProblemDifficulty.G1E,
-            totalPoints: 1,
+            totalAttempts: 1,
+            totalCorrectAnswers: 1,
         } as IProblemTypeProgress;
     } else {
         newProblemTypeProgress = {
             currentDifficultyAttempts: 1,
             currentDifficultyPoints: 0,
             difficulty: ProblemDifficulty.G1E,
-            totalPoints: 0,
+            totalAttempts: 1,
+            totalCorrectAnswers: 0,
         } as IProblemTypeProgress;
     }
     return newProblemTypeProgress;
