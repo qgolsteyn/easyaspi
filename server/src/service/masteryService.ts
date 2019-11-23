@@ -243,12 +243,12 @@ function createProblemTypeProgression(
  * @param studentId student id
  */
 export const getStatisticsForStudent = async (studentId: string) => {
-    let mastery = await MasteryModel.findOne({
+    const mastery = await MasteryModel.findOne({
         studentId,
     });
 
     if (mastery) {
-        let totalsMap: { [key: string]: { [key: string]: number } } = {};
+        const totalsMap: { [key: string]: { [key: string]: number } } = {};
         mastery.progress.forEach(
             (value: IProblemTypeProgress, key: ProblemType) => {
                 totalsMap[key] = {

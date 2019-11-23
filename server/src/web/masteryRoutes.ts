@@ -1,6 +1,6 @@
 import {
-    updateMastery,
     getStatisticsForStudent,
+    updateMastery,
 } from '@server/service/masteryService';
 import { enhanceHandler, HTTP_CODE } from '@server/service/utils/routeEnhancer';
 import {
