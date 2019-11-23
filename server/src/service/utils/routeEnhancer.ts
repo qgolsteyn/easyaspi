@@ -5,8 +5,6 @@ import express from 'express';
 import { verifyAccessToken } from '@server/service/authService';
 import { IUser } from '@shared/index';
 
-// This here is a prime example of why forcing alpha order via linting
-// is absolutely ridiculous
 export const HTTP_CODE = {
     CREATED: 201,
     INTERNAL_SERVER_ERROR: 500,
@@ -65,9 +63,10 @@ export const enhanceHandler = (options: { protect: boolean }) => (
 
             log(response);
 
-            res.status(response[0]);
             if (response[1] !== null) {
-                res.json(response[1]);
+                res.status(response[0]).json(response[1]);
+            } else {
+                res.status(response[0]).send('success');
             }
         } catch (error) {
             if (Boom.isBoom(error)) {
