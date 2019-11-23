@@ -9,15 +9,18 @@ const ClassroomSchema = new mongoose.Schema({
         required: true,
         type: String,
     },
+    numDailyProblems:{
+        type: Number
+    },
+    onlineResources: {
+        type: Array,
+    },
     passcode: {
         required: true,
         type: String,
     },
     problemsForToday: {
         type: Array,
-    },
-    resourceWeb: {
-        type: String,
     },
 });
 
