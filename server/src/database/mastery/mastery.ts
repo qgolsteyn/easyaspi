@@ -53,7 +53,6 @@ export interface IMastery extends mongoose.Document {
     progress: Map<ProblemType, IProblemTypeProgress>;
     studentId: string;
 }
-
 export const MasterySchema = new mongoose.Schema({
     classroomId: String,
     numDailyAttempts: Number,
