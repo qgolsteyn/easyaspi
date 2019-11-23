@@ -1,4 +1,4 @@
-import { updateMastery } from '@server/service/masteryService';
+import { getStudentStat, updateMastery } from '@server/service/masteryService';
 import { enhanceHandler, HTTP_CODE } from '@server/service/utils/routeEnhancer';
 import {
     convertStringToProblemType,
@@ -48,6 +48,28 @@ export const initializeMasteryRoutes = (app: express.Application) => {
                 }
             } else {
                 throw Boom.internal('User is undefined');
+            }
+        }),
+    );
+
+    masteryRouter.get(
+        '/stats',
+        enhanceHandler({ protect: true })(async (_, user) => {
+            if(!user){
+                throw Boom.internal('User is undefined');
+            }
+
+            if(user.userType !== 'student'){
+                throw Boom.badRequest('Can not get stat of a teacher');
+            }
+
+            const stat = await getStudentStat(user.id);
+
+            if(stat){
+                return [HTTP_CODE.OK, stat];
+            }
+            else {
+                throw Boom.internal(`Could not get stat for student with id ${user.id}`);
             }
         }),
     );

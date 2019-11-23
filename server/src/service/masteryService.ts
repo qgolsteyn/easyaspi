@@ -1,3 +1,4 @@
+import Boom from 'boom';
 import {
     IMastery,
     IProblemTypeProgress,
@@ -5,7 +6,6 @@ import {
 } from '@server/database/mastery/mastery';
 import { ProblemMinimumDifficultiesModel } from '@server/database/mastery/problemMinimumDifficulties';
 import {
-    convertStringToProblemType,
     getNextProblemDifficulty,
     getPreviousProblemDifficulty,
     minProblemDifficulty,
@@ -14,9 +14,6 @@ import {
 } from '@shared/models/problem';
 
 import debug from 'debug';
-import Boom from 'boom';
-import { IUser } from '@shared/models/users';
-import { ClassroomModel } from '@server/database';
 const log = debug('pi:mastery');
 
 // student must get 10 questions right before moving to next difficulty tier
@@ -239,25 +236,31 @@ function createProblemTypeProgression(
     return newProblemTypeProgress;
 }
 
-export const getStudentStat = async (studentId : string) => {
-    const mastery = await MasteryModel.findById(studentId);
-    if(!mastery) {
-        throw Boom.notFound(`could not find mastery of the student with id ${studentId}`);
+export const getStudentStat = async (studentId: string) => {
+    const mastery = await MasteryModel.findOne({studentId});
+    if (!mastery) {
+        throw Boom.notFound(
+            `could not find mastery of the student with id ${studentId}`,
+        );
     }
 
-    let obj = {};
+    const totals: Map<string, Map<string, number>> = new Map<string, Map<string, number>>();
 
-    const find = (key: ProblemType, value: IProblemTypeProgress) => {
-        const problemType = convertStringToProblemType(key);
-        const progressForProblemType = mastery.progress.get(problemType);
-
-        if(typeof progressForProblemType === 'undefined') {
-            throw Boom.badData('progress can not be undefined');
-        }
-
-        const totalAttempts = value.totalAttempts;
-        const totalCorrectAnswers = value.totalCorrectAnswers;
-
-        con
+    const getTotals = (value: IProblemTypeProgress, key: ProblemType) => {
+        const totalAttemptsMap = new Map<string, number>();
+        const totalCorrectAnswersMap = new Map<string, number>();
+        totalAttemptsMap.set('totalAttempts', value.totalAttempts);
+        totalCorrectAnswersMap.set('totalCorrectAnswers', value.totalCorrectAnswers);
+        totals.set(key, totalAttemptsMap);
+        totals.set(key, totalCorrectAnswersMap);
     };
+
+    mastery.progress.forEach(getTotals);
+
+    return {
+        numDailyAttempts: mastery.numDailyAttempts,
+        numDailyCorrectAnswers: mastery.numDailyCorrectAnswers,
+        totals
+    }
 };
+
