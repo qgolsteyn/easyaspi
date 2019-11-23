@@ -34,49 +34,48 @@ test('Check if ProblemsForToday returns empty object correctly', async () => {
 test('Check if findPossibleNextProblemTypes finds lowest grade correctly', async () => {
     mockingoose(MasteryModel).toReturn(masteryDoc1, 'findOne');
 
-    const nextProblemTypes = await findPossibleNextProblemTypes('113015909143620944320');
-    expect(nextProblemTypes[nextProblemTypes.length - 1]).toEqual('g1h2e');
+    const nextProblemTypes = await findPossibleNextProblemTypes(user1);
+    expect(nextProblemTypes.minDifficulty).toEqual('g1h2e');
 });
 
 test('Check if findPossibleNextProblemTypes finds lowest grade correctly', async () => {
     mockingoose(MasteryModel).toReturn(masteryDoc2, 'findOne');
 
-    const nextProblemTypes = await findPossibleNextProblemTypes('113015909143620944320');
-    expect(nextProblemTypes[nextProblemTypes.length - 1]).toEqual('g1m');
+    const nextProblemTypes = await findPossibleNextProblemTypes(user1);
+    expect(nextProblemTypes.minDifficulty).toEqual('g1m');
 });
 
 
 test('Check if findPossibleNextProblemTypes finds all problemTypes with minimum difficulty correctly', async () => {
     mockingoose(MasteryModel).toReturn(masteryDoc2, 'findOne');
 
-    const nextProblemTypes = await findPossibleNextProblemTypes('113015909143620944320');
-    expect(nextProblemTypes).toContain('equation');
-    expect(nextProblemTypes).toContain('division');
-    expect(nextProblemTypes).toContain('subtraction');
-    expect(nextProblemTypes).toContain('multiplication');
+    const nextProblemTypes = await findPossibleNextProblemTypes(user1);
+
+    expect(nextProblemTypes.nextProblemTypes).toContain('equation');
+    expect(nextProblemTypes.nextProblemTypes).toContain('division');
+    expect(nextProblemTypes.nextProblemTypes).toContain('subtraction');
+    expect(nextProblemTypes.nextProblemTypes).toContain('multiplication');
 });
 
 
 test('Check if findPossibleNextProblemTypes sorts problem types correctly for doc2', async () => {
     mockingoose(MasteryModel).toReturn(masteryDoc2, 'findOne');
 
-    const nextProblemTypes = await findPossibleNextProblemTypes('113015909143620944320');
+    const nextProblemTypes = await findPossibleNextProblemTypes(user1);
 
-    expect(nextProblemTypes[0]).toContain('equation');
-    expect(nextProblemTypes[1]).toContain('division');
-    // tslint:disable-next-line:no-magic-numbers
-    expect(nextProblemTypes[2]).toContain('multiplication');
-    // tslint:disable-next-line:no-magic-numbers
-    expect(nextProblemTypes[3]).toContain('subtraction');
+    expect(nextProblemTypes.nextProblemTypes).toContain('equation');
+    expect(nextProblemTypes.nextProblemTypes).toContain('division');
+    expect(nextProblemTypes.nextProblemTypes).toContain('multiplication');
+    expect(nextProblemTypes.nextProblemTypes).toContain('subtraction');
 });
 
 test('Check if findPossibleNextProblemTypes sorts problem types correctly for doc1', async () => {
     mockingoose(MasteryModel).toReturn(masteryDoc1, 'findOne');
 
-    const nextProblemTypes = await findPossibleNextProblemTypes('113015909143620944320');
+    const nextProblemTypes = await findPossibleNextProblemTypes(user1);
 
-    expect(nextProblemTypes[0]).toContain('multiplication');
-    expect(nextProblemTypes[1]).toContain('addition');
+    expect(nextProblemTypes.nextProblemTypes).toContain('multiplication');
+    expect(nextProblemTypes.nextProblemTypes).toContain('addition');
 });
 
 test('1 Check if nextProblemTypeAndDifficulty finds the matching with ProblemsForToday from classroom', async () => {

@@ -31,10 +31,11 @@ export const nextProblemTypeAndDifficulty = async (userPayload: IUser) => {
         throw Boom.badData('user id can not be null');
     }
 
-    const nextProblemTypes = await findPossibleNextProblemTypes(userPayload.id);
+    const nextProblemTypesAndMinDifficulty = await findPossibleNextProblemTypes(userPayload);
 
-    // last element of nextProblemTypes is the difficulty
-    const difficulty = nextProblemTypes.pop();
+    const difficulty = nextProblemTypesAndMinDifficulty.minDifficulty;
+
+    const nextProblemTypes = nextProblemTypesAndMinDifficulty.nextProblemTypes;
 
     const problemsForToday = await getProblemsForClass(userPayload.virtualClassroomUid);
 
@@ -51,11 +52,24 @@ export const nextProblemTypeAndDifficulty = async (userPayload: IUser) => {
     return {difficulty, problemType: nextProblemTypes[0]};
 };
 
-
-export const findPossibleNextProblemTypes = async (studentId: string) => {
-    const mastery = await MasteryModel.findById(studentId);
+/*
+returns an object consists nextProblemTypes and minDifficulty
+ */
+export const findPossibleNextProblemTypes = async (userPayload: IUser) => {
+    const mastery = await MasteryModel.findById(userPayload.id);
     if (!mastery) {
-        throw Boom.notFound('could not find mastery associated with the student id');
+        const additionProblemType = convertStringToProblemType('addition');
+        return { nextProblemTypes: additionProblemType, minDifficulty: ProblemDifficulty.G1E};
+    }
+
+    const classroom = await ClassroomModel.findById(userPayload.virtualClassroomUid);
+    if(!classroom) {
+        throw Boom.notFound(`could not find classroom associated with the id ${userPayload.virtualClassroomUid}`);
+    }
+
+    if(classroom.numDailyProblems <= mastery.numDailyCorrectAnswers){
+        throw Boom.badRequest(`student with id ${userPayload.id} has already answered 
+                                               ${mastery.numDailyCorrectAnswers} questions correctly`);
     }
 
     const progress = mastery.progress;
@@ -82,7 +96,7 @@ export const findPossibleNextProblemTypes = async (studentId: string) => {
 
     progress.forEach(findMin);
 
-    const nextProblemTypes: Array<ProblemType | ProblemDifficulty> = [];
+    const nextProblemTypes: ProblemType[] = [];
 
     // @ts-ignore
     // find all the problemTypes with minimum difficulty
@@ -115,13 +129,13 @@ export const findPossibleNextProblemTypes = async (studentId: string) => {
         }
 
         return (aProgress.currentDifficultyPoints + aProgress.currentDifficultyAttempts) -
-        (bProgress.currentDifficultyPoints + bProgress.currentDifficultyAttempts);
+            (bProgress.currentDifficultyPoints + bProgress.currentDifficultyAttempts);
     });
 
-    // last element is the minDifficulty
-    nextProblemTypes.push(minDifficulty);
-
-    return nextProblemTypes;
+    return {
+        minDifficulty,
+        nextProblemTypes,
+    };
 };
 
 export const getProblemsForClass = async (virtualClassroomUid: string) => {

@@ -10,6 +10,9 @@ const ClassroomSchema = new mongoose.Schema({
         type: String,
         unique: true,
     },
+    numDailyProblems: {
+        type: Number,
+    },
     passcode: {
         required: true,
         type: String,
