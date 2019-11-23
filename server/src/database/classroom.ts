@@ -10,7 +10,7 @@ const ClassroomSchema = new mongoose.Schema({
         type: String,
     },
     numDailyProblems:{
-        type: Number
+        type: Number,
     },
     onlineResources: {
         type: Array,
