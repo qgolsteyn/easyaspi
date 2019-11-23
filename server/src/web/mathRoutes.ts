@@ -11,9 +11,13 @@ export const initializeMathRoutes = (app: express.Application) => {
 
     mathRouter.get(
         '/nextProblem',
-        enhanceHandler({ protect: true })(async () => {
-            const problem = await mathService.fetchNextMathProblem();
-            return [HTTP_CODE.OK, problem];
+        enhanceHandler({ protect: true })(async (_, user) => {
+            if (user) {
+                const problem = await mathService.fetchNextMathProblem(user);
+                return [HTTP_CODE.OK, problem];
+            } else {
+                throw Boom.internal('User is undefined');
+            }
         }),
     );
 
