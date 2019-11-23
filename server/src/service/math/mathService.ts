@@ -1,7 +1,7 @@
 import { IUser } from '@shared/models/users';
+import debug from 'debug';
 import { generateArithmeticProblem } from './generateArithmeticProblem';
 import { nextProblemTypeAndDifficulty } from '../nextProblemService';
-import debug from 'debug';
 
 const log = debug('pi:route');
 

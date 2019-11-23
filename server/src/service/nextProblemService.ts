@@ -92,13 +92,11 @@ export const findPossibleNextProblemTypes = async (userPayload: IUser) => {
 
     // @ts-ignore
     const findMin = (value: IProblemTypeProgress, key: ProblemType) => {
-        const progressForProblemType = progress.get(key);
-
-        if (typeof progressForProblemType === 'undefined') {
+        if (typeof value === 'undefined') {
             throw Boom.badData('progress can not be undefined');
         }
 
-        const difficulty = progressForProblemType.difficulty;
+        const difficulty = value.difficulty;
 
         minDifficulty = minProblemDifficulty(difficulty, minDifficulty);
     };
@@ -110,17 +108,14 @@ export const findPossibleNextProblemTypes = async (userPayload: IUser) => {
     // @ts-ignore
     // find all the problemTypes with minimum difficulty
     const findAllProblemTypesMinDifficulty = (
-        //eslint-disable-next-line
-        _value: IProblemTypeProgress,
+        value: IProblemTypeProgress,
         key: ProblemType,
     ) => {
-        const progressForProblemType = progress.get(key);
-
-        if (typeof progressForProblemType === 'undefined') {
+        if (typeof value === 'undefined') {
             throw Boom.badData('progress can not be undefined');
         }
 
-        const difficulty = progressForProblemType.difficulty;
+        const difficulty = value.difficulty;
 
         if (difficulty.valueOf() === minDifficulty.valueOf()) {
             nextProblemTypes.push(key);
