@@ -18,6 +18,9 @@ const log = debug('pi:mastery');
 // student must get 10 questions right before moving to next difficulty
 const MAX_POINTS_PER_DIFFICULTY = 9;
 
+// these 2 are unimplemented as of now
+const DISABLED_PROBLEM_TYPES = [ProblemType.AREA, ProblemType.PERIMETER];
+
 /**
  * Update the mastery based on the student's result for a problem type.
  * When student has completed pre-reqs for a problem type they 'unlock' it
@@ -162,7 +165,10 @@ async function insertUnlockedProblemTypes(mastery: IMastery): Promise<void> {
 
     if (problemDifficultyMapping) {
         problemDifficultyMapping.problemTypes.forEach(problemType => {
-            if (!mastery.progress.has(problemType)) {
+            if (
+                !mastery.progress.has(problemType) &&
+                !DISABLED_PROBLEM_TYPES.includes(problemType)
+            ) {
                 const newProblemTypeProgress = {
                     currentDifficultyAttempts: 0,
                     currentDifficultyPoints: 0,
