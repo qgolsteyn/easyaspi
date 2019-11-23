@@ -1,4 +1,4 @@
-import { IUser } from '@shared/index';
+import { IUser, IClassroom } from '@shared/index';
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { actions } from '../reducers';
 import * as api from './api';
@@ -14,11 +14,15 @@ export function* initTeacher(): Generator<unknown, void, unknown> {
 }
 
 function* getClassroomInfo(): Generator<unknown, void, unknown> {
+    const classroomInfo = (yield call(
+        api.classroom.getClassroomInfo,
+    )) as IClassroom;
+
     const students = (yield call(
         api.classroom.getClassroomStudents,
     )) as IUser[];
 
-    if (students) {
-        yield put(actions.teacher.setTeacherInfo(students));
+    if (classroomInfo && students) {
+        yield put(actions.teacher.setTeacherInfo(classroomInfo, students));
     }
 }

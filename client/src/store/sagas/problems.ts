@@ -20,8 +20,19 @@ export function* initProblem(): Generator<unknown, void, unknown> {
     yield takeLatest(actions.problems.fetchNextProblem, fetchNextProblem);
 }
 
-function* solveCurrentProblem(): Generator<unknown, void, unknown> {
+function* solveCurrentProblem(
+    action: ReturnType<typeof actions.problems.solveCurrentProblem>,
+): Generator<unknown, void, unknown> {
     yield put(actions.problems.fetchNextProblem());
+
+    const currentProblem = (yield select(
+        selectors.problems.getCurrentProblem,
+    )) as IProblem;
+    yield call(
+        api.math.notifySuccessFailure,
+        currentProblem.problemType,
+        action.payload.success,
+    );
 }
 
 function* fetchNextProblem(): Generator<unknown, void, unknown> {
@@ -29,7 +40,7 @@ function* fetchNextProblem(): Generator<unknown, void, unknown> {
         selectors.problems.getCurrentProblemNumber,
     )) as number;
     const numberOfProblems = (yield select(
-        selectors.problems.getNumberOfProblems,
+        selectors.student.getNumberOfDailyProblems,
     )) as number;
 
     if (currentProblem >= numberOfProblems) {
@@ -47,6 +58,7 @@ function* fetchNextProblem(): Generator<unknown, void, unknown> {
                 ].sort(() => Math.random() - 0.5),
                 operands: problem.operands,
                 operators: problem.operators,
+                problemType: problem.problemType,
                 prompt: 'What is',
                 solution: problem.solution[0],
                 solved: false,

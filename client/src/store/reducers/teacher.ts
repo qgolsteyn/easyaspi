@@ -5,15 +5,23 @@
 import produce from 'immer';
 import { ActionType, createAction, getType } from 'typesafe-actions';
 
-import { IUser } from '@shared/index';
+import { IClassroom, IUser } from '@shared/index';
 
 // We specify the shape of the state in an interface
 export interface ITeacherState {
+    classroomInfo: IClassroom;
     students: IUser[];
 }
 
 // And provide a default value for initialization
 const defaultState: ITeacherState = {
+    classroomInfo: {
+        name: '',
+        numDailyProblems: 0,
+        onlineResources: [],
+        passcode: '',
+        problemsForToday: [],
+    },
     students: [],
 };
 
@@ -27,7 +35,8 @@ export const teacherActions = {
     reset: createAction('reset'),
     setTeacherInfo: createAction(
         'teacher_SET',
-        resolve => (students: IUser[]) => resolve({ students }),
+        resolve => (classroomInfo: IClassroom, students: IUser[]) =>
+            resolve({ classroomInfo, students }),
     ),
 };
 
@@ -39,7 +48,8 @@ export const teacherReducer = produce(
         // We switch based on the type of action
         switch (action.type) {
             case getType(teacherActions.setTeacherInfo): {
-                const { students } = action.payload;
+                const { classroomInfo, students } = action.payload;
+                draft.classroomInfo = classroomInfo;
                 draft.students = students;
                 break;
             }
