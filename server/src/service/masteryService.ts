@@ -31,6 +31,7 @@ const DISABLED_PROBLEM_TYPES = [ProblemType.AREA, ProblemType.PERIMETER];
  * @param isSuccess whether or not student got problem correct
  */
 export async function updateMastery(
+    classroomId: string,
     studentId: string,
     problemType: ProblemType,
     isSuccess: boolean,
@@ -41,11 +42,15 @@ export async function updateMastery(
 
     if (!mastery) {
         const newMastery = new MasteryModel({
+            classroomId,
+            numDailyAttempts: 0,
+            numDailyCorrectAnswers: 0,
             progress: new Map<string, IProblemTypeProgress>(),
-            studentId: studentId,
+            studentId,
         });
         mastery = await newMastery.save();
     }
+    updateDailyMasteryFields(isSuccess, mastery);
 
     const problemTypeProgress = mastery.progress.get(problemType);
     if (typeof problemTypeProgress === 'undefined') {
@@ -61,6 +66,19 @@ export async function updateMastery(
         );
     }
     await mastery.save();
+}
+
+/**
+ * Updates the daily statistic fields in mastery
+ *
+ * @param isSuccess whether or not student was successful with their previous question
+ * @param mastery student's mastery object
+ */
+function updateDailyMasteryFields(isSuccess: boolean, mastery: IMastery): void {
+    mastery.set('numDailyAttempts', ++mastery.numDailyAttempts);
+    if (isSuccess) {
+        mastery.set('numDailyCorrectAnswers', ++mastery.numDailyCorrectAnswers);
+    }
 }
 
 /**
