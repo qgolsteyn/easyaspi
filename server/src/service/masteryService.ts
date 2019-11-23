@@ -15,7 +15,7 @@ import {
 import debug from 'debug';
 const log = debug('pi:mastery');
 
-// student must get 10 questions right before moving to next difficulty
+// student must get 10 questions right before moving to next difficulty tier
 const MAX_POINTS_PER_DIFFICULTY = 9;
 
 // these 2 are unimplemented as of now
