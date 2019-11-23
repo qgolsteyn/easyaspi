@@ -111,10 +111,9 @@ const generateIncorrectValue = (
     if (incorrectValue > SAME_LAST_DIGIT_THRESHOLD) {
         const incorrectValueString = incorrectValue.toString();
 
+        const ten = 10;
         // try to generate an incorrect solution with the same last digit as solution to make
         // multiple choice harder
-        const ten = 10;
-
         const sameLastDigitIncorrectValueString =
             incorrectValueString.substring(0, incorrectValueString.length - 1) +
             (solution % ten);
