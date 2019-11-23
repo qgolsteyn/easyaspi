@@ -42,11 +42,16 @@ export const ProblemTypeProgressSchema = new mongoose.Schema({
 });
 
 export interface IMastery extends mongoose.Document {
+    classroomId: string;
+    numDailyAttempts: number;
+    numDailyCorrectAnswers: number;
     progress: Map<ProblemType, IProblemTypeProgress>;
     studentId: string;
 }
-
 export const MasterySchema = new mongoose.Schema({
+    classroomId: String,
+    numDailyAttempts: Number,
+    numDailyCorrectAnswers: Number,
     progress: {
         of: ProblemTypeProgressSchema,
         required: true,

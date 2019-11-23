@@ -31,7 +31,7 @@ export const nextProblemTypeAndDifficulty = async (userPayload: IUser) => {
         throw Boom.badData('user id can not be null');
     }
 
-    const nextProblemTypes = await findPossibleNextProblemTypes(userPayload.id);
+    const nextProblemTypes = await findPossibleNextProblemTypes(userPayload);
 
     // last element of nextProblemTypes is the difficulty
     const difficulty = nextProblemTypes.pop();
@@ -52,10 +52,21 @@ export const nextProblemTypeAndDifficulty = async (userPayload: IUser) => {
 };
 
 
-export const findPossibleNextProblemTypes = async (studentId: string) => {
-    const mastery = await MasteryModel.findById(studentId);
+export const findPossibleNextProblemTypes = async (userPayload: IUser) => {
+    const mastery = await MasteryModel.findById(userPayload.id);
     if (!mastery) {
-        throw Boom.notFound('could not find mastery associated with the student id');
+        const additionProblemType = convertStringToProblemType('addition');
+        return [additionProblemType, ProblemDifficulty.G1E];
+    }
+
+    const classroom = await ClassroomModel.findById(userPayload.virtualClassroomUid);
+    if(!classroom) {
+        throw Boom.notFound(`could not find classroom associated with the id ${userPayload.virtualClassroomUid}`);
+    }
+
+    if(classroom.numDailyProblems <= mastery.numDailyCorrectAnswers){
+        throw Boom.badRequest(`student with id ${userPayload.id} has already answered 
+                                               ${mastery.numDailyCorrectAnswers} questions correctly`);
     }
 
     const progress = mastery.progress;
