@@ -1,7 +1,10 @@
+import { ProblemType } from '@shared/models/problem';
+
 import { IUser } from '@shared/models/users';
 import debug from 'debug';
 import { nextProblemTypeAndDifficulty } from '../nextProblemService';
 import { generateArithmeticProblem } from './generateArithmeticProblem';
+import { generateGeometryProblem } from './generateGeometryProblem';
 
 const log = debug('pi:route');
 
@@ -15,10 +18,15 @@ export const fetchNextMathProblem = async (user: IUser) => {
             nextProblem.difficulty,
     );
 
-    const problem = await generateArithmeticProblem(
-        nextProblem.difficulty,
-        nextProblem.problemType,
-    );
-
-    return problem;
+    if (nextProblem.problemType === ProblemType.AREA || ProblemType.PERIMETER) {
+        return await generateGeometryProblem(
+            nextProblem.difficulty,
+            nextProblem.problemType,
+        );
+    } else {
+        return await generateArithmeticProblem(
+            nextProblem.difficulty,
+            nextProblem.problemType,
+        );
+    }
 };

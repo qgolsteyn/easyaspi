@@ -4,7 +4,13 @@ import mongoose from 'mongoose';
 const log = debug('pi:db');
 
 export { AchievementModel } from './achievements';
-export { ArithmeticProblemTemplateModel } from './arithmeticProblemTemplate';
+export {
+    ArithmeticProblemTemplateModel,
+} from './templates/arithmeticProblemTemplate';
+export {
+    GeometryProblemTemplateModel,
+} from './templates/geometryProblemTemplates';
+
 export { UserModel } from './users';
 export { ClassroomModel } from './classroom';
 export { MasteryModel } from './mastery/mastery';
