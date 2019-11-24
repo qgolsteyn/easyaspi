@@ -5,8 +5,10 @@ import {
     loginStudent,
     loginTeacher,
     noCurrentUser,
+    noWifiRegister,
     registerStudent,
     registerTeacher,
+    wrongPasscodeStudent,
 } from './api';
 
 const SMALL_DELAY = 100;
@@ -33,7 +35,7 @@ export const registerSpec = () => (spec: TestScope) => {
         spec.it('handle wrong classroom passcode', async () => {
             const mock = apiMockSetup();
             noCurrentUser(mock);
-            registerStudent(mock);
+            wrongPasscodeStudent(mock);
 
             await spec.press('Welcome.SignIn');
             await spec.press('UserSelection.Student');
@@ -44,7 +46,7 @@ export const registerSpec = () => (spec: TestScope) => {
             await spec.press('StudentRegister.Submit');
             await spec.pause(SMALL_DELAY);
 
-            await spec.exists('WrongPassword.Header');
+            await spec.exists('Error');
         });
 
         spec.it('handle invalid name for student registration', async () => {
@@ -194,7 +196,7 @@ export const registerSpec = () => (spec: TestScope) => {
         spec.it('handle no internet connection', async () => {
             const mock = apiMockSetup();
             noCurrentUser(mock);
-            registerTeacher(mock);
+            noWifiRegister(mock);
 
             await spec.press('Welcome.SignIn');
             await spec.press('UserSelection.Teacher');
@@ -206,7 +208,7 @@ export const registerSpec = () => (spec: TestScope) => {
 
             await spec.pause(SMALL_DELAY);
 
-            await spec.exists('NoWifi.Header');
+            await spec.exists('Error');
         });
     });
 
@@ -231,11 +233,11 @@ export const registerSpec = () => (spec: TestScope) => {
 
         spec.it('handle no internet connection', async () => {
             const mock = apiMockSetup();
-            loginTeacher(mock);
+            noWifiRegister(mock);
 
             await spec.press('Welcome.SignIn');
 
-            await spec.exists('NoWifi.Header');
+            await spec.exists('Error');
         });
     });
 };

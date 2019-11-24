@@ -1,3 +1,4 @@
+import { useCavy } from 'cavy';
 import * as React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,6 +20,8 @@ export const ErrorModal = () => {
 
     const img = error.type === 'noWifi' ? noWifi : fatal;
 
+    const testHook = useCavy();
+
     return (
         <Background backgroundColor={colors.bg} backgroundImage={bg1}>
             <View style={styles.wrapper}>
@@ -36,6 +39,7 @@ export const ErrorModal = () => {
                     <StyledButton
                         text={error.action}
                         onPress={() => dispatch(actions.nav.goBack())}
+                        ref={testHook('Error')}
                     />
                 </View>
             </View>

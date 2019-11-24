@@ -44,7 +44,8 @@ function* solveCurrentProblem(
         selectors.student.getNumberOfDailyProblems,
     )) as number;
 
-    if (numberOfProblemsSolved > numberOfProblems) {
+    if (numberOfProblemsSolved >= numberOfProblems) {
+        yield call(api.math.notifySuccessFailure, 'addition', true);
         yield call(api.math.getNextMathProblem);
     } else {
         yield put(actions.problems.fetchNextProblem());

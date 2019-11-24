@@ -90,6 +90,7 @@ export const StudentSignUpScreen = () => {
                         style={{ marginBottom: 16 }}
                         onChangeText={onValue('name')}
                         ref={testHook('StudentRegister.Name')}
+                        errorRef={testHook('StudentRegister.ErrorName')}
                     />
                     <StyledInput
                         label="The class name is..."
@@ -100,6 +101,9 @@ export const StudentSignUpScreen = () => {
                         style={{ marginBottom: 16 }}
                         onChangeText={onValue('classroomName')}
                         ref={testHook('StudentRegister.ClassroomName')}
+                        errorRef={testHook(
+                            'StudentRegister.ErrorClassroomName',
+                        )}
                     />
                     <StyledInput
                         label="What is the teacher password?"
@@ -109,6 +113,9 @@ export const StudentSignUpScreen = () => {
                         style={{ marginBottom: 32 }}
                         onChangeText={onValue('classroomPasscode')}
                         ref={testHook('StudentRegister.ClassroomPasscode')}
+                        errorRef={testHook(
+                            'StudentRegister.ErrorClassroomPasscode',
+                        )}
                     />
                     <StyledButton
                         text="Submit!"

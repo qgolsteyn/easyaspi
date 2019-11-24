@@ -90,6 +90,7 @@ export const TeacherSignUpScreen = () => {
                         error={state.errors.name}
                         onChangeText={onValue('name')}
                         ref={testHook('TeacherRegister.Name')}
+                        errorRef={testHook('TeacherRegister.ErrorName')}
                     />
                     <StyledInput
                         label="Classroom"
@@ -100,6 +101,9 @@ export const TeacherSignUpScreen = () => {
                         error={state.errors.classroomName}
                         onChangeText={onValue('classroomName')}
                         ref={testHook('TeacherRegister.ClassroomName')}
+                        errorRef={testHook(
+                            'TeacherRegister.ErrorClassroomName',
+                        )}
                     />
                     <StyledInput
                         placeholder="Student registration code"
@@ -109,6 +113,9 @@ export const TeacherSignUpScreen = () => {
                         error={state.errors.classroomPasscode}
                         onChangeText={onValue('classroomPasscode')}
                         ref={testHook('TeacherRegister.ClassroomPasscode')}
+                        errorRef={testHook(
+                            'TeacherRegister.ErrorClassroomPasscode',
+                        )}
                     />
                     <StyledButton
                         text="Submit!"

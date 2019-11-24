@@ -1,10 +1,11 @@
-import { wrap } from 'cavy';
+import { useCavy, wrap } from 'cavy';
 import * as React from 'react';
 import {
     StyleSheet,
     Text,
     TextInput,
     TextInputProps,
+    TextProps,
     View,
 } from 'react-native';
 
@@ -14,7 +15,10 @@ interface IStyledInput extends TextInputProps {
     style?: object;
     label?: string;
     error?: string;
+    errorRef?: any;
 }
+
+const TestableText = wrap<TextProps>(Text);
 
 export const StyledInput = wrap((props: IStyledInput) => {
     return (
@@ -49,7 +53,11 @@ export const StyledInput = wrap((props: IStyledInput) => {
                     />
                 </View>
             </View>
-            {props.error && <Text style={styles.error}>{props.error}</Text>}
+            {props.error && (
+                <TestableText ref={props.errorRef} style={styles.error}>
+                    {props.error}
+                </TestableText>
+            )}
         </View>
     );
 });
