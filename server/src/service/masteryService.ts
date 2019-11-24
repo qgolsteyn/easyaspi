@@ -301,19 +301,20 @@ export const getStatisticsForStudentsInClassroom = async (
                     ? 1
                     : 0;
 
-            for (const key of Object.keys(studentStats.totals)) {
+            Object.keys(studentStats.totals).forEach(key => {
                 const problemType = studentStats.totals[key];
 
-                if (totals[key].totalAttempts) {
-                    totals[key].totalAttempts += problemType.totalAttempts;
-                    totals[key].totalCorrectAnswers +=
-                        problemType.totalCorrectAnswers;
-                } else {
-                    totals[key].totalAttempts = problemType.totalAttempts;
-                    totals[key].totalCorrectAnswers =
-                        problemType.totalCorrectAnswers;
+                if (totals[key] === undefined) {
+                    totals[key] = {
+                        totalAttempts: 0,
+                        totalCorrectAnswers: 0,
+                    };
                 }
-            }
+
+                totals[key].totalAttempts += problemType.totalAttempts;
+                totals[key].totalCorrectAnswers +=
+                    problemType.totalCorrectAnswers;
+            });
 
             allStudentStatsMap[mastery.studentId] = studentStats;
         });

@@ -1,4 +1,4 @@
-import { faCalendarDay, faChartLine } from '@fortawesome/free-solid-svg-icons';
+import { faChartLine } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import React from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
@@ -13,11 +13,12 @@ import { selectors } from '@client/store';
 
 import bg1 from '../../../../assets/bg1.png';
 
+const PERCENT = 100;
 const TROPHY_SIZE = 32;
 
-export const StudentStats = () => {
-    const student = useSelector(selectors.teacher.getCurrentStudent);
-    const stats = useSelector(selectors.teacher.getCurrentStudentStatistics);
+export const ClassroomStats = () => {
+    const classroom = useSelector(selectors.teacher.getClassroomInfo);
+    const stats = useSelector(selectors.teacher.getStatistics);
 
     return (
         <Background backgroundColor={colors.bg} backgroundImage={bg1}>
@@ -26,27 +27,37 @@ export const StudentStats = () => {
                 <StyledCard style={styles.achievements}>
                     <ScrollView>
                         <Text style={styles.title}>
-                            {student && student.name}
+                            Averages for {classroom.name}
                         </Text>
-                        <View style={styles.icon}>
-                            <FontAwesomeIcon
-                                icon={faCalendarDay}
-                                size={TROPHY_SIZE}
-                                color={colors.primary}
-                            />
-                        </View>
                         <ListItem
-                            text="today's results"
+                            text=""
                             extra={[
                                 {
                                     color: colors.success,
-                                    text: stats.numDailyCorrectAnswers,
+                                    text: '%',
                                 },
                                 {
-                                    color: colors.error,
-                                    text:
-                                        stats.numDailyAttempts -
-                                        stats.numDailyCorrectAnswers,
+                                    color: colors.primary,
+                                    text: '#',
+                                },
+                            ]}
+                        />
+                        <ListItem
+                            text="today"
+                            extra={[
+                                {
+                                    color: colors.success,
+                                    text: stats.numDailyAttempts
+                                        ? Math.round(
+                                              (stats.numDailyCorrectAnswers /
+                                                  stats.numDailyAttempts) *
+                                                  PERCENT,
+                                          )
+                                        : '-',
+                                },
+                                {
+                                    color: colors.primary,
+                                    text: stats.numDailyAttempts,
                                 },
                             ]}
                         />
@@ -57,23 +68,43 @@ export const StudentStats = () => {
                                 color={colors.success}
                             />
                         </View>
-                        {Object.keys(stats.totals).map(key => (
+                        <ListItem
+                            text=""
+                            extra={[
+                                {
+                                    color: colors.success,
+                                    text: '%',
+                                },
+                                {
+                                    color: colors.primary,
+                                    text: '#',
+                                },
+                            ]}
+                        />
+                        {Object.keys(stats.problemTypeStats).map(key => (
                             <ListItem
                                 key={key}
                                 text={key}
                                 extra={[
                                     {
                                         color: colors.success,
-                                        text:
-                                            stats.totals[key]
-                                                .totalCorrectAnswers,
+                                        text: stats.problemTypeStats[key]
+                                            .totalAttempts
+                                            ? Math.round(
+                                                  (stats.problemTypeStats[key]
+                                                      .totalCorrectAnswers /
+                                                      stats.problemTypeStats[
+                                                          key
+                                                      ].totalAttempts) *
+                                                      PERCENT,
+                                              )
+                                            : '-',
                                     },
                                     {
-                                        color: colors.error,
+                                        color: colors.primary,
                                         text:
-                                            stats.totals[key].totalAttempts -
-                                            stats.totals[key]
-                                                .totalCorrectAnswers,
+                                            stats.problemTypeStats[key]
+                                                .totalAttempts,
                                     },
                                 ]}
                             />
@@ -85,7 +116,7 @@ export const StudentStats = () => {
     );
 };
 
-StudentStats.navigationOptions = () => ({
+ClassroomStats.navigationOptions = () => ({
     header: null,
 });
 

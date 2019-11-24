@@ -1,7 +1,7 @@
 import { faChartLine } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import React from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { Background } from '@client/components/Background';
@@ -16,9 +16,9 @@ import bg1 from '../../../../assets/bg1.png';
 const PERCENT = 100;
 const TROPHY_SIZE = 32;
 
-export const StudentAchievements = () => {
-    const stats = useSelector(selectors.student.getStats);
-    const achievements = useSelector(selectors.student.getAchievements);
+export const StudentStats = () => {
+    const student = useSelector(selectors.teacher.getCurrentStudent);
+    const stats = useSelector(selectors.teacher.getCurrentStudentStatistics);
 
     return (
         <Background backgroundColor={colors.bg} backgroundImage={bg1}>
@@ -26,6 +26,9 @@ export const StudentAchievements = () => {
                 <StyledBackHeader title="Stats and Achievements" />
                 <StyledCard style={styles.achievements}>
                     <ScrollView>
+                        <Text style={styles.title}>
+                            Grades for {student && student.name}
+                        </Text>
                         <ListItem
                             text=""
                             extra={[
@@ -128,7 +131,7 @@ export const StudentAchievements = () => {
     );
 };
 
-StudentAchievements.navigationOptions = () => ({
+StudentStats.navigationOptions = () => ({
     header: null,
 });
 
@@ -144,13 +147,21 @@ const styles = StyleSheet.create({
         marginBottom: 16,
         width: '100%',
     },
+    title: {
+        color: '#333',
+        fontFamily: 'josefin-sans-bold',
+        fontSize: 24,
+        marginBottom: 16,
+        textAlign: 'center',
+        width: '100%',
+    },
     wrapper: {
         alignItems: 'center',
         display: 'flex',
         flexDirection: 'column',
         height: '100%',
         justifyContent: 'flex-start',
-        paddingHorizontal: 8,
+        paddingHorizontal: 16,
         paddingVertical: 16,
         width: '100%',
     },

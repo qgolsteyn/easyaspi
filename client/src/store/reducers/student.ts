@@ -29,6 +29,8 @@ const defaultState: IStudentState = {
     statistics: {
         numDailyAttempts: 0,
         numDailyCorrectAnswers: 0,
+        totalLifetimeAttempts: 0,
+        totalLifetimeCorrectAnswers: 0,
         totals: {},
     },
 };

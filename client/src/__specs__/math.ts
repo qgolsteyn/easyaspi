@@ -1,7 +1,7 @@
 import { TestScope } from 'cavy';
 import { Store } from 'redux';
 
-import { apiMockSetup, loginStudent } from './api';
+import { apiMockSetup, loginStudent, noWifiMath } from './api';
 
 const ONE_SECOND = 1000;
 const PROBLEMS_PER_SET = 10;
@@ -71,10 +71,15 @@ export const mathSpec = (store: Store) => (spec: TestScope) => {
         );
 
         spec.it('handle no internet connection', async () => {
+            const mock = apiMockSetup();
+            noWifiMath(mock);
+            loginStudent(mock);
+            store.dispatch({ type: 'reset' });
+
             await spec.press('Welcome.SignIn');
             await spec.press('StudentHomeScreen.DailyProblem');
 
-            await spec.exists('NoWifi.Header');
+            await spec.exists('Error');
         });
     });
 };

@@ -1,6 +1,8 @@
 export interface IStudentStatistic {
     numDailyAttempts: number;
     numDailyCorrectAnswers: number;
+    totalLifetimeAttempts: number;
+    totalLifetimeCorrectAnswers: number;
     totals: {
         [key: string]: {
             totalAttempts: number;

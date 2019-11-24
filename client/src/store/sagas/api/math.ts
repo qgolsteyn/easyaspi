@@ -1,3 +1,4 @@
+import { AxiosError } from 'axios';
 import { call } from 'redux-saga/effects';
 
 import { IProblem } from '@client/store/reducers/problems';
@@ -5,6 +6,8 @@ import { IProblem } from '@client/store/reducers/problems';
 import { getAccessToken } from './auth';
 import { handleError } from './errors';
 import { baseApi } from './url';
+
+const BAD_REQUEST = 400;
 
 export function* getNextMathProblem(): Generator<
     unknown,
@@ -29,7 +32,10 @@ export function* getNextMathProblem(): Generator<
             )) as { data: IProblem }).data;
             return problem;
         } catch (e) {
-            yield call(handleError, e);
+            const response = (e as AxiosError).response;
+            if (!response || response.status !== BAD_REQUEST) {
+                yield call(handleError, e);
+            }
             return undefined;
         }
     }

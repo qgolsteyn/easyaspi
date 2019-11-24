@@ -87,7 +87,7 @@ export const problemReducer = produce(
                 break;
             }
             case getType(problemActions.fetchNextProblem): {
-                if (draft.problems.length < draft.problemSetCount) {
+                if (draft.problems.length <= draft.problemSetCount) {
                     draft.problems.push(null);
                 }
                 break;

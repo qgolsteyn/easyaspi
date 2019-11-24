@@ -51,6 +51,8 @@ export const teacherSelectors = {
         state.teacher.students.length,
     getNumberOfStudentsDone: (state: { teacher: ITeacherState }) =>
         state.teacher.statistics.studentsCompleted,
+    getStatistics: (state: { teacher: ITeacherState }) =>
+        state.teacher.statistics,
     getStudents: (state: { teacher: ITeacherState }) => state.teacher.students,
     isLoading: (state: { teacher: ITeacherState }) => state.teacher.loading,
 };
