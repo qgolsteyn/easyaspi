@@ -1,24 +1,28 @@
-import { IUser } from '@shared/models/users';
-import debug from 'debug';
-import { nextProblemTypeAndDifficulty } from '../nextProblemService';
-import { generateArithmeticProblem } from './generateArithmeticProblem';
+import { ProblemDifficulty, ProblemType } from '@shared/models/problem';
 
-const log = debug('pi:route');
+// import { IUser } from '@shared/models/users';
+// import debug from 'debug';
+// import { nextProblemTypeAndDifficulty } from '../nextProblemService';
+// import { generateArithmeticProblem } from './generateArithmeticProblem';
 
-export const fetchNextMathProblem = async (user: IUser) => {
-    const nextProblem = await nextProblemTypeAndDifficulty(user);
+// const log = debug('pi:route');
 
-    log(
-        'problemType: ' +
-            nextProblem.problemType +
-            ' difficulty: ' +
-            nextProblem.difficulty,
-    );
+export const fetchNextMathProblem = async () => {
+    // const nextProblem = await nextProblemTypeAndDifficulty(user);
 
-    const problem = await generateArithmeticProblem(
-        nextProblem.difficulty,
-        nextProblem.problemType,
-    );
+    // log(
+    //     'problemType: ' +
+    //         nextProblem.problemType +
+    //         ' difficulty: ' +
+    //         nextProblem.difficulty,
+    // );
 
-    return problem;
+    // const problem = await generateArithmeticProblem(
+    //     nextProblem.difficulty,
+    //     nextProblem.problemType,
+    // );
+
+    // return problem;
+
+    return generateGeometryProblem(ProblemDifficulty.G5M, ProblemType.AREA);
 };
