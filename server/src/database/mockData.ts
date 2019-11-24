@@ -1,6 +1,6 @@
 import { IAuthInfo } from '@server/service/authService';
 import { IClassroom } from '@shared/models/classroom';
-import { IProblem, ProblemType } from '@shared/models/problem';
+import { IProblem, ProblemType, GeometricShape } from '@shared/models/problem';
 import { IUser } from '@shared/models/users';
 
 export const user1: IUser = {
@@ -263,6 +263,46 @@ export const subtractionTemplate = {
             ],
             optExtraOperands: 0,
             multiplesOf: 1,
+        },
+    },
+};
+
+export const areaTemplate = {
+    problemType: ProblemType.AREA,
+    difficultyMap: {
+        g5m: {
+            sides: [
+                {
+                    lowerBound: 1,
+                    upperBound: 30,
+                },
+                {
+                    lowerBound: 1,
+                    upperBound: 30,
+                },
+            ],
+            shapes: [GeometricShape.SQUARE, GeometricShape.RECTANGLE],
+            cost: {
+                lowerBound: 1,
+                upperBound: 1,
+            },
+        },
+        g5h: {
+            sides: [
+                {
+                    lowerBound: 5,
+                    upperBound: 30,
+                },
+                {
+                    lowerBound: 5,
+                    upperBound: 30,
+                },
+            ],
+            shapes: [GeometricShape.SQUARE, GeometricShape.RECTANGLE],
+            cost: {
+                lowerBound: 5,
+                upperBound: 25,
+            },
         },
     },
 };
