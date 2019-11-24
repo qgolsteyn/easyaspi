@@ -3,10 +3,10 @@ import {
     IGeometryProblemDefinition,
 } from '@server/database/templates/geometryProblemTemplates';
 import {
+    GeometricShape,
     IProblem,
     ProblemDifficulty,
     ProblemType,
-    GeometricShape,
 } from '@shared/models/problem';
 import Boom from 'boom';
 import {
@@ -131,7 +131,7 @@ function computeProblemResult(
 }
 
 function createSolutionArray(cost: number, result: number): string[] {
-    if (cost == 0) {
+    if (cost === 0) {
         return [String(result) + ' square meters'];
     } else {
         return ['$' + String(result)];
@@ -139,9 +139,9 @@ function createSolutionArray(cost: number, result: number): string[] {
 }
 
 function createIncorrectSolutions(cost: number, result: number): string[] {
-    let incorrectSolutions = generateIncorrectWholeNumberSolutions(result);
+    const incorrectSolutions = generateIncorrectWholeNumberSolutions(result);
 
-    if (cost == 0) {
+    if (cost === 0) {
         for (let i = 0; i < incorrectSolutions.length; i++) {
             incorrectSolutions[i] = incorrectSolutions[i] + ' square meters';
         }
@@ -159,7 +159,7 @@ function createProblemStatement(
     shape: GeometricShape,
     sides: number[],
 ): string {
-    if (cost == 0) {
+    if (cost === 0) {
         if (shape === GeometricShape.SQUARE) {
             return (
                 'A square has a side length of ' +
