@@ -49,6 +49,8 @@ export async function updateMastery(
             numDailyCorrectAnswers: 0,
             progress: new Map<string, IProblemTypeProgress>(),
             studentId,
+            totalLifetimeAttempts: 0,
+            totalLifetimeCorrectAnswers: 0,
         });
         mastery = await newMastery.save();
     }
@@ -78,8 +80,13 @@ export async function updateMastery(
  */
 function updateDailyMasteryFields(isSuccess: boolean, mastery: IMastery): void {
     mastery.set('numDailyAttempts', ++mastery.numDailyAttempts);
+    mastery.set('totalLifetimeAttempts', ++mastery.totalLifetimeAttempts);
     if (isSuccess) {
         mastery.set('numDailyCorrectAnswers', ++mastery.numDailyCorrectAnswers);
+        mastery.set(
+            'totalLifetimeCorrectAnswers',
+            ++mastery.totalLifetimeCorrectAnswers,
+        );
     }
 }
 
@@ -297,6 +304,8 @@ const curateStudentStatistics = (mastery: IMastery) => {
     return {
         numDailyAttempts: mastery.numDailyAttempts,
         numDailyCorrectAnswers: mastery.numDailyCorrectAnswers,
+        totalLifetimeAttempts: mastery.totalLifetimeAttempts,
+        totalLifetimeCorrectAnswers: mastery.totalLifetimeCorrectAnswers,
         totals: totalsMap,
     };
 };

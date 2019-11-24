@@ -54,11 +54,22 @@ export interface IMastery extends mongoose.Document {
     numDailyCorrectAnswers: number;
     progress: Map<ProblemType, IProblemTypeProgress>;
     studentId: string;
+    totalLifetimeAttempts: number;
+    totalLifetimeCorrectAnswers: number;
 }
 export const MasterySchema = new mongoose.Schema({
-    classroomId: String,
-    numDailyAttempts: Number,
-    numDailyCorrectAnswers: Number,
+    classroomId: {
+        required: true,
+        type: String,
+    },
+    numDailyAttempts: {
+        required: true,
+        type: Number,
+    },
+    numDailyCorrectAnswers: {
+        required: true,
+        type: Number,
+    },
     progress: {
         of: ProblemTypeProgressSchema,
         required: true,
@@ -67,6 +78,14 @@ export const MasterySchema = new mongoose.Schema({
     studentId: {
         required: true,
         type: String,
+    },
+    totalLifetimeAttempts: {
+        required: true,
+        type: Number,
+    },
+    totalLifetimeCorrectAnswers: {
+        required: true,
+        type: Number,
     },
 });
 
