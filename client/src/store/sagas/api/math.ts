@@ -1,3 +1,4 @@
+import { AxiosError } from 'axios';
 import { call } from 'redux-saga/effects';
 
 import { IProblem } from '@client/store/reducers/problems';
@@ -29,7 +30,10 @@ export function* getNextMathProblem(): Generator<
             )) as { data: IProblem }).data;
             return problem;
         } catch (e) {
-            yield call(handleError, e);
+            const response = (e as AxiosError).response;
+            if (!response || response.status !== 400) {
+                yield call(handleError, e);
+            }
             return undefined;
         }
     }

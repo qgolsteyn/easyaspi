@@ -4,7 +4,7 @@ import Expo from 'expo-server-sdk';
 import { UserModel } from '@server/database';
 import { cleanMongoDocument } from '@server/service/utils/mongo';
 
-import { IMessage, IUser } from '@shared/index';
+import { IUser } from '@shared/index';
 
 import { IAuthInfo } from './authService';
 
@@ -46,16 +46,10 @@ export const updateUser = async (userPayload: IUser) => {
             user.achievements = [];
         }
 
-        if (
-            user.name &&
+        user.registered = !!(user.name &&
             user.email &&
             user.userType &&
-            user.virtualClassroomUid
-        ) {
-            user.registered = true;
-        } else {
-            user.registered = false;
-        }
+            user.virtualClassroomUid);
 
         await user.save();
 
@@ -77,30 +71,15 @@ export const getUserFromId = async (id: string) => {
 };
 
 export const sendPushNotification = async (
-    id: string,
-    classroomId: string,
-    message: IMessage,
+    message: string,
+    pushToken: string,
 ) => {
-    const user = await getUserFromId(id);
-
-    if (user) {
-        if (user.virtualClassroomUid !== classroomId) {
-            throw Boom.badRequest(
-                'Not allowed to send push notification to this user',
-            );
-        } else if (!user.pushToken || !user.registered) {
-            throw Boom.badRequest('User is not registered');
-        }
-
         const expo = new Expo();
         await expo.sendPushNotificationsAsync([
             {
-                body: message.message,
-                title: 'New message',
-                to: user.pushToken,
+                body: message,
+                title: 'New Notification',
+                to: pushToken,
             },
         ]);
-    } else {
-        throw Boom.badRequest('User does not exist');
-    }
 };

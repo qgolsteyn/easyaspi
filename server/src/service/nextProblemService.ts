@@ -1,13 +1,14 @@
 import Boom from 'boom';
 
 import { IProblemTypeProgress } from '@server/database/mastery/mastery';
+import { sendPushNotification } from '@server/service/userService';
 import {
     convertStringToProblemType,
     minProblemDifficulty,
     ProblemDifficulty,
 } from '@shared/models/problem';
 import { IUser, ProblemType } from '../../../client/src/shared/index';
-import { ClassroomModel, MasteryModel } from '../database';
+import { ClassroomModel, MasteryModel, UserModel } from '../database';
 
 /*
  * Learning Algorithm method
@@ -76,7 +77,29 @@ export const findPossibleNextProblemTypes = async (userPayload: IUser) => {
         );
     }
 
-    if (classroom.numDailyProblems <= mastery.numDailyCorrectAnswers) {
+    if (mastery.numDailyAttempts >= classroom.numDailyProblems) {
+        const teacher = await UserModel.findOne({
+            userType: 'teacher',
+            virtualClassroomUid: userPayload.virtualClassroomUid,
+        });
+
+        if (!teacher) {
+            throw Boom.notFound(
+                `no teacher found for the class ${userPayload.virtualClassroomUid}`,
+            );
+        }
+
+        if (!teacher.pushToken) {
+            throw Boom.badData(
+                'teacher must have a push token to send a notification',
+            );
+        }
+
+        await sendPushNotification(
+            `${userPayload.name} has completed the daily problem set`,
+            teacher.pushToken,
+        );
+
         throw Boom.badRequest(
             `student with id ${userPayload.id} has already answered ${mastery.numDailyCorrectAnswers} questions correctly`,
         );

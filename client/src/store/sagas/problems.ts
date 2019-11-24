@@ -8,8 +8,10 @@ export function* initProblem(): Generator<unknown, void, unknown> {
         action: ReturnType<typeof actions.nav.goToScreen>,
     ): Generator<unknown, void, unknown> {
         if (action.payload.screen === 'Problem') {
-            const loading =
-                (yield select(selectors.problems.getCurrentProblem)) === null;
+            const currentProblem = yield select(
+                selectors.problems.getCurrentProblem,
+            );
+            const loading = currentProblem === null;
 
             if (loading) {
                 yield call(fetchNextProblem);
@@ -35,7 +37,18 @@ export function* initProblem(): Generator<unknown, void, unknown> {
 function* solveCurrentProblem(
     action: ReturnType<typeof actions.problems.solveCurrentProblem>,
 ): Generator<unknown, void, unknown> {
-    yield put(actions.problems.fetchNextProblem());
+    const numberOfProblemsSolved = (yield select(
+        selectors.problems.getCurrentProblemNumber,
+    )) as number;
+    const numberOfProblems = (yield select(
+        selectors.student.getNumberOfDailyProblems,
+    )) as number;
+
+    if (numberOfProblemsSolved > numberOfProblems) {
+        yield call(api.math.getNextMathProblem);
+    } else {
+        yield put(actions.problems.fetchNextProblem());
+    }
 
     const currentProblem = (yield select(
         selectors.problems.getCurrentProblem,
@@ -55,7 +68,7 @@ function* fetchNextProblem(): Generator<unknown, void, unknown> {
         selectors.student.getNumberOfDailyProblems,
     )) as number;
 
-    if (currentProblem >= numberOfProblems) {
+    if (currentProblem > numberOfProblems) {
         return;
     }
 
