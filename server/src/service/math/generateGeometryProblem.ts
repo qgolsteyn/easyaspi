@@ -39,7 +39,7 @@ export async function generateGeometryProblem(
         if (problemDefinition) {
             const shape =
                 problemDefinition.shapes[
-                    generateNumber(0, problemDefinition.shapes.length)
+                    generateNumber(0, problemDefinition.shapes.length - 1)
                 ];
 
             const sides = generateSideLengths(problemDefinition, shape);
@@ -116,7 +116,7 @@ function computeProblemResult(
     let result;
     if (problemType === ProblemType.AREA) {
         if (shape === GeometricShape.SQUARE) {
-            result = sides[0] * 2;
+            result = sides[0] * sides[0];
         } else {
             result = sides[0] * sides[1];
         }

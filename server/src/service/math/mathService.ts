@@ -1,28 +1,32 @@
-import { ProblemDifficulty, ProblemType } from '@shared/models/problem';
+import { ProblemType } from '@shared/models/problem';
 
-// import { IUser } from '@shared/models/users';
-// import debug from 'debug';
-// import { nextProblemTypeAndDifficulty } from '../nextProblemService';
-// import { generateArithmeticProblem } from './generateArithmeticProblem';
+import { IUser } from '@shared/models/users';
+import debug from 'debug';
+import { nextProblemTypeAndDifficulty } from '../nextProblemService';
+import { generateArithmeticProblem } from './generateArithmeticProblem';
+import { generateGeometryProblem } from './generateGeometryProblem';
 
-// const log = debug('pi:route');
+const log = debug('pi:route');
 
-export const fetchNextMathProblem = async () => {
-    // const nextProblem = await nextProblemTypeAndDifficulty(user);
+export const fetchNextMathProblem = async (user: IUser) => {
+    const nextProblem = await nextProblemTypeAndDifficulty(user);
 
-    // log(
-    //     'problemType: ' +
-    //         nextProblem.problemType +
-    //         ' difficulty: ' +
-    //         nextProblem.difficulty,
-    // );
+    log(
+        'problemType: ' +
+            nextProblem.problemType +
+            ' difficulty: ' +
+            nextProblem.difficulty,
+    );
 
-    // const problem = await generateArithmeticProblem(
-    //     nextProblem.difficulty,
-    //     nextProblem.problemType,
-    // );
-
-    // return problem;
-
-    return generateGeometryProblem(ProblemDifficulty.G5M, ProblemType.AREA);
+    if (nextProblem.problemType === ProblemType.AREA || ProblemType.PERIMETER) {
+        return await generateGeometryProblem(
+            nextProblem.difficulty,
+            nextProblem.problemType,
+        );
+    } else {
+        return await generateArithmeticProblem(
+            nextProblem.difficulty,
+            nextProblem.problemType,
+        );
+    }
 };
