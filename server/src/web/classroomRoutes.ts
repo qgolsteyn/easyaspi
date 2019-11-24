@@ -71,7 +71,7 @@ export const initializeClassroomRoutes = (app: express.Application) => {
     classroomRouter.get(
         '/stat', enhanceHandler({ protect: true })(async (_, user) => {
 
-            if (typeof user === 'undefined'){
+            if (typeof user === 'undefined' || user.userType !== 'teacher'){
                 throw Boom.badRequest('user must be a teacher to get the classroom stat');
             }
 
