@@ -20,6 +20,14 @@ export enum ProblemDifficulty {
     G4H5E = 'g4h5e',
     G5M = 'g5m',
     G5H = 'g5h',
+    UNKNOWN = 'unknown',
+}
+
+export enum GeometricShape {
+    SQUARE = 'square',
+    RECTANGLE = 'rectangle',
+    RIGHT_TRIANGLE = 'rightTriangle',
+    EQUILATERAL_TRIANGLE = 'equilateralTriangle',
 }
 
 export function convertStringToProblemType(type: string): ProblemType {
@@ -68,6 +76,8 @@ export function getNextProblemDifficulty(
             return ProblemDifficulty.G5H;
         case ProblemDifficulty.G5H:
             return ProblemDifficulty.G5H;
+        default:
+            return ProblemDifficulty.UNKNOWN;
     }
 }
 
@@ -97,6 +107,8 @@ export function getPreviousProblemDifficulty(
             return ProblemDifficulty.G1E;
         case ProblemDifficulty.G1E:
             return ProblemDifficulty.G1E;
+        case ProblemDifficulty.UNKNOWN:
+            return ProblemDifficulty.UNKNOWN;
     }
 }
 

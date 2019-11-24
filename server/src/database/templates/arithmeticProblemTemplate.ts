@@ -58,7 +58,7 @@ export const ArithmeticProblemDefinitionSchema = new mongoose.Schema({
 /**
  * difficultyMap will contain an entry for each appropriate difficulty tier. Problem
  * types that are introduced early will start at g1e, however problem types that are
- * introduced later like fractions will start at g3m
+ * introduced later like division will start at g3h4e
  *
  * operator is the symbol of the math operation
  */
@@ -78,14 +78,12 @@ export const ArithmeticProblemTemplateSchema = new mongoose.Schema({
         required: true,
         type: String,
     },
-    optExtraOperands: {
+    problemType: {
         required: true,
-        type: Number,
+        type: String,
     },
 });
 
-// TODO: by default mongoose only looks for lowercase collection names,
-// there is a way to change this but its not a priority
 export const ArithmeticProblemTemplateModel = mongoose.model<
     IArithmeticProblemTemplate
 >('arithmeticproblemtemplates', ArithmeticProblemTemplateSchema);
