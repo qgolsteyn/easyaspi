@@ -6,6 +6,8 @@ import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { fromRight } from 'react-navigation-transitions';
 
+import { ErrorModal } from './screens/ErrorModal';
+
 import { StudentSignUpScreen } from './screens/auth/StudentSignUpScreen';
 import { TeacherSignUpScreen } from './screens/auth/TeacherSignUpScreen';
 import { UserSelectionScreen } from './screens/auth/UserSelectionScreen';
@@ -80,4 +82,19 @@ const SwitchNavigator = createSwitchNavigator(
     },
 );
 
-export const App = createAppContainer(SwitchNavigator);
+const RootNavigator = createStackNavigator(
+    {
+        App: {
+            screen: SwitchNavigator,
+        },
+        Error: {
+            screen: ErrorModal,
+        },
+    },
+    {
+        headerMode: 'none',
+        mode: 'modal',
+    },
+);
+
+export const App = createAppContainer(RootNavigator);

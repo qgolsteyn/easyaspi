@@ -2,20 +2,23 @@ import { faTrophy } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import { useSelector } from 'react-redux';
 
 import { Background } from '@client/components/Background';
 import { StyledBackHeader } from '@client/components/BackHeader';
 import { StyledCard } from '@client/components/Card';
 import { colors } from '@client/constants/colors';
+import { selectors } from '@client/store';
 
 import { AchievementCard } from './AchievementCard';
 
-import a10 from '../../../../assets/a_10.png';
 import bg1 from '../../../../assets/bg1.png';
 
 const TROPHY_SIZE = 32;
 
 export const StudentAchievements = () => {
+    const achievements = useSelector(selectors.student.getAchievements);
+
     return (
         <Background backgroundColor={colors.bg} backgroundImage={bg1}>
             <View style={styles.wrapper}>
@@ -28,11 +31,16 @@ export const StudentAchievements = () => {
                             color={colors.secondary}
                         />
                     </View>
-                    <AchievementCard
-                        img={a10}
-                        heading="Solve 10 questions!"
-                        body="Has solved 10 questions since creating an account, good job!"
-                    />
+                    {achievements.map(achievement => (
+                        <AchievementCard
+                            key={achievement.name}
+                            img={{
+                                uri: achievement.imgUrl,
+                            }}
+                            heading={achievement.name}
+                            body={achievement.description}
+                        />
+                    ))}
                 </StyledCard>
             </View>
         </Background>

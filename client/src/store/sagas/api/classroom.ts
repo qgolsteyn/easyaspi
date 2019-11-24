@@ -3,6 +3,7 @@ import { call } from 'redux-saga/effects';
 import { IUser } from '@shared/index';
 
 import { getAccessToken } from './auth';
+import { handleError } from './errors';
 import { baseApi } from './url';
 
 export function* getClassroomStudents(): Generator<
@@ -20,12 +21,15 @@ export function* getClassroomStudents(): Generator<
                 {
                     headers: {
                         Authorization: `Bearer ${accessToken}`,
+                        'Cache-Control': 'no-cache',
+                        Expires: '0',
+                        Pragma: 'no-cache',
                     },
                 },
             )) as { data: IUser[] }).data;
             return students;
         } catch (e) {
-            alert(e);
+            yield call(handleError, e);
             return undefined;
         }
     }

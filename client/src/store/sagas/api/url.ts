@@ -10,4 +10,5 @@ const localip =
 
 export const baseApi = axios.create({
     baseURL: __DEV__ ? localip : SERVER_URL,
+    timeout: 3000,
 });

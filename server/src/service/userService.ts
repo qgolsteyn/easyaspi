@@ -42,6 +42,10 @@ export const updateUser = async (userPayload: IUser) => {
             );
         }
 
+        if (!user.achievements) {
+            user.achievements = [];
+        }
+
         if (
             user.name &&
             user.email &&

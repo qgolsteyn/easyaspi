@@ -13,13 +13,16 @@ import * as mongoose from 'mongoose';
  *
  * difficulty - current difficulty student is on for this problem type
  *
- * totalPoints - same as currentDifficultyPoints but never gets reset
+ * totalAttempts - total lifetime math problem attempts irrespective of problem type
+ *
+ * totalCorrectAnswers - total lifetime math problems answered correctly irrespective of problem type
  */
 export interface IProblemTypeProgress extends mongoose.Types.Subdocument {
     currentDifficultyAttempts: number;
     currentDifficultyPoints: number;
     difficulty: ProblemDifficulty;
-    totalPoints: number;
+    totalAttempts: number;
+    totalCorrectAnswers: number;
 }
 
 export const ProblemTypeProgressSchema = new mongoose.Schema({
@@ -35,18 +38,38 @@ export const ProblemTypeProgressSchema = new mongoose.Schema({
         required: true,
         type: ProblemDifficulty,
     },
-    totalPoints: {
+    totalAttempts: {
+        required: true,
+        type: Number,
+    },
+    totalCorrectAnswers: {
         required: true,
         type: Number,
     },
 });
 
 export interface IMastery extends mongoose.Document {
+    classroomId: string;
+    numDailyAttempts: number;
+    numDailyCorrectAnswers: number;
     progress: Map<ProblemType, IProblemTypeProgress>;
     studentId: string;
+    totalLifetimeAttempts: number;
+    totalLifetimeCorrectAnswers: number;
 }
-
 export const MasterySchema = new mongoose.Schema({
+    classroomId: {
+        required: true,
+        type: String,
+    },
+    numDailyAttempts: {
+        required: true,
+        type: Number,
+    },
+    numDailyCorrectAnswers: {
+        required: true,
+        type: Number,
+    },
     progress: {
         of: ProblemTypeProgressSchema,
         required: true,
@@ -55,6 +78,14 @@ export const MasterySchema = new mongoose.Schema({
     studentId: {
         required: true,
         type: String,
+    },
+    totalLifetimeAttempts: {
+        required: true,
+        type: Number,
+    },
+    totalLifetimeCorrectAnswers: {
+        required: true,
+        type: Number,
     },
 });
 

@@ -2,6 +2,7 @@ import { IClassroom, IUser } from '@shared/index';
 import { AsyncStorage } from 'react-native';
 import { call, put, select } from 'redux-saga/effects';
 import { actions, selectors } from '../../reducers';
+import { handleError } from './errors';
 import { baseApi } from './url';
 
 const ACCESS_TOKEN_KEY = 'access_token';
@@ -20,7 +21,7 @@ export function* auth(
 
         return user;
     } catch (e) {
-        alert(e);
+        yield call(handleError);
         return undefined;
     }
 }
@@ -49,11 +50,11 @@ export function* register(
 
             return result.user;
         } catch (e) {
-            alert(e);
+            yield call(handleError, e);
             return undefined;
         }
     } else {
-        alert('Error : could not retrieve the access token');
+        yield call(handleError);
         return undefined;
     }
 }
@@ -64,14 +65,20 @@ export function* getUser(): Generator<unknown, IUser | undefined, {}> {
     if (accessToken) {
         try {
             const user = ((yield call([baseApi, baseApi.get], '/user/current', {
-                headers: { Authorization: `Bearer ${accessToken}` },
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                    'Cache-Control': 'no-cache',
+                    Expires: '0',
+                    Pragma: 'no-cache',
+                },
             })) as { data: IUser }).data;
             return user;
         } catch (e) {
-            alert(e);
+            yield call(handleError, e);
             return undefined;
         }
     } else {
+        yield call(handleError);
         return undefined;
     }
 }

@@ -12,41 +12,53 @@ import {
     ProblemType,
 } from '@shared/models/problem';
 
+import Boom from 'boom';
 import debug from 'debug';
+
 const log = debug('pi:mastery');
 
-// student must get 10 questions right before moving to next difficulty
+// student must get 10 questions right before moving to next difficulty tier
 const MAX_POINTS_PER_DIFFICULTY = 9;
+
+// these 2 are unimplemented as of now
+const DISABLED_PROBLEM_TYPES = [ProblemType.AREA, ProblemType.PERIMETER];
 
 /**
  * Update the mastery based on the student's result for a problem type.
  * When student has completed pre-reqs for a problem type they 'unlock' it
  * and it will show up in their mastery
  *
- * @param studentIdent studentId, renamed because of a conflict with mastery studentId field
+ * @param studentId studentId
  * @param problemType problem type to update mastery for
  * @param isSuccess whether or not student got problem correct
  */
 export async function updateMastery(
-    studentIdent: string,
+    classroomId: string,
+    studentId: string,
     problemType: ProblemType,
     isSuccess: boolean,
 ): Promise<void> {
     let mastery = await MasteryModel.findOne({
-        studentId: studentIdent,
+        studentId,
     });
 
     if (!mastery) {
         const newMastery = new MasteryModel({
+            classroomId,
+            numDailyAttempts: 0,
+            numDailyCorrectAnswers: 0,
             progress: new Map<string, IProblemTypeProgress>(),
-            studentId: studentIdent,
+            studentId,
+            totalLifetimeAttempts: 0,
+            totalLifetimeCorrectAnswers: 0,
         });
         mastery = await newMastery.save();
     }
+    updateDailyMasteryFields(isSuccess, mastery);
 
     const problemTypeProgress = mastery.progress.get(problemType);
     if (typeof problemTypeProgress === 'undefined') {
-        // if app is working correclty, this case should never happen
+        // if app is working correctly, this case should never happen
         const newProblemTypeProgress = createProblemTypeProgression(isSuccess);
         mastery.progress.set(problemType, newProblemTypeProgress);
     } else {
@@ -58,6 +70,24 @@ export async function updateMastery(
         );
     }
     await mastery.save();
+}
+
+/**
+ * Updates the daily statistic fields in mastery
+ *
+ * @param isSuccess whether or not student was successful with their previous question
+ * @param mastery student's mastery object
+ */
+function updateDailyMasteryFields(isSuccess: boolean, mastery: IMastery): void {
+    mastery.set('numDailyAttempts', ++mastery.numDailyAttempts);
+    mastery.set('totalLifetimeAttempts', ++mastery.totalLifetimeAttempts);
+    if (isSuccess) {
+        mastery.set('numDailyCorrectAnswers', ++mastery.numDailyCorrectAnswers);
+        mastery.set(
+            'totalLifetimeCorrectAnswers',
+            ++mastery.totalLifetimeCorrectAnswers,
+        );
+    }
 }
 
 /**
@@ -83,7 +113,8 @@ async function updateProblemTypeProgression(
         ) {
             problemTypeProgress.currentDifficultyPoints = 0;
             problemTypeProgress.currentDifficultyAttempts = 0;
-            problemTypeProgress.totalPoints++;
+            problemTypeProgress.totalAttempts++;
+            problemTypeProgress.totalCorrectAnswers++;
             problemTypeProgress.difficulty = getNextProblemDifficulty(
                 problemTypeProgress.difficulty,
             );
@@ -96,7 +127,8 @@ async function updateProblemTypeProgression(
         } else {
             problemTypeProgress.currentDifficultyPoints++;
             problemTypeProgress.currentDifficultyAttempts++;
-            problemTypeProgress.totalPoints++;
+            problemTypeProgress.totalAttempts++;
+            problemTypeProgress.totalCorrectAnswers++;
 
             mastery.progress.set(problemType, problemTypeProgress);
         }
@@ -116,20 +148,22 @@ async function updateProblemTypeProgression(
                 ) {
                     problemTypeProgress.currentDifficultyPoints = MAX_POINTS_PER_DIFFICULTY;
                     problemTypeProgress.currentDifficultyAttempts = 0;
-                    problemTypeProgress.totalPoints--;
+                    problemTypeProgress.totalAttempts++;
                     problemTypeProgress.difficulty = getPreviousProblemDifficulty(
                         problemTypeProgress.difficulty,
                     );
                 } else {
                     // if student is at 0 points and is in the lowest difficulty for
-                    // this problem type, only attempts is updated
+                    // this problem type, only attempts are updated
                     problemTypeProgress.currentDifficultyAttempts++;
+                    problemTypeProgress.totalAttempts++;
                 }
             } else {
                 // this function and overarching endpoint should not fail because
                 // of this data error. In the event this error happens, continue so
                 // user experience is not disrupted
                 problemTypeProgress.currentDifficultyAttempts++;
+                problemTypeProgress.totalAttempts++;
                 log(
                     'No problem difficulty mapping found for ' +
                         problemType.valueOf(),
@@ -138,7 +172,7 @@ async function updateProblemTypeProgression(
         } else {
             problemTypeProgress.currentDifficultyPoints--;
             problemTypeProgress.currentDifficultyAttempts++;
-            problemTypeProgress.totalPoints--;
+            problemTypeProgress.totalAttempts++;
         }
 
         mastery.progress.set(problemType, problemTypeProgress);
@@ -162,12 +196,16 @@ async function insertUnlockedProblemTypes(mastery: IMastery): Promise<void> {
 
     if (problemDifficultyMapping) {
         problemDifficultyMapping.problemTypes.forEach(problemType => {
-            if (!mastery.progress.has(problemType)) {
+            if (
+                !mastery.progress.has(problemType) &&
+                !DISABLED_PROBLEM_TYPES.includes(problemType)
+            ) {
                 const newProblemTypeProgress = {
                     currentDifficultyAttempts: 0,
                     currentDifficultyPoints: 0,
                     difficulty: lowestDifficulty,
-                    totalPoints: 0,
+                    totalAttempts: 0,
+                    totalCorrectAnswers: 0,
                 } as IProblemTypeProgress;
 
                 mastery.progress.set(problemType, newProblemTypeProgress);
@@ -191,15 +229,83 @@ function createProblemTypeProgression(
             currentDifficultyAttempts: 1,
             currentDifficultyPoints: 1,
             difficulty: ProblemDifficulty.G1E,
-            totalPoints: 1,
+            totalAttempts: 1,
+            totalCorrectAnswers: 1,
         } as IProblemTypeProgress;
     } else {
         newProblemTypeProgress = {
             currentDifficultyAttempts: 1,
             currentDifficultyPoints: 0,
             difficulty: ProblemDifficulty.G1E,
-            totalPoints: 0,
+            totalAttempts: 1,
+            totalCorrectAnswers: 0,
         } as IProblemTypeProgress;
     }
     return newProblemTypeProgress;
 }
+
+/**
+ * Retrieves the student's stats from their mastery entry
+ *
+ * @param studentId student id
+ */
+export const getStatisticsForStudent = async (studentId: string) => {
+    const mastery = await MasteryModel.findOne({
+        studentId,
+    });
+
+    if (mastery) {
+        return curateStudentStatistics(mastery);
+    } else {
+        throw Boom.notFound('No statistics found for student: ' + studentId);
+    }
+};
+
+/**
+ * Retrieves all students' stats that belong to a specific classroom
+ *
+ * @param classroomId classroom id
+ */
+export const getStatisticsForStudentsInClassroom = async (
+    classroomId: string,
+) => {
+    const studentMasteries = await MasteryModel.find({
+        classroomId,
+    });
+
+    if (studentMasteries && studentMasteries.length > 0) {
+        const allStudentStatsMap: { [key: string]: object } = {};
+
+        studentMasteries.forEach(mastery => {
+            allStudentStatsMap[mastery.studentId] = curateStudentStatistics(
+                mastery,
+            );
+        });
+
+        return allStudentStatsMap;
+    } else {
+        throw Boom.notFound(
+            'No student statistics for classroom: ' + classroomId,
+        );
+    }
+};
+
+const curateStudentStatistics = (mastery: IMastery) => {
+    const totalsMap: { [key: string]: { [key: string]: number } } = {};
+    mastery.progress.forEach(
+        (value: IProblemTypeProgress, key: ProblemType) => {
+            totalsMap[key] = {
+                totalAttempts: value.totalAttempts,
+                totalCorrectAnswers: value.totalCorrectAnswers,
+            };
+        },
+    );
+
+    return {
+        numDailyAttempts: mastery.numDailyAttempts,
+        numDailyCorrectAnswers: mastery.numDailyCorrectAnswers,
+        totalLifetimeAttempts: mastery.totalLifetimeAttempts,
+        totalLifetimeCorrectAnswers: mastery.totalLifetimeCorrectAnswers,
+        totals: totalsMap,
+    };
+};

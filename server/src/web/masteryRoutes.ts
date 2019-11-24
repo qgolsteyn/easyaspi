@@ -1,4 +1,8 @@
-import { updateMastery } from '@server/service/masteryService';
+import {
+    getStatisticsForStudent,
+    getStatisticsForStudentsInClassroom,
+    updateMastery,
+} from '@server/service/masteryService';
 import { enhanceHandler, HTTP_CODE } from '@server/service/utils/routeEnhancer';
 import {
     convertStringToProblemType,
@@ -15,27 +19,66 @@ export const initializeMasteryRoutes = (app: express.Application) => {
         '/result',
         enhanceHandler({ protect: true })(async (req, user) => {
             if (user) {
-                try {
-                    const problemType = convertStringToProblemType(
-                        req.body.problemType,
-                    );
-                    if (
-                        problemType === ProblemType.UNKNOWN ||
-                        typeof req.body.isSuccess !== 'boolean'
-                    ) {
-                        throw Boom.badRequest(
-                            'Either problemType or isSuccess is invalid',
+                if (user.virtualClassroomUid) {
+                    try {
+                        const problemType = convertStringToProblemType(
+                            req.body.problemType,
                         );
-                    } else {
-                        await updateMastery(
-                            user.id,
-                            problemType,
-                            req.body.isSuccess,
-                        );
-                        return [HTTP_CODE.NO_CONTENT, null];
+                        if (
+                            problemType === ProblemType.UNKNOWN ||
+                            typeof req.body.isSuccess !== 'boolean'
+                        ) {
+                            throw Boom.badRequest(
+                                'Either problemType or isSuccess is invalid',
+                            );
+                        } else {
+                            await updateMastery(
+                                user.virtualClassroomUid,
+                                user.id,
+                                problemType,
+                                req.body.isSuccess,
+                            );
+                            return [HTTP_CODE.NO_CONTENT, null];
+                        }
+                    } catch (e) {
+                        if (Boom.isBoom(e)) {
+                            throw e;
+                        } else {
+                            throw Boom.internal();
+                        }
                     }
-                } catch (e) {
-                    throw Boom.internal();
+                } else {
+                    throw Boom.internal('User does not belong to a classroom');
+                }
+            } else {
+                throw Boom.internal('User is undefined');
+            }
+        }),
+    );
+
+    masteryRouter.get(
+        '/student/statistics',
+        enhanceHandler({ protect: true })(async (_, user) => {
+            if (user) {
+                const stats = await getStatisticsForStudent(user.id);
+                return [HTTP_CODE.OK, stats];
+            } else {
+                throw Boom.internal('User is undefined');
+            }
+        }),
+    );
+
+    masteryRouter.get(
+        '/classroom/statistics',
+        enhanceHandler({ protect: true })(async (_, user) => {
+            if (user) {
+                if (user.virtualClassroomUid) {
+                    const allStats = await getStatisticsForStudentsInClassroom(
+                        user.virtualClassroomUid,
+                    );
+                    return [HTTP_CODE.OK, allStats];
+                } else {
+                    throw Boom.internal('User does not belong to a classroom');
                 }
             } else {
                 throw Boom.internal('User is undefined');

@@ -1,23 +1,23 @@
 import { call } from 'redux-saga/effects';
 
-import { IProblem } from '@client/store/reducers/problems';
+import { IAchievement } from '@shared/index';
 
 import { getAccessToken } from './auth';
 import { handleError } from './errors';
 import { baseApi } from './url';
 
-export function* getNextMathProblem(): Generator<
+export function* getAchievements(): Generator<
     unknown,
-    IProblem | undefined,
+    IAchievement[] | undefined,
     {}
 > {
     const accessToken = (yield call(getAccessToken)) as string | undefined;
 
     if (accessToken) {
         try {
-            const problem = ((yield call(
+            const achievements = ((yield call(
                 [baseApi, baseApi.get],
-                `/math/nextProblem`,
+                `/achievements`,
                 {
                     headers: {
                         Authorization: `Bearer ${accessToken}`,
@@ -26,8 +26,8 @@ export function* getNextMathProblem(): Generator<
                         Pragma: 'no-cache',
                     },
                 },
-            )) as { data: IProblem }).data;
-            return problem;
+            )) as { data: IAchievement[] }).data;
+            return achievements;
         } catch (e) {
             yield call(handleError, e);
             return undefined;

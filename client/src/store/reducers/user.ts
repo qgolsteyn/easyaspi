@@ -26,6 +26,7 @@ const defaultState: IUserState = {
         name: '',
         passcode: '',
         problemsForToday: [],
+        resourceWeb: '',
     },
     user: {
         id: '',

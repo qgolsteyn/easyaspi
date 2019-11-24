@@ -10,12 +10,12 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { Background } from '@client/components/Background';
 import { StyledCardButton } from '@client/components/ButtonCard';
-import { StyledCard } from '@client/components/Card';
 import { StyledHeader } from '@client/components/Header';
 
 import { colors } from '@client/constants/colors';
 
 import { actions, selectors } from '@client/store';
+import { ProblemSetCard } from './ProblemSetCard';
 
 export const TeacherHome = () => {
     const dispatch = useDispatch();
@@ -30,10 +30,10 @@ export const TeacherHome = () => {
                 <StyledHeader ref={testHook('TeacherHomeScreen.Header')}>
                     Hi {name}!
                 </StyledHeader>
-                <StyledCard style={styles.card} />
+                <ProblemSetCard />
                 <StyledCardButton
                     icon={faCalculator}
-                    text="Set Daily Problems"
+                    text="Daily Problems Settings"
                     styles={{ marginBottom: 8 }}
                 />
                 <StyledCardButton
@@ -50,6 +50,9 @@ export const TeacherHome = () => {
                     text="View Classroom Progress"
                     styleAttr="success"
                     styles={{ marginBottom: 8 }}
+                    onPress={() =>
+                        dispatch(actions.nav.goToScreen('ClassroomStatistics'))
+                    }
                 />
             </View>
         </Background>

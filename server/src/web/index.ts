@@ -1,5 +1,6 @@
 import express from 'express';
 
+import { initializeAchievementRoutes } from './achievementRoutes';
 import { initializeAuthRoutes } from './authRoutes';
 import { initializeClassroomRoutes } from './classroomRoutes';
 import { initializeMasteryRoutes } from './masteryRoutes';
@@ -12,4 +13,5 @@ export const initializeRoutes = (app: express.Application) => {
     initializeUsersRoutes(app);
     initializeMasteryRoutes(app);
     initializeClassroomRoutes(app);
+    initializeAchievementRoutes(app);
 };
