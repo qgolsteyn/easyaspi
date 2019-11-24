@@ -9,11 +9,11 @@ const ClassroomSchema = new mongoose.Schema({
         required: true,
         type: String,
     },
-    numDailyProblems:{
+    numDailyProblems: {
         type: Number,
     },
     onlineResources: {
-        type: Array,
+        type: String,
     },
     passcode: {
         required: true,

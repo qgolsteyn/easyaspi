@@ -13,6 +13,7 @@ export enum ProblemSetState {
 }
 
 export interface IProblem {
+    problemType: string;
     prompt: string;
     operators: string[];
     operands: number[];
@@ -23,9 +24,7 @@ export interface IProblem {
 
 // We specify the shape of the state in an interface
 export interface IProblemState {
-    problemSetState: ProblemSetState;
     problemSetCount: number;
-    solvedProblems: number;
     currentProblem: number;
     problems: Array<IProblem | null>;
 }
@@ -34,9 +33,7 @@ export interface IProblemState {
 const defaultState: IProblemState = {
     currentProblem: 0,
     problemSetCount: 10,
-    problemSetState: ProblemSetState.NOT_STARTED,
     problems: [null],
-    solvedProblems: 0,
 };
 
 // Selectors are responsible for getting values in the state
@@ -48,7 +45,11 @@ export const problemSelectors = {
     getNumberOfProblems: (state: { problems: IProblemState }) =>
         state.problems.problemSetCount,
     getProblemSetState: (state: { problems: IProblemState }) =>
-        state.problems.problemSetState,
+        state.problems.currentProblem === 0
+            ? ProblemSetState.NOT_STARTED
+            : state.problems.currentProblem < state.problems.problemSetCount
+            ? ProblemSetState.IN_PROGRESS
+            : ProblemSetState.DONE,
     isLoading: (state: { problems: IProblemState }) =>
         state.problems.problems[state.problems.currentProblem] === null,
 };
@@ -64,12 +65,12 @@ export const problemActions = {
     ),
     setProblemSetState: createAction(
         'problem_SET_PROBLEM_SET_STATE',
-        resolve => (problemSetState: ProblemSetState) =>
-            resolve({ problemSetState }),
+        resolve => (currentProblem: number, problemSetCount: number) =>
+            resolve({ currentProblem, problemSetCount }),
     ),
     solveCurrentProblem: createAction(
         'problem_SOLVE_CURRENT_PROBLEM',
-        resolve => (successful: boolean) => resolve({ successful }),
+        resolve => (success: boolean) => resolve({ success }),
     ),
 };
 
@@ -105,7 +106,11 @@ export const problemReducer = produce(
                 break;
             }
             case getType(problemActions.setProblemSetState): {
-                draft.problemSetState = action.payload.problemSetState;
+                const { currentProblem, problemSetCount } = action.payload;
+
+                draft.currentProblem = currentProblem;
+                draft.problemSetCount = problemSetCount;
+                draft.problems = new Array(currentProblem + 1).fill(null);
                 break;
             }
             case getType(problemActions.reset): {

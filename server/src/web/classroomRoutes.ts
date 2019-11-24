@@ -23,13 +23,13 @@ export const initializeClassroomRoutes = (app: express.Application) => {
     );
 
     classroomRouter.put(
-        '/', enhanceHandler({ protect: true })(async (req, user) => {
-
-            if(!req.body){
+        '/',
+        enhanceHandler({ protect: true })(async (req, user) => {
+            if (!req.body) {
                 throw Boom.badRequest('Invalid Classroom Payload');
             }
 
-            if (typeof user === 'undefined'){
+            if (typeof user === 'undefined') {
                 throw Boom.badData('user can not be undefined');
             }
 
@@ -37,57 +37,36 @@ export const initializeClassroomRoutes = (app: express.Application) => {
 
             const classroom = await classroomService.updateClassroom(req.body);
 
-            if(classroom){
+            if (classroom) {
                 return [HTTP_CODE.OK, classroom];
-            }
-            else {
+            } else {
                 throw Boom.internal('Could not update the classroom');
             }
         }),
     );
 
     classroomRouter.get(
-        '/', enhanceHandler({ protect: true })(async (_, user) => {
-
-            if (typeof user === 'undefined'){
+        '/',
+        enhanceHandler({ protect: true })(async (_, user) => {
+            if (typeof user === 'undefined') {
                 throw Boom.badData('user can not be undefined');
             }
 
-            if(!user.virtualClassroomUid){
-                Boom.badData('user must have virtualClassroomUid to get classroom')
+            if (!user.virtualClassroomUid) {
+                Boom.badData(
+                    'user must have virtualClassroomUid to get classroom',
+                );
             }
 
-            const classroom = await classroomService.getClassroom(String(user.virtualClassroomUid));
+            const classroom = await classroomService.getClassroom(
+                String(user.virtualClassroomUid),
+            );
 
-            if(classroom){
+            if (classroom) {
                 return [HTTP_CODE.OK, classroom];
-            }
-            else {
+            } else {
                 throw Boom.notFound();
             }
-        })
-    );
-
-    classroomRouter.get(
-        '/stat', enhanceHandler({ protect: true })(async (_, user) => {
-
-            if (typeof user === 'undefined'){
-                throw Boom.badRequest('user must be a teacher to get the classroom stat');
-            }
-
-            if(!user.virtualClassroomUid){
-                Boom.badData('user must have virtualClassroomUid to get classroom')
-            }
-
-            const classroomStat = await classroomService.getStatsForClassroom(String(user.virtualClassroomUid));
-
-            if(classroomStat){
-                return [HTTP_CODE.OK, classroomStat];
-            }
-            else {
-                throw Boom.notFound(`could not find classroom stat for the classroom with id ${user.virtualClassroomUid}`);
-            }
-        })
+        }),
     );
 };
-

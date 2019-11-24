@@ -1,13 +1,20 @@
 import { faBell } from '@fortawesome/free-solid-svg-icons';
 import * as React from 'react';
 import { ProgressBarAndroid, StyleSheet, Text, View } from 'react-native';
+import { useSelector } from 'react-redux';
 
 import { StyledIconButton } from '@client/components/ButtonIcon';
 import { StyledCard } from '@client/components/Card';
 import { Icon } from '@client/components/Icon';
 import { colors } from '@client/constants/colors';
+import { selectors } from '@client/store';
 
 export const ProblemSetCard = () => {
+    const numberCompleted = useSelector(
+        selectors.teacher.getNumberOfStudentsDone,
+    );
+    const numberOfStudents = useSelector(selectors.teacher.getNumberOfStudents);
+
     return (
         <StyledCard
             title="Today's math exercises"
@@ -36,7 +43,9 @@ export const ProblemSetCard = () => {
             </View>
             <View style={styles.buttonRow}>
                 <StyledIconButton icon={faBell} />
-                <Text style={styles.completionText}>12/33 students done</Text>
+                <Text style={styles.completionText}>
+                    {numberCompleted}/{numberOfStudents} students done
+                </Text>
             </View>
         </StyledCard>
     );

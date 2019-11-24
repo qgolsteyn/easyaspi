@@ -13,7 +13,7 @@ import { colors } from '@client/constants/colors';
 
 interface IStyledButton {
     loading?: boolean;
-    text: string | React.ReactElement;
+    text: string | number | React.ReactElement;
     styles?: object;
     styleAttr?: 'primary' | 'secondary' | 'success' | 'error' | 'transparent';
     onPress?: () => void;
@@ -83,7 +83,8 @@ export const StyledButton = wrap((props: IStyledButton) => {
                 >
                     {props.loading ? (
                         <ActivityIndicator size="large" color="#FFF" />
-                    ) : typeof props.text === 'string' ? (
+                    ) : typeof props.text === 'string' ||
+                      typeof props.text === 'number' ? (
                         <Text style={styles.text}>{props.text}</Text>
                     ) : (
                         props.text

@@ -36,3 +36,33 @@ export function* getNextMathProblem(): Generator<
 
     return undefined;
 }
+
+export function* notifySuccessFailure(
+    problemType: string,
+    success: boolean,
+): Generator<unknown, void, unknown> {
+    const accessToken = (yield call(getAccessToken)) as string | undefined;
+
+    if (accessToken) {
+        try {
+            yield call(
+                [baseApi, baseApi.post],
+                `/mastery/result`,
+                {
+                    isSuccess: success,
+                    problemType,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                        'Cache-Control': 'no-cache',
+                        Expires: '0',
+                        Pragma: 'no-cache',
+                    },
+                },
+            );
+        } catch (e) {
+            yield call(handleError, e);
+        }
+    }
+}

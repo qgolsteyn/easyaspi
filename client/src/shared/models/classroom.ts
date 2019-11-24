@@ -2,7 +2,7 @@ export interface IClassroom {
     name: string;
     passcode: string;
     problemsForToday: string[];
-    onlineResources: string[];
+    onlineResources: string;
     numDailyProblems: number;
 }
 
@@ -11,6 +11,6 @@ export interface IClassroomWithId {
     name: string;
     passcode: string;
     problemsForToday: string[];
-    onlineResources: string[];
+    onlineResources: string;
     numDailyProblems: number;
 }
