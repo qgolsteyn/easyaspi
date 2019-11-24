@@ -1,4 +1,3 @@
-import mockingoose from 'mockingoose';
 import { ClassroomModel, UserModel } from '../database';
 import { classRoomDoc4, classRoomDoc5, user1 } from '../database/mockData';
 import {
@@ -6,6 +5,8 @@ import {
     createClassroom,
     getStudents,
 } from '../service/classroomService';
+
+const mockingoose = require('mockingoose').default;
 
 test('Check if createClassroom creates classroom correctly', async () => {
     mockingoose(ClassroomModel).toReturn(

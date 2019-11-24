@@ -1,12 +1,12 @@
-const mockingoose = require('mockingoose').default;
-
-import { ArithmeticProblemTemplateModel } from '../database/arithmeticProblemTemplate';
 import { additionTemplate, subtractionTemplate } from '../database/mockData';
+import { ArithmeticProblemTemplateModel } from '../database/templates/arithmeticProblemTemplate';
 import {
     ProblemDifficulty,
     ProblemType,
 } from '../../../client/src/shared/models/problem';
 import { generateArithmeticProblem } from '../service/math/generateArithmeticProblem';
+
+const mockingoose = require('mockingoose').default;
 
 test('Check if addition problems are correctly generated', async () => {
     mockingoose(ArithmeticProblemTemplateModel).toReturn(

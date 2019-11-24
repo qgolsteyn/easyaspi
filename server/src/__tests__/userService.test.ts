@@ -1,4 +1,3 @@
-import mockingoose from 'mockingoose';
 import { UserModel } from '../database';
 import { authDoc1, user2, user3 } from '../database/mockData';
 import {
@@ -6,6 +5,8 @@ import {
     getUserFromId,
     updateUser,
 } from '../service/userService';
+
+const mockingoose = require('mockingoose').default;
 
 test('Check if createUserFromAuthInfo returns the right object', async () => {
     mockingoose(UserModel).toReturn(user2, 'save');

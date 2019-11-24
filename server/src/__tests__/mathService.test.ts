@@ -1,9 +1,9 @@
-const mockingoose = require('mockingoose').default;
-
-import { ArithmeticProblemTemplateModel } from '../database/arithmeticProblemTemplate';
-import { additionTemplate } from '../database/mockData';
+import { additionTemplate, user1 } from '../database/mockData';
+import { ArithmeticProblemTemplateModel } from '../database/templates/arithmeticProblemTemplate';
 import { ProblemType } from '../../../client/src/shared/models/problem';
 import { fetchNextMathProblem } from '../service/math/mathService';
+
+const mockingoose = require('mockingoose').default;
 
 beforeAll(() => {
     const mockMath = Object.create(global.Math);
@@ -17,7 +17,7 @@ test('Check if addition problems are correctly generated', async () => {
         'findOne',
     );
 
-    const problem = await fetchNextMathProblem();
+    const problem = await fetchNextMathProblem(user1);
 
     expect(problem.problemType).toBe(ProblemType.ADDITION);
     expect(problem.operands.length).toBe(2);
