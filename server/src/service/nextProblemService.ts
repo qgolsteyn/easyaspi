@@ -79,7 +79,7 @@ export const findPossibleNextProblemTypes = async (userPayload: IUser) => {
 
     if (classroom.numDailyProblems <= mastery.numDailyCorrectAnswers) {
         const teacher = await UserModel.findOne(
-            {virtualClassroomUid: userPayload.virtualClassroomUid, userType: 'teacher',}
+            {virtualClassroomUid: userPayload.virtualClassroomUid, userType: 'teacher'},
             );
 
         if (!teacher){
