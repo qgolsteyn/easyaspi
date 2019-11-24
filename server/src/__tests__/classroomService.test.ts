@@ -38,19 +38,16 @@ test('Check if authenticateToClassroom validates classroom properly - Should thr
             name: 'Test105',
             numDailyProblems: 20,
             onlineResources: '',
-            passcode: '11122',
+            passcode: '2',
             problemsForToday: ['addition'],
         },
         'findOne',
     );
     try {
-        const classRoomId = await authenticateToClassroom(classRoomDoc5);
-        expect(classRoomId).toEqual('5dd0ddeaa1608611fdb1bb40');
+        await authenticateToClassroom(classRoomDoc5);
     } catch (e) {
         const err = JSON.parse(JSON.stringify(e));
-        expect(err.output.payload.message).toEqual(
-            'Invalid classroom name or passcode',
-        );
+        expect(err.output.payload.message).toEqual('WRONG_CLASS_INFO');
     }
 });
 

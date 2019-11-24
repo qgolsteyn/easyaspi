@@ -1,7 +1,10 @@
 import { IAuthInfo } from '@server/service/authService';
 import { IClassroom } from '@shared/models/classroom';
-import { IProblem, ProblemType, GeometricShape } from '@shared/models/problem';
+import { GeometricShape, IProblem, ProblemType } from '@shared/models/problem';
 import { IUser } from '@shared/models/users';
+
+const NINE = 9;
+const ELEVEN = 11;
 
 export const user1: IUser = {
     id: '113015909143620944320',
@@ -209,7 +212,7 @@ export const authDoc1: IAuthInfo = {
 
 export const additionProblem: IProblem = {
     incorrectSolutions: ['9', '11', '12'],
-    operands: [9, 1],
+    operands: [NINE, 1],
     operators: ['+'],
     problem: '9 + 1 =',
     problemType: ProblemType.ADDITION,
@@ -218,7 +221,7 @@ export const additionProblem: IProblem = {
 
 export const subtractionProblem: IProblem = {
     incorrectSolutions: ['9', '11', '12'],
-    operands: [11, 1],
+    operands: [ELEVEN, 1],
     operators: ['-'],
     problem: '11 - 1 =',
     problemType: ProblemType.SUBTRACTION,
@@ -226,10 +229,9 @@ export const subtractionProblem: IProblem = {
 };
 
 export const additionTemplate = {
-    problemType: ProblemType.ADDITION,
-    operator: '+',
     difficultyMap: {
         g1e: {
+            multiplesOf: 1,
             operands: [
                 {
                     lowerBound: 1,
@@ -241,16 +243,16 @@ export const additionTemplate = {
                 },
             ],
             optExtraOperands: 0,
-            multiplesOf: 1,
         },
     },
+    operator: '+',
+    problemType: ProblemType.ADDITION,
 };
 
 export const subtractionTemplate = {
-    problemType: ProblemType.SUBTRACTION,
-    operator: '-',
     difficultyMap: {
         g1m: {
+            multiplesOf: 1,
             operands: [
                 {
                     lowerBound: 5,
@@ -262,47 +264,48 @@ export const subtractionTemplate = {
                 },
             ],
             optExtraOperands: 0,
-            multiplesOf: 1,
         },
     },
+    operator: '-',
+    problemType: ProblemType.SUBTRACTION,
 };
 
 export const areaTemplate = {
-    problemType: ProblemType.AREA,
     difficultyMap: {
-        g5m: {
-            sides: [
-                {
-                    lowerBound: 1,
-                    upperBound: 30,
-                },
-                {
-                    lowerBound: 1,
-                    upperBound: 30,
-                },
-            ],
-            shapes: [GeometricShape.SQUARE, GeometricShape.RECTANGLE],
-            cost: {
-                lowerBound: 1,
-                upperBound: 1,
-            },
-        },
         g5h: {
-            sides: [
-                {
-                    lowerBound: 5,
-                    upperBound: 30,
-                },
-                {
-                    lowerBound: 5,
-                    upperBound: 30,
-                },
-            ],
-            shapes: [GeometricShape.SQUARE, GeometricShape.RECTANGLE],
             cost: {
                 lowerBound: 5,
                 upperBound: 25,
             },
+            shapes: [GeometricShape.SQUARE, GeometricShape.RECTANGLE],
+            sides: [
+                {
+                    lowerBound: 5,
+                    upperBound: 30,
+                },
+                {
+                    lowerBound: 5,
+                    upperBound: 30,
+                },
+            ],
+        },
+        g5m: {
+            cost: {
+                lowerBound: 1,
+                upperBound: 1,
+            },
+            shapes: [GeometricShape.SQUARE, GeometricShape.RECTANGLE],
+            sides: [
+                {
+                    lowerBound: 1,
+                    upperBound: 30,
+                },
+                {
+                    lowerBound: 1,
+                    upperBound: 30,
+                },
+            ],
         },
     },
+    problemType: ProblemType.AREA,
 };

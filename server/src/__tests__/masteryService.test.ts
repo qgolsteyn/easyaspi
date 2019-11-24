@@ -1,6 +1,6 @@
+import { ProblemType } from '../../../client/src/shared/models/problem';
 import { MasteryModel } from '../database/mastery/mastery';
 import { masteryDoc3 } from '../database/mockData';
-import { ProblemType } from '../../../client/src/shared/models/problem';
 import { updateMastery } from '../service/masteryService';
 
 const mockingoose = require('mockingoose').default;

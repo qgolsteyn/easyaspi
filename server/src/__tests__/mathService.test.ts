@@ -1,3 +1,5 @@
+import { ProblemType } from '../../../client/src/shared/models/problem';
+import { ClassroomModel, MasteryModel } from '../database';
 import {
     additionTemplate,
     classroomDoc6,
@@ -5,11 +7,11 @@ import {
     user6,
 } from '../database/mockData';
 import { ArithmeticProblemTemplateModel } from '../database/templates/arithmeticProblemTemplate';
-import { ProblemType } from '../../../client/src/shared/models/problem';
 import { fetchNextMathProblem } from '../service/math/mathService';
-import { MasteryModel, ClassroomModel } from '@server/database';
 
 const mockingoose = require('mockingoose').default;
+
+const THREE = 3;
 
 beforeAll(() => {
     const mockMath = Object.create(global.Math);
@@ -32,6 +34,6 @@ test('Check if addition problems are correctly generated', async () => {
     expect(problem.operands.length).toBe(2);
     expect(problem.operators).toContain('+');
     expect(problem.solution.length).toBe(1);
-    expect(problem.incorrectSolutions.length).toBe(3);
+    expect(problem.incorrectSolutions.length).toBe(THREE);
     expect(problem.incorrectSolutions).not.toContain(problem.solution[0]);
 });

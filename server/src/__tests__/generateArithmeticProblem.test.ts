@@ -1,12 +1,14 @@
-import { additionTemplate, subtractionTemplate } from '../database/mockData';
-import { ArithmeticProblemTemplateModel } from '../database/templates/arithmeticProblemTemplate';
 import {
     ProblemDifficulty,
     ProblemType,
 } from '../../../client/src/shared/models/problem';
+import { additionTemplate, subtractionTemplate } from '../database/mockData';
+import { ArithmeticProblemTemplateModel } from '../database/templates/arithmeticProblemTemplate';
 import { generateArithmeticProblem } from '../service/math/generateArithmeticProblem';
 
 const mockingoose = require('mockingoose').default;
+
+const THREE = 3;
 
 test('Check if addition problems are correctly generated', async () => {
     mockingoose(ArithmeticProblemTemplateModel).toReturn(
@@ -23,7 +25,7 @@ test('Check if addition problems are correctly generated', async () => {
     expect(problem.operands.length).toBe(2);
     expect(problem.operators).toContain('+');
     expect(problem.solution.length).toBe(1);
-    expect(problem.incorrectSolutions.length).toBe(3);
+    expect(problem.incorrectSolutions.length).toBe(THREE);
     expect(problem.incorrectSolutions).not.toContain(problem.solution[0]);
 });
 
@@ -42,7 +44,7 @@ test('Check if subtraction problems are correctly generated', async () => {
     expect(problem.operands.length).toBe(2);
     expect(problem.operators).toContain('-');
     expect(problem.solution.length).toBe(1);
-    expect(problem.incorrectSolutions.length).toBe(3);
+    expect(problem.incorrectSolutions.length).toBe(THREE);
     expect(problem.incorrectSolutions).not.toContain(problem.solution[0]);
 });
 

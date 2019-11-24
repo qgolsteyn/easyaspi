@@ -1,12 +1,14 @@
-import { areaTemplate } from '../database/mockData';
-import { GeometryProblemTemplateModel } from '../database/templates/geometryProblemTemplates';
 import {
     ProblemDifficulty,
     ProblemType,
 } from '../../../client/src/shared/models/problem';
+import { areaTemplate } from '../database/mockData';
+import { GeometryProblemTemplateModel } from '../database/templates/geometryProblemTemplates';
 import { generateGeometryProblem } from '../service/math/generateGeometryProblem';
 
 const mockingoose = require('mockingoose').default;
+
+const THREE = 3;
 
 test('Check if area problems are correctly generated', async () => {
     mockingoose(GeometryProblemTemplateModel).toReturn(areaTemplate, 'findOne');
@@ -18,7 +20,7 @@ test('Check if area problems are correctly generated', async () => {
 
     expect(problem.problemType).toBe(ProblemType.AREA);
     expect(problem.solution.length).toBe(1);
-    expect(problem.incorrectSolutions.length).toBe(3);
+    expect(problem.incorrectSolutions.length).toBe(THREE);
     expect(problem.incorrectSolutions).not.toContain(problem.solution[0]);
 });
 

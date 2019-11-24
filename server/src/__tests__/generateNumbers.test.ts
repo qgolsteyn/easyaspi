@@ -3,6 +3,8 @@ import {
     generateNumber,
 } from '../service/math/generateNumbers';
 
+const THREE = 3;
+
 test('Check if generateNumber returns random value between upper and lower bounds', async () => {
     const lower = 0;
     const upper = 2;
@@ -20,7 +22,7 @@ test('Check if generateNumber returns random value adhering to specified multipl
 
     const value = generateNumber(lower, upper, multiplesOf);
 
-    expect(value % 5).toBe(0);
+    expect(value % multiplesOf).toBe(0);
 });
 
 test('Check if generateIncorrectWholeNumberSolutions generates 3 values distinct from solution', async () => {
@@ -29,7 +31,7 @@ test('Check if generateIncorrectWholeNumberSolutions generates 3 values distinct
 
     const values = generateIncorrectWholeNumberSolutions(solution, multiplesOf);
 
-    expect(values.length).toBe(3);
+    expect(values.length).toBe(THREE);
 
     for (let i = 0; i < values.length; i++) {
         expect(values[i]).not.toBe(String(solution));
@@ -43,7 +45,7 @@ test('Check if generateIncorrectWholeNumberSolutions generates values that adher
 
     const values = generateIncorrectWholeNumberSolutions(solution, multiplesOf);
 
-    expect(values.length).toBe(3);
+    expect(values.length).toBe(THREE);
 
     for (let i = 0; i < values.length; i++) {
         expect(values[i]).not.toBe(String(solution));
@@ -57,7 +59,7 @@ test('Check if generateIncorrectWholeNumberSolutions generates 1, 2, 3 if soluti
 
     const values = generateIncorrectWholeNumberSolutions(0, multiplesOf);
 
-    expect(values.length).toBe(3);
+    expect(values.length).toBe(THREE);
     expect(values).toContain('1');
     expect(values).toContain('2');
     expect(values).toContain('3');
@@ -69,7 +71,7 @@ test('Check if generateIncorrectWholeNumberSolutions generates non negative valu
 
     const values = generateIncorrectWholeNumberSolutions(solution, multiplesOf);
 
-    expect(values.length).toBe(3);
+    expect(values.length).toBe(THREE);
 
     for (let i = 0; i < values.length; i++) {
         expect(values[i]).not.toBe(String(solution));
