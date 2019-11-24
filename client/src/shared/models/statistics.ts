@@ -8,3 +8,8 @@ export interface IStudentStatistic {
         };
     };
 }
+
+export interface IClassroomStatistic {
+    studentsCompleted: number;
+    allStudents: { [key: string]: IStudentStatistic };
+}

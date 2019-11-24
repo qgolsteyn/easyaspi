@@ -1,11 +1,11 @@
 import {
-    faTrophy,
-    faChartLine,
     faCalendarDay,
+    faChartLine,
+    faTrophy,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import React from 'react';
-import { StyleSheet, View, ScrollView } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { Background } from '@client/components/Background';

@@ -18,6 +18,7 @@ import { StudentHome } from './screens/student/StudentHomeScreen';
 import { StudentProblem } from './screens/student/StudentProblemScreen';
 
 import { DailyProblemSet } from './screens/teacher/DailyProblemSetScreen';
+import { StudentStats } from './screens/teacher/StatsScreen';
 import { StudentList } from './screens/teacher/StudentListScreen';
 import { TeacherHome } from './screens/teacher/TeacherHomeScreen';
 
@@ -61,6 +62,9 @@ const TeacherStack = createStackNavigator(
     {
         DailyProblemSet: {
             screen: DailyProblemSet,
+        },
+        StudentStats: {
+            screen: StudentStats,
         },
         StudentsList: {
             screen: StudentList,

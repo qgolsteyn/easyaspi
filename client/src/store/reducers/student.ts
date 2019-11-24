@@ -9,6 +9,7 @@ import { IAchievement, IClassroom, IStudentStatistic } from '@shared/index';
 
 // We specify the shape of the state in an interface
 export interface IStudentState {
+    loading: boolean;
     classroomInfo: IClassroom;
     statistics: IStudentStatistic;
     achievements: IAchievement[];
@@ -24,6 +25,7 @@ const defaultState: IStudentState = {
         passcode: '',
         problemsForToday: [],
     },
+    loading: false,
     statistics: {
         numDailyAttempts: 0,
         numDailyCorrectAnswers: 0,
@@ -35,14 +37,21 @@ const defaultState: IStudentState = {
 export const studentSelectors = {
     getAchievements: (state: { student: IStudentState }) =>
         state.student.achievements,
+    getHelpURL: (state: { student: IStudentState }) =>
+        state.student.classroomInfo.onlineResources,
     getNumberOfDailyProblems: (state: { student: IStudentState }) =>
         state.student.classroomInfo.numDailyProblems,
     getStats: (state: { student: IStudentState }) => state.student.statistics,
+    isLoading: (state: { student: IStudentState }) => state.student.loading,
 };
 
 // And actions allow us to mutate the state
 export const studentActions = {
     reset: createAction('reset'),
+    setLoading: createAction(
+        'student_SET_LOADING',
+        resolve => (loading: boolean) => resolve({ loading }),
+    ),
     setStudentInfo: createAction(
         'student_SET',
         resolve => (
@@ -73,6 +82,10 @@ export const studentReducer = produce(
             }
             case getType(studentActions.reset): {
                 return defaultState;
+            }
+            case getType(studentActions.setLoading): {
+                draft.loading = action.payload.loading;
+                break;
             }
         }
 

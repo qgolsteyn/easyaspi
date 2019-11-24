@@ -1,9 +1,14 @@
+import Boom from 'boom';
+import debug from 'debug';
+
+import { ClassroomModel } from '@server/database';
 import {
     IMastery,
     IProblemTypeProgress,
     MasteryModel,
 } from '@server/database/mastery/mastery';
 import { ProblemMinimumDifficultiesModel } from '@server/database/mastery/problemMinimumDifficulties';
+
 import {
     getNextProblemDifficulty,
     getPreviousProblemDifficulty,
@@ -11,9 +16,6 @@ import {
     ProblemDifficulty,
     ProblemType,
 } from '@shared/models/problem';
-
-import Boom from 'boom';
-import debug from 'debug';
 
 const log = debug('pi:mastery');
 
@@ -262,20 +264,27 @@ export const getStatisticsForStudent = async (studentId: string) => {
 export const getStatisticsForStudentsInClassroom = async (
     classroomId: string,
 ) => {
+    const classroom = await ClassroomModel.findById(classroomId);
     const studentMasteries = await MasteryModel.find({
         classroomId,
     });
 
-    if (studentMasteries && studentMasteries.length > 0) {
+    if (classroom && studentMasteries) {
+        let studentsCompleted = 0;
         const allStudentStatsMap: { [key: string]: object } = {};
 
         studentMasteries.forEach(mastery => {
-            allStudentStatsMap[mastery.studentId] = curateStudentStatistics(
-                mastery,
-            );
+            const studentStats = curateStudentStatistics(mastery);
+
+            studentsCompleted +=
+                studentStats.numDailyAttempts === classroom.numDailyProblems
+                    ? 1
+                    : 0;
+
+            allStudentStatsMap[mastery.studentId] = studentStats;
         });
 
-        return allStudentStatsMap;
+        return { studentsCompleted, allStudents: allStudentStatsMap };
     } else {
         throw Boom.notFound(
             'No student statistics for classroom: ' + classroomId,

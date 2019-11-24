@@ -1,11 +1,8 @@
-import {
-    faInfo,
-    faPaperPlane,
-    faTrophy,
-} from '@fortawesome/free-solid-svg-icons';
+import { faInfo, faTrophy } from '@fortawesome/free-solid-svg-icons';
 import { useCavy } from 'cavy';
+import { Linking } from 'expo';
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Background } from '@client/components/Background';
@@ -20,33 +17,41 @@ import { ProblemSetCard } from './ProblemSetCard';
 export const StudentHome = () => {
     const dispatch = useDispatch();
 
+    const loading = useSelector(selectors.student.isLoading);
     const name = useSelector(selectors.user.getUserFirstName) || '';
+    const helpURL = useSelector(selectors.student.getHelpURL);
 
     const testHook = useCavy();
 
     return (
         <Background backgroundColor={colors.bg}>
-            <View style={styles.wrapper}>
-                <StyledHeader ref={testHook('StudentHomeScreen.Header')}>
-                    Hi {name}!
-                </StyledHeader>
-                <ProblemSetCard />
-                <StyledCardButton
-                    text="Stats and Achievements"
-                    icon={faTrophy}
-                    styleAttr="secondary"
-                    styles={{ marginBottom: 8 }}
-                    onPress={() =>
-                        dispatch(actions.nav.goToScreen('Achievements'))
-                    }
-                />
-                <StyledCardButton
-                    text="Get more help"
-                    icon={faInfo}
-                    styleAttr="success"
-                    onPress={() => dispatch(actions.nav.goToScreen('Error'))}
-                />
-            </View>
+            {loading ? (
+                <View style={styles.loadingView}>
+                    <ActivityIndicator size="large" color="#FFF" />
+                </View>
+            ) : (
+                <View style={styles.wrapper}>
+                    <StyledHeader ref={testHook('StudentHomeScreen.Header')}>
+                        Hi {name}!
+                    </StyledHeader>
+                    <ProblemSetCard />
+                    <StyledCardButton
+                        text="Stats and Achievements"
+                        icon={faTrophy}
+                        styleAttr="secondary"
+                        styles={{ marginBottom: 8 }}
+                        onPress={() =>
+                            dispatch(actions.nav.goToScreen('Achievements'))
+                        }
+                    />
+                    <StyledCardButton
+                        text="Get more help"
+                        icon={faInfo}
+                        styleAttr="success"
+                        onPress={() => Linking.openURL(helpURL)}
+                    />
+                </View>
+            )}
         </Background>
     );
 };
@@ -60,6 +65,13 @@ const styles = StyleSheet.create({
         display: 'flex',
         marginBottom: 8,
         marginTop: 8,
+        width: '100%',
+    },
+    loadingView: {
+        alignItems: 'center',
+        display: 'flex',
+        height: '100%',
+        justifyContent: 'center',
         width: '100%',
     },
     wrapper: {

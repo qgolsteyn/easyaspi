@@ -14,6 +14,7 @@ export function* initStudent(): Generator<unknown, void, unknown> {
 }
 
 function* getStudentInfo(): Generator<unknown, void, unknown> {
+    yield put(actions.student.setLoading(true));
     const classroomInfo = (yield call(
         api.classroom.getClassroomInfo,
     )) as IClassroom;
@@ -35,4 +36,5 @@ function* getStudentInfo(): Generator<unknown, void, unknown> {
             ),
         );
     }
+    yield put(actions.student.setLoading(false));
 }

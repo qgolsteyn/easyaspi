@@ -26,8 +26,8 @@ export const DoneFragment = () => {
             />
             <StyledButton
                 text="View results"
-                onPress={() => dispatch(actions.nav.goToScreen('StudentHome'))}
-                ref={testHook('Achievements')}
+                onPress={() => dispatch(actions.nav.goToScreen('Achievements'))}
+                ref={testHook('MathDone.Achievements')}
             />
             <StyledButton
                 text="Back"

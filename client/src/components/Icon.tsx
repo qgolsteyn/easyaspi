@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
+const BORDER_LARGE = 24;
+const BORDER_SMALL = 8;
+
 interface IIconProps {
     backgroundColor: string;
     text: string | number;
@@ -14,7 +17,8 @@ export const Icon = (props: IIconProps) => {
             style={{
                 ...styles.wrapper,
                 backgroundColor: props.backgroundColor,
-                borderRadius: props.shape === 'round' ? 24 : 8,
+                borderRadius:
+                    props.shape === 'round' ? BORDER_LARGE : BORDER_SMALL,
             }}
         >
             <Text
