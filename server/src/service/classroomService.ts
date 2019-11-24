@@ -1,6 +1,7 @@
 import Boom from 'boom';
 
 import { ClassroomModel, UserModel } from '@server/database';
+import { getStatisticsForStudentsInClassroom } from '@server/service/masteryService';
 import * as errors from '@shared/errors';
 import { IClassroom, ProblemType, UserType } from '@shared/index';
 import { IClassroomWithId } from '@shared/models/classroom';
@@ -96,6 +97,29 @@ export const updateClassroom = async (classroomPayload: IClassroomWithId) => {
         );
     } else {
         return classroomNew;
+    }
+};
+
+export const getStatsForClassroom = async (
+    classroomId: string,
+) => {
+    const statAllStudentsClassRoom = await getStatisticsForStudentsInClassroom(classroomId);
+
+    let LifetimeAttemptsAll = 0;
+    let LifetimeCorrectAnswersAll = 0;
+
+    const keys = Object.keys(statAllStudentsClassRoom);
+
+    for (const k of keys){
+        const studentStat = JSON.parse(JSON.stringify(statAllStudentsClassRoom[k]));
+        LifetimeAttemptsAll += studentStat.totalLifetimeAttempts;
+        LifetimeCorrectAnswersAll += studentStat.totalLifetimeCorrectAnswers;
+    }
+
+    return {
+        totalAttempts: LifetimeAttemptsAll,
+        totalCorrectAnswers: LifetimeCorrectAnswersAll,
+        totalStudents: keys.length,
     }
 };
 

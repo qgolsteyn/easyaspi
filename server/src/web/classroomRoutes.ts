@@ -67,6 +67,28 @@ export const initializeClassroomRoutes = (app: express.Application) => {
             } else {
                 throw Boom.notFound();
             }
-        }),
+        })
+    );
+
+    classroomRouter.get(
+        '/stat', enhanceHandler({ protect: true })(async (_, user) => {
+
+            if (typeof user === 'undefined'){
+                throw Boom.badRequest('user must be a teacher to get the classroom stat');
+            }
+
+            if(!user.virtualClassroomUid){
+                Boom.badData('user must have virtualClassroomUid to get classroom')
+            }
+
+            const classroomStat = await classroomService.getStatsForClassroom(String(user.virtualClassroomUid));
+
+            if(classroomStat){
+                return [HTTP_CODE.OK, classroomStat];
+            }
+            else {
+                throw Boom.notFound(`could not find classroom stat for the classroom with id ${user.virtualClassroomUid}`);
+            }
+        })
     );
 };
