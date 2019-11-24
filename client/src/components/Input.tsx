@@ -1,4 +1,4 @@
-import { useCavy, wrap } from 'cavy';
+import { TestHookGenerator, wrap } from 'cavy';
 import * as React from 'react';
 import {
     StyleSheet,
@@ -15,7 +15,7 @@ interface IStyledInput extends TextInputProps {
     style?: object;
     label?: string;
     error?: string;
-    errorRef?: any;
+    errorRef?: TestHookGenerator;
 }
 
 const TestableText = wrap<TextProps>(Text);
