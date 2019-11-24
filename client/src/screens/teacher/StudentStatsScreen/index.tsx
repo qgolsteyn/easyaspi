@@ -13,6 +13,7 @@ import { selectors } from '@client/store';
 
 import bg1 from '../../../../assets/bg1.png';
 
+const PERCENT = 100;
 const TROPHY_SIZE = 32;
 
 export const StudentStats = () => {
@@ -50,7 +51,7 @@ export const StudentStats = () => {
                                         ? Math.round(
                                               (stats.numDailyCorrectAnswers /
                                                   stats.numDailyAttempts) *
-                                                  100,
+                                                  PERCENT,
                                           )
                                         : '-',
                                 },
@@ -69,7 +70,7 @@ export const StudentStats = () => {
                                         ? Math.round(
                                               (stats.totalLifetimeCorrectAnswers /
                                                   stats.totalLifetimeAttempts) *
-                                                  100,
+                                                  PERCENT,
                                           )
                                         : '-',
                                 },
@@ -112,7 +113,7 @@ export const StudentStats = () => {
                                                       .totalCorrectAnswers /
                                                       stats.totals[key]
                                                           .totalAttempts) *
-                                                      100,
+                                                      PERCENT,
                                               )
                                             : '-',
                                     },

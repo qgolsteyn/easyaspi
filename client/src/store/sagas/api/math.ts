@@ -7,6 +7,8 @@ import { getAccessToken } from './auth';
 import { handleError } from './errors';
 import { baseApi } from './url';
 
+const BAD_REQUEST = 400;
+
 export function* getNextMathProblem(): Generator<
     unknown,
     IProblem | undefined,
@@ -31,7 +33,7 @@ export function* getNextMathProblem(): Generator<
             return problem;
         } catch (e) {
             const response = (e as AxiosError).response;
-            if (!response || response.status !== 400) {
+            if (!response || response.status !== BAD_REQUEST) {
                 yield call(handleError, e);
             }
             return undefined;

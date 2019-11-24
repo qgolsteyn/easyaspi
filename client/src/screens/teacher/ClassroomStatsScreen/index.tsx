@@ -1,4 +1,4 @@
-import { faCalendarDay, faChartLine } from '@fortawesome/free-solid-svg-icons';
+import { faChartLine } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import React from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
@@ -13,6 +13,7 @@ import { selectors } from '@client/store';
 
 import bg1 from '../../../../assets/bg1.png';
 
+const PERCENT = 100;
 const TROPHY_SIZE = 32;
 
 export const ClassroomStats = () => {
@@ -50,7 +51,7 @@ export const ClassroomStats = () => {
                                         ? Math.round(
                                               (stats.numDailyCorrectAnswers /
                                                   stats.numDailyAttempts) *
-                                                  100,
+                                                  PERCENT,
                                           )
                                         : '-',
                                 },
@@ -95,7 +96,7 @@ export const ClassroomStats = () => {
                                                       stats.problemTypeStats[
                                                           key
                                                       ].totalAttempts) *
-                                                      100,
+                                                      PERCENT,
                                               )
                                             : '-',
                                     },

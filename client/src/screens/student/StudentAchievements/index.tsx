@@ -1,8 +1,4 @@
-import {
-    faCalendarDay,
-    faChartLine,
-    faTrophy,
-} from '@fortawesome/free-solid-svg-icons';
+import { faChartLine } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
@@ -15,10 +11,9 @@ import { ListItem } from '@client/components/ListItem';
 import { colors } from '@client/constants/colors';
 import { selectors } from '@client/store';
 
-import { AchievementCard } from './AchievementCard';
-
 import bg1 from '../../../../assets/bg1.png';
 
+const PERCENT = 100;
 const TROPHY_SIZE = 32;
 
 export const StudentAchievements = () => {
@@ -53,7 +48,7 @@ export const StudentAchievements = () => {
                                         ? Math.round(
                                               (stats.numDailyCorrectAnswers /
                                                   stats.numDailyAttempts) *
-                                                  100,
+                                                  PERCENT,
                                           )
                                         : '-',
                                 },
@@ -72,7 +67,7 @@ export const StudentAchievements = () => {
                                         ? Math.round(
                                               (stats.totalLifetimeCorrectAnswers /
                                                   stats.totalLifetimeAttempts) *
-                                                  100,
+                                                  PERCENT,
                                           )
                                         : '-',
                                 },
@@ -115,7 +110,7 @@ export const StudentAchievements = () => {
                                                       .totalCorrectAnswers /
                                                       stats.totals[key]
                                                           .totalAttempts) *
-                                                      100,
+                                                      PERCENT,
                                               )
                                             : '-',
                                     },
