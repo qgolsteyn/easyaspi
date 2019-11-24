@@ -1,7 +1,6 @@
 import Boom from 'boom';
 
 import { ClassroomModel, UserModel } from '@server/database';
-import { getStatisticsForStudentsInClassroom } from '@server/service/masteryService';
 import * as errors from '@shared/errors';
 import { IClassroom, ProblemType, UserType } from '@shared/index';
 import { IClassroomWithId } from '@shared/models/classroom';
