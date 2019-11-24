@@ -72,7 +72,7 @@ export const getUserFromId = async (id: string) => {
 
 export const sendPushNotification = async (
     message: string,
-    pushToken: string
+    pushToken: string,
 ) => {
         const expo = new Expo();
         await expo.sendPushNotificationsAsync([

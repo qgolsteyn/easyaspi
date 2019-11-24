@@ -78,7 +78,9 @@ export const findPossibleNextProblemTypes = async (userPayload: IUser) => {
     }
 
     if (classroom.numDailyProblems <= mastery.numDailyCorrectAnswers) {
-        const teacher = await UserModel.findOne({virtualClassroomUid: userPayload.virtualClassroomUid, userType: 'teacher'});
+        const teacher = await UserModel.findOne(
+            {virtualClassroomUid: userPayload.virtualClassroomUid, userType: 'teacher'}
+            );
 
         if (!teacher){
             throw Boom.notFound(`no teacher found for the class ${userPayload.virtualClassroomUid}`);
@@ -90,7 +92,7 @@ export const findPossibleNextProblemTypes = async (userPayload: IUser) => {
 
         await sendPushNotification(
             `${userPayload.name} has completed the daily problem set`,
-            teacher.pushToken
+            teacher.pushToken,
         );
 
         throw Boom.badRequest(
