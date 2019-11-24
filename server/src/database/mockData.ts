@@ -1,5 +1,6 @@
 import { IAuthInfo } from '@server/service/authService';
 import { IClassroom } from '@shared/models/classroom';
+import { IProblem, ProblemType } from '@shared/models/problem';
 import { IUser } from '@shared/models/users';
 
 export const user1: IUser = {
@@ -161,4 +162,76 @@ export const authDoc1: IAuthInfo = {
     email_verified: true,
     name: 'testUser',
     sub: 1122334455667788,
+};
+
+export const additionProblem: IProblem = {
+    incorrectSolutions: ['9', '11', '12'],
+    operands: [9, 1],
+    operators: ['+'],
+    problem: '9 + 1 =',
+    problemType: ProblemType.ADDITION,
+    solution: ['10'],
+};
+
+export const subtractionProblem: IProblem = {
+    incorrectSolutions: ['9', '11', '12'],
+    operands: [11, 1],
+    operators: ['-'],
+    problem: '11 - 1 =',
+    problemType: ProblemType.SUBTRACTION,
+    solution: ['10'],
+};
+
+export const additionTemplate = {
+    problemType: ProblemType.ADDITION,
+    operator: '+',
+    difficultyMap: {
+        g1e: {
+            operands: [
+                {
+                    lowerBound: 1,
+                    upperBound: 10,
+                },
+                {
+                    lowerBound: 0,
+                    upperBound: 2,
+                },
+            ],
+            optExtraOperands: 0,
+            multiplesOf: 1,
+        },
+    },
+};
+
+export const subtractionTemplate = {
+    problemType: ProblemType.SUBTRACTION,
+    operator: '-',
+    difficultyMap: {
+        g1m: {
+            operands: [
+                {
+                    lowerBound: 5,
+                    upperBound: 10,
+                },
+                {
+                    lowerBound: 0,
+                    upperBound: 9,
+                },
+            ],
+            optExtraOperands: 0,
+            multiplesOf: 1,
+        },
+    },
+};
+
+export const mastery = {
+    studentId: 123,
+    progress: {
+        addition: {
+            currentDifficultyAttempts: 23,
+            currentDifficultyPoints: 23,
+            difficulty: 'g5h',
+            totalPoints: 123,
+        },
+    },
 };
