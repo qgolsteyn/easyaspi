@@ -2,7 +2,7 @@ export interface IClassroom {
     name: string;
     passcode: string;
     problemsForToday: string[];
-    onlineResources: string[];
+    onlineResources: string;
     numDailyProblems: number;
 }
 

@@ -21,13 +21,19 @@ const defaultState: ITeacherState = {
     classroomInfo: {
         name: '',
         numDailyProblems: 0,
-        onlineResources: [],
+        onlineResources: '',
         passcode: '',
         problemsForToday: [],
     },
     currentStudent: '',
     loading: false,
-    statistics: { studentsCompleted: 0, allStudents: {} },
+    statistics: {
+        allStudents: {},
+        numDailyAttempts: 0,
+        numDailyCorrectAnswers: 0,
+        problemTypeStats: {},
+        studentsCompleted: 0,
+    },
     students: [],
 };
 

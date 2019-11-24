@@ -278,20 +278,54 @@ export const getStatisticsForStudentsInClassroom = async (
 
     if (classroom && studentMasteries) {
         let studentsCompleted = 0;
+
         const allStudentStatsMap: { [key: string]: object } = {};
+
+        const totals: {
+            [key: string]: {
+                totalAttempts: number;
+                totalCorrectAnswers: number;
+            };
+        } = {};
+
+        let numDailyAttempts = 0;
+        let numDailyCorrectAnswers = 0;
 
         studentMasteries.forEach(mastery => {
             const studentStats = curateStudentStatistics(mastery);
+
+            numDailyAttempts += studentStats.numDailyAttempts;
+            numDailyCorrectAnswers += studentStats.numDailyCorrectAnswers;
 
             studentsCompleted +=
                 studentStats.numDailyAttempts === classroom.numDailyProblems
                     ? 1
                     : 0;
 
+            for (const key of Object.keys(studentStats.totals)) {
+                const problemType = studentStats.totals[key];
+
+                if (totals[key].totalAttempts) {
+                    totals[key].totalAttempts += problemType.totalAttempts;
+                    totals[key].totalCorrectAnswers +=
+                        problemType.totalCorrectAnswers;
+                } else {
+                    totals[key].totalAttempts = problemType.totalAttempts;
+                    totals[key].totalCorrectAnswers =
+                        problemType.totalCorrectAnswers;
+                }
+            }
+
             allStudentStatsMap[mastery.studentId] = studentStats;
         });
 
-        return { studentsCompleted, allStudents: allStudentStatsMap };
+        return {
+            allStudents: allStudentStatsMap,
+            numDailyAttempts,
+            numDailyCorrectAnswers,
+            problemTypeStats: totals,
+            studentsCompleted,
+        };
     } else {
         throw Boom.notFound(
             'No student statistics for classroom: ' + classroomId,
@@ -300,7 +334,9 @@ export const getStatisticsForStudentsInClassroom = async (
 };
 
 const curateStudentStatistics = (mastery: IMastery) => {
-    const totalsMap: { [key: string]: { [key: string]: number } } = {};
+    const totalsMap: {
+        [key: string]: { totalAttempts: number; totalCorrectAnswers: number };
+    } = {};
     mastery.progress.forEach(
         (value: IProblemTypeProgress, key: ProblemType) => {
             totalsMap[key] = {

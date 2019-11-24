@@ -55,7 +55,10 @@ export const getClassroom = async (classroomId: string) => {
 };
 
 export const updateClassroom = async (classroomPayload: IClassroomWithId) => {
-    if (classroomPayload.problemsForToday && classroomPayload.problemsForToday.length !== 0) {
+    if (
+        classroomPayload.problemsForToday &&
+        classroomPayload.problemsForToday.length !== 0
+    ) {
         for (const problemTypeStr of classroomPayload.problemsForToday) {
             const problemType = convertStringToProblemType(problemTypeStr);
             if (problemType === ProblemType.UNKNOWN) {
@@ -74,16 +77,21 @@ export const updateClassroom = async (classroomPayload: IClassroomWithId) => {
         );
     }
 
-    classroomPayload.name = !classroomPayload.name ?
-        classroom.name : classroomPayload.name;
-    classroomPayload.passcode = !classroomPayload.passcode ?
-        classroom.passcode : classroomPayload.passcode;
-    classroomPayload.numDailyProblems = !classroomPayload.numDailyProblems ?
-        classroom.numDailyProblems : classroomPayload.numDailyProblems;
-    classroomPayload.problemsForToday = !classroomPayload.problemsForToday ?
-        classroom.problemsForToday : classroomPayload.problemsForToday;
-    classroomPayload.onlineResources = !classroomPayload.onlineResources ?
-        classroom.onlineResources : classroomPayload.onlineResources;
+    classroomPayload.name = !classroomPayload.name
+        ? classroom.name
+        : classroomPayload.name;
+    classroomPayload.passcode = !classroomPayload.passcode
+        ? classroom.passcode
+        : classroomPayload.passcode;
+    classroomPayload.numDailyProblems = !classroomPayload.numDailyProblems
+        ? classroom.numDailyProblems
+        : classroomPayload.numDailyProblems;
+    classroomPayload.problemsForToday = !classroomPayload.problemsForToday
+        ? classroom.problemsForToday
+        : classroomPayload.problemsForToday;
+    classroomPayload.onlineResources = !classroomPayload.onlineResources
+        ? classroom.onlineResources
+        : classroomPayload.onlineResources;
 
     const classroomNew = await ClassroomModel.findByIdAndUpdate(
         classroomPayload._id,
@@ -99,27 +107,3 @@ export const updateClassroom = async (classroomPayload: IClassroomWithId) => {
         return classroomNew;
     }
 };
-
-export const getStatsForClassroom = async (
-    classroomId: string,
-) => {
-    const statAllStudentsClassRoom = await getStatisticsForStudentsInClassroom(classroomId);
-
-    let LifetimeAttemptsAll = 0;
-    let LifetimeCorrectAnswersAll = 0;
-
-    const keys = Object.keys(statAllStudentsClassRoom);
-
-    for (const k of keys){
-        const studentStat = JSON.parse(JSON.stringify(statAllStudentsClassRoom[k]));
-        LifetimeAttemptsAll += studentStat.totalLifetimeAttempts;
-        LifetimeCorrectAnswersAll += studentStat.totalLifetimeCorrectAnswers;
-    }
-
-    return {
-        totalAttempts: LifetimeAttemptsAll,
-        totalCorrectAnswers: LifetimeCorrectAnswersAll,
-        totalStudents: keys.length,
-    }
-};
-

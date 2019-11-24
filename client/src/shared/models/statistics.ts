@@ -11,5 +11,13 @@ export interface IStudentStatistic {
 
 export interface IClassroomStatistic {
     studentsCompleted: number;
+    numDailyAttempts: number;
+    numDailyCorrectAnswers: number;
+    problemTypeStats: {
+        [key: string]: {
+            totalAttempts: number;
+            totalCorrectAnswers: number;
+        };
+    };
     allStudents: { [key: string]: IStudentStatistic };
 }

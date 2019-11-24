@@ -21,7 +21,7 @@ const defaultState: IStudentState = {
     classroomInfo: {
         name: '',
         numDailyProblems: 0,
-        onlineResources: [],
+        onlineResources: '',
         passcode: '',
         problemsForToday: [],
     },
