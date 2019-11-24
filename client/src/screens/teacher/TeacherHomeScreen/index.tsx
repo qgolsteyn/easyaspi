@@ -43,9 +43,7 @@ export const TeacherHome = () => {
                         styleAttr="success"
                         styles={{ marginBottom: 8 }}
                         onPress={() =>
-                            dispatch(
-                                actions.nav.goToScreen('ClassroomStatistics'),
-                            )
+                            dispatch(actions.nav.goToScreen('ClassroomStats'))
                         }
                     />
                     <StyledCardButton

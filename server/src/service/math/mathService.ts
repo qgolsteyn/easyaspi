@@ -18,7 +18,10 @@ export const fetchNextMathProblem = async (user: IUser) => {
             nextProblem.difficulty,
     );
 
-    if (nextProblem.problemType === ProblemType.AREA || ProblemType.PERIMETER) {
+    if (
+        nextProblem.problemType === ProblemType.AREA ||
+        nextProblem.problemType === ProblemType.PERIMETER
+    ) {
         return await generateGeometryProblem(
             nextProblem.difficulty,
             nextProblem.problemType,

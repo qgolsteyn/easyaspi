@@ -17,9 +17,10 @@ import { StudentAchievements } from './screens/student/StudentAchievements';
 import { StudentHome } from './screens/student/StudentHomeScreen';
 import { StudentProblem } from './screens/student/StudentProblemScreen';
 
+import { ClassroomStats } from './screens/teacher/ClassroomStatsScreen';
 import { DailyProblemSet } from './screens/teacher/DailyProblemSetScreen';
-import { StudentStats } from './screens/teacher/StatsScreen';
 import { StudentList } from './screens/teacher/StudentListScreen';
+import { StudentStats } from './screens/teacher/StudentStatsScreen';
 import { TeacherHome } from './screens/teacher/TeacherHomeScreen';
 
 const AuthStack = createStackNavigator(
@@ -60,6 +61,9 @@ const StudentStack = createStackNavigator(
 
 const TeacherStack = createStackNavigator(
     {
+        ClassroomStats: {
+            screen: ClassroomStats,
+        },
         DailyProblemSet: {
             screen: DailyProblemSet,
         },

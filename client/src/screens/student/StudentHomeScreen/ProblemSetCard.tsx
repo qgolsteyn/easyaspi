@@ -10,11 +10,22 @@ import { colors } from '@client/constants/colors';
 import { actions, selectors } from '@client/store';
 import { ProblemSetState } from '@client/store/reducers/problems';
 
+const hoursInADay = 24;
+const minutesInAnHour = 60;
+
 export const ProblemSetCard = () => {
     const dispatch = useDispatch();
     const testHook = useCavy();
 
     const problemSetState = useSelector(selectors.problems.getProblemSetState);
+
+    const now = new Date();
+    const timeElapsed =
+        now.getHours() / hoursInADay +
+        now.getMinutes() / (minutesInAnHour * hoursInADay);
+
+    const hoursLeft = hoursInADay - now.getHours();
+    const minutesLeft = minutesInAnHour - now.getMinutes();
 
     return (
         <StyledCard
@@ -23,14 +34,16 @@ export const ProblemSetCard = () => {
         >
             <View style={styles.timeLeft}>
                 <Text style={styles.timeLeftText}>Time until deadline:</Text>
-                <Text style={styles.timeLeftText}>12:00 hours</Text>
+                <Text style={styles.timeLeftText}>
+                    {hoursLeft}:{minutesLeft} hours left
+                </Text>
             </View>
             <ProgressBarAndroid
                 style={styles.progress}
                 styleAttr="Horizontal"
                 indeterminate={false}
                 color={colors.secondary}
-                progress={0.5}
+                progress={timeElapsed}
             />
             <View style={styles.typeList}>
                 <ListItem icon="+" text="Addition" extra={[]} />

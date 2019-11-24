@@ -9,11 +9,22 @@ import { Icon } from '@client/components/Icon';
 import { colors } from '@client/constants/colors';
 import { selectors } from '@client/store';
 
+const hoursInADay = 24;
+const minutesInAnHour = 60;
+
 export const ProblemSetCard = () => {
     const numberCompleted = useSelector(
         selectors.teacher.getNumberOfStudentsDone,
     );
     const numberOfStudents = useSelector(selectors.teacher.getNumberOfStudents);
+
+    const now = new Date();
+    const timeElapsed =
+        now.getHours() / hoursInADay +
+        now.getMinutes() / (minutesInAnHour * hoursInADay);
+
+    const hoursLeft = hoursInADay - now.getHours();
+    const minutesLeft = minutesInAnHour - now.getMinutes();
 
     return (
         <StyledCard
@@ -22,14 +33,16 @@ export const ProblemSetCard = () => {
         >
             <View style={styles.timeLeft}>
                 <Text style={styles.timeLeftText}>Time until deadline:</Text>
-                <Text style={styles.timeLeftText}>12:00 hours</Text>
+                <Text style={styles.timeLeftText}>
+                    {hoursLeft}:{minutesLeft} hours left
+                </Text>
             </View>
             <ProgressBarAndroid
                 style={styles.progress}
                 styleAttr="Horizontal"
                 indeterminate={false}
                 color={colors.secondary}
-                progress={0.5}
+                progress={timeElapsed}
             />
             <View style={styles.typeList}>
                 <View style={styles.type}>

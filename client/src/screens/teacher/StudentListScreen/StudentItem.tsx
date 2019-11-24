@@ -24,14 +24,6 @@ export const StudentItem = (props: IStudentItemProps) => {
                     dispatch(actions.teacher.setCurrentStudent(props.id))
                 }
             />
-            <StyledIconButton
-                icon={faSync}
-                styleAttr="primary"
-                styles={{ marginLeft: 4 }}
-                onPress={() =>
-                    dispatch(actions.teacher.setCurrentStudent(props.id))
-                }
-            />
         </View>
     );
 };
