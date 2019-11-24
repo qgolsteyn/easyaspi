@@ -33,7 +33,7 @@ test('Check if generateIncorrectWholeNumberSolutions generates 3 values distinct
 
     expect(values.length).toBe(THREE);
 
-    for (let value of values) {
+    for (const value of values) {
         expect(value).not.toBe(String(solution));
         expect(parseInt(value, 10)).toBeGreaterThanOrEqual(0);
     }
@@ -47,10 +47,10 @@ test('Check if generateIncorrectWholeNumberSolutions generates values that adher
 
     expect(values.length).toBe(THREE);
 
-    for (let value of values) {
+    for (const value of values) {
         expect(values).not.toBe(String(solution));
         expect(parseInt(value, 10)).toBeGreaterThanOrEqual(0);
-        expect(parseInt(value, 10) % 5).toBe(0);
+        expect(parseInt(value, 10) % multiplesOf).toBe(0);
     }
 });
 
@@ -73,7 +73,7 @@ test('Check if generateIncorrectWholeNumberSolutions generates non negative valu
 
     expect(values.length).toBe(THREE);
 
-    for (let value of values) {
+    for (const value of values) {
         expect(value).not.toBe(String(solution));
         expect(parseInt(value, 10)).toBeGreaterThanOrEqual(0);
     }
