@@ -1,7 +1,13 @@
-import { additionTemplate, user1 } from '../database/mockData';
+import {
+    additionTemplate,
+    classroomDoc6,
+    masteryDoc3,
+    user6,
+} from '../database/mockData';
 import { ArithmeticProblemTemplateModel } from '../database/templates/arithmeticProblemTemplate';
 import { ProblemType } from '../../../client/src/shared/models/problem';
 import { fetchNextMathProblem } from '../service/math/mathService';
+import { MasteryModel, ClassroomModel } from '@server/database';
 
 const mockingoose = require('mockingoose').default;
 
@@ -12,12 +18,15 @@ beforeAll(() => {
 });
 
 test('Check if addition problems are correctly generated', async () => {
+    mockingoose(MasteryModel).toReturn(masteryDoc3, 'findOne');
+    mockingoose(ClassroomModel).toReturn(classroomDoc6, 'findOne');
+
     mockingoose(ArithmeticProblemTemplateModel).toReturn(
         additionTemplate,
         'findOne',
     );
 
-    const problem = await fetchNextMathProblem(user1);
+    const problem = await fetchNextMathProblem(user6);
 
     expect(problem.problemType).toBe(ProblemType.ADDITION);
     expect(problem.operands.length).toBe(2);

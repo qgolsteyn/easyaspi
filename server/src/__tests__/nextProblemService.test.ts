@@ -62,7 +62,6 @@ test('Check if findPossibleNextProblemTypes finds all problemTypes with minimum 
 
     const nextProblemTypes = await findPossibleNextProblemTypes(user1);
 
-    expect(nextProblemTypes.nextProblemTypes).toContain('equation');
     expect(nextProblemTypes.nextProblemTypes).toContain('division');
     expect(nextProblemTypes.nextProblemTypes).toContain('subtraction');
     expect(nextProblemTypes.nextProblemTypes).toContain('multiplication');
@@ -73,7 +72,6 @@ test('Check if findPossibleNextProblemTypes sorts problem types correctly for do
 
     const nextProblemTypes = await findPossibleNextProblemTypes(user1);
 
-    expect(nextProblemTypes.nextProblemTypes).toContain('equation');
     expect(nextProblemTypes.nextProblemTypes).toContain('division');
     expect(nextProblemTypes.nextProblemTypes).toContain('multiplication');
     expect(nextProblemTypes.nextProblemTypes).toContain('subtraction');
@@ -123,7 +121,7 @@ test(
 
         expect(JSON.parse(JSON.stringify(nextProblem))).toMatchObject({
             difficulty: 'g1m',
-            problemType: 'equation',
+            problemType: 'division',
         });
     },
 );

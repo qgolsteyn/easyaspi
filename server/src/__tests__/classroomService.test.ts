@@ -9,10 +9,7 @@ import {
 const mockingoose = require('mockingoose').default;
 
 test('Check if createClassroom creates classroom correctly', async () => {
-    mockingoose(ClassroomModel).toReturn(
-        { name: 'Test100', passcode: '12345', problemsForToday: [] },
-        'save',
-    );
+    mockingoose(ClassroomModel).toReturn(classRoomDoc4, 'save');
     try {
         const classRoom = await createClassroom(classRoomDoc4);
         expect(JSON.parse(JSON.stringify(classRoom))).toMatchObject(
@@ -26,15 +23,7 @@ test('Check if createClassroom creates classroom correctly', async () => {
 });
 
 test('Check if authenticateToClassroom returns classroomId properly', async () => {
-    mockingoose(ClassroomModel).toReturn(
-        {
-            _id: '5dd0ddeaa1608611fdb1bb40',
-            name: 'Test100',
-            passcode: '12345',
-            problemsForToday: [],
-        },
-        'findOne',
-    );
+    mockingoose(ClassroomModel).toReturn(classRoomDoc4, 'findOne');
     try {
         const classRoomId = await authenticateToClassroom(classRoomDoc4);
         expect(classRoomId).toEqual('5dd0ddeaa1608611fdb1bb40');
@@ -46,10 +35,11 @@ test('Check if authenticateToClassroom returns classroomId properly', async () =
 test('Check if authenticateToClassroom validates classroom properly - Should throw an error', async () => {
     mockingoose(ClassroomModel).toReturn(
         {
-            _id: '5dd0ddeaa1608611fdb1bb40',
-            name: 'Test100',
-            passcode: '12345',
-            problemsForToday: [],
+            name: 'Test105',
+            numDailyProblems: 20,
+            onlineResources: '',
+            passcode: '11122',
+            problemsForToday: ['addition'],
         },
         'findOne',
     );

@@ -1,13 +1,13 @@
 import { MasteryModel } from '../database/mastery/mastery';
-import { mastery } from '../database/mockData';
+import { masteryDoc3 } from '../database/mockData';
 import { ProblemType } from '../../../client/src/shared/models/problem';
 import { updateMastery } from '../service/masteryService';
 
 const mockingoose = require('mockingoose').default;
 
 test('Check if mastery writes to db', async () => {
-    mockingoose(MasteryModel).toReturn(mastery, 'findOne');
-    mockingoose(MasteryModel).toReturn(mastery, 'save');
+    mockingoose(MasteryModel).toReturn(masteryDoc3, 'findOne');
+    mockingoose(MasteryModel).toReturn(masteryDoc3, 'save');
 
     // this really can't be tested via unit tests because it's void, the
     // only changes are in database

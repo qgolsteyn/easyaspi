@@ -35,68 +35,77 @@ export const user5: IUser = {
     virtualClassroomUid: '113015909143620944320',
 };
 
+export const user6: IUser = {
+    email: 'anakin@gmail.com',
+    id: '123',
+    name: 'Anakin',
+    pushToken: '123456789987654321',
+    registered: true,
+    userType: 'student',
+    virtualClassroomUid: '456',
+};
+
 export const masteryDoc1 = {
     _id: '5dcfa29372e21e4adca02e93',
+    classroomId: '123',
+    numDailyAttempts: 1,
+    numDailyCorrectAnswers: 1,
     progress: {
         addition: {
             _id: '5dcfa29372e21e4adca02e94',
             currentDifficultyAttempts: 9,
             currentDifficultyPoints: 4,
             difficulty: 'g1h2e',
-            totalPoints: 123,
+            totalAttempts: 100,
+            totalCorrectAnswers: 100,
         },
         division: {
             _id: '5dcfa2aa72e21e4adca02e32',
             currentDifficultyAttempts: 0,
             currentDifficultyPoints: 0,
             difficulty: 'g4m',
-            totalPoints: 90,
-        },
-        equation: {
-            _id: '5dcfa2aa72e21e4adca02e32',
-            currentDifficultyAttempts: 0,
-            currentDifficultyPoints: 0,
-            difficulty: 'g3h4e',
-            totalPoints: 90,
+            totalAttempts: 100,
+            totalCorrectAnswers: 100,
         },
         multiplication: {
             _id: '5dcfa2aa72e21e4adca02ea2',
             currentDifficultyAttempts: 3,
             currentDifficultyPoints: 9,
             difficulty: 'g1h2e',
-            totalPoints: 90,
+            totalAttempts: 100,
+            totalCorrectAnswers: 100,
         },
         subtraction: {
             _id: '5dcfa2aa72e21e4adca02ea1',
             currentDifficultyAttempts: 0,
             currentDifficultyPoints: 0,
             difficulty: 'g5m',
-            totalPoints: 90,
+            totalAttempts: 100,
+            totalCorrectAnswers: 100,
         },
     },
     studentId: '113015909143620944320',
+    totalLifetimeAttempts: 500,
+    totalLifetimeCorrectAnswers: 500,
 };
 
 export const masteryDoc2 = {
     _id: '5dcfa29372e21e4adca02e93',
+    classroomId: '123',
+    numDailyAttempts: 1,
+    numDailyCorrectAnswers: 1,
     progress: {
         addition: {
             _id: '5dcfa29372e21e4adca02e94',
             currentDifficultyAttempts: 23,
             currentDifficultyPoints: 23,
             difficulty: 'g1h2e',
-            totalPoints: 123,
+            totalAttempts: 100,
+            totalCorrectAnswers: 100,
         },
         division: {
             _id: '5dcfa2aa72e21e4adca02e32',
             currentDifficultyAttempts: 9,
-            currentDifficultyPoints: 5,
-            difficulty: 'g1m',
-            totalPoints: 90,
-        },
-        equation: {
-            _id: '5dcfa2aa72e21e4adca02e32',
-            currentDifficultyAttempts: 8,
             currentDifficultyPoints: 5,
             difficulty: 'g1m',
             totalPoints: 90,
@@ -106,17 +115,41 @@ export const masteryDoc2 = {
             currentDifficultyAttempts: 10,
             currentDifficultyPoints: 5,
             difficulty: 'g1m',
-            totalPoints: 90,
+            totalAttempts: 100,
+            totalCorrectAnswers: 100,
         },
         subtraction: {
             _id: '5dcfa2aa72e21e4adca02ea1',
             currentDifficultyAttempts: 11,
             currentDifficultyPoints: 5,
             difficulty: 'g1m',
-            totalPoints: 90,
+            totalAttempts: 100,
+            totalCorrectAnswers: 100,
         },
     },
     studentId: '113015909143620944320',
+    totalLifetimeAttempts: 500,
+    totalLifetimeCorrectAnswers: 500,
+};
+
+export const masteryDoc3 = {
+    _id: '5dcfa29372e21e4adca02e93',
+    classroomId: '456',
+    numDailyAttempts: 1,
+    numDailyCorrectAnswers: 1,
+    progress: {
+        addition: {
+            _id: '5dcfa29372e21e4adca02e94',
+            currentDifficultyAttempts: 4,
+            currentDifficultyPoints: 4,
+            difficulty: 'g1e',
+            totalAttempts: 4,
+            totalCorrectAnswers: 4,
+        },
+    },
+    studentId: '113015909143620944320',
+    totalLifetimeAttempts: 4,
+    totalLifetimeCorrectAnswers: 4,
 };
 
 export const classRoomDoc1 = {
@@ -140,7 +173,8 @@ export const classRoomDoc3 = {
     problemsForToday: ['addition', 'volumes'],
 };
 
-export const classRoomDoc4: IClassroom = {
+export const classRoomDoc4 = {
+    _id: '5dd0ddeaa1608611fdb1bb40',
     name: 'Test100',
     numDailyProblems: 20,
     onlineResources: '',
@@ -154,6 +188,15 @@ export const classRoomDoc5: IClassroom = {
     onlineResources: '',
     passcode: '11122',
     problemsForToday: ['addition'],
+};
+
+export const classroomDoc6 = {
+    _id: '456',
+    name: 'Test6',
+    numDailyProblems: 20,
+    onlineResources: '',
+    passcode: '333',
+    problemsForToday: [],
 };
 
 export const authDoc1: IAuthInfo = {
@@ -220,18 +263,6 @@ export const subtractionTemplate = {
             ],
             optExtraOperands: 0,
             multiplesOf: 1,
-        },
-    },
-};
-
-export const mastery = {
-    studentId: 123,
-    progress: {
-        addition: {
-            currentDifficultyAttempts: 23,
-            currentDifficultyPoints: 23,
-            difficulty: 'g5h',
-            totalPoints: 123,
         },
     },
 };
