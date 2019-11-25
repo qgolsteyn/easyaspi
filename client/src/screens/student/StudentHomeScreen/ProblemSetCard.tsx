@@ -1,15 +1,23 @@
+import {
+    faDivide,
+    faMinus,
+    faPlus,
+    faShapes,
+    faTimes,
+} from '@fortawesome/free-solid-svg-icons';
 import { useCavy } from 'cavy';
 import * as React from 'react';
 import { ProgressBarAndroid, StyleSheet, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { StyledButton } from '@client/components/Button';
+import { StyledIconButton } from '@client/components/ButtonIcon';
 import { StyledCard } from '@client/components/Card';
-import { ListItem } from '@client/components/ListItem';
 import { colors } from '@client/constants/colors';
 import { actions, selectors } from '@client/store';
 import { ProblemSetState } from '@client/store/reducers/problems';
 import { useInterval } from '@client/utils/useInterval';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const hoursInADay = 23;
 const minutesInAnHour = 60;
@@ -19,6 +27,8 @@ export const ProblemSetCard = () => {
     const dispatch = useDispatch();
     const testHook = useCavy();
     const [now, setNow] = React.useState(new Date());
+
+    const classroomInfo = useSelector(selectors.student.getActiveProblems);
 
     useInterval(() => setNow(new Date()), INTERVAL);
 
@@ -53,7 +63,27 @@ export const ProblemSetCard = () => {
                 progress={timeElapsed}
             />
             <View style={styles.typeList}>
-                <ListItem icon="+" text="Addition" extra={[]} />
+                <ScrollView>
+                    {classroomInfo.problemsForToday.map(problemType => (
+                        <View key={problemType} style={styles.type}>
+                            <StyledIconButton
+                                icon={
+                                    problemType === 'addition'
+                                        ? faPlus
+                                        : problemType === 'subtraction'
+                                        ? faMinus
+                                        : problemType === 'multiplication'
+                                        ? faTimes
+                                        : problemType === 'division'
+                                        ? faDivide
+                                        : faShapes
+                                }
+                                styleAttr="secondary"
+                            />
+                            <Text style={styles.typeText}>{problemType}</Text>
+                        </View>
+                    ))}
+                </ScrollView>
             </View>
             <StyledButton
                 text={
@@ -92,11 +122,24 @@ const styles = StyleSheet.create({
         fontFamily: 'josefin-sans',
         fontSize: 14,
     },
+    type: {
+        alignItems: 'center',
+        display: 'flex',
+        flexDirection: 'row',
+        height: 56,
+    },
     typeList: {
         display: 'flex',
         flex: 1,
         marginBottom: 16,
         width: '100%',
+    },
+    typeText: {
+        color: '#333',
+        fontFamily: 'josefin-sans',
+        fontSize: 20,
+        marginBottom: 14,
+        marginLeft: 16,
     },
     wrapper: {
         display: 'flex',

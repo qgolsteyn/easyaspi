@@ -105,3 +105,7 @@ function* saveAccessToken(
     yield put(actions.user.setAccessToken(accessToken));
     yield call(AsyncStorage.setItem, ACCESS_TOKEN_KEY, accessToken);
 }
+
+export function* clearAccessToken(): Generator<unknown, void, unknown> {
+    yield call(AsyncStorage.clear);
+}

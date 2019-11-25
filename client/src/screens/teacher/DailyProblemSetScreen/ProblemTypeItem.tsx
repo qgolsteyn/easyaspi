@@ -1,4 +1,4 @@
-import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
 import * as React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
@@ -6,6 +6,8 @@ import { StyledIconButton } from '@client/components/ButtonIcon';
 
 interface IStudentItemProps {
     name: string;
+    active: boolean;
+    onPress: () => void;
 }
 
 export const ProblemTypeItem = (props: IStudentItemProps) => {
@@ -13,9 +15,10 @@ export const ProblemTypeItem = (props: IStudentItemProps) => {
         <View style={styles.wrapper}>
             <Text style={styles.text}>{props.name}</Text>
             <StyledIconButton
-                icon={faCheck}
+                icon={props.active ? faCheck : faTimes}
                 styles={{ marginLeft: 'auto' }}
-                styleAttr="success"
+                styleAttr={props.active ? 'success' : 'error'}
+                onPress={props.onPress}
             />
         </View>
     );

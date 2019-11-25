@@ -23,7 +23,7 @@ export const ClassroomStats = () => {
     return (
         <Background backgroundColor={colors.bg} backgroundImage={bg1}>
             <View style={styles.wrapper}>
-                <StyledBackHeader title="Stats and Achievements" />
+                <StyledBackHeader title="Classroom statistics" />
                 <StyledCard style={styles.achievements}>
                     <ScrollView>
                         <Text style={styles.title}>

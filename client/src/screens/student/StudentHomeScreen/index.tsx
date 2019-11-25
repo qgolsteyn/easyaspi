@@ -1,4 +1,4 @@
-import { faInfo, faTrophy } from '@fortawesome/free-solid-svg-icons';
+import { faInfo, faTimes, faTrophy } from '@fortawesome/free-solid-svg-icons';
 import { useCavy } from 'cavy';
 import { Linking } from 'expo';
 import React from 'react';
@@ -36,7 +36,7 @@ export const StudentHome = () => {
                     </StyledHeader>
                     <ProblemSetCard />
                     <StyledCardButton
-                        text="Stats and Achievements"
+                        text="Your statistics"
                         icon={faTrophy}
                         styleAttr="secondary"
                         styles={{ marginBottom: 8 }}
@@ -47,12 +47,19 @@ export const StudentHome = () => {
                     <StyledCardButton
                         text="Get more help"
                         icon={faInfo}
+                        styles={{ marginBottom: 8 }}
                         styleAttr="success"
                         onPress={
                             helpURL
                                 ? () => Linking.openURL(helpURL)
                                 : () => ({})
                         }
+                    />
+                    <StyledCardButton
+                        text="Logout"
+                        icon={faTimes}
+                        styleAttr="error"
+                        onPress={() => dispatch(actions.student.reset())}
                     />
                 </View>
             )}
