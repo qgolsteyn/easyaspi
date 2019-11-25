@@ -39,6 +39,8 @@ const defaultState: IStudentState = {
 export const studentSelectors = {
     getAchievements: (state: { student: IStudentState }) =>
         state.student.achievements,
+    getActiveProblems: (state: { student: IStudentState }) =>
+        state.student.classroomInfo,
     getHelpURL: (state: { student: IStudentState }) =>
         state.student.classroomInfo.onlineResources,
     getNumberOfDailyProblems: (state: { student: IStudentState }) =>

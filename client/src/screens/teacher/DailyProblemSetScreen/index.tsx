@@ -4,6 +4,7 @@ import {
     faQuestion,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import _ from 'lodash';
 import React from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -58,6 +59,10 @@ export const DailyProblemSet = () => {
             numDailyProblems: classroomInfo.numDailyProblems,
             onlineResources: classroomInfo.onlineResources,
             passcode: classroomInfo.passcode,
+            problemsForToday: _.keyBy(
+                classroomInfo.problemsForToday,
+                o => o,
+            ) as { [key: string]: string | undefined },
         },
     });
 
@@ -77,7 +82,15 @@ export const DailyProblemSet = () => {
             setState({ ...state, errors });
         } else {
             dispatch(
-                actions.teacher.update({ ...classroomInfo, ...state.values }),
+                actions.teacher.update({
+                    ...classroomInfo,
+                    ...state.values,
+                    problemsForToday: Object.keys(
+                        state.values.problemsForToday,
+                    ).filter(
+                        key => state.values.problemsForToday[key] !== undefined,
+                    ),
+                }),
             );
         }
     };
@@ -99,6 +112,23 @@ export const DailyProblemSet = () => {
             }
         />
     );
+
+    const dailyProblemActive = (name: string) =>
+        state.values.problemsForToday[name] !== undefined;
+
+    const dailyProblemSwitch = (name: string) => {
+        const active = state.values.problemsForToday[name] !== undefined;
+        setState({
+            ...state,
+            values: {
+                ...state.values,
+                problemsForToday: {
+                    ...state.values.problemsForToday,
+                    [name]: active ? undefined : name,
+                },
+            },
+        });
+    };
 
     return (
         <Background backgroundColor={colors.bg} backgroundImage={bg1}>
@@ -146,12 +176,31 @@ export const DailyProblemSet = () => {
                             <NumberButton value={ClassroomSize.LARGE} />
                         </View>
                         <Text style={styles.title}>Active problem types</Text>
-                        <ProblemTypeItem name="addition" />
-                        <ProblemTypeItem name="substraction" />
-                        <ProblemTypeItem name="mutliplication" />
-                        <ProblemTypeItem name="division" />
-                        <ProblemTypeItem name="perimeter" />
-                        <ProblemTypeItem name="area" />
+                        <ProblemTypeItem
+                            name="addition"
+                            active={dailyProblemActive('addition')}
+                            onPress={() => dailyProblemSwitch('addition')}
+                        />
+                        <ProblemTypeItem
+                            name="subtraction"
+                            active={dailyProblemActive('subtraction')}
+                            onPress={() => dailyProblemSwitch('subtraction')}
+                        />
+                        <ProblemTypeItem
+                            name="multiplication"
+                            active={dailyProblemActive('multiplication')}
+                            onPress={() => dailyProblemSwitch('multiplication')}
+                        />
+                        <ProblemTypeItem
+                            name="division"
+                            active={dailyProblemActive('division')}
+                            onPress={() => dailyProblemSwitch('division')}
+                        />
+                        <ProblemTypeItem
+                            name="area"
+                            active={dailyProblemActive('area')}
+                            onPress={() => dailyProblemSwitch('area')}
+                        />
                         <View style={{ ...styles.icon, marginTop: 16 }}>
                             <FontAwesomeIcon
                                 icon={faQuestion}
@@ -176,6 +225,12 @@ export const DailyProblemSet = () => {
                     text="Save"
                     onPress={onSubmit}
                     loading={loading}
+                />
+                <StyledButton
+                    text="Logout"
+                    onPress={() => dispatch(actions.teacher.reset())}
+                    loading={loading}
+                    styleAttr="primary"
                 />
             </View>
         </Background>

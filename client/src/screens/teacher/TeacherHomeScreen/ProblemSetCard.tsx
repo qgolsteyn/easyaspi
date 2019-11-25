@@ -1,4 +1,11 @@
-import { faBell } from '@fortawesome/free-solid-svg-icons';
+import {
+    faBell,
+    faDivide,
+    faMinus,
+    faPlus,
+    faShapes,
+    faTimes,
+} from '@fortawesome/free-solid-svg-icons';
 import * as React from 'react';
 import { ProgressBarAndroid, StyleSheet, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
@@ -9,6 +16,7 @@ import { Icon } from '@client/components/Icon';
 import { colors } from '@client/constants/colors';
 import { selectors } from '@client/store';
 import { useInterval } from '@client/utils/useInterval';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const hoursInADay = 23;
 const minutesInAnHour = 60;
@@ -19,6 +27,7 @@ export const ProblemSetCard = () => {
         selectors.teacher.getNumberOfStudentsDone,
     );
     const numberOfStudents = useSelector(selectors.teacher.getNumberOfStudents);
+    const classroomInfo = useSelector(selectors.teacher.getClassroomInfo);
 
     const [now, setNow] = React.useState(new Date());
 
@@ -53,14 +62,27 @@ export const ProblemSetCard = () => {
                 progress={timeElapsed}
             />
             <View style={styles.typeList}>
-                <View style={styles.type}>
-                    <Icon backgroundColor={colors.inputs} text="+" />
-                    <Text style={styles.typeText}>Addition</Text>
-                </View>
-                <View style={styles.type}>
-                    <Icon backgroundColor={colors.inputs} text="-" />
-                    <Text style={styles.typeText}>Substraction</Text>
-                </View>
+                <ScrollView>
+                    {classroomInfo.problemsForToday.map(problemType => (
+                        <View key={problemType} style={styles.type}>
+                            <StyledIconButton
+                                icon={
+                                    problemType === 'addition'
+                                        ? faPlus
+                                        : problemType === 'subtraction'
+                                        ? faMinus
+                                        : problemType === 'multiplication'
+                                        ? faTimes
+                                        : problemType === 'division'
+                                        ? faDivide
+                                        : faShapes
+                                }
+                                styleAttr="secondary"
+                            />
+                            <Text style={styles.typeText}>{problemType}</Text>
+                        </View>
+                    ))}
+                </ScrollView>
             </View>
             <View style={styles.buttonRow}>
                 <StyledIconButton icon={faBell} />
@@ -113,6 +135,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         display: 'flex',
         flexDirection: 'row',
+        height: 56,
     },
     typeList: {
         display: 'flex',
@@ -124,8 +147,8 @@ const styles = StyleSheet.create({
         color: '#333',
         fontFamily: 'josefin-sans',
         fontSize: 20,
-        marginLeft: 8,
-        marginTop: 4,
+        marginBottom: 14,
+        marginLeft: 16,
     },
     wrapper: {
         display: 'flex',

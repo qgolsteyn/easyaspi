@@ -2,11 +2,12 @@ import {
     NavigationActions,
     NavigationContainerComponent,
 } from 'react-navigation';
-import { put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
 
 import * as errors from '@shared/errors';
 
 import { actions } from '../reducers';
+import { clearAccessToken } from './api/auth';
 
 export function* initNav(): Generator<unknown, void, unknown> {
     yield takeLatest(actions.nav.setNavigator, startListeningToNavActions);
@@ -14,6 +15,7 @@ export function* initNav(): Generator<unknown, void, unknown> {
     yield takeLatest(actions.nav.goToScreen, goToScreen);
     yield takeLatest(actions.nav.error, error);
     yield takeLatest(actions.nav.setTemplateError, handleTemplateError);
+    yield takeLatest(actions.teacher.reset, reset);
 }
 
 let navigator: NavigationContainerComponent;
@@ -21,6 +23,11 @@ function* startListeningToNavActions(
     action: ReturnType<typeof actions.nav.setNavigator>,
 ): Generator<unknown, void, unknown> {
     navigator = action.payload.navigator;
+}
+
+function* reset(): Generator<unknown, void, unknown> {
+    yield call(clearAccessToken);
+    yield put(actions.nav.goToScreen('Welcome'));
 }
 
 function* goBack(): Generator<unknown, void, unknown> {
