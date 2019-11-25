@@ -5,6 +5,7 @@ import { achievementService } from '@server/service';
 import { enhanceHandler, HTTP_CODE } from '@server/service/utils/routeEnhancer';
 import { IAchievement } from '@shared/index';
 
+// comment
 export const initializeAchievementRoutes = (app: express.Application) => {
     const achievementRouter = express.Router();
     app.use('/achievements', achievementRouter);
