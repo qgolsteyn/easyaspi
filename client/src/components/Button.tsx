@@ -106,6 +106,7 @@ const styles = StyleSheet.create({
         fontFamily: 'josefin-sans-bold',
         fontSize: 24,
         paddingBottom: 4,
+        textAlign: 'center',
     },
     textContainer: {
         alignItems: 'center',

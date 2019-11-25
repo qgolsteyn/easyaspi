@@ -48,7 +48,11 @@ export const StudentHome = () => {
                         text="Get more help"
                         icon={faInfo}
                         styleAttr="success"
-                        onPress={() => Linking.openURL(helpURL)}
+                        onPress={
+                            helpURL
+                                ? () => Linking.openURL(helpURL)
+                                : () => ({})
+                        }
                     />
                 </View>
             )}

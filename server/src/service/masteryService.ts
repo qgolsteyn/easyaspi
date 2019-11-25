@@ -258,7 +258,13 @@ export const getStatisticsForStudent = async (studentId: string) => {
     if (mastery) {
         return curateStudentStatistics(mastery);
     } else {
-        throw Boom.notFound('No statistics found for student: ' + studentId);
+        return {
+            numDailyAttempts: 0,
+            numDailyCorrectAnswers: 0,
+            totalLifetimeAttempts: 0,
+            totalLifetimeCorrectAnswers: 0,
+            totals: {},
+        };
     }
 };
 
@@ -297,7 +303,7 @@ export const getStatisticsForStudentsInClassroom = async (
             numDailyCorrectAnswers += studentStats.numDailyCorrectAnswers;
 
             studentsCompleted +=
-                studentStats.numDailyAttempts === classroom.numDailyProblems
+                studentStats.numDailyAttempts >= classroom.numDailyProblems
                     ? 1
                     : 0;
 
