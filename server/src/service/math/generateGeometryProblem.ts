@@ -72,7 +72,7 @@ export async function generateGeometryProblem(
             } as IProblem;
         } else {
             throw Boom.notFound(
-                'no problem definition found for:' +
+                'no problem definition found for: ' +
                     problemType.valueOf() +
                     ', ' +
                     difficulty.valueOf(),

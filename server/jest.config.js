@@ -4,18 +4,18 @@
 
 const path = require('path');
 require('dotenv').config({
-    path: path.resolve(__dirname, './server/.env'),
+    path: path.resolve(__dirname, './.env'),
 });
 
 module.exports = {
-    roots: ['<rootDir>/client', '<rootDir>/server'],
+    roots: ['<rootDir>/src'],
     transform: {
         '^.+\\.tsx?$': 'ts-jest',
     },
     testEnvironment: 'node',
     moduleNameMapper: {
-        '@server/(.*)$': '<rootDir>/server/src/$1',
-        '@client/(.*)$': '<rootDir>/client/src/$1',
-        '@shared/(.*)$': '<rootDir>/client/src/shared/$1',
+        '@server/(.*)$': '<rootDir>/src/$1',
+        '@client/(.*)$': '<rootDir>/../client/src/$1',
+        '@shared/(.*)$': '<rootDir>/../client/src/shared/$1',
     },
 };

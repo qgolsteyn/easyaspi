@@ -15,7 +15,8 @@
         ],
         "no-magic-numbers": [true, -1, 0, 0.5, 1, 2],
         "no-non-null-assertion": true,
-        "no-any": true
+        "no-any": true,
+        "no-var-requires": false
     },
     "linterOptions": {
         "exclude": [

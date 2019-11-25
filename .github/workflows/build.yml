@@ -48,7 +48,7 @@ jobs:
                   yarn lint:server
             - name: Test
               run: |
-                  yarn test
+                  cd server && yarn test
             - name: Codecov
               run: |
                   yarn codecov

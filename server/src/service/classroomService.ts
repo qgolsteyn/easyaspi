@@ -12,7 +12,9 @@ export const createClassroom = async (classroomPayload: IClassroom) => {
     const classroom = new ClassroomModel({
         name: classroomPayload.name,
         numDailyProblems: NUM_OF_DAILY_PROBLEMS,
+        onlineResources: classroomPayload.onlineResources,
         passcode: classroomPayload.passcode,
+        problemsForToday: classroomPayload.problemsForToday,
     });
 
     const newClassroom = await classroom.save();
