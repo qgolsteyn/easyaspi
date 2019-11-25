@@ -1,13 +1,16 @@
 import { IAchievement, IClassroom, IStudentStatistic } from '@shared/index';
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeEvery } from 'redux-saga/effects';
 import { actions } from '../reducers';
 import * as api from './api';
 
 export function* initStudent(): Generator<unknown, void, unknown> {
-    yield takeLatest(actions.nav.goToScreen, function*(
+    yield takeEvery(actions.nav.goToScreen, function*(
         action: ReturnType<typeof actions.nav.goToScreen>,
     ): Generator<unknown, void, unknown> {
-        if (action.payload.screen === 'Student') {
+        if (
+            action.payload.screen === 'Student' ||
+            action.payload.screen === 'Achievements'
+        ) {
             yield call(getStudentInfo);
         }
     });

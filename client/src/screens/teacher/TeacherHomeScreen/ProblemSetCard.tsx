@@ -8,9 +8,11 @@ import { StyledCard } from '@client/components/Card';
 import { Icon } from '@client/components/Icon';
 import { colors } from '@client/constants/colors';
 import { selectors } from '@client/store';
+import { useInterval } from '@client/utils/useInterval';
 
-const hoursInADay = 24;
+const hoursInADay = 23;
 const minutesInAnHour = 60;
+const INTERVAL = 1000;
 
 export const ProblemSetCard = () => {
     const numberCompleted = useSelector(
@@ -18,13 +20,19 @@ export const ProblemSetCard = () => {
     );
     const numberOfStudents = useSelector(selectors.teacher.getNumberOfStudents);
 
-    const now = new Date();
+    const [now, setNow] = React.useState(new Date());
+
+    useInterval(() => setNow(new Date()), INTERVAL);
+
     const timeElapsed =
         now.getHours() / hoursInADay +
         now.getMinutes() / (minutesInAnHour * hoursInADay);
 
     const hoursLeft = hoursInADay - now.getHours();
-    const minutesLeft = minutesInAnHour - now.getMinutes();
+    const minutesLeft = String(minutesInAnHour - now.getMinutes()).padStart(
+        2,
+        '0',
+    );
 
     return (
         <StyledCard

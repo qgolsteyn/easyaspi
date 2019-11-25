@@ -1,13 +1,17 @@
 import { IClassroom, IClassroomStatistic, IUser } from '@shared/index';
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
 import { actions } from '../reducers';
 import * as api from './api';
 
 export function* initTeacher(): Generator<unknown, void, unknown> {
-    yield takeLatest(actions.nav.goToScreen, function*(
+    yield takeEvery(actions.nav.goToScreen, function*(
         action: ReturnType<typeof actions.nav.goToScreen>,
     ): Generator<unknown, void, unknown> {
-        if (action.payload.screen === 'Teacher') {
+        if (
+            action.payload.screen === 'Teacher' ||
+            action.payload.screen === 'StudentsList' ||
+            action.payload.screen === 'ClassroomStats'
+        ) {
             yield call(getClassroomInfo);
         }
     });

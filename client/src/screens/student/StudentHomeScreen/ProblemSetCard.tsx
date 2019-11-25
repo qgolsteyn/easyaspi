@@ -9,23 +9,30 @@ import { ListItem } from '@client/components/ListItem';
 import { colors } from '@client/constants/colors';
 import { actions, selectors } from '@client/store';
 import { ProblemSetState } from '@client/store/reducers/problems';
+import { useInterval } from '@client/utils/useInterval';
 
-const hoursInADay = 24;
+const hoursInADay = 23;
 const minutesInAnHour = 60;
+const INTERVAL = 1000;
 
 export const ProblemSetCard = () => {
     const dispatch = useDispatch();
     const testHook = useCavy();
+    const [now, setNow] = React.useState(new Date());
+
+    useInterval(() => setNow(new Date()), INTERVAL);
 
     const problemSetState = useSelector(selectors.problems.getProblemSetState);
 
-    const now = new Date();
     const timeElapsed =
         now.getHours() / hoursInADay +
         now.getMinutes() / (minutesInAnHour * hoursInADay);
 
     const hoursLeft = hoursInADay - now.getHours();
-    const minutesLeft = minutesInAnHour - now.getMinutes();
+    const minutesLeft = String(minutesInAnHour - now.getMinutes()).padStart(
+        2,
+        '0',
+    );
 
     return (
         <StyledCard

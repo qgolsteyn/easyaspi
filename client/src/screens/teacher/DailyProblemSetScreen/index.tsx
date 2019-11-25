@@ -18,6 +18,7 @@ import { colors } from '@client/constants/colors';
 import {
     classroomName,
     classroomPasscode,
+    url,
 } from '@client/constants/validations';
 import { actions, selectors } from '@client/store';
 
@@ -27,6 +28,7 @@ import { ProblemTypeItem } from './ProblemTypeItem';
 validate.validators.presence.options = { message: "can't be empty." };
 const constraints = {
     name: classroomName,
+    onlineResources: url,
     passcode: classroomPasscode,
 };
 

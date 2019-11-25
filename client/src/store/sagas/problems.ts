@@ -47,6 +47,7 @@ function* solveCurrentProblem(
     if (numberOfProblemsSolved >= numberOfProblems) {
         yield call(api.math.notifySuccessFailure, 'addition', true);
         yield call(api.math.getNextMathProblem);
+        return;
     } else {
         yield put(actions.problems.fetchNextProblem());
     }
@@ -85,7 +86,7 @@ function* fetchNextProblem(): Generator<unknown, void, unknown> {
                 operands: problem.operands,
                 operators: problem.operators,
                 problemType: problem.problemType,
-                prompt: 'What is',
+                prompt: problem.problem,
                 solution: problem.solution[0],
                 solved: false,
             }),
