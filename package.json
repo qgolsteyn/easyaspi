@@ -12,7 +12,7 @@
         "codecov": "codecov"
     },
     "devDependencies": {
-        "codecov": "^3.6.1",
+        "codecov": "^3.7.1",
         "dotenv": "^8.2.0",
         "node-keytool": "^0.0.3",
         "prettier": "^1.18.2",
